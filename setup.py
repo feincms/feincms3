@@ -26,8 +26,9 @@ setup(
     ),
     include_package_data=True,
     install_requires=[
-        'django-content-editor',
         'django-ckeditor',
+        'django-content-editor',
+        'django-mptt',
         'django-versatileimagefield',
         'feincms-cleanse',
     ],
