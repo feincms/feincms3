@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>{{ article }}</h1>
+{{ article.pub_date }}
+
+{{ content.main }}
+
+{% endblock %}
