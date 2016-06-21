@@ -12,6 +12,8 @@ Change log
   useful parts of Django's class based generic views)
 - Added an abstract page base model building on `django-mptt`_ with
   mixins for handling templates and menus.
+- Added template tags for fetching and grouping menu entries inside
+  templates.
 
 .. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
