@@ -22,7 +22,7 @@ setup(
     license='BSD License',
     platforms=['OS Independent'],
     packages=find_packages(
-        exclude=['tests']
+        exclude=['tests', 'testapp']
     ),
     include_package_data=True,
     install_requires=[
