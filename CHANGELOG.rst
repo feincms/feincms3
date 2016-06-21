@@ -17,3 +17,6 @@ Change log
 
 .. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
+
+.. _0.1: https://github.com/matthiask/feincms3/commit/0a0e889550
+.. _0.2: https://github.com/matthiask/feincms3/compare/xxx...xxx
