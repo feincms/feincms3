@@ -14,6 +14,7 @@ Change log
   mixins for handling templates and menus.
 - Added template tags for fetching and grouping menu entries inside
   templates.
+- Added a german translation.
 
 .. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
