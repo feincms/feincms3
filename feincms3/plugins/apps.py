@@ -24,7 +24,7 @@ __all__ = (
 
 
 def reverse_any(viewnames, *args, **kwargs):
-    viewname, remaining = viewnames[0], viewnames[1:]
+    viewname, remaining = viewnames[0], list(viewnames[1:])
 
     if viewname[0] == ':':
         remaining[0:0] = [
