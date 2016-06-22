@@ -38,10 +38,10 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
     """
     Example::
 
-        url = reverse_app(
-            (('category-1', 'blog'), 'post-detail'),
-            kwargs={'year': 2016, 'slug': 'my-cat'},
-        )
+        url = reverse_app(('category-1', 'blog'), 'post-detail', kwargs={
+            'year': 2016,
+            'slug': 'my-cat',
+        })
     """
     current = get_language()
     viewnames = [':'.join(r) for r in itertools.product(
