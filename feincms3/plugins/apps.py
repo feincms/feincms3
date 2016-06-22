@@ -14,31 +14,48 @@ from django.core.urlresolvers import NoReverseMatch, reverse
 from django.db import models
 from django.db.models import signals
 from django.utils.functional import SimpleLazyObject
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import get_language, ugettext_lazy as _
 
 
 __all__ = (
     'AppsMiddleware', 'AppsMixin', 'apps_urlconf', 'page_for_app_request',
-    'reverse_any',
+    'reverse_any', 'reverse_app',
 )
 
 
 def reverse_any(viewnames, *args, **kwargs):
-    viewname, remaining = viewnames[0], list(viewnames[1:])
-
-    if viewname[0] == ':':
-        remaining[0:0] = [
-            ''.join((l[0], viewname)) for l in settings.LANGUAGES
-        ]
-
-    else:
+    for viewname in viewnames[:-1]:
         try:
             return reverse(viewname, *args, **kwargs)
         except NoReverseMatch:
-            if not remaining:
-                raise
+            pass
 
-    return reverse_any(remaining, *args, **kwargs)
+    # Let the exception bubble for the last viewname
+    return reverse(viewnames[-1], *args, **kwargs)
+
+
+def reverse_app(namespaces, viewname, *args, **kwargs):
+    """
+    Example::
+
+        url = reverse_app(
+            (('category-1', 'blog'), 'post-detail'),
+            kwargs={'year': 2016, 'slug': 'my-cat'},
+        )
+    """
+    current = get_language()
+    viewnames = [':'.join(r) for r in itertools.product(
+        [current] + [
+            language[0] for language in settings.LANGUAGES
+            if language[0] != current
+        ],
+        (
+            namespaces if isinstance(namespaces, (list, tuple))
+            else (namespaces,)
+        ),
+        (viewname,),
+    )]
+    return reverse_any(viewnames, *args, **kwargs)
 
 
 def _iterate_subclasses(cls):
