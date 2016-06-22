@@ -25,11 +25,18 @@ __all__ = (
 
 def reverse_any(viewnames, *args, **kwargs):
     viewname, remaining = viewnames[0], viewnames[1:]
-    try:
-        return reverse(viewname, *args, **kwargs)
-    except NoReverseMatch:
-        if not remaining:
-            raise
+
+    if viewname[0] == ':':
+        remaining[0:0] = [
+            ''.join((l[0], viewname)) for l in settings.LANGUAGES
+        ]
+
+    else:
+        try:
+            return reverse(viewname, *args, **kwargs)
+        except NoReverseMatch:
+            if not remaining:
+                raise
 
     return reverse_any(remaining, *args, **kwargs)
 
