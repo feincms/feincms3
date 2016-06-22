@@ -15,7 +15,7 @@ Added
 - Shortcuts (``render_list`` and ``render_detail`` -- the most
   useful parts of Django's class based generic views)
 - An abstract page base model building on `django-mptt`_ with
-  mixins for handling templates and menus.
+  mixins for handling templates, menus and language codes.
 - Template tags for fetching and grouping menu entries inside
   templates.
 - A german translation.

@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import activate, get_language, ugettext_lazy as _
 
 from mptt.models import MPTTModel, TreeForeignKey
 from mptt.signals import node_moved
@@ -120,3 +121,20 @@ def _fill_template_choices(sender, **kwargs):
             (t.key, t.title) for t in sender.TEMPLATES
         ]
         field.default = sender.TEMPLATES[0].key
+
+
+class LanguageMixin(models.Model):
+    language_code = models.CharField(
+        _('language'),
+        max_length=10,
+        choices=settings.LANGUAGES,
+        default=settings.LANGUAGES[0][0],
+    )
+
+    class Meta:
+        abstract = True
+
+    def activate_language(self, request):
+        # Do what LocaleMiddleware does.
+        activate(self.language_code)
+        request.LANGUAGE_CODE = get_language()
