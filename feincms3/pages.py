@@ -69,7 +69,6 @@ class AbstractPage(MPTTModel):
 
 @receiver(node_moved)
 def handle_node_moved(instance, **kwargs):
-    print(instance, kwargs)
     if not instance._meta.abstract and 'position' in kwargs:
         # We were called from move_node, not from save()
         instance.save()
