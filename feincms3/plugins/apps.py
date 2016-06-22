@@ -24,14 +24,13 @@ __all__ = (
 
 
 def reverse_any(viewnames, *args, **kwargs):
-    for viewname in viewnames:
-        try:
-            url = reverse(viewname, *args, **kwargs)
-        except NoReverseMatch:
-            pass
-        else:
-            return url
-    raise NoReverseMatch
+    viewname, remaining = viewnames[0], viewnames[1:]
+    try:
+        return reverse(viewname, *args, **kwargs)
+    except NoReverseMatch:
+        if remaining:
+            return reverse_any(remaining, *args, **kwargs)
+        raise
 
 
 def _iterate_subclasses(cls):
