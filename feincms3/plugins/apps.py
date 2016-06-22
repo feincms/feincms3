@@ -28,9 +28,10 @@ def reverse_any(viewnames, *args, **kwargs):
     try:
         return reverse(viewname, *args, **kwargs)
     except NoReverseMatch:
-        if remaining:
-            return reverse_any(remaining, *args, **kwargs)
-        raise
+        if not remaining:
+            raise
+
+    return reverse_any(remaining, *args, **kwargs)
 
 
 def _iterate_subclasses(cls):
