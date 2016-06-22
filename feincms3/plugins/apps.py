@@ -104,7 +104,7 @@ def apps_urlconf():
 
         m.urlpatterns = [url(
             r'',
-            include((instances, 'any'), namespace=language_code),
+            include((instances, 'language-codes'), namespace=language_code),
         ) for language_code, instances in mapping.items()] + [
             url(r'', include(settings.ROOT_URLCONF)),
         ]
