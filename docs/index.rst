@@ -8,3 +8,13 @@ FeinCMS3 -- Tools for building your own CMS
 .. warning::
 
    Experimentally experimental experiment.
+
+.. toctree::
+   :maxdepth: 2
+
+   apps
+   cleanse
+   mixins
+   plugins
+   shortcuts
+   templatetags

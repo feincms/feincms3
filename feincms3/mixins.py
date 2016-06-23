@@ -26,7 +26,7 @@ def _fill_menu_choices(sender, **kwargs):
         field.default = field.choices[0][0]
 
 
-class TemplatesMixin(models.Model):
+class TemplateMixin(models.Model):
     template_key = models.CharField(_('template'), max_length=100)
 
     class Meta:
@@ -47,7 +47,7 @@ class TemplatesMixin(models.Model):
 
 @receiver(signals.class_prepared)
 def _fill_template_key_choices(sender, **kwargs):
-    if issubclass(sender, TemplatesMixin) and not sender._meta.abstract:
+    if issubclass(sender, TemplateMixin) and not sender._meta.abstract:
         field = sender._meta.get_field('template_key')
         field.choices = [
             (t.key, t.title) for t in sender.TEMPLATES
