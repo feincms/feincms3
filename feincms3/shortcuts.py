@@ -11,6 +11,7 @@ Because of this, ``render_list`` and ``render_detail``.
 
 from __future__ import unicode_literals
 
+from django.core import paginator
 from django.shortcuts import render
 
 
@@ -25,10 +26,22 @@ def template_name(model, template_name_suffix):
     )
 
 
-def render_list(request, queryset, context, template_name_suffix='_list'):
+def render_list(request, queryset, context, template_name_suffix='_list',
+                paginate_by=None):
+    if paginate_by:
+        p = paginator.Paginator(queryset, paginate_by)
+        try:
+            object_list = p.page(request.GET.get('page'))
+        except paginator.PageNotAnInteger:
+            object_list = p.page(1)
+        except paginator.EmptyPage:
+            object_list = p.page(p.num_pages)
+    else:
+        object_list = queryset
+
     context.update({
-        'object_list': queryset,
-        '%s_list' % queryset.model._meta.model_name: queryset,
+        'object_list': object_list,
+        '%s_list' % queryset.model._meta.model_name: object_list,
     })
     return render(
         request,

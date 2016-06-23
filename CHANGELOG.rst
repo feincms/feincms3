@@ -8,7 +8,7 @@ Change log
 Added
 -----
 
-- lugins (apps, external, richtext, snippet and versatileimage)
+- Plugins (apps, external, richtext, snippet and versatileimage)
   for use with `django-content-editor`_.
 - HTML editing and cleansing using `django-ckeditor`_ and
   `feincms-cleanse`_.
