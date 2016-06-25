@@ -2,7 +2,7 @@
 Change log
 ==========
 
-`0.1`_ (Unreleased)
+`0.1`_ (2016-06-25)
 ~~~~~~~~~~~~~~~~~~~
 
 Added
@@ -31,6 +31,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
 
-.. _0.1: https://github.com/matthiask/feincms3/
-.. _0.2: https://github.com/matthiask/feincms3/commit/0a0e889550
-.. _0.3: https://github.com/matthiask/feincms3/compare/xxx...xxx
+.. _0.1: https://github.com/matthiask/feincms3/commit/master
+.. _0.2: https://github.com/matthiask/feincms3/compare/0a0e889550...master
