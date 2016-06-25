@@ -1,5 +1,5 @@
 ========
-FeinCMS3
+feincms3
 ========
 
 Move along.

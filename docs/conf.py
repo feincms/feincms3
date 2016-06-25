@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# FeinCMS documentation build configuration file, created by
+# feincms documentation build configuration file, created by
 # sphinx-quickstart on Mon Aug 10 17:03:33 2009.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -37,7 +37,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'FeinCMS3'
+project = u'feincms3'
 copyright = u'2016, Feinheit AG and contributors'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -159,7 +159,7 @@ html_static_path = ['_static']
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'FeinCMS3-doc'
+htmlhelp_basename = 'feincms3-doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -173,7 +173,7 @@ latex_font_size = '10pt'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [(
-    'index', 'feincms3.tex', u'FeinCMS3 Documentation',
+    'index', 'feincms3.tex', u'feincms3 Documentation',
     u'Feinheit AG and contributors', 'manual'),
 ]
 
