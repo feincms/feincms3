@@ -16,6 +16,22 @@ __all__ = ('oembed_html', 'render_external', 'External', 'ExternalInline')
 
 
 def oembed_html(url, cache_failures=True):
+    """
+    Asks noembed.com for the embedding HTML code for arbitrary URLs. Sites
+    supported include Youtube, Vimeo, Twitter and many others.
+
+    Successful embeds are always cached for 30 days.
+
+    Failures are cached if ``cache_failures`` is ``True`` (the default). The
+    durations are as follows:
+
+    - Connection errors are cached 60 seconds with the hope that the connection
+      failure is only transient.
+    - HTTP errors codes and responses in an unexpected format (no JSON) are
+      cached for 24 hours.
+
+    The return value is always either a HTML fragment or an empty string.
+    """
     # Thundering herd problem etc...
     key = 'oembed-url-%s' % md5(url.encode('utf-8')).hexdigest()
     html = cache.get(key)
@@ -51,6 +67,11 @@ def oembed_html(url, cache_failures=True):
 
 
 def render_external(plugin):
+    """
+    Render the plugin, embedding it in the appropriate markup for Foundation's
+    flex-video element (http://foundation.zurb.com/sites/docs/flex-video.html)
+    """
+
     html = oembed_html(plugin.url)
     if 'youtube.com' in html:
         return mark_safe(

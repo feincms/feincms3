@@ -24,6 +24,7 @@ class RichText(models.Model):
         verbose_name_plural = _('rich texts')
 
     def __str__(self):
+        # Return the first few words of the content (with tags stripped)
         return Truncator(strip_tags(self.text)).words(10, truncate=' ...')
 
 
