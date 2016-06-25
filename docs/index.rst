@@ -21,6 +21,10 @@ feincms3 helps in this undertaking.
    :maxdepth: 2
 
    models
+   admin
+   settings
+   page-views
+   article-views
 
    apps
    cleanse
