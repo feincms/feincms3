@@ -13,25 +13,23 @@ def group_by_tree(iterable):
 
         {% load feincms3_pages %}
 
-        <ul class="nav-main">
-          {% menu "main" level=1 depth=2 tree_id=page.tree_id as pages %}
-          {% for main, children in pages|group_by_tree %}
-            {% is_descendant_of page main include_self=True as active %}
-            <li {% if active %}class="active"{% endif %}>
-              <a href="{{ main.get_absolute_url }}"{{ main.title }}</a>
-              {% if children %}
-                <ul>
-                  {% for child in children %}
-                    {% is_descendant_of page child include_self=True as active %}
-                    <li {% if active %}class="active"{% endif %}>
-                      <a href="{{ child.get_absolute_url }}">{{ child.title }}</a>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
+        <nav class="nav-main">
+        {% menu "main" level=1 depth=2 tree_id=page.tree_id as pages %}
+        {% for main, children in pages|group_by_tree %}
+          {% is_descendant_of page main include_self=True as active %}
+          <a {% if active %}class="active"{% endif %}
+             href="{{ main.get_absolute_url }}"{{ main.title }}</a>
+            {% if children %}
+            <nav>
+              {% for child in children %}
+                {% is_descendant_of page child include_self=True as active %}
+                <a {% if active %}class="active"{% endif %}
+                   href="{{ child.get_absolute_url }}"{{ child.title }}</a>
+              {% endfor %}
+            </nav>
+          {% endif %}
+        {% endfor %}
+        </nav>
     """
 
     parent = None
@@ -64,10 +62,30 @@ def is_descendant_of(node1, node2, include_self=False):
     return node1.is_descendant_of(node2, include_self=include_self)
 
 
-@register.simple_tag
+@register.simple_tag(takes_context=True)
 # def menu(menu, *, level=0, depth=1, **kwargs):
-def menu(menu, level=0, depth=1, **kwargs):  # PY2 :-(
-    return Page.objects.active().filter(
+def menu(context, menu, level=0, depth=1, **kwargs):  # PY2 :-(
+    """
+    This tag expects the ``page`` variable to contain the page we're on
+    currently. The active pages are fetched using ``.objects.active()`` and
+    filtered further according to the arguments passed to the tag.
+
+    Usage example::
+
+        {% load feincms3_pages %}
+
+        {% menu 'meta' as meta_nav %}
+        <nav>
+        {% for p in meta_nav %}
+          {% is_descendant_of page p include_self=True as active %}
+          <a href="{{ p.get_absolute_url }}" {% if active %}class="active">
+             {{ p.title }}
+          </a>
+        {% endfor %}
+        </nav>
+    """
+
+    return context['page'].__class__.objects.active().filter(
         menu=menu,
         level__range=[level, level + depth - 1],
         **kwargs
