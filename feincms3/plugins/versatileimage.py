@@ -47,6 +47,8 @@ class Image(models.Model):
 
 class AlwaysChangedModelForm(forms.ModelForm):
     # https://github.com/respondcreate/django-versatileimagefield/issues/44
+    # MultiValueField changes aren't detected very well by Django inlines.
+    # This is a workaround.
     def has_changed(self):
         return True
 

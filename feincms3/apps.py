@@ -24,6 +24,21 @@ __all__ = (
 
 
 def reverse_any(viewnames, *args, **kwargs):
+    """
+    Tries reversing a list of viewnames with the same arguments, and returns
+    the first result where no ``NoReverseMatch`` exception is raised.
+
+    The NoReverseMatch exception of the last viewname is passed on if
+    reversing fails for all viewnames.
+
+    Usage::
+
+        url = reverse_any((
+            'blog:article-detail',
+            'articles:article-detail',
+        ), kwargs={'slug': 'article-slug'})
+    """
+
     for viewname in viewnames[:-1]:
         try:
             return reverse(viewname, *args, **kwargs)
@@ -36,13 +51,35 @@ def reverse_any(viewnames, *args, **kwargs):
 
 def reverse_app(namespaces, viewname, *args, **kwargs):
     """
+    Reverse app URLs, preferring the active language.
+
+    ``reverse_app`` first generates a list of viewnames and passes them on
+    to ``reverse_any``.
+
+    Assuming that we're trying to reverse the URL of an article detail view,
+    that the project is configured with german, english and french as available
+    languages, french as active language and that the current article is a
+    publication, the viewnames are:
+
+    - fr.publications.article-detail
+    - fr.articles.article-detail
+    - de.publications.article-detail
+    - de.articles.article-detail
+    - en.publications.article-detail
+    - en.articles.article-detail
+
+    reverse_app tries harder returning an URL in the correct language than
+    returning an URL for the correct instance namespace.
+
     Example::
 
-        url = reverse_app(('category-1', 'blog'), 'post-detail', kwargs={
-            'year': 2016,
-            'slug': 'my-cat',
-        })
+        url = reverse_app(
+            ('category-1', 'blog'),
+            'post-detail',
+            kwargs={'year': 2016, 'slug': 'my-cat'},
+        )
     """
+
     current = get_language()
     viewnames = [':'.join(r) for r in itertools.product(
         [current] + [
@@ -59,6 +96,10 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
 
 
 def _iterate_subclasses(cls):
+    """
+    Yields the passed class and all its subclasses in depth-first order
+    """
+
     yield cls
     for scls in cls.__subclasses__():
         # yield from _iterate_subclasses(scls)
@@ -66,12 +107,38 @@ def _iterate_subclasses(cls):
             yield sscls
 
 
+# The first non-abstract subclass of AppsMixin is what we're using.
 page_model = SimpleLazyObject(lambda: next(
     c for c in _iterate_subclasses(AppsMixin) if not c._meta.abstract
 ))
 
 
 def apps_urlconf():
+    """
+    Generates a dynamic URLconf Python module including all applications in
+    their assigned place and falling through to the default ``ROOT_URLCONF``
+    at the end. Returns the value of ``ROOT_URLCONF`` directly if there are
+    no active applications.
+
+    Since Django uses an LRU cache for URL resolvers, we try hard to only
+    generate a changed URLconf when application URLs actually change.
+
+    The application URLconfs are put in nested namespaces:
+
+    - The outer namespace is the page language as instance namespace and
+      ``'language-codes'`` as application namespace. The application namespace
+      does not have to be used anywhere as long as you're always using
+      ``reverse_app``.
+    - The inner namespace is the app namespace, where the application
+      namespace is defined by the app itself (assign ``app_name`` in the
+      same module as ``urlpatterns``) and the instance namespace is defined
+      by the application name (from APPLICATIONS).
+
+    Modules stay around as long as the Python (most of the time WSGI) process
+    lives and aren't recycled. Unloading modules is tricky, and memory usage
+    shouldn't skyrocket.
+    """
+
     apps = page_model.objects.active().exclude(application='').values_list(
         'path',
         'application',
@@ -114,6 +181,11 @@ def apps_urlconf():
 
 
 def page_for_app_request(request):
+    """
+    Returns the current page if we're inside an app. Should only be called
+    while processing app views.
+    """
+
     # Unguarded - if this fails, we shouldn't even be here.
     page = page_model.objects.get(
         language_code=request.resolver_match.namespaces[0],
@@ -123,11 +195,50 @@ def page_for_app_request(request):
 
 
 class AppsMiddleware(object):
+    """
+    This middleware must be put in ``MIDDLEWARE_CLASSSES``; it simply assigns
+    the return value of ``apps_urlconf`` to ``request.urlconf``.
+    """
+
     def process_request(self, request):
         request.urlconf = apps_urlconf()
 
 
 class AppsMixin(models.Model):
+    """
+    The page class should inherit this mixin. All it does is add an
+    ``application`` field, and ensure that applications can only be activated
+    on leaf nodes in the page tree. Note that currently the ``LanguageMixin``
+    is a required dependency of feincms3.apps.
+
+    ``APPLICATIONS`` contains a list of application configurations consisting
+    of:
+
+    - Application name (used as instance namespace)
+    - User-visible name
+    - Options dictionary, currently only ``urlconf``
+
+    Usage::
+
+        from django.utils.translation import ugettext_lazy as _
+        from feincms3.apps import AppsMixin
+        from feincms3.mixins import LanguageMixin
+        from feincms3.pages import AbstractPage
+
+        class Page(AppsMixin, LanguageMixin, AbstractPage):
+            APPLICATIONS = [
+                ('publications', _('publications'), {
+                    'urlconf': 'app.articles.urls',
+                }),
+                ('blog', _('blog'), {
+                    'urlconf': 'app.articles.urls',
+                }),
+                ('contact', _('contact form'), {
+                    'urlconf': 'app.forms.contact_urls',
+                }),
+            ]
+    """
+
     application = models.CharField(
         _('application'),
         max_length=20,

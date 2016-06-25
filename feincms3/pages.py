@@ -51,9 +51,9 @@ class AbstractPage(MPTTModel):
         if save_descendants:
             nodes = {self.pk: self}
             for node in self.get_descendants():
-                # Assign already-saved instance
+                # Assign already-updated and saved instance:
                 node.parent = nodes[node.parent_id]
-                # Descendants of inactive nodes cannot be active themselves.
+                # Descendants of inactive nodes cannot be active themselves:
                 if not node.parent.is_active:
                     node.is_active = False
                 node.save(save_descendants=False)
@@ -68,6 +68,8 @@ class AbstractPage(MPTTModel):
 
 @receiver(node_moved)
 def handle_node_moved(instance, **kwargs):
+    # position is only a keyword argument when we're called from
+    # TreeManager.move_node. In this case, run our own save() method as
+    # well to update page paths etc.
     if not instance._meta.abstract and 'position' in kwargs:
-        # We were called from move_node, not from save()
         instance.save()
