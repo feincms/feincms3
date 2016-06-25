@@ -35,5 +35,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
 
-.. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb4
-.. _0.2: https://github.com/matthiask/feincms3/compare/9f421bb4...master
+.. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
+.. _0.2: https://github.com/matthiask/feincms3/compare/0.1...master
