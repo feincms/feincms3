@@ -2,14 +2,38 @@ from __future__ import absolute_import, unicode_literals
 
 from django import template
 
-from app.pages.models import Page
-
 
 register = template.Library()
 
 
 @register.filter
 def group_by_tree(iterable):
+    """
+    Group pages of two navigation levels. Usage example::
+
+        {% load feincms3_pages %}
+
+        <ul class="nav-main">
+          {% menu "main" level=1 depth=2 tree_id=page.tree_id as pages %}
+          {% for main, children in pages|group_by_tree %}
+            {% is_descendant_of page main include_self=True as active %}
+            <li {% if active %}class="active"{% endif %}>
+              <a href="{{ main.get_absolute_url }}"{{ main.title }}</a>
+              {% if children %}
+                <ul>
+                  {% for child in children %}
+                    {% is_descendant_of page child include_self=True as active %}
+                    <li {% if active %}class="active"{% endif %}>
+                      <a href="{{ child.get_absolute_url }}">{{ child.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+    """
+
     parent = None
     children = []
     level = -1
@@ -32,6 +56,11 @@ def group_by_tree(iterable):
 
 @register.simple_tag
 def is_descendant_of(node1, node2, include_self=False):
+    """
+    Returns whether the first argument is a descendant of the second argument.
+
+    The recommended usage is documented below for the {% menu %} template tag.
+    """
     return node1.is_descendant_of(node2, include_self=include_self)
 
 
