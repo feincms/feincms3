@@ -31,6 +31,7 @@ setup(
         'django-mptt',
         'django-versatileimagefield',
         'feincms-cleanse',
+        'requests',
     ],
     classifiers=[
         # 'Development Status :: 5 - Production/Stable',
