@@ -7,6 +7,8 @@ Change log
 
 - The external plugin admin form now checks whether the URL can be
   embedded using OEmbed or not.
+- Added the ``plugin_ckeditor.js`` file required for the rich text
+  editor.
 
 
 `0.1`_ (2016-06-25)

@@ -30,4 +30,4 @@ class RichText(models.Model):
 
 class RichTextInline(ContentEditorInline):
     class Media:
-        js = ('app/js/plugin_ckeditor.js',)
+        js = ('feincms3/plugin_ckeditor.js',)
