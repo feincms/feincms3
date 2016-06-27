@@ -3,11 +3,12 @@ from __future__ import unicode_literals
 from hashlib import md5
 import requests
 
+from django import forms
 from django.core.cache import cache
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
 
@@ -94,5 +95,15 @@ class External(models.Model):
         return self.url
 
 
+class ExternalForm(forms.ModelForm):
+    def clean(self):
+        data = super(ExternalForm, self).clean()
+        if not oembed_html(data['url'], cache_failures=False):
+            raise forms.ValidationError(
+                ugettext('Unable to fetch HTML for this URL, sorry!')
+            )
+        return data
+
+
 class ExternalInline(ContentEditorInline):
-    pass
+    form = ExternalForm
