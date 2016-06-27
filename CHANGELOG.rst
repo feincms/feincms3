@@ -9,6 +9,7 @@ Change log
   embedded using OEmbed or not.
 - Added the ``plugin_ckeditor.js`` file required for the rich text
   editor.
+- Added a ``SnippetInline`` for consistency.
 
 
 `0.1`_ (2016-06-25)

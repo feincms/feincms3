@@ -6,8 +6,10 @@ from django.template.loader import render_to_string
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+from content_editor.admin import ContentEditorInline
 
-__all__ = ('Snippet', 'render_snippet')
+
+__all__ = ('Snippet', 'SnippetInline', 'render_snippet')
 
 
 def render_snippet(plugin):
@@ -35,3 +37,7 @@ def _fill_template_name_choices(sender, **kwargs):
         sender._meta.get_field('template_name').choices = sender.TEMPLATES
 
 signals.class_prepared.connect(_fill_template_name_choices)
+
+
+class SnippetInline(ContentEditorInline):
+    pass
