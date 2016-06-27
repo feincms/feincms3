@@ -153,7 +153,10 @@ def apps_urlconf():
     module_name = 'urlconf_%s' % hashlib.md5(key.encode('utf-8')).hexdigest()
 
     if module_name not in sys.modules:
-        app_config = {app[0]: app[2] for app in page_model.APPLICATIONS}
+        app_config = {
+            app[0]: app[2]
+            for app in page_model.APPLICATIONS if app[0]
+        }
 
         m = types.ModuleType(str(module_name))  # str() is correct for PY2&3
 
