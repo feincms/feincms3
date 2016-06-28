@@ -34,6 +34,7 @@ class MenuMixin(models.Model):
         _('menu'),
         max_length=20,
         blank=True,
+        choices=(('', ''),),  # Non-empty choices for get_*_display
     )
 
     class Meta:
@@ -88,7 +89,11 @@ class TemplateMixin(models.Model):
     regions list from the selected template.
     """
 
-    template_key = models.CharField(_('template'), max_length=100)
+    template_key = models.CharField(
+        _('template'),
+        max_length=100,
+        choices=(('', ''),),  # Non-empty choices for get_*_display
+    )
 
     class Meta:
         abstract = True

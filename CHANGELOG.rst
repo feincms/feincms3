@@ -10,6 +10,8 @@ Change log
 - Added the ``plugin_ckeditor.js`` file required for the rich text
   editor.
 - Added a ``SnippetInline`` for consistency.
+- Ensured that choice fields have a ``get_*_display`` method by setting
+  dummy choices in advance (menus, snippets and templates).
 
 
 `0.1`_ (2016-06-25)

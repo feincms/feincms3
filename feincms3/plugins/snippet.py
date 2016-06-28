@@ -21,6 +21,7 @@ class Snippet(models.Model):
     template_name = models.CharField(
         _('template name'),
         max_length=200,
+        choices=(('', ''),),  # Non-empty choices for get_*_display
     )
 
     class Meta:
