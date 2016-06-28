@@ -5,11 +5,11 @@
 /secrets.py
 .DS_Store
 ._*
-/*.egg-info
+*.egg-info
 /MANIFEST
 /_build
 /build
-/dist
+dist
 tests/test.zip
 /docs/_build
 /.eggs
