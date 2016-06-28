@@ -12,6 +12,8 @@ Change log
 - Added a ``SnippetInline`` for consistency.
 - Ensured that choice fields have a ``get_*_display`` method by setting
   dummy choices in advance (menus, snippets and templates).
+- Added automatically built documentation on
+  `readthedocs.io <http://feincms3.readthedocs.io/>`_.
 
 
 `0.1`_ (2016-06-25)
