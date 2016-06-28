@@ -2,7 +2,13 @@
 Change log
 ==========
 
-`0.2`_ (Unreleased)
+`0.3`_ (Unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+- Nothing yet.
+
+
+`0.2`_ (2016-06-28)
 ~~~~~~~~~~~~~~~~~~~
 
 - The external plugin admin form now checks whether the URL can be
@@ -46,4 +52,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
-.. _0.2: https://github.com/matthiask/feincms3/compare/0.1...master
+.. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2
+.. _0.3: https://github.com/matthiask/feincms3/compare/0.2...master
