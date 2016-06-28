@@ -26,6 +26,7 @@ setup(
     ),
     include_package_data=True,
     install_requires=[
+        'Django>=1.9,<1.10',  # >1.9 because of content-editor, <1.10 because of mptt
         'django-ckeditor',
         'django-content-editor',
         'django-mptt',
