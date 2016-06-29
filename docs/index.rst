@@ -128,20 +128,12 @@ Snippets
 Versatile images
 ~~~~~~~~~~~~~~~~
 
-This plugin uses django-versatileimagefield_ to do the heavy lifting.
-
 .. automodule:: feincms3.plugins.versatileimage
    :members:
 
 
 HTML cleansing
 ==============
-
-HTML cleansing is by no means only useful for user generated content.
-Managers also copy-paste content from word processing programs, the rich
-text editor's output isn't always (almost never) in the shape we want it
-to be, and a strict white-list based HTML sanitizer is the best answer
-I have.
 
 .. automodule:: feincms3.cleanse
    :members:
