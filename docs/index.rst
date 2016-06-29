@@ -79,7 +79,7 @@ feincms3 has the following main parts:
 .. [#] FeinCMS_ used to call those content types, a name which
    unfortunately was often confused with
    ``django.contrib.contenttypes``' content types.
-.. [#] The code in django-mptt_ is a derivative of FeincMS_'s
+.. [#] The code in django-mptt_ is a derivative of FeinCMS_'s
    ``TreeEditor``.
 
 
