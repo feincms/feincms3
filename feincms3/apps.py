@@ -139,8 +139,8 @@ def apps_urlconf():
       by the application name (from ``APPLICATIONS``).
 
     Modules stay around as long as the Python (most of the time WSGI) process
-    lives and aren't recycled. Unloading modules is tricky, and memory usage
-    shouldn't skyrocket.
+    lives. Unloading modules is tricky and probably not worth it since the
+    URLconf modules shouldn't gobble up much memory.
     """
 
     apps = page_model.objects.active().exclude(application='').values_list(
