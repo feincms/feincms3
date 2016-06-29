@@ -149,7 +149,7 @@ class LanguageMixin(models.Model):
     ``LocaleMiddleware`` does::
 
         def page_detail(request, path):
-            page = # Fetch the Page instance somehow
+            page = ...  # MAGIC! (or maybe get_object_or_404...)
             page.activate_language(request)
 
     Note that this does not persist the language in the session or in a
