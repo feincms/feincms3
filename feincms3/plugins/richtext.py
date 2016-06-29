@@ -11,11 +11,29 @@ from content_editor.admin import ContentEditorInline
 from feincms3.cleanse import CleansedRichTextField
 
 
-__all__ = ('CleansedRichTextField', 'RichText', 'RichTextInline')
+__all__ = ('RichText', 'RichTextInline')
 
 
 @python_2_unicode_compatible
 class RichText(models.Model):
+    """
+    Rich text plugin
+
+    Usage::
+
+        class Page(...):
+            # ...
+
+        PagePlugin = create_plugin_base(Page)
+
+        class RichText(plugins.RichText, PagePlugin):
+            pass
+
+    To use this, a django-ckeditor_ configuration named ``richtext-plugin`` is
+    required. See the section :mod:`HTML cleansing <feincms3.cleanse>` for the
+    recommended configuration.
+    """
+
     text = CleansedRichTextField(_('text'), config_name='richtext-plugin')
 
     class Meta:
@@ -29,5 +47,11 @@ class RichText(models.Model):
 
 
 class RichTextInline(ContentEditorInline):
+    """
+    The only difference with the standard ``ContentEditorInline`` is that this
+    inline adds the ``feincms3/plugin_ckeditor.js`` file which handles the
+    CKEditor widget activation and deactivation inside the content editor.
+    """
+
     class Media:
         js = ('feincms3/plugin_ckeditor.js',)
