@@ -270,11 +270,16 @@ class AppsMixin(models.Model):
                 ),
             })
 
+    @staticmethod
+    def fill_application_choices(sender, **kwargs):
+        """
+        Fills in the choices for ``application`` from the ``APPLICATIONS``
+        class variable. This method is a receiver of Django's
+        ``class_prepared`` signal.
+        """
+        if issubclass(sender, AppsMixin) and not sender._meta.abstract:
+            sender._meta.get_field('application').choices = [
+                app[:2] for app in sender.APPLICATIONS
+            ]
 
-def _fill_application_choices(sender, **kwargs):
-    if issubclass(sender, AppsMixin) and not sender._meta.abstract:
-        sender._meta.get_field('application').choices = [
-            app[:2] for app in sender.APPLICATIONS
-        ]
-
-signals.class_prepared.connect(_fill_application_choices)
+signals.class_prepared.connect(AppsMixin.fill_application_choices)

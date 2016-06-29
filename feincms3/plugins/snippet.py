@@ -32,12 +32,18 @@ class Snippet(models.Model):
     def __str__(self):
         return self.get_template_name_display()
 
+    @staticmethod
+    def fill_template_name_choices(sender, **kwargs):
+        """
+        Fills in the choices for ``template_name`` from the ``TEMPLATES`` class
+        variable. This method is a receiver of Django's ``class_prepared``
+        signal.
+        """
+        if issubclass(sender, Snippet) and not sender._meta.abstract:
+            sender._meta.get_field('template_name').choices = sender.TEMPLATES
 
-def _fill_template_name_choices(sender, **kwargs):
-    if issubclass(sender, Snippet) and not sender._meta.abstract:
-        sender._meta.get_field('template_name').choices = sender.TEMPLATES
 
-signals.class_prepared.connect(_fill_template_name_choices)
+signals.class_prepared.connect(Snippet.fill_template_name_choices)
 
 
 class SnippetInline(ContentEditorInline):

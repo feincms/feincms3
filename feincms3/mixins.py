@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from django.db.models import signals
-from django.dispatch import receiver
 from django.utils.translation import activate, get_language, ugettext_lazy as _
 
 
@@ -40,13 +39,19 @@ class MenuMixin(models.Model):
     class Meta:
         abstract = True
 
+    @staticmethod
+    def fill_menu_choices(sender, **kwargs):
+        """
+        Fills in the choices for ``menu`` from the ``MENUS`` class variable.
+        This method is a receiver of Django's ``class_prepared`` signal.
+        """
+        if issubclass(sender, MenuMixin) and not sender._meta.abstract:
+            field = sender._meta.get_field('menu')
+            field.choices = sender.MENUS
+            field.default = field.choices[0][0]
 
-@receiver(signals.class_prepared)
-def _fill_menu_choices(sender, **kwargs):
-    if issubclass(sender, MenuMixin) and not sender._meta.abstract:
-        field = sender._meta.get_field('menu')
-        field.choices = sender.MENUS
-        field.default = field.choices[0][0]
+
+signals.class_prepared.connect(MenuMixin.fill_menu_choices)
 
 
 class TemplateMixin(models.Model):
@@ -106,16 +111,22 @@ class TemplateMixin(models.Model):
     def regions(self):
         return self.template.regions if self.template else []
 
+    @staticmethod
+    def fill_template_key_choices(sender, **kwargs):
+        """
+        Fills in the choices for ``menu`` from the ``MENUS`` class variable.
+        This method is a receiver of Django's ``class_prepared`` signal.
+        """
+        if issubclass(sender, TemplateMixin) and not sender._meta.abstract:
+            field = sender._meta.get_field('template_key')
+            field.choices = [
+                (t.key, t.title) for t in sender.TEMPLATES
+            ]
+            field.default = sender.TEMPLATES[0].key
+            sender.TEMPLATES_DICT = {t.key: t for t in sender.TEMPLATES}
 
-@receiver(signals.class_prepared)
-def _fill_template_key_choices(sender, **kwargs):
-    if issubclass(sender, TemplateMixin) and not sender._meta.abstract:
-        field = sender._meta.get_field('template_key')
-        field.choices = [
-            (t.key, t.title) for t in sender.TEMPLATES
-        ]
-        field.default = sender.TEMPLATES[0].key
-        sender.TEMPLATES_DICT = {t.key: t for t in sender.TEMPLATES}
+
+signals.class_prepared.connect(TemplateMixin.fill_template_key_choices)
 
 
 class LanguageMixin(models.Model):
