@@ -13,11 +13,17 @@ __all__ = ('Snippet', 'SnippetInline', 'render_snippet')
 
 
 def render_snippet(plugin):
+    """
+    Renders the selected template using ``render_to_string``
+    """
     return render_to_string(plugin.template_name, {'plugin': plugin})
 
 
 @python_2_unicode_compatible
 class Snippet(models.Model):
+    """
+    Template snippet plugin
+    """
     template_name = models.CharField(
         _('template name'),
         max_length=200,
@@ -47,4 +53,8 @@ signals.class_prepared.connect(Snippet.fill_template_name_choices)
 
 
 class SnippetInline(ContentEditorInline):
+    """
+    Snippet inline does nothing special, it simply exists for consistency
+    with the other feincms3 plugins
+    """
     pass

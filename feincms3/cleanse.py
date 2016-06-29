@@ -24,6 +24,7 @@ Cleanse.allowed_tags['hr'] = ()  # Allow horizontal rules
 Cleanse.allowed_tags['h1'] = ()  # Allow H1
 Cleanse.empty_tags += ('hr',)
 
+
 def cleanse_html(html):
     """
     Pass ugly HTML, get nice HTML back.

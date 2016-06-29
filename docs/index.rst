@@ -83,22 +83,22 @@ feincms3 has the following main parts:
    ``TreeEditor``.
 
 
-Pages base class
-================
+Pages (``feincms3.pages``)
+==========================
 
 .. automodule:: feincms3.pages
    :members:
 
 
-Mixins
-======
+Mixins (``feincms3.mixins``)
+============================
 
 .. automodule:: feincms3.mixins
    :members:
 
 
-Plugins
-=======
+Plugins (``feincms3.plugins``)
+==============================
 
 All documented plugin classes and functions can be imported from
 ``feincms3.plugins`` as well.
@@ -132,22 +132,22 @@ Versatile images
    :members:
 
 
-HTML cleansing
-==============
+HTML cleansing (``feincms3.cleanse``)
+=====================================
 
 .. automodule:: feincms3.cleanse
    :members:
 
 
-Apps
-====
+Apps (``feincms3.apps``)
+========================
 
 .. automodule:: feincms3.apps
    :members:
 
 
-Shortcuts
-=========
+Shortcuts (``feincms3.shortcuts``)
+==================================
 
 .. automodule:: feincms3.shortcuts
    :members:
@@ -155,6 +155,9 @@ Shortcuts
 
 Template tags
 =============
+
+``feincms3_pages``
+~~~~~~~~~~~~~~~~~~
 
 .. automodule:: feincms3.templatetags.feincms3_pages
    :members:

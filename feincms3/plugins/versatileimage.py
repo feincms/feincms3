@@ -14,11 +14,14 @@ from content_editor.admin import ContentEditorInline
 from versatileimagefield.fields import VersatileImageField, PPOIField
 
 
-__all__ = ('Image', 'ImageInline')
+__all__ = ('Image', 'AlwaysChangedModelForm', 'ImageInline')
 
 
 @python_2_unicode_compatible
 class Image(models.Model):
+    """
+    Image plugin
+    """
     image = VersatileImageField(
         _('image'),
         upload_to='images/%Y/%m',
@@ -50,12 +53,21 @@ class Image(models.Model):
 
 
 class AlwaysChangedModelForm(forms.ModelForm):
-    # https://github.com/respondcreate/django-versatileimagefield/issues/44
-    # MultiValueField changes aren't detected very well by Django inlines.
-    # This is a workaround.
+    """
+    This ``ModelForm``'s ``has_changed`` method always returns ``True``. This
+    is a workaround for the problem where Django's inlines do not detect
+    changes in ``MultiValueField`` (which is used to set the PPOI --
+    primary point of interest -- in django-versatileimagefield_).
+
+    https://github.com/respondcreate/django-versatileimagefield/issues/44
+    """
     def has_changed(self):
         return True
 
 
 class ImageInline(ContentEditorInline):
+    """
+    Image inline using the ``AlwaysChangedModelForm`` to work around a bug
+    where PPOI modifications were not picked up.
+    """
     form = AlwaysChangedModelForm

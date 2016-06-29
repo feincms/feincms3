@@ -5,7 +5,8 @@ Change log
 `0.3`_ (Unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
-- Nothing yet.
+- Lots of work on the documentation.
+- Moved all signal receivers into their classes as staticmethods.
 
 
 `0.2`_ (2016-06-28)

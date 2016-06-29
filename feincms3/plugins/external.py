@@ -13,7 +13,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from content_editor.admin import ContentEditorInline
 
 
-__all__ = ('oembed_html', 'render_external', 'External', 'ExternalInline')
+__all__ = ('External', 'ExternalInline', 'oembed_html', 'render_external')
 
 
 def oembed_html(url, cache_failures=True):
@@ -85,6 +85,9 @@ def render_external(plugin):
 
 @python_2_unicode_compatible
 class External(models.Model):
+    """
+    External content plugin
+    """
     url = models.URLField(_('URL'))
 
     class Meta:
@@ -96,6 +99,9 @@ class External(models.Model):
 
 
 class ExternalForm(forms.ModelForm):
+    """
+    Tries fetching the oEmbed code for the given URL when cleaning form data
+    """
     def clean(self):
         data = super(ExternalForm, self).clean()
         if not oembed_html(data['url'], cache_failures=False):
@@ -106,4 +112,8 @@ class ExternalForm(forms.ModelForm):
 
 
 class ExternalInline(ContentEditorInline):
+    """
+    Content editor inline using the ``ExternalForm`` to verify whether the
+    given URL is embeddable using oEmbed or not.
+    """
     form = ExternalForm

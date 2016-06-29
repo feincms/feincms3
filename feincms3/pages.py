@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
-from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
@@ -13,6 +12,29 @@ from mptt.signals import node_moved
 
 @python_2_unicode_compatible
 class AbstractPage(MPTTModel):
+    """
+    Short version: If you want to build a CMS with a hierarchical page
+    structure, use this base class.
+
+    It comes with the following fields:
+
+    - ``parent``: (a nullable tree foreign key) and all MPTT fields
+    - ``is_active``: Boolean field. The ``save()`` method ensures that inactive
+      pages never have any active descendants.
+    - ``title`` and ``slug``
+    - ``path``: The complete path to the page, starting and ending with a
+      slash. The maximum length of path (1000) should be enough for everyone
+      (tm, famous last words). This field also has a unique index, which means
+      that MySQL with its low limit on unique indexes will not work with this
+      base class. Sorry.
+    - ``static_path``: A boolean which, when ``True``, allows you to fill in
+      the ``path`` field all by yourself. By default, ``save()`` ensures that
+      the ``path`` fields are always composed of a concatenation of the
+      parent's ``path`` with the page's own ``slug`` (with slashes of course).
+      This is especially useful for root pages (set ``path`` to ``/``) or,
+      when building a multilingual site, for language root pages (i.e.
+      ``/en/``, ``/de/``, ``/pt-br/`` etc.)
+    """
     parent = TreeForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -40,6 +62,11 @@ class AbstractPage(MPTTModel):
         return self.title
 
     def save(self, *args, **kwargs):
+        """save(self, ..., save_descendants=True)
+        Saves the page instance, and traverses all descendants to update their
+        ``path`` fields and ensure that inactive pages (``is_active=False``)
+        never have any descendants with ``is_active=True``.
+        """
         save_descendants = kwargs.pop('save_descendants', True)
 
         if not self.static_path:
@@ -61,15 +88,31 @@ class AbstractPage(MPTTModel):
     save.alters_data = True
 
     def get_absolute_url(self):
+        """
+        Return the page's absolute URL using ``reverse()``
+
+        If path is ``/``, reverses ``pages:root`` without any arguments,
+        alternatively reverses ``pages:page`` with an argument of ``path``.
+        Note that this ``path`` is not the same as ``self.path`` -- slashes
+        are stripped from the beginning and the end of the string to make
+        building an URLconf more straightforward.
+        """
         if self.path == '/':
             return reverse('pages:root')
         return reverse('pages:page', kwargs={'path': self.path.strip('/')})
 
+    @staticmethod
+    def handle_node_moved(instance, **kwargs):
+        """
+        Handles page moves through MPTT (the ``node_moved`` signal) and ensures
+        that ``save()`` always has a chance to run (and update our own fields
+        and those of all descendants).
+        """
+        # ``position`` is only a keyword argument when we're called from
+        # TreeManager.move_node. In this case, run our own save() method as
+        # well to update page paths etc.
+        if not instance._meta.abstract and 'position' in kwargs:
+            instance.save()
 
-@receiver(node_moved)
-def handle_node_moved(instance, **kwargs):
-    # position is only a keyword argument when we're called from
-    # TreeManager.move_node. In this case, run our own save() method as
-    # well to update page paths etc.
-    if not instance._meta.abstract and 'position' in kwargs:
-        instance.save()
+
+node_moved.connect(AbstractPage.handle_node_moved)

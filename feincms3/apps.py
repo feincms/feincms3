@@ -1,3 +1,7 @@
+"""
+TODO: Give a high-level overview of the apps code.
+"""
+
 from __future__ import unicode_literals
 
 from collections import defaultdict
@@ -28,7 +32,7 @@ def reverse_any(viewnames, *args, **kwargs):
     Tries reversing a list of viewnames with the same arguments, and returns
     the first result where no ``NoReverseMatch`` exception is raised.
 
-    The NoReverseMatch exception of the last viewname is passed on if
+    The ``NoReverseMatch`` exception of the last viewname is passed on if
     reversing fails for all viewnames.
 
     Usage::
@@ -61,12 +65,12 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
     languages, french as active language and that the current article is a
     publication, the viewnames are:
 
-    - fr.publications.article-detail
-    - fr.articles.article-detail
-    - de.publications.article-detail
-    - de.articles.article-detail
-    - en.publications.article-detail
-    - en.articles.article-detail
+    - ``fr.publications.article-detail``
+    - ``fr.articles.article-detail``
+    - ``de.publications.article-detail``
+    - ``de.articles.article-detail``
+    - ``en.publications.article-detail``
+    - ``en.articles.article-detail``
 
     reverse_app tries harder returning an URL in the correct language than
     returning an URL for the correct instance namespace.
@@ -107,7 +111,7 @@ def _iterate_subclasses(cls):
             yield sscls
 
 
-# The first non-abstract subclass of AppsMixin is what we're using.
+#: The first non-abstract subclass of AppsMixin is what we're using.
 page_model = SimpleLazyObject(lambda: next(
     c for c in _iterate_subclasses(AppsMixin) if not c._meta.abstract
 ))
@@ -132,7 +136,7 @@ def apps_urlconf():
     - The inner namespace is the app namespace, where the application
       namespace is defined by the app itself (assign ``app_name`` in the
       same module as ``urlpatterns``) and the instance namespace is defined
-      by the application name (from APPLICATIONS).
+      by the application name (from ``APPLICATIONS``).
 
     Modules stay around as long as the Python (most of the time WSGI) process
     lives and aren't recycled. Unloading modules is tricky, and memory usage
@@ -200,7 +204,8 @@ def page_for_app_request(request):
 class AppsMiddleware(object):
     """
     This middleware must be put in ``MIDDLEWARE_CLASSSES``; it simply assigns
-    the return value of ``apps_urlconf`` to ``request.urlconf``.
+    the return value of :func:`~feincms3.apps.apps_urlconf` to
+    ``request.urlconf``.
     """
 
     def process_request(self, request):
@@ -211,8 +216,9 @@ class AppsMixin(models.Model):
     """
     The page class should inherit this mixin. All it does is add an
     ``application`` field, and ensure that applications can only be activated
-    on leaf nodes in the page tree. Note that currently the ``LanguageMixin``
-    is a required dependency of feincms3.apps.
+    on leaf nodes in the page tree. Note that currently the
+    :class:`~feincms3.mixins.LanguageMixin` is a required dependency of
+    :mod:`feincms3.apps`.
 
     ``APPLICATIONS`` contains a list of application configurations consisting
     of:
@@ -252,6 +258,9 @@ class AppsMixin(models.Model):
         abstract = True
 
     def clean(self):
+        """
+        Checks that application nodes do not have any descendants.
+        """
         super(AppsMixin, self).clean()
 
         if self.parent:
