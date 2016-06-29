@@ -87,16 +87,14 @@ Pages base class
 ================
 
 .. automodule:: feincms3.pages
-.. autoclass:: feincms3.pages.AbstractPage
+   :members:
 
 
 Mixins
 ======
 
 .. automodule:: feincms3.mixins
-.. autoclass:: feincms3.mixins.MenuMixin
-.. autoclass:: feincms3.mixins.TemplateMixin
-.. autoclass:: feincms3.mixins.LanguageMixin
+   :members:
 
 
 Plugins
@@ -110,27 +108,21 @@ External
 ~~~~~~~~
 
 .. automodule:: feincms3.plugins.external
-.. autofunction:: feincms3.plugins.external.oembed_html
-.. autofunction:: feincms3.plugins.external.render_external
-.. autoclass:: feincms3.plugins.external.External
-.. autoclass:: feincms3.plugins.external.ExternalInline
+   :members:
 
 
 Rich text
 ~~~~~~~~~
 
 .. automodule:: feincms3.plugins.richtext
-.. autoclass:: feincms3.plugins.richtext.RichText
-.. autoclass:: feincms3.plugins.richtext.RichTextInline
+   :members:
 
 
 Snippets
 ~~~~~~~~
 
 .. automodule:: feincms3.plugins.snippet
-.. autofunction:: feincms3.plugins.snippet.render_snippet
-.. autoclass:: feincms3.plugins.snippet.Snippet
-.. autoclass:: feincms3.plugins.snippet.SnippetInline
+   :members:
 
 
 Versatile images
@@ -139,8 +131,7 @@ Versatile images
 This plugin uses django-versatileimagefield_ to do the heavy lifting.
 
 .. automodule:: feincms3.plugins.versatileimage
-.. autoclass:: feincms3.plugins.versatileimage.Image
-.. autoclass:: feincms3.plugins.versatileimage.ImageInline
+   :members:
 
 
 HTML cleansing
@@ -153,38 +144,28 @@ to be, and a strict white-list based HTML sanitizer is the best answer
 I have.
 
 .. automodule:: feincms3.cleanse
-.. autofunction:: feincms3.cleanse.cleanse_html
-.. autoclass:: feincms3.cleanse.CleansedRichTextField
+   :members:
 
 
 Apps
 ====
 
 .. automodule:: feincms3.apps
-.. autofunction:: feincms3.apps.reverse_any
-.. autofunction:: feincms3.apps.reverse_app
-.. autofunction:: feincms3.apps.apps_urlconf
-.. autofunction:: feincms3.apps.page_for_app_request
-.. autoclass:: feincms3.apps.AppsMiddleware
-.. autoclass:: feincms3.apps.AppsMixin
+   :members:
 
 
 Shortcuts
 =========
 
 .. automodule:: feincms3.shortcuts
-.. autofunction:: feincms3.shortcuts.template_name
-.. autofunction:: feincms3.shortcuts.render_list
-.. autofunction:: feincms3.shortcuts.render_detail
+   :members:
 
 
 Template tags
 =============
 
 .. automodule:: feincms3.templatetags.feincms3_pages
-.. autofunction:: feincms3.templatetags.feincms3_pages.group_by_tree
-.. autofunction:: feincms3.templatetags.feincms3_pages.is_descendant_of
-.. autofunction:: feincms3.templatetags.feincms3_pages.menu
+   :members:
 
 
 .. _Django: https://www.djangoproject.com/
