@@ -8,11 +8,12 @@ django-content-editor_ and django-mptt_ which make building a page CMS
 
 This documentation consists of the following parts:
 
-- First a short high-level overview explaining the various parts of
-  feincms3 and the general rationale for yet another content management
+- A short high-level overview explaining the various parts of feincms3
+  and the general rationale for yet another content management
   framework.
-- Second a reference documentation which aims to explain the provided
-  tools and modules in depth.
+- A reference documentation which aims to explain the provided tools and
+  modules in depth.
+- Next steps.
 
 Now is also a good time to point out the example project
 feincms3-example_. You should be able to setup a fully working
@@ -75,6 +76,10 @@ feincms3 has the following main parts:
 - Facilities for embedding **apps** (i.e. a weblog, a contact form, ...)
   through the CMS.
 - Various utilities (**shortcuts** and **template tags**).
+
+Please note that there exist only abstract model classes in feincms3 and
+its dependencies. The concrete class (for example, the page model and
+its plugins) **have** to be added by you.
 
 .. [#] FeinCMS_ used to call those content types, a name which
    unfortunately was often confused with
@@ -161,6 +166,133 @@ Template tags
 
 .. automodule:: feincms3.templatetags.feincms3_pages
    :members:
+
+
+Next steps
+==========
+
+To build a CMS you still need to write your URLconf and views, and add
+settings to your Django project. As I already wrote at the beginning of
+this guide, the feincms3-example_ project shows how everything works
+together. Still, a few pointers follow:
+
+
+Settings
+~~~~~~~~
+
+There are quite a few settings involved:
+
+You'll have to add at least the following apps to ``INSTALLED_APPS``:
+
+- ``feincms3``
+- ``content_editor``
+- ``mptt`` for :mod:`feincms3.pages`
+- ``ckeditor`` if you want to use :mod:`feincms3.plugins.richtext`
+- ``versatileimagefield`` for :mod:`feincms3.plugins.versatileimage`
+- ... and of course also the app where you put your concrete models such
+  as the page model
+
+If you're using the rich text plugin it is very much recommended to add
+a ``CKEDITOR_CONFIGS`` setting as documented in :mod:`feincms3.cleanse`.
+
+
+Views and URLs
+~~~~~~~~~~~~~~
+
+You're completely free to define your own views and URLs. That being
+said, the ``AbstractPage`` class already has a ``get_absolute_url``
+implementation which expects something like this::
+
+    from django.conf.urls import url
+
+    from app.pages import views
+
+
+    app_name = 'pages'
+    urlpatterns = [
+        url(r'^(?P<path>[-\w/]+)/$', views.page_detail, name='page'),
+        url(r'^$', views.page_detail, name='root'),
+    ]
+
+Where ``app.pages.views`` contains the following view::
+
+    from django.shortcuts import get_object_or_404, render
+
+    from content_editor.contents import contents_for_mptt_item
+
+    from .models import Page, RichText, Image
+    from .renderer imoprt renderer
+
+
+    def page_detail(request, path=None):
+        page = get_object_or_404(
+            Page.objects.active(),
+            path='/{}/'.format(path) if path else '/',
+        )
+        page.activate_language(request)
+        contents = contents_for_mptt_item(page, [RichText, Image])
+        return render(request, page.template.template_name, {
+            'page': page,
+            'content': {
+                region.key: renderer.render(contents[region.key])
+                for region in page.regions
+            },
+        })
+
+Here's an example how plugins could be rendered,
+``app.pages.renderer``::
+
+    from django.utils.html import format_html, mark_safe
+
+    from content_editor.renderer import PluginRenderer
+
+    from .models import Page, RichText, Image
+
+
+    renderer = PluginRenderer()
+    renderer.register(
+        RichText,
+        lambda plugin: mark_safe(plugin.text),
+    )
+    renderer.register(
+        Image,
+        lambda plugin: format_html(
+            '<figure><img src="{}" alt=""/><figcaption>{}</figcaption></figure>',
+            plugin.image.url,
+            plugin.caption,
+        ),
+    )
+
+Of course if you'd rather let plugins use templates instead of inlining
+HTML, simply register a function using ``render_to_string``. The
+following snippet might be useful in this case::
+
+    from django.template.loader import render_to_string
+
+    def render_plugin_with_template(plugin):
+        return render_to_string(
+            '%s/plugins/%s.html' % (
+                plugin._meta.app_label,
+                plugin._meta.model_name,
+            ),
+            {'plugin': plugin},
+        )
+
+    # renderer = PluginRenderer()
+    # renderer.register(Image, render_plugin_with_template)
+    # page images would now use ``pages/plugins/image.html`` to render
+    # themselves
+
+If you don't like this, you're commpletely free to write your own views
+and URLs. All you have to do is override the ``get_absolute_url`` method
+of your own page model.
+
+
+.. note::
+   FeinCMS_ provided request and response processors and several ways
+   how plugins (content types) could hook into the request-response
+   processing. This isn't necessary with feincms3 -- simply put the
+   functionality into your own views code.
 
 
 .. _Django: https://www.djangoproject.com/
