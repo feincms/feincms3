@@ -12,7 +12,7 @@ from content_editor.admin import ContentEditorInline
 __all__ = ('Snippet', 'SnippetInline', 'render_snippet')
 
 
-def render_snippet(plugin):
+def render_snippet(plugin, **kwargs):
     """
     Renders the selected template using ``render_to_string``
     """

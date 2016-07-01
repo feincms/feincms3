@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
@@ -14,7 +15,7 @@ from content_editor.admin import ContentEditorInline
 from versatileimagefield.fields import VersatileImageField, PPOIField
 
 
-__all__ = ('Image', 'AlwaysChangedModelForm', 'ImageInline')
+__all__ = ('Image', 'AlwaysChangedModelForm', 'ImageInline', 'render_image')
 
 
 @python_2_unicode_compatible
@@ -71,3 +72,10 @@ class ImageInline(ContentEditorInline):
     where PPOI modifications were not picked up.
     """
     form = AlwaysChangedModelForm
+
+
+def render_image(plugin, **kwargs):
+    """
+    Return a simple, unscaled version of the image
+    """
+    return format_html('<img src="{}" alt="">', plugin.image.url)

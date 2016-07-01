@@ -67,7 +67,7 @@ def oembed_html(url, cache_failures=True):
         return html
 
 
-def render_external(plugin):
+def render_external(plugin, **kwargs):
     """
     Render the plugin, embedding it in the appropriate markup for Foundation's
     flex-video element (http://foundation.zurb.com/sites/docs/flex-video.html)

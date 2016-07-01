@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils.html import strip_tags
+from django.utils.html import mark_safe, strip_tags
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,7 +11,7 @@ from content_editor.admin import ContentEditorInline
 from feincms3.cleanse import CleansedRichTextField
 
 
-__all__ = ('RichText', 'RichTextInline')
+__all__ = ('RichText', 'RichTextInline', 'render_richtext')
 
 
 @python_2_unicode_compatible
@@ -55,3 +55,10 @@ class RichTextInline(ContentEditorInline):
 
     class Media:
         js = ('feincms3/plugin_ckeditor.js',)
+
+
+def render_richtext(plugin, **kwargs):
+    """
+    Return the text of the rich text plugin as a safe string (``mark_safe``)
+    """
+    return mark_safe(plugin.text)
