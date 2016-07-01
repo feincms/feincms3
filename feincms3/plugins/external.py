@@ -41,7 +41,7 @@ def oembed_html(url, cache_failures=True):
 
     try:
         html = requests.get(
-            'http://noembed.com/embed',
+            'https://noembed.com/embed',
             params={
                 'url': url,
                 'nowrap': 'on',
