@@ -152,9 +152,9 @@ class LanguageMixin(models.Model):
             page = ...  # MAGIC! (or maybe get_object_or_404...)
             page.activate_language(request)
 
-    Note that this does not persist the language in the session or in a
-    cookie. If you need this, you should use Django's
-    ``django.views.i18n.set_language`` view.
+    Note that this does not persist the language across requests as Django's
+    ``django.views.i18n.set_language`` does. (``set_language`` modifies the
+    session and sets cookies.)
     """
 
     language_code = models.CharField(
