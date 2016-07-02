@@ -1,0 +1,13 @@
+language: python
+sudo: false
+python:
+  - "3.4"
+  - "2.7"
+env:
+  - REQ="Django>=1.9,<1.10"
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install:
+  - pip install -q $REQ --use-mirrors
+  - python setup.py -q install
+# command to run tests, e.g. python setup.py test
+script: "cd tests && ./manage.py test testapp"

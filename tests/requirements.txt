@@ -1,0 +1,9 @@
+Django>=1.9,<1.10
+django-ckeditor
+django-content-editor
+django-mptt
+django-versatileimagefield
+feincms-cleanse
+requests
+pytz
+coverage
