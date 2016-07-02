@@ -91,6 +91,7 @@ def menu(context, menu, level=0, depth=1, **kwargs):  # PY2 :-(
     The default is to return all root nodes from the matching ``menu``.
     """
 
+    # TODO we need some better way to identify the page class.
     return context['page'].__class__.objects.active().filter(
         menu=menu,
         level__range=[level, level + depth - 1],
