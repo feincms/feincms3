@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render
-from django.utils.html import format_html, mark_safe
+from django.utils.html import format_html
 
 from content_editor.contents import contents_for_mptt_item
 from content_editor.renderer import PluginRenderer
+
+from feincms3 import plugins
 
 from .models import Page, RichText, Image, Snippet, External
 
@@ -12,7 +14,7 @@ from .models import Page, RichText, Image, Snippet, External
 renderer = PluginRenderer()
 renderer.register(
     RichText,
-    lambda plugin: mark_safe(plugin.text),
+    plugins.render_richtext,
 )
 renderer.register(
     Image,
