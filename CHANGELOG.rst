@@ -7,6 +7,8 @@ Change log
 
 - Lots of work on the documentation.
 - Moved all signal receivers into their classes as staticmethods.
+- Fixed a crash on an attempted save of an ``External`` plugin instance
+  with an empty URL.
 
 
 `0.2`_ (2016-06-28)

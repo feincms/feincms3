@@ -104,7 +104,8 @@ class ExternalForm(forms.ModelForm):
     """
     def clean(self):
         data = super(ExternalForm, self).clean()
-        if not oembed_html(data['url'], cache_failures=False):
+        url = data.get('url')
+        if url and not oembed_html(url, cache_failures=False):
             raise forms.ValidationError(
                 ugettext('Unable to fetch HTML for this URL, sorry!')
             )
