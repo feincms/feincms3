@@ -15,7 +15,9 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+BASE = os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0, BASE)
+sys.path.insert(0, os.path.join(BASE, 'tests'))
 
 import django
 from django.conf import settings
