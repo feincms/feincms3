@@ -24,6 +24,14 @@ renderer.register(
         plugin.caption,
     ),
 )
+renderer.register(
+    Snippet,
+    plugins.render_snippet,
+)
+renderer.register(
+    External,
+    plugins.render_external,
+)
 
 
 def page_detail(request, path=None):

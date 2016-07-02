@@ -1,9 +1,12 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
+from django.forms.models import modelform_factory
 from django.test import Client, TestCase
 
-from .models import Page
+from feincms3.plugins.external import ExternalForm
+
+from .models import Page, External
 
 
 def _messages(response):
@@ -130,10 +133,16 @@ class AdminTest(TestCase):
                 zero_management_form_data('testapp_snippet_set'),
                 zero_management_form_data('testapp_external_set'),
                 {
-                    'testapp_richtext_set-TOTAL_FORMS': 1,
                     'testapp_richtext_set-0-text': '<span style="font-weight:bold">Hello!</span>',  # noqa
+                    'testapp_richtext_set-TOTAL_FORMS': 1,
                     'testapp_richtext_set-0-region': 'main',
                     'testapp_richtext_set-0-ordering': 10,
+                },
+                {
+                    'testapp_external_set-TOTAL_FORMS': 1,
+                    'testapp_external_set-0-region': 'main',
+                    'testapp_external_set-0-ordering': 10,
+                    'testapp_external_set-0-url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',  # noqa
                 },
             ),
         )
@@ -158,5 +167,29 @@ class AdminTest(TestCase):
             '<strong>Hello!</strong>',  # HTML cleansing worked.
             1,
         )
+        self.assertContains(
+            response,
+            'src="https://www.youtube.com/embed/dQw4w9WgXcQ?feature=oembed"',
+            1,
+        )
+        self.assertContains(
+            response,
+            'noembed-youtube',
+            1,
+        )
 
         # print(response, response.content.decode('utf-8'))
+
+    def test_external_form_validation(self):
+        form_class = modelform_factory(External, form=ExternalForm, fields='__all__')
+
+        # Should not crash if URL not provided (765a6b6b53e)
+        form = form_class({})
+        self.assertFalse(form.is_valid())
+
+        # Provide an invalid URL
+        form = form_class({'url': 'http://192.168.250.1:65530'})
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            '<li>Unable to fetch HTML for this URL, sorry!</li>',
+            '%s' % form.errors)
