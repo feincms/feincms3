@@ -3,10 +3,12 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
+from django.utils.translation import override
 
+from feincms3.apps import apps_urlconf
 from feincms3.plugins.external import ExternalForm
 
-from .models import Page, External
+from .models import Page, External, Article
 
 
 def _messages(response):
@@ -301,3 +303,83 @@ class AdminTest(TestCase):
 
         # print(self.client.get('/en/a-en/').content.decode('utf-8'))
         # print(self.client.get('/de/b-de/').content.decode('utf-8'))
+
+    def test_apps(self):
+        home_de = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/de/',
+            static_path=True,
+            language_code='de',
+            is_active=True,
+            menu='main',
+        )
+        home_en = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/en/',
+            static_path=True,
+            language_code='en',
+            is_active=True,
+            menu='main',
+        )
+
+        for root in (home_de, home_en):
+            for app in ('blog', 'publications'):
+                Page.objects.create(
+                    title=app,
+                    slug=app,
+                    static_path=False,
+                    language_code=root.language_code,
+                    is_active=True,
+                    application=app,
+                    parent_id=root.pk,
+                )
+
+        for i in range(7):
+            for category in ('publications', 'blog'):
+                Article.objects.create(
+                    title='%s %s' % (category, i),
+                    category=category,
+                )
+
+        response = self.client.get('/de/blog/')
+        self.assertContains(
+            response,
+            'class="article"',
+            5,
+        )
+
+        response = self.client.get('/en/publications/')
+        self.assertContains(
+            response,
+            'class="article"',
+            5,
+        )
+
+        article = Article.objects.order_by('pk').first()
+        with override('de'):
+            self.assertEqual(
+                article.get_absolute_url(),
+                '/de/publications/%s/' % article.pk,
+            )
+
+        with override('en'):
+            self.assertEqual(
+                article.get_absolute_url(),
+                '/en/publications/%s/' % article.pk,
+            )
+
+        response = self.client.get('/de/publications/%s/' % article.pk)
+        self.assertContains(
+            response,
+            '<h1>publications 0</h1>',
+            1,
+        )
+
+        # The exact value of course does not matter, just the fact that the
+        # value does not change all the time.
+        self.assertEqual(
+            apps_urlconf(),
+            'urlconf_b59e7e81d03361f3e8e3b37008af20f1',
+        )

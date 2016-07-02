@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+{% for image in article.images.all %}
+  {% if forloop.first %}<div class="gallery">{% endif %}
+    <div class="slide">
+      <img src="{{ image.image.url }}" alt=""/>
+      {% if image.caption %}<p>{{ image.caption }}</p>{% endif %}
+    </div>
+  {% if forloop.last %}</div>{% endif %}
+{% endfor %}
+
+<h1>{{ article }}</h1>
+{{ article.publication_date|date:"d.m.Y" }}
+
+{{ article.body|safe }}
+
+{% endblock %}

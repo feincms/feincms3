@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import TreeManager
@@ -8,7 +9,7 @@ from mptt.models import TreeManager
 from content_editor.models import Region, Template, create_plugin_base
 
 from feincms3 import plugins
-from feincms3.apps import AppsMixin
+from feincms3.apps import AppsMixin, reverse_app
 from feincms3.mixins import TemplateMixin, MenuMixin, LanguageMixin
 from feincms3.pages import AbstractPage
 
@@ -69,10 +70,10 @@ class Page(
     # app to work! (See app.articles.models.Article.CATEGORIES)
     APPLICATIONS = [
         ('publications', _('publications'), {
-            'urlconf': 'app.articles.urls',
+            'urlconf': 'testapp.articles_urls',
         }),
         ('blog', _('blog'), {
-            'urlconf': 'app.articles.urls',
+            'urlconf': 'testapp.articles_urls',
         }),
     ]
 
@@ -102,3 +103,22 @@ class Snippet(plugins.Snippet, PagePlugin):
 
 class External(plugins.External, PagePlugin):
     pass
+
+
+@python_2_unicode_compatible
+class Article(models.Model):
+    title = models.CharField(_('title'), max_length=100)
+    category = models.CharField(_('category'), max_length=20, choices=(
+        ('publications', 'publications'),
+        ('blog', 'blog'),
+    ))
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse_app(
+            (self.category, 'articles'),
+            'article-detail',
+            kwargs={'pk': self.pk},
+        )

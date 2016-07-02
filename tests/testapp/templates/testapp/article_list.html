@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+  <h1>{{ page }}</h1>
+
+  {% for article in object_list %}
+    <a href="{{ article.get_absolute_url }}" class="article">
+      <h2>{{ article }}</h2>
+      {{ article.publication_date|date:"d.m.Y" }}
+      {% if article.images.all|length %}
+        <img src="{{ article.images.all.0.image.url }}" alt="">
+      {% endif %}
+    </a>
+  {% endfor %}
+
+{% endblock %}
