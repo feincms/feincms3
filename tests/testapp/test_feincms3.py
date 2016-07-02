@@ -181,7 +181,11 @@ class AdminTest(TestCase):
         # print(response, response.content.decode('utf-8'))
 
     def test_external_form_validation(self):
-        form_class = modelform_factory(External, form=ExternalForm, fields='__all__')
+        form_class = modelform_factory(
+            External,
+            form=ExternalForm,
+            fields='__all__',
+        )
 
         # Should not crash if URL not provided (765a6b6b53e)
         form = form_class({})
@@ -193,3 +197,107 @@ class AdminTest(TestCase):
         self.assertIn(
             '<li>Unable to fetch HTML for this URL, sorry!</li>',
             '%s' % form.errors)
+
+    def test_navigation(self):
+        home_de = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/de/',
+            static_path=True,
+            language_code='de',
+            is_active=True,
+            menu='main',
+        )
+        home_en = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/en/',
+            static_path=True,
+            language_code='en',
+            is_active=True,
+            menu='main',
+        )
+
+        for slug in ('a', 'b', 'c', 'd'):
+            Page.objects.create(
+                title='%s-%s' % (slug, home_en.language_code),
+                slug='%s-%s' % (slug, home_en.language_code),
+                static_path=False,
+                language_code=home_en.language_code,
+                is_active=True,
+                menu='main',
+                parent_id=home_en.pk,
+            )
+            sub = Page.objects.create(
+                title='%s-%s' % (slug, home_de.language_code),
+                slug='%s-%s' % (slug, home_de.language_code),
+                static_path=False,
+                language_code=home_de.language_code,
+                is_active=True,
+                menu='main',
+                parent_id=home_de.pk,
+            )
+
+            # Create subpage
+            Page.objects.create(
+                title='sub',
+                slug='sub',
+                static_path=False,
+                language_code=sub.language_code,
+                is_active=True,
+                menu='main',
+                parent_id=sub.pk,
+            )
+
+        # Create inactive page
+        Page.objects.create(
+            title='inactive',
+            slug='inactive',
+            static_path=False,
+            language_code=home_de.language_code,
+            is_active=False,
+            menu='main',
+            parent_id=home_de.pk,
+        )
+
+        response_en = self.client.get('/en/a-en/')
+        self.assertContains(
+            response_en,
+            '<a class="active" href="/en/a-en/">a-en</a>',
+            1,
+        )
+        self.assertNotContains(
+            response_en,
+            '/de/',
+        )
+        # No subnavigation (main nav has a class)
+        self.assertNotContains(
+            response_en,
+            '<nav>',
+        )
+
+        response_de = self.client.get('/de/b-de/')
+        self.assertContains(
+            response_de,
+            '<a class="active" href="/de/b-de/">b-de</a>',
+            1,
+        )
+        self.assertNotContains(
+            response_de,
+            '/en/',
+        )
+
+        # 4 Subnavigations
+        self.assertContains(
+            response_de,
+            '<nav>',
+            4,
+        )
+
+        self.assertNotContains(
+            response_de,
+            'inactive',
+        )
+
+        # print(self.client.get('/en/a-en/').content.decode('utf-8'))
+        # print(self.client.get('/de/b-de/').content.decode('utf-8'))

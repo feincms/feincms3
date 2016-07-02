@@ -14,14 +14,14 @@ This example showcases all template tags in this template tag library::
 
       {% is_descendant_of page main include_self=True as active %}
       <a {% if active %}class="active"{% endif %}
-         href="{{ main.get_absolute_url }}"{{ main.title }}</a>
+         href="{{ main.get_absolute_url }}">{{ main.title }}</a>
 
         {% if children %}
         <nav>
           {% for child in children %}
             {% is_descendant_of page child include_self=True as active %}
             <a {% if active %}class="active"{% endif %}
-               href="{{ child.get_absolute_url }}"{{ child.title }}</a>
+               href="{{ child.get_absolute_url }}">{{ child.title }}</a>
           {% endfor %}
         </nav>
       {% endif %}
