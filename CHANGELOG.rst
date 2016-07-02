@@ -10,6 +10,8 @@ Change log
 - Fixed a crash on an attempted save of an ``External`` plugin instance
   with an empty URL.
 - Added an incomplete testsuite, and add the Travis CI badge to the README.
+- Removed the requirement of passing a context to ``render_list`` and
+  ``render_detail``.
 
 
 `0.2`_ (2016-06-28)

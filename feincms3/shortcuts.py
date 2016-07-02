@@ -36,8 +36,8 @@ def template_name(model, template_name_suffix):
     )
 
 
-def render_list(request, queryset, context, template_name_suffix='_list',
-                paginate_by=None):
+def render_list(request, queryset, context=None,
+                template_name_suffix='_list', paginate_by=None):
     """
     Render a list of items
 
@@ -60,6 +60,7 @@ def render_list(request, queryset, context, template_name_suffix='_list',
     example above.
     """
 
+    context = context or {}
     if paginate_by:
         p = paginator.Paginator(queryset, paginate_by)
         try:
@@ -82,7 +83,8 @@ def render_list(request, queryset, context, template_name_suffix='_list',
     )
 
 
-def render_detail(request, object, context, template_name_suffix='_detail'):
+def render_detail(request, object, context=None,
+                  template_name_suffix='_detail'):
     """
     Render a single item
 
@@ -102,6 +104,7 @@ def render_detail(request, object, context, template_name_suffix='_detail'):
     AND ``article`` (lowercased model name) into the template.
     """
 
+    context = context or {}
     context.update({
         'object': object,
         object._meta.model_name: object,
