@@ -2,7 +2,11 @@
 Change log
 ==========
 
-`0.3`_ (Unreleased)
+`Next version`_
+~~~~~~~~~~~~~~~
+
+
+`0.3`_ (2016-07-02)
 ~~~~~~~~~~~~~~~~~~~
 
 - Lots of work on the documentation.
@@ -59,4 +63,5 @@ Changed / Deprecated / Removed / Fixed / Security
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
 .. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2
-.. _0.3: https://github.com/matthiask/feincms3/compare/0.2...master
+.. _0.3: https://github.com/matthiask/feincms3/compare/0.2...0.3
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.3...master
