@@ -381,5 +381,5 @@ class AdminTest(TestCase):
         # value does not change all the time.
         self.assertEqual(
             apps_urlconf(),
-            'urlconf_b59e7e81d03361f3e8e3b37008af20f1',
+            'urlconf_fe9552a8363ece1f7fcf4970bf575a47',
         )
