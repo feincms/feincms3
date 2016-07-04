@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.4`_ (2016-07-04)
+~~~~~~~~~~~~~~~~~~~
+
 - Made application instances (``feincms3.apps``) more flexible by
   allowing programmatically generated instance namespace specifiers.
 
@@ -67,4 +71,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
 .. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2
 .. _0.3: https://github.com/matthiask/feincms3/compare/0.2...0.3
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.3...master
+.. _0.4: https://github.com/matthiask/feincms3/compare/0.3...0.4
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.4...master
