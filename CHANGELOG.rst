@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Made application instances (``feincms3.apps``) more flexible by
+  allowing programmatically generated instance namespace specifiers.
+
 
 `0.3`_ (2016-07-02)
 ~~~~~~~~~~~~~~~~~~~

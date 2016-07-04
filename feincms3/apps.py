@@ -143,11 +143,10 @@ def apps_urlconf():
     URLconf modules shouldn't gobble up much memory.
     """
 
-    apps = page_model.objects.active().exclude(application='').values_list(
-        'path',
-        'application',
-        'language_code',
-    ).order_by('path', 'application', 'language_code')
+    fields = ('path', 'application', 'app_instance_namespace', 'language_code')
+    apps = page_model.objects.active().exclude(
+        app_instance_namespace=''
+    ).values_list(*fields).order_by(*fields)
 
     if not apps:
         # No point wrapping ROOT_URLCONF if there are no additional URLs
@@ -165,14 +164,14 @@ def apps_urlconf():
         m = types.ModuleType(str(module_name))  # str() is correct for PY2&3
 
         mapping = defaultdict(list)
-        for path, application, language_code in apps:
+        for path, application, app_instance_namespace, language_code in apps:
             if application not in app_config:
                 continue
             mapping[language_code].append(url(
                 r'^%s' % re.escape(path.lstrip('/')),
                 include(
                     app_config[application]['urlconf'],
-                    namespace=application,
+                    namespace=app_instance_namespace,
                 ),
             ))
 
@@ -196,7 +195,7 @@ def page_for_app_request(request):
     # Unguarded - if this fails, we shouldn't even be here.
     page = page_model.objects.get(
         language_code=request.resolver_match.namespaces[0],
-        application=request.resolver_match.namespaces[1],
+        app_instance_namespace=request.resolver_match.namespaces[1],
     )
     return page
 
@@ -214,18 +213,32 @@ class AppsMiddleware(object):
 
 class AppsMixin(models.Model):
     """
-    The page class should inherit this mixin. All it does is add an
-    ``application`` field, and ensure that applications can only be activated
-    on leaf nodes in the page tree. Note that currently the
-    :class:`~feincms3.mixins.LanguageMixin` is a required dependency of
-    :mod:`feincms3.apps`.
+    The page class should inherit this mixin. It adds an ``application `` field
+    containing the selected application, and an ``app_instance_namespace``
+    field which contains the instance namespace of the application. Most of
+    the time these two fields will have the same value. This mixin also ensures
+    that applications can only be activated on leaf nodes in the page tree.
+    Note that currently the :class:`~feincms3.mixins.LanguageMixin` is a
+    required dependency of :mod:`feincms3.apps`.
 
     ``APPLICATIONS`` contains a list of application configurations consisting
     of:
 
     - Application name (used as instance namespace)
     - User-visible name
-    - Options dictionary, currently only ``urlconf``
+    - Options dictionary
+
+    Available options include:
+
+    - ``urlconf``: The path to the URLconf module for the application. Besides
+      the ``urlpatterns`` list the module should probably also specify a
+      ``app_name``.
+    - ``required_fields``: A list of page class fields which must be non-empty
+      for the application to work. The values are checked in
+      ``AppsMixin.clean``.
+    - ``app_instance_namespace``: A callable which receives the page instance
+      as its only argument and returns a string suitable for use as an
+      instance namespace.
 
     Usage::
 
@@ -245,6 +258,14 @@ class AppsMixin(models.Model):
                 ('contact', _('contact form'), {
                     'urlconf': 'app.forms.contact_urls',
                 }),
+                ('teams', _('teams'), {
+                    'urlconf': 'app.teams.urls',
+                    'app_instance_namespace': lambda page: '%s-%s' % (
+                        page.application,
+                        page.team_id,
+                    ),
+                    'required_fields': ('team',),
+                }),
             ]
     """
 
@@ -252,10 +273,38 @@ class AppsMixin(models.Model):
         _('application'),
         max_length=20,
         blank=True,
+        choices=(('', ''),),  # Non-empty choices for get_*_display
+    )
+    app_instance_namespace = models.CharField(
+        _('app instance namespace'),
+        max_length=100,
+        editable=False,
     )
 
     class Meta:
         abstract = True
+
+    def application_config(self):
+        try:
+            return {
+                app[0]: app[2]
+                for app in self.APPLICATIONS if app[0]
+            }[self.application]
+        except KeyError:
+            return None
+
+    def save(self, *args, **kwargs):
+        app_config = self.application_config() or {}
+        # If app_config is empty or None, this simply sets
+        # app_instance_namespace to the empty string.
+        setter = app_config.get(
+            'app_instance_namespace',
+            lambda instance: instance.application,
+        )
+        self.app_instance_namespace = setter(self)
+
+        super(AppsMixin, self).save(*args, **kwargs)
+    save.alters_data = True
 
     def clean(self):
         """
@@ -278,6 +327,20 @@ class AppsMixin(models.Model):
                     'Apps may not have any descendants in the tree.',
                 ),
             })
+
+        app_config = self.application_config()
+        if app_config and app_config['required_fields']:
+            missing = [
+                field for field in app_config['required_fields']
+                if not getattr(self, field)
+            ]
+            if missing:
+                raise ValidationError({
+                    field: _(
+                        'This field is required for the application %s.'
+                    ) % (self.get_application_display(),)
+                    for field in missing
+                })
 
     @staticmethod
     def fill_application_choices(sender, **kwargs):
