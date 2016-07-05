@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
+{% load feincms3_renderer %}
+
 {% block title %}{{ page }} - {{ block.super }}{% endblock %}
 
 {% block content %}
 <h1>{{ page }}</h1>
-{{ content.main }}
+{% render_plugins contents.main %}
 {% endblock %}

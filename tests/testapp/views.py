@@ -7,16 +7,17 @@ from content_editor.contents import contents_for_mptt_item
 from content_editor.renderer import PluginRenderer
 
 from feincms3 import plugins
+from feincms3.renderer import TemplatePluginRenderer
 
 from .models import Page, RichText, Image, Snippet, External
 
 
-renderer = PluginRenderer()
-renderer.register(
+renderer = TemplatePluginRenderer()
+renderer.register_string_renderer(
     RichText,
     plugins.render_richtext,
 )
-renderer.register(
+renderer.register_string_renderer(
     Image,
     lambda plugin: format_html(
         '<figure><img src="{}" alt=""/><figcaption>{}</figcaption></figure>',
@@ -24,11 +25,12 @@ renderer.register(
         plugin.caption,
     ),
 )
-renderer.register(
+renderer.register_template_renderer(
     Snippet,
-    plugins.render_snippet,
+    lambda plugin: plugin.template_name,
+    lambda plugin, context: {'additional': 'context'},
 )
-renderer.register(
+renderer.register_string_renderer(
     External,
     plugins.render_external,
 )
@@ -40,14 +42,8 @@ def page_detail(request, path=None):
         path='/{}/'.format(path) if path else '/',
     )
     page.activate_language(request)
-    contents = contents_for_mptt_item(
-        page,
-        [RichText, Image, Snippet, External],
-    )
     return render(request, page.template.template_name, {
         'page': page,
-        'content': {
-            region.key: renderer.render(contents[region.key])
-            for region in page.regions
-        },
+        'contents': contents_for_mptt_item(page, renderer.plugins()),
+        'renderer': renderer,
     })

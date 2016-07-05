@@ -383,3 +383,32 @@ class AdminTest(TestCase):
             apps_urlconf(),
             'urlconf_fe9552a8363ece1f7fcf4970bf575a47',
         )
+
+    def test_snippet(self):
+        home_en = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/en/',
+            static_path=True,
+            language_code='en',
+            is_active=True,
+            menu='main',
+        )
+
+        home_en.testapp_snippet_set.create(
+            template_name='snippet.html',
+            ordering=10,
+            region='main',
+        )
+
+        response = self.client.get(home_en.get_absolute_url())
+        self.assertContains(
+            response,
+            '<h2>snippet on page home (/en/)</h2>',
+            1,
+        )
+        self.assertContains(
+            response,
+            '<h2>context</h2>',
+            1,
+        )

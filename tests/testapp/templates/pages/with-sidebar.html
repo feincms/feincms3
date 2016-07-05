@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
+{% load feincms3_renderer %}
+
 {% block title %}{{ page }} - {{ block.super }}{% endblock %}
 
 {% block content %}
 <h1>{{ page }}</h1>
 <div class="columns">
-  <div class="main">{{ content.main }}</div>
-  <div class="sidebar">{{ content.sidebar }}</div>
+  <div class="main">{% render_plugins contents.main %}</div>
+  <div class="sidebar">{% render_plugins contents.sidebar %}</div>
 </div>
 {% endblock %}
