@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed a crash where apps without ``required_fields`` could not be
+  saved.
+
 
 `0.4`_ (2016-07-04)
 ~~~~~~~~~~~~~~~~~~~

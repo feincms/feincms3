@@ -329,7 +329,7 @@ class AppsMixin(models.Model):
             })
 
         app_config = self.application_config()
-        if app_config and app_config['required_fields']:
+        if app_config and app_config.get('required_fields'):
             missing = [
                 field for field in app_config['required_fields']
                 if not getattr(self, field)
