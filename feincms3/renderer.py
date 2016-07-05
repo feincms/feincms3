@@ -27,7 +27,7 @@ class TemplatePluginRenderer(object):
         if callable(plugin_template):
             plugin_template = plugin_template(plugin)
         if callable(plugin_context):
-            plugin_context = plugin_context(plugin)
+            plugin_context = plugin_context(plugin, context)
 
         if not hasattr(plugin_template, 'render'):  # Quacks like a template?
             if isinstance(plugin_template, (list, tuple)):
