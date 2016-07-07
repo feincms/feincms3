@@ -76,6 +76,8 @@ feincms3 has the following main parts:
 - Facilities for embedding **apps** (i.e. a weblog, a contact form, ...)
   through the CMS.
 - Various utilities (**shortcuts** and **template tags**).
+- A **renderer** and associated template tags if you don't want to use
+  django-content-editor_'s ``PluginRenderer``.
 
 Please note that there exist only abstract model classes in feincms3 and
 its dependencies. The concrete class (for example, the page model and
@@ -151,6 +153,13 @@ Apps (``feincms3.apps``)
    :members:
 
 
+Renderer (``feincms3.renderer``)
+================================
+
+.. automodule:: feincms3.renderer
+   :members:
+
+
 Shortcuts (``feincms3.shortcuts``)
 ==================================
 
@@ -165,6 +174,13 @@ Template tags
 ~~~~~~~~~~~~~~~~~~
 
 .. automodule:: feincms3.templatetags.feincms3_pages
+   :members:
+
+
+``feincms3_renderer``
+~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: feincms3.templatetags.feincms3_renderer
    :members:
 
 
@@ -224,9 +240,9 @@ Where ``app.pages.views`` contains the following view::
     from .renderer imoprt renderer
 
 
-    def page_detail(request, path=None):
+    def p?[Ma?[Ma?[Ma?[Ma?age_detail(request, path=None):
         page = get_object_or_404(
-            Page.objects.active(),
+            Page.objects.a[MaþEctive(),
             path='/{}/'.format(path) if path else '/',
         )
         page.activate_language(request)
