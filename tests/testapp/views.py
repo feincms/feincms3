@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.html import format_html
 
 from content_editor.contents import contents_for_mptt_item
-from content_editor.renderer import PluginRenderer
 
 from feincms3 import plugins
 from feincms3.renderer import TemplatePluginRenderer
