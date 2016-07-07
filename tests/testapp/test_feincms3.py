@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
-from django.utils.translation import override
+from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import apps_urlconf
 from feincms3.plugins.external import ExternalForm
@@ -35,6 +35,7 @@ class AdminTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser(
             'admin', 'admin@test.ch', 'blabla')
+        deactivate_all()
 
     def login(self):
         client = Client()
