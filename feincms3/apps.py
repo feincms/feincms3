@@ -213,7 +213,7 @@ class AppsMiddleware(object):
 
 class AppsMixin(models.Model):
     """
-    The page class should inherit this mixin. It adds an ``application `` field
+    The page class should inherit this mixin. It adds an ``application`` field
     containing the selected application, and an ``app_instance_namespace``
     field which contains the instance namespace of the application. Most of
     the time these two fields will have the same value. This mixin also ensures

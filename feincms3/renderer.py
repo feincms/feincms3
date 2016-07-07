@@ -16,65 +16,20 @@ class TemplatePluginRenderer(object):
 
         renderer = TemplatePluginRenderer()
 
-        # Also support rendering plugins whose renderers simply return a
-        # HTML string.
-        renderer.register_string_renderer(
-            RichText,
-            lambda plugin: mark_safe(plugin.text),
-        )
-
-        # Template snippets have access to everything in the template context,
-        # including for example ``page``, ``request``, etc.
-        renderer.register_template_renderer(
-            Snippet,
-            template_name=lambda plugin: plugin.template_name,
-        )
-
-        # Additional context can be provided:
-        renderer.register_template_renderer(
-            Team,
-            'pages/plugins/team.html',
-            lambda plugin, context: {
-                'persons': Person.objects.filter(
-                    team=plugin.parent.team,  # Assuming that the page has a
-                                              # team foreign key.
-                ),
-            },
-        )
-
-    The template tags in ``feincms3_renderer`` assume that the renderer
-    instance is available as ``renderer`` inside the template::
-
-        def page_detail(request, slug):
-            page = get_object_or_404(Page, slug=slug)
-            return render(request, 'page.html', {
-                'page': page,
-                'contents': contents_for_item(page, renderer.plugins()),
-                'renderer': renderer,
-            })
-
-    And inside the template::
-
-        {% load feincms3_renderer %}
-
-        <h1>{{ page.title }}</h1>
-        {% for plugin in contents.main %}
-            {% render_plugin plugin %}
-        {% endfor %}
-        {# or simply #}
-        {% render_plugins contents.sidebar %}
     """
 
     def __init__(self):
         self._renderers = {}
 
-    def plugins(self):
-        return list(self._renderers.keys())
-
     def register_string_renderer(self, plugin, renderer):
         """
         Register a rendering function which is passed the plugin instance and
-        returns a HTML string.
+        returns a HTML string::
+
+            renderer.register_string_renderer(
+                RichText,
+                lambda plugin: mark_safe(plugin.text),
+            )
         """
         self._renderers[plugin] = (None, renderer)
 
@@ -94,10 +49,79 @@ class TemplatePluginRenderer(object):
 
         ``context`` may be ``None``, a dictionary, or a callable receiving the
         plugin instance and the template context and returning a dictionary.
+
+        Usage::
+
+            # Template snippets have access to everything in the template
+            # context, including for example ``page``, ``request``, etc.
+            renderer.register_template_renderer(
+                Snippet,
+                lambda plugin: plugin.template_name,
+            )
+
+            # Additional context can be provided:
+            renderer.register_template_renderer(
+                Team,
+                'pages/plugins/team.html',  # Can also be a callable
+                lambda plugin, context: {
+                    'persons': Person.objects.filter(
+                        # Assuming that the page has a team foreign key:
+                        team=plugin.parent.team,
+                    ),
+                },
+            )
+
         """
         self._renderers[plugin] = (template_name, context or {})
 
+    def plugins(self):
+        """
+        Return a list of all registered plugins, and is most useful when passed
+        directly to one of django-content-editor_'s contents utilities::
+
+            page = get_object_or_404(Page, ...)
+            contents = contents_for_item(page, renderer.plugins())
+
+        """
+
+        return list(self._renderers.keys())
+
     def render_plugin_in_context(self, plugin, context):
+        """
+        Render a plugin, passing on the template context into the plugin's
+        template (if the plugin uses a template renderer).
+
+        The template tags in ``feincms3_renderer`` assume that the renderer
+        instance is available as ``renderer`` inside the context. A suitable
+        view would look as follows::
+
+            def page_detail(request, slug):
+                page = get_object_or_404(Page, slug=slug)
+                return render(request, 'page.html', {
+                    'page': page,
+                    'contents': contents_for_item(page, renderer.plugins()),
+                    'renderer': renderer,
+                })
+
+        The template itself should contain the following snippet::
+
+            {% load feincms3_renderer %}
+
+            {% block content %}
+
+            <h1>{{ page.title }}</h1>
+            <main>
+              {% for plugin in contents.main %}
+                {% render_plugin plugin %}
+              {% endfor %}
+            </main>
+            <aside>
+              {# or simply #}
+              {% render_plugins contents.sidebar %}
+            </aside>
+
+            {% endblock %}
+        """
         engine = context.template.engine
         plugin_template, plugin_context = self._renderers[plugin.__class__]
 
