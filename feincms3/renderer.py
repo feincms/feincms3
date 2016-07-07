@@ -43,7 +43,7 @@ class TemplatePluginRenderer(object):
 
         - A template path
         - A list of template paths
-        - An object with a ``render`` function
+        - An object with a ``render`` method
         - A callable receiving the plugin as only parameter and returning any
           of the above.
 
