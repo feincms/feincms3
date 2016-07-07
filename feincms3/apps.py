@@ -350,6 +350,7 @@ class AppsMixin(models.Model):
 
             if self.__class__._base_manager.filter(
                 Q(app_instance_namespace=app_instance_namespace),
+                Q(language_code=self.language_code),
                 ~Q(pk=self.pk or 0),
             ).exists():
                 fields = ['application']
