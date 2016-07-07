@@ -8,6 +8,8 @@ Change log
 - Fixed a crash where apps without ``required_fields`` could not be
   saved.
 - Added a template snippet based renderer for plugins.
+- Prevented adding the exact same application (that is, the same
+  ``app_instance_namespace``) more than once.
 
 
 `0.4`_ (2016-07-04)

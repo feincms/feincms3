@@ -16,7 +16,7 @@ from django.conf.urls import url, include
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import NoReverseMatch, reverse
 from django.db import models
-from django.db.models import signals
+from django.db.models import Q, signals
 from django.utils.functional import SimpleLazyObject
 from django.utils.translation import get_language, ugettext_lazy as _
 
@@ -340,6 +340,25 @@ class AppsMixin(models.Model):
                         'This field is required for the application %s.'
                     ) % (self.get_application_display(),)
                     for field in missing
+                })
+
+        if app_config:
+            app_instance_namespace = app_config.get(
+                'app_instance_namespace',
+                lambda instance: instance.application,
+            )(self)
+
+            if self.__class__._base_manager.filter(
+                Q(app_instance_namespace=app_instance_namespace),
+                ~Q(pk=self.pk or 0),
+            ).exists():
+                fields = ['application']
+                fields.extend(app_config.get('required_fields', ()))
+                raise ValidationError({
+                    field: _(
+                        _('This exact app already exists.'),
+                    )
+                    for field in fields
                 })
 
     @staticmethod
