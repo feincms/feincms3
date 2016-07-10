@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
 from django.utils.translation import deactivate_all, override
@@ -413,3 +414,37 @@ class AdminTest(TestCase):
             '<h2>context</h2>',
             1,
         )
+
+    def test_duplicated_path(self):
+        home = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/en/',
+            static_path=True,
+            language_code='en',
+        )
+        Page.objects.create(
+            parent=home,
+            title='sub',
+            slug='sub',
+            path='/en/sub/page/',
+            static_path=True,
+            language_code='en',
+        )
+        sub = Page.objects.create(
+            title='sub',
+            slug='sub',
+        )
+        Page.objects.create(
+            parent=sub,
+            title='page',
+            slug='page',
+        )
+
+        self.assertEqual(sub.get_absolute_url(), '/sub/')
+        self.assertEqual(home.get_absolute_url(), '/en/')
+
+        sub.refresh_from_db()  # mptt bookkeeping
+        sub.parent = home
+        self.assertRaises(IntegrityError, sub.save)  # FIXME validation.
+        # sub.save()
