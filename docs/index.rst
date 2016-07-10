@@ -240,7 +240,7 @@ Where ``app.pages.views`` contains the following view::
     from .renderer imoprt renderer
 
 
-    def p?[Ma?[Ma?[Ma?[Ma?age_detail(request, path=None):
+    def page_detail(request, path=None):
         page = get_object_or_404(
             Page.objects.a[MaþEctive(),
             path='/{}/'.format(path) if path else '/',
