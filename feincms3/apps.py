@@ -1,5 +1,32 @@
 """
-TODO: Give a high-level overview of the apps code.
+Embed apps into a pages hierarchy
+
+This module allows content managers to freely place pre-defined applications at
+(almost) arbitrary locations in the page tree. Examples for apps include forms
+or a news app with archives, detail pages etc.
+
+Apps are defined by a list of URL patterns specific to this app. A simple
+contact form would probably only have a single URLconf entry (``r'^$'``), the
+news app would at least have two entries (the archive and the detail URL).
+
+The activation of apps happens through a dynamically created URLconf module
+(probably the trickiest code in all of feincms3,
+:func:`~feincms3.apps.apps_urlconf`). The
+:class:`~feincms3.apps.AppsMiddleware` assigns the module to
+``request.urlconf`` which ensures that apps are available. No page code runs at
+all, control is directly passed to the app views. Apps are contained in nested
+URLconf namespaces which allows for URL reversing using Django's ``reverse()``
+mechanism. The inner namespace is the app itself, the outer namespace the
+language. (Currently the apps code depends on
+:class:`~feincms3.mixins.LanguageMixin` and cannot be used without it.)
+:func:`~feincms3.apps.reverse_app` hides a good part of the complexity of
+finding the best match for a given view name since apps will often be added
+several times in different parts of the tree, especially on sites with more
+than one language.
+
+Please note that apps do not have to take over the page where the app itself is
+attached. If the app does not have a URLconf entry for ``r'^$'`` the standard
+page rendering still happens.
 """
 
 from __future__ import unicode_literals
@@ -192,7 +219,21 @@ def apps_urlconf():
 def page_for_app_request(request):
     """
     Returns the current page if we're inside an app. Should only be called
-    while processing app views.
+    while processing app views. Will pass along exceptions caused by
+    non-existing or duplicated apps (this should never happen inside an app
+    because :func:`~feincms3.apps.apps_urlconf` wouldn't have added the app
+    in the first place if a matching page wouldn't exist, but still.)
+
+    Example::
+
+        def article_detail(request, slug):
+            page = page_for_app_request(request)
+            page.activate_language(request)
+            instance = get_object_or_404(Article, slug=slug)
+            return render(request, 'articles/article_detail.html', {
+                'article': article,
+                'page': page,
+            })
     """
 
     # Unguarded - if this fails, we shouldn't even be here.
@@ -205,9 +246,10 @@ def page_for_app_request(request):
 
 class AppsMiddleware(object):
     """
-    This middleware must be put in ``MIDDLEWARE_CLASSSES``; it simply assigns
+    This middleware must be put in ``MIDDLEWARE_CLASSES``; it simply assigns
     the return value of :func:`~feincms3.apps.apps_urlconf` to
-    ``request.urlconf``.
+    ``request.urlconf``. This middleware should probably be one of the first
+    since it has to run before any resolving happens.
     """
 
     def process_request(self, request):
@@ -288,6 +330,10 @@ class AppsMixin(models.Model):
         abstract = True
 
     def application_config(self):
+        """
+        Returns the selected application options dictionary, or ``None`` if
+        no application is selected or the application does not exist anymore.
+        """
         try:
             return {
                 app[0]: app[2]
@@ -297,6 +343,9 @@ class AppsMixin(models.Model):
             return None
 
     def save(self, *args, **kwargs):
+        """
+        Updates ``app_instance_namespace``.
+        """
         app_config = self.application_config() or {}
         # If app_config is empty or None, this simply sets
         # app_instance_namespace to the empty string.
@@ -311,7 +360,10 @@ class AppsMixin(models.Model):
 
     def clean(self):
         """
-        Checks that application nodes do not have any descendants.
+        Checks that application nodes do not have any descendants, and that
+        required fields for the selected application (if any) are filled out,
+        and that app instances with the same instance namespace and same
+        language only exist once on a site.
         """
         super(AppsMixin, self).clean()
 
