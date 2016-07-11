@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from collections import defaultdict
 import hashlib
+from importlib import import_module
 import itertools
 import re
 import sys
@@ -120,7 +121,7 @@ page_model = SimpleLazyObject(lambda: next(
 def apps_urlconf():
     """
     Generates a dynamic URLconf Python module including all applications in
-    their assigned place and falling through to the default ``ROOT_URLCONF``
+    their assigned place and adding the ``urlpatterns`` from ``ROOT_URLCONF``
     at the end. Returns the value of ``ROOT_URLCONF`` directly if there are
     no active applications.
 
@@ -178,9 +179,11 @@ def apps_urlconf():
         m.urlpatterns = [url(
             r'',
             include((instances, 'language-codes'), namespace=language_code),
-        ) for language_code, instances in mapping.items()] + [
-            url(r'', include(settings.ROOT_URLCONF)),
-        ]
+        ) for language_code, instances in mapping.items()]
+
+        # Append patterns from ROOT_URLCONF instead of including them because
+        # i18n_patterns only work in the root URLconf.
+        m.urlpatterns += import_module(settings.ROOT_URLCONF).urlpatterns
         sys.modules[module_name] = m
 
     return module_name

@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Enabled the use of ``i18n_patterns`` in ``ROOT_URLCONF`` by importing
+  and adding the urlpatterns contained instead of ``include()``-ing the
+  module in ``apps_urlconf``.
+
 
 `0.6`_ (2016-07-11)
 ~~~~~~~~~~~~~~~~~~~
