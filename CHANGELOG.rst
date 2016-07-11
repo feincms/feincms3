@@ -6,6 +6,14 @@ Change log
 ~~~~~~~~~~~~~~~
 
 
+`0.6`_ (2016-07-11)
+~~~~~~~~~~~~~~~~~~~
+
+- Updated the translation files.
+- Fixed crashes when path of pages would not be unique when moving
+  subtrees.
+
+
 `0.5`_ (2016-07-07)
 ~~~~~~~~~~~~~~~~~~~
 
@@ -83,4 +91,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.3: https://github.com/matthiask/feincms3/compare/0.2...0.3
 .. _0.4: https://github.com/matthiask/feincms3/compare/0.3...0.4
 .. _0.5: https://github.com/matthiask/feincms3/compare/0.4...0.5
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.5...master
+.. _0.6: https://github.com/matthiask/feincms3/compare/0.5...0.6
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.6...master
