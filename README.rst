@@ -5,6 +5,11 @@ feincms3
 .. image:: https://travis-ci.org/matthiask/feincms3.svg?branch=master
     :target: https://travis-ci.org/matthiask/feincms3
 
+.. image:: http://readthedocs.org/projects/feincms3/badge/?version=latest
+    :target: http://feincms3.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+
 feincms3 provides additional building blocks on top of
 django-content-editor_ and django-mptt_ which make building a page CMS
 (and also other types of CMS) simpler.
