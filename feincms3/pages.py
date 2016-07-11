@@ -68,6 +68,11 @@ class AbstractPage(MPTTModel):
         return self.title
 
     def clean(self):
+        """
+        The idea is to run ``self.save()`` in a transaction, ensure that
+        changes aren't committed and that integrity errors (for example
+        path uniqueness violations) are communicated via validation errors.
+        """
         super(AbstractPage, self).clean()
         if not self.pk:
             return
