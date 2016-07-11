@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
-from django.db import IntegrityError
+from django.contrib.messages.storage.cookie import CookieStorage
+from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
 from django.utils.translation import deactivate_all, override
@@ -415,7 +416,7 @@ class AdminTest(TestCase):
             1,
         )
 
-    def test_duplicated_path(self):
+    def duplicated_path_setup(self):
         home = Page.objects.create(
             title='home',
             slug='home',
@@ -443,8 +444,59 @@ class AdminTest(TestCase):
 
         self.assertEqual(sub.get_absolute_url(), '/sub/')
         self.assertEqual(home.get_absolute_url(), '/en/')
-
         sub.refresh_from_db()  # mptt bookkeeping
+
+        return home, sub
+
+    def test_duplicated_path_save(self):
+        home, sub = self.duplicated_path_setup()
+
         sub.parent = home
-        self.assertRaises(IntegrityError, sub.save)  # FIXME validation.
-        # sub.save()
+        with transaction.atomic():
+            self.assertRaises(IntegrityError, sub.save)
+
+    def test_duplicated_path_changeform(self):
+        client = self.login()
+        home, sub = self.duplicated_path_setup()
+
+        response = client.post(
+            '/admin/testapp/page/%s/change/' % sub.pk,
+            merge_dicts(
+                {
+                    'parent': home.pk,
+                    'title': 'sub',
+                    'slug': 'sub',
+                    'language_code': 'en',
+                    'template_key': 'standard',
+                },
+                zero_management_form_data('testapp_richtext_set'),
+                zero_management_form_data('testapp_image_set'),
+                zero_management_form_data('testapp_snippet_set'),
+                zero_management_form_data('testapp_external_set'),
+            ),
+        )
+
+        self.assertContains(
+            response,
+            'Database constraints are violated:'
+            # ' UNIQUE constraint failed: testapp_page.path'
+        )
+
+    def test_duplicated_path_changelist(self):
+        client = self.login()
+        home, sub = self.duplicated_path_setup()
+
+        response = client.post('/admin/testapp/page/', {
+            'cmd': 'move_node',
+            'position': 'last-child',
+            'cut_item': sub.pk,
+            'pasted_on': home.pk,
+        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        messages = CookieStorage(response)._decode(
+            response.cookies['messages'].value,
+        )
+
+        self.assertEqual(len(messages), 1)
+        self.assertTrue(('%s' % messages[0]).startswith(
+            'Database constraints are violated:'))

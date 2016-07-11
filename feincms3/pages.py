@@ -1,13 +1,19 @@
 from __future__ import unicode_literals
 
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
-from django.db import models
+from django.db import IntegrityError, models, transaction
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+from mptt.exceptions import InvalidMove
 from mptt.models import MPTTModel, TreeForeignKey
 from mptt.signals import node_moved
+
+
+class NoCommitException(Exception):
+    pass
 
 
 @python_2_unicode_compatible
@@ -61,6 +67,22 @@ class AbstractPage(MPTTModel):
     def __str__(self):
         return self.title
 
+    def clean(self):
+        super(AbstractPage, self).clean()
+        if not self.pk:
+            return
+
+        try:
+            with transaction.atomic():
+                self.save()
+                raise NoCommitException()
+        except IntegrityError as exc:
+            raise ValidationError(
+                _('Database constraints are violated: %s') % exc
+            )
+        except NoCommitException:
+            pass
+
     def save(self, *args, **kwargs):
         """save(self, ..., save_descendants=True)
         Saves the page instance, and traverses all descendants to update their
@@ -111,8 +133,16 @@ class AbstractPage(MPTTModel):
         # ``position`` is only a keyword argument when we're called from
         # TreeManager.move_node. In this case, run our own save() method as
         # well to update page paths etc.
-        if not instance._meta.abstract and 'position' in kwargs:
-            instance.save()
+        if instance._meta.abstract or 'position' not in kwargs:
+            return
+
+        try:
+            with transaction.atomic():
+                instance.save()
+        except IntegrityError as exc:
+            raise InvalidMove(
+                _('Database constraints are violated: %s') % exc
+            )
 
 
 node_moved.connect(AbstractPage.handle_node_moved)
