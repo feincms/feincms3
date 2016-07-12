@@ -579,3 +579,31 @@ class Test(TestCase):
             response,
             '<div class="sidebar"><i>sidebar</b></div>',
         )
+
+    def test_add_duplicated_path(self):
+        """Non-unique paths should also be detected upon direct addition"""
+
+        page = Page.objects.create(
+            title='main',
+            slug='main',
+        )
+
+        client = self.login()
+        response = client.post('/admin/testapp/page/add/', merge_dicts(
+            {
+                'title': 'main',
+                'slug': 'main',
+                'language_code': 'en',
+                'application': '',
+                'template_key': 'standard',
+            },
+            zero_management_form_data('testapp_richtext_set'),
+            zero_management_form_data('testapp_image_set'),
+            zero_management_form_data('testapp_snippet_set'),
+            zero_management_form_data('testapp_external_set'),
+        ))
+        self.assertContains(
+            response,
+            'Page with this Path already exists.',
+            status_code=200,
+        )

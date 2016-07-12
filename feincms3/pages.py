@@ -73,7 +73,14 @@ class AbstractPage(MPTTModel):
         changes aren't committed and that integrity errors (for example
         path uniqueness violations) are communicated via validation errors.
         """
+        # Assign self.path so that uniqueness can be validated by Django.
+        if not self.static_path:
+            self.path = '{0}{1}/'.format(
+                self.parent.path if self.parent else '/',
+                self.slug)
+
         super(AbstractPage, self).clean()
+
         if not self.pk:
             return
 

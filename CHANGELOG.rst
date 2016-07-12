@@ -10,6 +10,8 @@ Change log
   module in ``apps_urlconf``.
 - Modified the cleansing configuration to allow empty ``<a>`` tags
   (mostly useful for internal anchors).
+- Fixed crash when adding a page with a path that exists already (when
+  not using a statich path).
 
 
 `0.6`_ (2016-07-11)
