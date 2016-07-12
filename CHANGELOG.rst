@@ -8,6 +8,8 @@ Change log
 - Enabled the use of ``i18n_patterns`` in ``ROOT_URLCONF`` by importing
   and adding the urlpatterns contained instead of ``include()``-ing the
   module in ``apps_urlconf``.
+- Modified the cleansing configuration to allow empty ``<a>`` tags
+  (mostly useful for internal anchors).
 
 
 `0.6`_ (2016-07-11)

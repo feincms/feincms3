@@ -22,7 +22,7 @@ __all__ = ('CleansedRichTextField', 'cleanse_html')
 Cleanse.allowed_tags['a'] += ('id', 'name')  # Allow anchors
 Cleanse.allowed_tags['hr'] = ()  # Allow horizontal rules
 Cleanse.allowed_tags['h1'] = ()  # Allow H1
-Cleanse.empty_tags += ('hr',)
+Cleanse.empty_tags += ('hr', 'a')  # Allow empty <hr/> and anchor targets
 
 
 def cleanse_html(html):
