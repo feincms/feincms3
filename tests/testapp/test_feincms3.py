@@ -549,3 +549,33 @@ class Test(TestCase):
             self.client.get('/de/i18n/'),
             'de',
         )
+
+    def test_render_plugins(self):
+        """Test both render_plugins and render_plugin"""
+
+        page = Page.objects.create(
+            is_active=True,
+            title='main',
+            slug='main',
+            template_key='with-sidebar',
+        )
+        page.testapp_richtext_set.create(
+            ordering=0,
+            region='main',
+            text='<b>main</b>',
+        )
+        page.testapp_richtext_set.create(
+            ordering=0,
+            region='sidebar',
+            text='<i>sidebar</b>',
+        )
+
+        response = self.client.get(page.get_absolute_url())
+        self.assertContains(
+            response,
+            '<div class="main"><b>main</b></div>',
+        )
+        self.assertContains(
+            response,
+            '<div class="sidebar"><i>sidebar</b></div>',
+        )

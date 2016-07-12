@@ -8,6 +8,6 @@
 <h1>{{ page }}</h1>
 <div class="columns">
   <div class="main">{% render_plugins contents.main %}</div>
-  <div class="sidebar">{% render_plugins contents.sidebar %}</div>
+  <div class="sidebar">{% for c in contents.sidebar %}{% render_plugin c %}{% endfor %}</div>
 </div>
 {% endblock %}
