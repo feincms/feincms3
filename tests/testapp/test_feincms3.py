@@ -1,10 +1,13 @@
 from __future__ import unicode_literals
 
+import warnings
+
 from django.contrib.auth.models import User
 from django.contrib.messages.storage.cookie import CookieStorage
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
+from django.utils.deprecation import RemovedInDjango20Warning
 from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import apps_urlconf
@@ -13,8 +16,15 @@ from feincms3.plugins.external import ExternalForm
 from .models import Page, External, Article
 
 
-def _messages(response):
-    return [m.message for m in response.context['messages']]
+# I know that field.rel and rel.to have been deprecated, thank you.
+warnings.filterwarnings(
+    'ignore',
+    category=RemovedInDjango20Warning,
+    module=r'mptt')
+# Something about inspect.getargspec in beautifulsoup4.
+warnings.filterwarnings(
+    'ignore',
+    module=r'bs4\.builder\._lxml')
 
 
 def zero_management_form_data(prefix):
@@ -33,7 +43,7 @@ def merge_dicts(*dicts):
     return res
 
 
-class AdminTest(TestCase):
+class Test(TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser(
             'admin', 'admin@test.ch', 'blabla')
@@ -45,6 +55,8 @@ class AdminTest(TestCase):
         return client
 
     def test_modules(self):
+        """Admin modules are present, necessary JS too"""
+
         client = self.login()
 
         response = client.get('/admin/')
@@ -77,6 +89,7 @@ class AdminTest(TestCase):
         )
 
     def test_add_empty_page(self):
+        """Add a page without content, test path generation etc"""
         client = self.login()
 
         response = client.post(
@@ -117,6 +130,8 @@ class AdminTest(TestCase):
         )
 
     def test_add_page(self):
+        """Add a page with some content and test rich text cleansing"""
+
         client = self.login()
 
         response = client.post(
@@ -183,9 +198,9 @@ class AdminTest(TestCase):
             1,
         )
 
-        # print(response, response.content.decode('utf-8'))
-
     def test_external_form_validation(self):
+        """Test external plugin validation a bit"""
+
         form_class = modelform_factory(
             External,
             form=ExternalForm,
@@ -204,6 +219,8 @@ class AdminTest(TestCase):
             '%s' % form.errors)
 
     def test_navigation(self):
+        """Test menu template tags"""
+
         home_de = Page.objects.create(
             title='home',
             slug='home',
@@ -304,10 +321,9 @@ class AdminTest(TestCase):
             'inactive',
         )
 
-        # print(self.client.get('/en/a-en/').content.decode('utf-8'))
-        # print(self.client.get('/de/b-de/').content.decode('utf-8'))
-
     def test_apps(self):
+        """Article app test (two instance namespaces, two languages)"""
+
         home_de = Page.objects.create(
             title='home',
             slug='home',
@@ -388,6 +404,9 @@ class AdminTest(TestCase):
         )
 
     def test_snippet(self):
+        """Check that snippets have access to the main rendering context
+        when using TemplatePluginRenderer"""
+
         home_en = Page.objects.create(
             title='home',
             slug='home',
@@ -417,6 +436,9 @@ class AdminTest(TestCase):
         )
 
     def duplicated_path_setup(self):
+        """Set up a page structure which leads to duplicated paths when
+        sub's parent is set to home"""
+
         home = Page.objects.create(
             title='home',
             slug='home',
@@ -449,6 +471,8 @@ class AdminTest(TestCase):
         return home, sub
 
     def test_duplicated_path_save(self):
+        """Saving the model should not handle the database integrity error"""
+
         home, sub = self.duplicated_path_setup()
 
         sub.parent = home
@@ -456,6 +480,8 @@ class AdminTest(TestCase):
             self.assertRaises(IntegrityError, sub.save)
 
     def test_duplicated_path_changeform(self):
+        """The change form should not crash but handle the constraint error"""
+
         client = self.login()
         home, sub = self.duplicated_path_setup()
 
@@ -483,6 +509,8 @@ class AdminTest(TestCase):
         )
 
     def test_duplicated_path_changelist(self):
+        """The change list should not crash but handle the constraint error"""
+
         client = self.login()
         home, sub = self.duplicated_path_setup()
 
@@ -500,3 +528,24 @@ class AdminTest(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertTrue(('%s' % messages[0]).startswith(
             'Database constraints are violated:'))
+
+    def test_i18n_patterns(self):
+        """i18n_patterns in ROOT_URLCONF work even with AppsMiddleware"""
+
+        self.assertRedirects(
+            self.client.get('/i18n/'),
+            '/en/i18n/',
+        )
+        self.assertRedirects(
+            self.client.get('/i18n/', HTTP_ACCEPT_LANGUAGE='de'),
+            '/de/i18n/',
+        )
+
+        self.assertContains(
+            self.client.get('/en/i18n/'),
+            'en',
+        )
+        self.assertContains(
+            self.client.get('/de/i18n/'),
+            'de',
+        )
