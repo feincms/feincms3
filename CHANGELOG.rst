@@ -5,6 +5,8 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Removed all dependencies from ``install_requires`` to make it easier
+  to replace individual items.
 - Enabled the use of ``i18n_patterns`` in ``ROOT_URLCONF`` by importing
   and adding the urlpatterns contained instead of ``include()``-ing the
   module in ``apps_urlconf``.

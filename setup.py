@@ -25,15 +25,15 @@ setup(
         exclude=['tests', 'testapp']
     ),
     include_package_data=True,
-    install_requires=[
-        'Django>=1.9,<1.10',  # >1.9/content-editor, <1.10/mptt
-        'django-ckeditor',
-        'django-content-editor',
-        'django-mptt',
-        'django-versatileimagefield',
-        'feincms-cleanse',
-        'requests',
-    ],
+    # install_requires=[
+    #     'Django>=1.9,<1.10',  # >1.9/content-editor, <1.10/mptt
+    #     'django-ckeditor',
+    #     'django-content-editor',
+    #     'django-mptt',
+    #     'django-versatileimagefield',
+    #     'feincms-cleanse',
+    #     'requests',
+    # ],
     classifiers=[
         # 'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
