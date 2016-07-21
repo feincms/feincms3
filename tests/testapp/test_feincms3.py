@@ -583,7 +583,7 @@ class Test(TestCase):
     def test_add_duplicated_path(self):
         """Non-unique paths should also be detected upon direct addition"""
 
-        page = Page.objects.create(
+        Page.objects.create(
             title='main',
             slug='main',
         )
