@@ -56,7 +56,7 @@ often necessary for content management systems. For example, articles
 may be composed of text blocks with images and videos interspersed
 throughout. Those content elements are called plugins [#]_.
 
-django-mptt_ provides a smart way to efficiently save and fetch
+django-mptt_ provides a smart way to efficiently fetch
 tree-shaped data in a relational database. Since version 0.8.x (the
 current django-mptt_ release at the time of writing) django-mptt_ comes
 with a a graphical changelist replacement which offers a drag-drop
