@@ -42,11 +42,15 @@ import types
 from django.conf import settings
 from django.conf.urls import url, include
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import NoReverseMatch, reverse
 from django.db import models
 from django.db.models import Q, signals
 from django.utils.functional import SimpleLazyObject
 from django.utils.translation import get_language, ugettext_lazy as _
+try:
+    from django.urls import NoReverseMatch, reverse
+except ImportError:  # pragma: no cover
+    # Django <1.10
+    from django.core.urlresolvers import NoReverseMatch, reverse
 
 
 __all__ = (
