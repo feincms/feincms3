@@ -1,0 +1,7 @@
+Django<1.10
+django-ckeditor
+django-content-editor
+django-mptt
+django-versatileimagefield
+feincms-cleanse
+requests
