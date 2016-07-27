@@ -55,7 +55,7 @@ except ImportError:  # pragma: no cover
 
 __all__ = (
     'AppsMiddleware', 'AppsMixin', 'apps_urlconf', 'page_for_app_request',
-    'reverse_any', 'reverse_app',
+    'reverse_any', 'reverse_app', 'reverse_fallback',
 )
 
 
@@ -131,9 +131,20 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
     return reverse_any(viewnames, *args, **kwargs)
 
 
+def reverse_fallback(fallback, fn, *args, **kwargs):
+    """
+    Returns the result of ``fn(*args, **kwargs)``, or ``fallback`` if the
+    former raises an exception.
+    """
+    try:
+        return fn(*args, **kwargs)
+    except Exception:
+        return fallback
+
+
 def _iterate_subclasses(cls):
     """
-    Yields the passed class and all its subclasses in depth-first order
+    Yields the passed class and all its subclasses in depth-first order.
     """
 
     yield cls

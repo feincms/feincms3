@@ -5,6 +5,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Added ``feincms3.apps.reverse_fallback`` to streamline reversing with
+  fallback values in case of crashes.
+
+
+`0.7`_ (2016-07-21)
+~~~~~~~~~~~~~~~~~~~
+
 - Removed all dependencies from ``install_requires`` to make it easier
   to replace individual items.
 - Enabled the use of ``i18n_patterns`` in ``ROOT_URLCONF`` by importing
@@ -102,4 +109,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.4: https://github.com/matthiask/feincms3/compare/0.3...0.4
 .. _0.5: https://github.com/matthiask/feincms3/compare/0.4...0.5
 .. _0.6: https://github.com/matthiask/feincms3/compare/0.5...0.6
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.6...master
+.. _0.7: https://github.com/matthiask/feincms3/compare/0.6...0.7
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.7...master
