@@ -364,6 +364,27 @@ class Test(TestCase):
                     category=category,
                 )
 
+        self.assertContains(
+            self.client.get('/de/blog/all/'),
+            'class="article"',
+            7,
+        )
+        self.assertContains(
+            self.client.get('/de/blog/?page=2'),
+            'class="article"',
+            2,
+        )
+        self.assertContains(
+            self.client.get('/de/blog/?page=42'),
+            'class="article"',
+            2,  # Last page with instances (2nd)
+        )
+        self.assertContains(
+            self.client.get('/de/blog/?page=invalid'),
+            'class="article"',
+            5,  # First page
+        )
+
         response = self.client.get('/de/blog/')
         self.assertContains(
             response,

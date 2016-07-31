@@ -9,6 +9,16 @@ from feincms3.shortcuts import render_list, render_detail
 from .models import Article
 
 
+def article_list_all(request):
+    page = page_for_app_request(request)
+    page.activate_language(request)
+    return render_list(
+        request,
+        Article.objects.filter(category=page.application),
+        {'page': page},
+    )
+
+
 def article_list(request):
     page = page_for_app_request(request)
     page.activate_language(request)
@@ -32,6 +42,7 @@ def article_detail(request, pk):
 
 app_name = 'articles'
 urlpatterns = [
+    url(r'^all/$', article_list_all, name='article-list-all'),
     url(r'^$', article_list, name='article-list'),
     url(r'^(?P<pk>\d+)/$', article_detail, name='article-detail'),
 ]
