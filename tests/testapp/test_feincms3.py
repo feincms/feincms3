@@ -10,7 +10,9 @@ from django.test import Client, TestCase
 from django.utils.deprecation import RemovedInDjango20Warning
 from django.utils.translation import deactivate_all, override
 
-from feincms3.apps import apps_urlconf
+from feincms3.apps import (
+    NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback
+)
 from feincms3.plugins.external import ExternalForm
 
 from .models import Page, External, Article
@@ -606,4 +608,28 @@ class Test(TestCase):
             response,
             'Page with this Path already exists.',
             status_code=200,
+        )
+
+    def test_reverse(self):
+        """Test all code paths through reverse_fallback and reverse_any"""
+
+        self.assertEqual(
+            reverse_fallback('test', 'not-exists'),
+            'test',
+        )
+        self.assertEqual(
+            reverse_fallback('test', reverse, 'admin:index'),
+            '/admin/',
+        )
+        self.assertEqual(
+            reverse_any((
+                'not-exists',
+                'admin:index',
+            )),
+            '/admin/',
+        )
+        self.assertRaises(
+            NoReverseMatch,
+            reverse_any,
+            ('not-exists-1', 'not-exists-2'),
         )
