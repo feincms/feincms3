@@ -500,7 +500,8 @@ class Test(TestCase):
 
         sub.parent = home
         with transaction.atomic():
-            self.assertRaises(IntegrityError, sub.save)
+            with self.assertRaises(IntegrityError):
+                sub.save()
 
     def test_duplicated_path_changeform(self):
         """The change form should not crash but handle the constraint error"""
@@ -649,8 +650,5 @@ class Test(TestCase):
             )),
             '/admin/',
         )
-        self.assertRaises(
-            NoReverseMatch,
-            reverse_any,
-            ('not-exists-1', 'not-exists-2'),
-        )
+        with self.assertRaises(NoReverseMatch):
+            reverse_any(('not-exists-1', 'not-exists-2'))
