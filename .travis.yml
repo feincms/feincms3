@@ -6,10 +6,11 @@ python:
   - "2.7"
 env:
   - REQ="Django>=1.9,<1.10"
+  - REQ="Django>=1.10,<1.11"
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
   - pip install -U pip wheel
-  - pip install $REQ django-ckeditor django-content-editor django-mptt django-versatileimagefield feincms-cleanse pytz requests
+  - pip install $REQ django-ckeditor django-content-editor django-mptt-nomagic django-versatileimagefield feincms-cleanse pytz requests
   - python setup.py install
 # command to run tests, e.g. python setup.py test
 script: "cd tests && ./manage.py test testapp"
