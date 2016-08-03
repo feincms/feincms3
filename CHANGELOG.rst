@@ -7,6 +7,9 @@ Change log
 
 - Added ``feincms3.apps.reverse_fallback`` to streamline reversing with
   fallback values in case of crashes.
+- The default template renderer context
+  (``TemplatePluginRenderer.register_template_renderer``) contains now the
+  plugin instance as ``plugin`` instead of nothing.
 
 
 `0.7`_ (2016-07-21)

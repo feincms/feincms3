@@ -4,6 +4,10 @@ from __future__ import unicode_literals
 __all__ = ('TemplatePluginRenderer',)
 
 
+def default_context(plugin, context):
+    return {'plugin': plugin}
+
+
 class TemplatePluginRenderer(object):
     """
     More capable replacement for django-content-editor_'s ``PluginRenderer``
@@ -72,7 +76,7 @@ class TemplatePluginRenderer(object):
             )
 
         """
-        self._renderers[plugin] = (template_name, context or {})
+        self._renderers[plugin] = (template_name, context or default_context)
 
     def plugins(self):
         """
