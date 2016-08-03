@@ -1,7 +1,7 @@
-Django>=1.9,<1.10
+Django>=1.9
 django-ckeditor
 django-content-editor
-django-mptt
+django-mptt-nomagic
 django-versatileimagefield
 feincms-cleanse
 requests
