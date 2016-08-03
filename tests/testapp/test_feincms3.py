@@ -551,7 +551,7 @@ class Test(TestCase):
 
         self.assertEqual(len(messages), 1)
         self.assertTrue(('%s' % messages[0]).startswith(
-            'Database constraints are violated:'))
+            'Database error:'))
 
     def test_i18n_patterns(self):
         """i18n_patterns in ROOT_URLCONF work even with AppsMiddleware"""

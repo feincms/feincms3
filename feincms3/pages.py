@@ -7,9 +7,7 @@ from django.db import IntegrityError, models, transaction
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from mptt.exceptions import InvalidMove
 from mptt.models import MPTTModel, TreeForeignKey
-from mptt.signals import node_moved
 
 
 class NoCommitException(Exception):
@@ -134,27 +132,3 @@ class AbstractPage(MPTTModel):
         if self.path == '/':
             return reverse('pages:root')
         return reverse('pages:page', kwargs={'path': self.path.strip('/')})
-
-    @staticmethod
-    def handle_node_moved(instance, **kwargs):
-        """
-        Handles page moves through MPTT (the ``node_moved`` signal) and ensures
-        that ``save()`` always has a chance to run (and update our own fields
-        and those of all descendants).
-        """
-        # ``position`` is only a keyword argument when we're called from
-        # TreeManager.move_node. In this case, run our own save() method as
-        # well to update page paths etc.
-        if instance._meta.abstract or 'position' not in kwargs:
-            return
-
-        try:
-            with transaction.atomic():
-                instance.save()
-        except IntegrityError as exc:
-            raise InvalidMove(
-                _('Database constraints are violated: %s') % exc
-            )
-
-
-node_moved.connect(AbstractPage.handle_node_moved)

@@ -10,6 +10,9 @@ Change log
 - The default template renderer context
   (``TemplatePluginRenderer.register_template_renderer``) contains now the
   plugin instance as ``plugin`` instead of nothing.
+- Make django-mptt-nomagic_ a required dependency, and remove the django-mptt_
+  ``node_moved`` signal listener (not required anymore because nomagic always
+  calls ``Page.save()``)
 
 
 `0.7`_ (2016-07-21)
@@ -104,6 +107,7 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _django-ckeditor: https://pypi.python.org/pypi/django-ckeditor
 .. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
+.. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
