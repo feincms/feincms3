@@ -25,15 +25,15 @@ setup(
         exclude=['tests', 'testapp']
     ),
     include_package_data=True,
-    install_requires=[
-        'Django',
-        'django-ckeditor',
-        'django-content-editor',
-        'django-mptt-nomagic',  # For now!
-        'django-versatileimagefield',
-        'feincms-cleanse',
-        'requests',
-    ],
+    # install_requires=[
+    #     'Django',
+    #     'django-ckeditor',
+    #     'django-content-editor',
+    #     'django-mptt-nomagic',  # For now!
+    #     'django-versatileimagefield',
+    #     'feincms-cleanse',
+    #     'requests',
+    # ],
     classifiers=[
         # 'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
@@ -45,8 +45,8 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries :: Application Frameworks',

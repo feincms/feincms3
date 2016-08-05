@@ -5,14 +5,21 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.8`_ (2016-08-05)
+~~~~~~~~~~~~~~~~~~~
+
 - Added ``feincms3.apps.reverse_fallback`` to streamline reversing with
   fallback values in case of crashes.
 - The default template renderer context
   (``TemplatePluginRenderer.register_template_renderer``) contains now the
   plugin instance as ``plugin`` instead of nothing.
-- Make django-mptt-nomagic_ a required dependency, and remove the django-mptt_
-  ``node_moved`` signal listener (not required anymore because nomagic always
-  calls ``Page.save()``)
+- Make django-mptt-nomagic_ a required dependency, by depending on the fact
+  that nomagic always calls ``Page.save()`` (django-mptt_ does not do that
+  when nodes are moved using ``TreeManager.node_move``, which is used in the
+  draggable mptt admin interface. Use a ``node_moved`` signal listener which
+  calls ``save()`` if the ``node_moved`` call includes a ``position`` keyword
+  argument if you can't switch to django-mptt-nomagic_ for some reason.
 
 
 `0.7`_ (2016-07-21)
