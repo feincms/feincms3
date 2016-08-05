@@ -124,4 +124,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.5: https://github.com/matthiask/feincms3/compare/0.4...0.5
 .. _0.6: https://github.com/matthiask/feincms3/compare/0.5...0.6
 .. _0.7: https://github.com/matthiask/feincms3/compare/0.6...0.7
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.7...master
+.. _0.8: https://github.com/matthiask/feincms3/compare/0.7...0.8
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.8...master
