@@ -77,8 +77,7 @@ def is_descendant_of(node1, node2, include_self=False):
 
 
 @register.simple_tag(takes_context=True)
-# def menu(menu, *, level=0, depth=1, **kwargs):
-def menu(context, menu, level=0, depth=1, **kwargs):  # PY2 :-(
+def menu(context, menu, *, level=0, depth=1, **kwargs):
     """menu(menu, level=0, depth=1, **kwargs)
     This tag expects the ``page`` variable to contain the page we're on
     currently. The active pages are fetched using ``.objects.active()`` and

@@ -149,9 +149,7 @@ def _iterate_subclasses(cls):
 
     yield cls
     for scls in cls.__subclasses__():
-        # yield from _iterate_subclasses(scls)
-        for sscls in _iterate_subclasses(scls):  # PY2 :-(
-            yield sscls
+        yield from _iterate_subclasses(scls)
 
 
 #: The first non-abstract subclass of AppsMixin is what we're using.
@@ -204,7 +202,7 @@ def apps_urlconf():
             for app in page_model.APPLICATIONS if app[0]
         }
 
-        m = types.ModuleType(str(module_name))  # str() is correct for PY2&3
+        m = types.ModuleType(module_name)
 
         mapping = defaultdict(list)
         for path, application, app_instance_namespace, language_code in apps:

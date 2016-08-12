@@ -5,6 +5,8 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Dropped compatibility with Python 2.
+
 
 `0.8`_ (2016-08-05)
 ~~~~~~~~~~~~~~~~~~~
