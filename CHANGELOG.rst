@@ -6,6 +6,9 @@ Change log
 ~~~~~~~~~~~~~~~
 
 - Dropped compatibility with Python 2.
+- Reset modifications to MPTT attributes inside ``AbstractPage.clean``
+  for safety. Not 100% positive that this is necessary, but it might
+  explain some random tree corruption.
 
 
 `0.8`_ (2016-08-05)

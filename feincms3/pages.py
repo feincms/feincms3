@@ -82,6 +82,7 @@ class AbstractPage(MPTTModel):
         if not self.pk:
             return
 
+        _mptt = (self.lft, self.rght, self.level, self.tree_id)
         try:
             with transaction.atomic():
                 self.save()
@@ -92,6 +93,11 @@ class AbstractPage(MPTTModel):
             )
         except NoCommitException:
             pass
+        finally:
+            # MPTTModel.save() and its callees sometimes modify the tree
+            # attributes. Reset any modifications, and redo everything
+            # when save()ing for real.
+            (self.lft, self.rght, self.level, self.tree_id) = _mptt
 
     def save(self, *args, **kwargs):
         """save(self, ..., save_descendants=True)
