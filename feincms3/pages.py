@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
@@ -65,45 +67,51 @@ class AbstractPage(MPTTModel):
     def __str__(self):
         return self.title
 
+    def _branch_for_update(self):
+        nodes = OrderedDict({self.pk: self})
+        for node in self.get_descendants():
+            # Assign already-updated instance:
+            node.parent = nodes[node.parent_id]
+            if not node.static_path:
+                node.path = '{}{}/'.format(
+                    node.parent.path,
+                    node.slug)
+
+            # Descendants of inactive nodes cannot be active themselves:
+            if not node.parent.is_active:
+                node.is_active = False
+            nodes[node.id] = node
+        return nodes
+
     def clean(self):
         """
-        The idea is to run ``self.save()`` in a transaction, ensure that
-        changes aren't committed and that integrity errors (for example
-        path uniqueness violations) are communicated via validation errors.
+        Check for path uniqueness problems.
         """
-        # Assign self.path so that uniqueness can be validated by Django.
         if not self.static_path:
-            self.path = '{0}{1}/'.format(
+            self.path = '{}{}/'.format(
                 self.parent.path if self.parent else '/',
                 self.slug)
 
         super(AbstractPage, self).clean()
 
+        # Skip if we don't exist yet.
         if not self.pk:
             return
 
-        _mptt = (
-            self.lft, self.rght, self.level, self.tree_id,
-            self._mptt_cached_fields.copy()
+        clash_candidates = self.__class__._default_manager.exclude(
+            pk__in=self.get_descendants(include_self=True),
         )
-        try:
-            with transaction.atomic():
-                self.save()
-                raise NoCommitException()
-        except IntegrityError as exc:
-            raise ValidationError(
-                _('Database constraints are violated: %s') % exc
-            )
-        except NoCommitException:
-            pass
-        finally:
-            # MPTTModel.save() and its callees sometimes modify the tree
-            # attributes. Reset any modifications, and redo everything
-            # when save()ing for real.
-            (
-                self.lft, self.rght, self.level, self.tree_id,
-                self._mptt_cached_fields
-            ) = _mptt
+        for pk, node in self._branch_for_update().items():
+            if clash_candidates.filter(path=node.path).exists():
+                raise ValidationError({
+                    'parent': _(
+                        'The page %(page)s\'s new path %(path)s would'
+                        ' not be unique.'
+                    ) % {
+                        'page': node,
+                        'path': node.path,
+                    },
+                })
 
     def save(self, *args, **kwargs):
         """save(self, ..., save_descendants=True)
@@ -114,21 +122,17 @@ class AbstractPage(MPTTModel):
         save_descendants = kwargs.pop('save_descendants', True)
 
         if not self.static_path:
-            self.path = '{0}{1}/'.format(
+            self.path = '{}{}/'.format(
                 self.parent.path if self.parent else '/',
                 self.slug)
 
         super(AbstractPage, self).save(*args, **kwargs)
+
         if save_descendants:
-            nodes = {self.pk: self}
-            for node in self.get_descendants():
-                # Assign already-updated and saved instance:
-                node.parent = nodes[node.parent_id]
-                # Descendants of inactive nodes cannot be active themselves:
-                if not node.parent.is_active:
-                    node.is_active = False
+            for pk, node in self._branch_for_update().items():
+                if pk == self.pk:
+                    continue
                 node.save(save_descendants=False)
-                nodes[node.id] = node
     save.alters_data = True
 
     def get_absolute_url(self):

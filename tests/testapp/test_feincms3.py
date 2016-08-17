@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import warnings
 
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.messages.storage.cookie import CookieStorage
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
@@ -528,8 +529,8 @@ class Test(TestCase):
 
         self.assertContains(
             response,
-            'Database constraints are violated:'
-            # ' UNIQUE constraint failed: testapp_page.path'
+            'The page page&#39;s new path /en/sub/page/ would not be unique.',
+            1,
         )
 
     def test_duplicated_path_changelist(self):
@@ -652,3 +653,96 @@ class Test(TestCase):
         )
         with self.assertRaises(NoReverseMatch):
             reverse_any(('not-exists-1', 'not-exists-2'))
+
+    def test_move_clean_and_save(self):
+        """Test that a page move does the right thing (model state should be
+        restored after clean() so that save() updates the MPTT attributes
+        for real, without a ROLLBACK"""
+
+        client = self.login()
+
+        r1 = Page.objects.create(
+            title='root 1',
+            slug='root-1',
+        )
+        r2 = Page.objects.create(
+            title='root 2',
+            slug='root-2',
+        )
+        child = Page.objects.create(
+            parent_id=r1.id,
+            title='child',
+            slug='child',
+        )
+
+        ContentType.objects.clear_cache()  # because of 26. below
+        self.assertEqual(
+            list(Page.objects.order_by('tree_id', 'lft').values_list(
+                'lft', 'rght', 'level', 'tree_id', 'parent_id'
+            )),
+            [
+                (1, 4, 0, 1, None),
+                (2, 3, 1, 1, 1),
+                (1, 2, 0, 2, None),
+            ]
+        )
+
+        with self.assertNumQueries(19):
+            # NOTE NOTE NOTE!
+            # The exact count is not actually important. What IS important is
+            # that the query count does not change without us having a chance
+            # to inspect.
+            #
+            #  1. session
+            #  2. AppsMiddleware / apps_urlconf
+            #  3. request.user
+            #  4. SAVEPOINT
+            #  5. fetch child
+            #  6. I don't really get this one
+            #  7. exists() new parent
+            #  8. ancestors have apps? No? Good.
+            #  9. Descendant's path uniqueness (no descendants, so...)
+            # 10. Path uniqueness
+            # 11. MPTT create gap in tree 2
+            # 12. MPTT move node and close gaps
+            # 13. MPTT refresh child
+            # 14. MPTT refresh parent
+            # 15. page.save()
+            # 16. MPTT refresh child
+            # 17. get page Django content type
+            # 18. insert into admin log
+            # 19. RELEASE SAVEPOINT
+            response = client.post(
+                reverse('admin:testapp_page_change', args=(child.id,)),
+                merge_dicts(
+                    {
+                        'title': 'child',
+                        'slug': 'child',
+                        'path': '/root-1/child/',
+                        'static_path': '',
+                        'language_code': 'en',
+                        'application': '',
+                        'is_active': 1,
+                        'menu': 'main',
+                        'template_key': 'standard',
+                        'parent': r2.id,
+                    },
+                    zero_management_form_data('testapp_richtext_set'),
+                    zero_management_form_data('testapp_image_set'),
+                    zero_management_form_data('testapp_snippet_set'),
+                    zero_management_form_data('testapp_external_set'),
+                ),
+            )
+
+        self.assertEqual(response.status_code, 302)
+
+        self.assertEqual(
+            list(Page.objects.order_by('tree_id', 'lft').values_list(
+                'lft', 'rght', 'level', 'tree_id', 'parent_id'
+            )),
+            [
+                (1, 2, 0, 1, None),
+                (1, 4, 0, 2, None),
+                (2, 3, 1, 2, 2),
+            ]
+        )
