@@ -6,8 +6,6 @@ to be, and a strict white-list based HTML sanitizer is the best answer
 I have.
 """
 
-from __future__ import unicode_literals
-
 from ckeditor.fields import RichTextField
 
 from feincms_cleanse import Cleanse

@@ -9,8 +9,6 @@ integrating forms on detail pages can be a hassle.
 Because of this, ``render_list`` and ``render_detail``.
 """
 
-from __future__ import unicode_literals
-
 from django.core import paginator
 from django.shortcuts import render
 

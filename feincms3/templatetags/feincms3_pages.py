@@ -30,8 +30,6 @@ This example showcases all template tags in this template tag library::
     </nav>
 """
 
-from __future__ import absolute_import, unicode_literals
-
 from django import template
 
 

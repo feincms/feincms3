@@ -29,8 +29,6 @@ attached. If the app does not have a URLconf entry for ``r'^$'`` the standard
 page rendering still happens.
 """
 
-from __future__ import unicode_literals
-
 from collections import defaultdict
 import hashlib
 from importlib import import_module

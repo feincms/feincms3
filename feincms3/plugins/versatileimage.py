@@ -2,8 +2,6 @@
 This plugin uses django-versatileimagefield_ to do the heavy lifting.
 """
 
-from __future__ import unicode_literals
-
 from django import forms
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
