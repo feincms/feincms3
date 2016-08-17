@@ -5,9 +5,15 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.9`_ (2016-08-17)
+~~~~~~~~~~~~~~~~~~~
+
 - Dropped compatibility with Python 2.
-- Reset modifications to MPTT attributes inside ``AbstractPage.clean``
-  so that moves are actually detected when ``save()``'ing for real.
+- Fixed ``AbstractPage.save()`` to actually detect page moves correctly
+  again. Calling ``save()`` in a transaction was a bad idea because it
+  messed with MPTT's bookkeeping information. Depending on the
+  transaction isolation level going back to a clean slate *after*
+  ``clean()`` proved much harder than expected.
 
 
 `0.8`_ (2016-08-05)
@@ -129,4 +135,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.6: https://github.com/matthiask/feincms3/compare/0.5...0.6
 .. _0.7: https://github.com/matthiask/feincms3/compare/0.6...0.7
 .. _0.8: https://github.com/matthiask/feincms3/compare/0.7...0.8
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.8...master
+.. _0.9: https://github.com/matthiask/feincms3/compare/0.8...0.9
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.9...master
