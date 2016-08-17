@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models import signals
 from django.template.loader import render_to_string
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
@@ -17,7 +16,6 @@ def render_snippet(plugin, **kwargs):
     return render_to_string(plugin.template_name, {'plugin': plugin})
 
 
-@python_2_unicode_compatible
 class Snippet(models.Model):
     """
     Template snippet plugin

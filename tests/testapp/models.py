@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import TreeManager
@@ -103,7 +102,6 @@ class External(plugins.External, PagePlugin):
     pass
 
 
-@python_2_unicode_compatible
 class Article(models.Model):
     title = models.CharField(_('title'), max_length=100)
     category = models.CharField(_('category'), max_length=20, choices=(

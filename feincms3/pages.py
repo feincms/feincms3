@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import IntegrityError, models, transaction
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import MPTTModel, TreeForeignKey
@@ -14,7 +13,6 @@ class NoCommitException(Exception):
     pass
 
 
-@python_2_unicode_compatible
 class AbstractPage(MPTTModel):
     """
     Short version: If you want to build a CMS with a hierarchical page

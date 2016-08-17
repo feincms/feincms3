@@ -4,7 +4,6 @@ import requests
 from django import forms
 from django.core.cache import cache
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext, ugettext_lazy as _
 
@@ -81,7 +80,6 @@ def render_external(plugin, **kwargs):
     return mark_safe(html)
 
 
-@python_2_unicode_compatible
 class External(models.Model):
     """
     External content plugin

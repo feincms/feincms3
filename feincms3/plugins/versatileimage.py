@@ -4,7 +4,6 @@ This plugin uses django-versatileimagefield_ to do the heavy lifting.
 
 from django import forms
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,7 +15,6 @@ from versatileimagefield.fields import VersatileImageField, PPOIField
 __all__ = ('Image', 'AlwaysChangedModelForm', 'ImageInline', 'render_image')
 
 
-@python_2_unicode_compatible
 class Image(models.Model):
     """
     Image plugin

@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.html import mark_safe, strip_tags
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
@@ -12,7 +11,6 @@ from feincms3.cleanse import CleansedRichTextField
 __all__ = ('RichText', 'RichTextInline', 'render_richtext')
 
 
-@python_2_unicode_compatible
 class RichText(models.Model):
     """
     Rich text plugin
