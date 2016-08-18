@@ -32,6 +32,9 @@ This example showcases all template tags in this template tag library::
 
 from django import template
 
+from feincms3.mixins import MenuMixin
+from feincms3.utils import concrete_model
+
 
 register = template.Library()
 
@@ -92,9 +95,12 @@ def menu(context, menu, *, level=0, depth=1, **kwargs):
 
     The default is to return all root nodes from the matching ``menu``.
     """
+    try:
+        page_manager = context['page'].__class__.objects
+    except (AttributeError, KeyError):
+        page_manager = concrete_model(MenuMixin).objects
 
-    # TODO we need some better way to identify the page class.
-    return context['page'].__class__.objects.active().filter(
+    return page_manager.active().filter(
         menu=menu,
         **kwargs
     ).extra(where=[

@@ -7,7 +7,7 @@
 <body>
 
   <nav class="nav-main">
-  {% menu "main" level=1 depth=2 language_code=page.language_code as pages %}
+  {% menu "main" level=1 depth=2 language_code=page.language_code|default:'de' as pages %}
   {% for main, children in pages|group_by_tree %}
 
     {% is_descendant_of page main include_self=True as active %}

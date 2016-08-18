@@ -311,6 +311,20 @@ class Test(TestCase):
             'inactive',
         )
 
+        response_404 = self.client.get('/de/not-exists/')
+        self.assertContains(
+            response_404,
+            '<h1>Page not found</h1>',
+            1,
+            status_code=404,
+        )
+        self.assertContains(
+            response_404,
+            'href="/de/',
+            8,
+            status_code=404,
+        )
+
     def test_apps(self):
         """Article app test (two instance namespaces, two languages)"""
 

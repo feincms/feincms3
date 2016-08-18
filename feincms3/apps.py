@@ -55,6 +55,8 @@ except ImportError:  # pragma: no cover
     class MiddlewareMixin(object):
         pass
 
+from feincms3.utils import concrete_model
+
 
 __all__ = (
     'AppsMiddleware', 'AppsMixin', 'apps_urlconf', 'page_for_app_request',
@@ -145,22 +147,6 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
         return fallback
 
 
-def _iterate_subclasses(cls):
-    """
-    Yields the passed class and all its subclasses in depth-first order.
-    """
-
-    yield cls
-    for scls in cls.__subclasses__():
-        yield from _iterate_subclasses(scls)
-
-
-#: The first non-abstract subclass of AppsMixin is what we're using.
-page_model = SimpleLazyObject(lambda: next(
-    c for c in _iterate_subclasses(AppsMixin) if not c._meta.abstract
-))
-
-
 def apps_urlconf():
     """
     Generates a dynamic URLconf Python module including all applications in
@@ -187,6 +173,7 @@ def apps_urlconf():
     URLconf modules shouldn't gobble up much memory.
     """
 
+    page_model = concrete_model(AppsMixin)
     fields = ('path', 'application', 'app_instance_namespace', 'language_code')
     apps = page_model.objects.active().exclude(
         app_instance_namespace=''
@@ -253,7 +240,7 @@ def page_for_app_request(request):
     """
 
     # Unguarded - if this fails, we shouldn't even be here.
-    page = page_model.objects.get(
+    page = concrete_model(AppsMixin).objects.get(
         language_code=request.resolver_match.namespaces[0],
         app_instance_namespace=request.resolver_match.namespaces[1],
     )
