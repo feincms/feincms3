@@ -2,14 +2,24 @@ language: python
 cache: pip
 sudo: false
 python:
-  - "3.4"
+- '3.4'
 env:
-  - REQ="Django>=1.9,<1.10"
-  - REQ="Django>=1.10,<1.11"
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+- REQ="Django>=1.9,<1.10"
+- REQ="Django>=1.10,<1.11"
 install:
-  - pip install -U pip wheel
-  - pip install $REQ django-ckeditor django-content-editor django-mptt-nomagic django-versatileimagefield feincms-cleanse pytz requests
-  - python setup.py install
-# command to run tests, e.g. python setup.py test
-script: "cd tests && ./manage.py test testapp"
+- pip install -U pip wheel
+- pip install $REQ django-ckeditor django-content-editor django-mptt-nomagic django-versatileimagefield
+  feincms-cleanse pytz requests
+- python setup.py install
+script: cd tests && ./manage.py test testapp
+deploy:
+  provider: pypi
+  user: matthiask
+  password:
+    secure: fSi153u8SssWvbkV9EZio68VsvZCIl9EeLLtfU55TbN7F7nPiMu7mhKb2mGp6ODuv6L2xj+elM+85TjzjqbSeKn8OuyIllOEhevufX0wY8ZIE0fFQYgCSKHQKyal1X1rEoyLoHuYNW4+oridcWX1E1m3AJzsGv1hcHDoIcn3TW8O+GJ0HfaXrCBdtPxbGjhaotcimmH3ae0kyNB0e6wMBWoHeoUCfIuB83hwwnqwRJZlC/DsA++KG0HYKjIFLXXItkYR03NA6XH69f1gkOOZAfV/Q4+ErVIlstqZnWpFWzLSoqPBdD9rFGD3tB+byjAvod3zMk2gvVfUqNYYXuW81U15W7VpZHXcgGYwJZHLVkp3tFOxO6VQ/EJNfQHBhjYCujbQki3B4wVrBlgQzoXaWQ/G1uAkIf5n4qaIk/iYvfjmsTXK2wZFFflt8D/0VdAQMl+ZU53W11s1mSEk2mnjxmO72z077ztYDobFb9k7v8DnVgzphuNCRgj6YxwiY9IS+RrGcpbm1GLCq3dcVr5CRM48Hrmtz/aC3egfjLekvDStDLZ+OYi294pNrOG6sNxPxqE/MOkzs1TKkSoCm7W73nlohNdCOnKsFUSTVT/JU0AqZpIr5qsFjEaEbmKN7fLK+0fBc9NqtBx9s25Ewagx2sZik4UvNg/uG8Ppy9dA2oo=
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    branch: master
+    condition: "$REQ = 'Django>=1.10,<1.11'"
+    repo: matthiask/feincms3
