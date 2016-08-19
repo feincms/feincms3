@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
-from django.db import IntegrityError, models, transaction
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import MPTTModel, TreeForeignKey
