@@ -5,6 +5,11 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Avoided a deprecation warning on Django 1.10 regarding
+  ``django.core.urlresolvers``.
+- Started rolling releases using Travis CI's PyPI deployment provider.
+
+
 `0.9`_ (2016-08-17)
 ~~~~~~~~~~~~~~~~~~~
 

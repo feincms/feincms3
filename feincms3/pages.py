@@ -1,10 +1,14 @@
 from collections import OrderedDict
 
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    # Django <1.10
+    from django.core.urlresolvers import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 
