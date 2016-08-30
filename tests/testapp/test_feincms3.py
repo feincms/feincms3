@@ -195,7 +195,7 @@ class Test(TestCase):
         )
         self.assertContains(
             response,
-            'noembed-youtube',
+            'flex-video widescreen',
             1,
         )
 
