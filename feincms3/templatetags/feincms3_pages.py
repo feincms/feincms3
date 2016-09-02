@@ -71,6 +71,9 @@ def is_descendant_of(node1, node2, include_self=False):
     If using this tag to determine whether menu entries should be active or
     not ``include_self=True`` should be specified.
     """
+    # Strings mean that either node1 or node2 was no page instance.
+    if any(isinstance(node, str) for node in (node1, node2)):
+        return False
     return node1.is_descendant_of(node2, include_self=include_self)
 
 
