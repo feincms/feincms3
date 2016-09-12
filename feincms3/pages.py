@@ -103,15 +103,15 @@ class AbstractPage(MPTTModel):
         )
         for pk, node in self._branch_for_update().items():
             if clash_candidates.filter(path=node.path).exists():
-                raise ValidationError({
-                    'parent': _(
+                raise ValidationError(
+                    _(
                         'The page %(page)s\'s new path %(path)s would'
                         ' not be unique.'
                     ) % {
                         'page': node,
                         'path': node.path,
                     },
-                })
+                )
 
     def save(self, *args, **kwargs):
         """save(self, ..., save_descendants=True)
