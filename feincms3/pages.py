@@ -10,14 +10,14 @@ except ImportError:  # pragma: no cover
     # Django <1.10
     from django.core.urlresolvers import reverse
 
-from mptt.models import MPTTModel, TreeForeignKey
+from cte_tree.models import CTENode
 
 
 class NoCommitException(Exception):
     pass
 
 
-class AbstractPage(MPTTModel):
+class AbstractPage(CTENode):
     """
     Short version: If you want to build a CMS with a hierarchical page
     structure, use this base class.
@@ -41,10 +41,8 @@ class AbstractPage(MPTTModel):
       when building a multilingual site, for language root pages (i.e.
       ``/en/``, ``/de/``, ``/pt-br/`` etc.)
     """
-    parent = TreeForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True, blank=True, related_name='children', db_index=True)
+    _cte_node_path = 'cte_path'
+
     is_active = models.BooleanField(_('is active'), default=True)
     title = models.CharField(_('title'), max_length=200)
     slug = models.SlugField(_('slug'))
@@ -148,3 +146,11 @@ class AbstractPage(MPTTModel):
         if self.path == '/':
             return reverse('pages:root')
         return reverse('pages:page', kwargs={'path': self.path.strip('/')})
+
+    def get_ancestors(self, ascending=True, include_self=True):
+        return self.ancestors()  # TODO FIX THIS
+
+    def is_descendant_of(self, other, include_self=True):
+        if include_self and self == other:
+            return True
+        return super().is_descendant_of(other)

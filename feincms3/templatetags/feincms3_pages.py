@@ -45,17 +45,17 @@ def group_by_tree(iterable):
 
     parent = None
     children = []
-    level = -1
+    depth = -1
 
     for element in iterable:
-        if parent is None or element.level == level:
+        if parent is None or element.depth == depth:
             if parent:
                 yield parent, children
                 parent = None
                 children = []
 
             parent = element
-            level = element.level
+            depth = element.depth
         else:
             children.append(element)
 
