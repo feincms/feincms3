@@ -172,7 +172,7 @@ class MoveForm(forms.Form):
         ] + [
             (
                 obj.pk,
-                '%s %s' % (
+                '%s%s' % (
                     (obj.depth - 1) * (
                         '*** ' if obj == self.instance else '--- '),
                     obj,

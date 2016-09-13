@@ -707,3 +707,134 @@ class Test(TestCase):
                 (child.pk, r2.pk, 10),
             ]
         )
+
+    def prepare_for_move(self):
+        root = Page.objects.create(
+            title='root',
+            slug='root',
+        )
+        p1 = Page.objects.create(
+            title='p1',
+            slug='p1',
+            parent=root,
+        )
+        p2 = Page.objects.create(
+            title='p2',
+            slug='p2',
+            parent=root,
+        )
+
+        self.assertEqual(
+            [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
+            [
+                (root.pk, None, 10),
+                (p1.pk, root.pk, 10),
+                (p2.pk, root.pk, 20),
+            ])
+
+        return root, p1, p2
+
+    def test_move_to_root_last(self):
+        root, p1, p2 = self.prepare_for_move()
+        client = self.login()
+
+        response = client.get(
+            reverse('admin:testapp_page_move', args=(p1.pk,)),
+        )
+        self.assertContains(response, '*** p1', 1)
+        self.assertContains(response, '--- p2', 1)
+
+        response = client.post(
+            reverse('admin:testapp_page_move', args=(p1.pk,)),
+            {
+                'move_to': 'last',
+                'of': '',
+            })
+
+        self.assertEqual(
+            [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
+            [
+                (root.pk, None, 10),
+                (p2.pk, root.pk, 20),
+                (p1.pk, None, 20),
+            ])
+
+    def test_move_to_root_first(self):
+        root, p1, p2 = self.prepare_for_move()
+        client = self.login()
+
+        response = client.post(
+            reverse('admin:testapp_page_move', args=(p2.pk,)),
+            {
+                'move_to': 'first',
+                'of': '',
+            })
+
+        self.assertEqual(
+            [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
+            [
+                (p2.pk, None, 10),
+                (root.pk, None, 20),
+                (p1.pk, root.pk, 10),
+            ])
+
+    def test_move_to_child(self):
+        root, p1, p2 = self.prepare_for_move()
+        client = self.login()
+
+        response = client.post(
+            reverse('admin:testapp_page_move', args=(p2.pk,)),
+            {
+                'move_to': 'first',
+                'of': p1.pk,
+            })
+
+        self.assertEqual(
+            [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
+            [
+                (root.pk, None, 10),
+                (p1.pk, root.pk, 10),
+                (p2.pk, p1.pk, 10),
+            ])
+
+    def test_invalid_move(self):
+        root, p1, p2 = self.prepare_for_move()
+        client = self.login()
+
+        response = client.post(
+            reverse('admin:testapp_page_move', args=(root.pk,)),
+            {
+                'move_to': 'first',
+                'of': p1.pk,
+            })
+
+        self.assertContains(
+            response,
+            'Select a valid choice. That choice is not one of the available choices.',  # noqa
+        )
+
+    def test_reorder_siblings(self):
+        root, p1, p2 = self.prepare_for_move()
+
+        p3 = Page.objects.create(
+            title='p3',
+            slug='p3',
+            parent=root,
+        )
+        client = self.login()
+
+        response = client.post(
+            reverse('admin:testapp_page_move', args=(p3.pk,)),
+            {
+                'move_to': 'right',
+                'of': p1.pk,
+            })
+
+        self.assertEqual(
+            [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
+            [
+                (root.pk, None, 10),
+                (p1.pk, root.pk, 10),
+                (p3.pk, root.pk, 20),
+                (p2.pk, root.pk, 30),
+            ])
