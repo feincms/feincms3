@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 try:
     from django.urls import reverse
@@ -67,7 +68,7 @@ class AbstractPage(CTENode):
 
     def _branch_for_update(self):
         nodes = OrderedDict({self.pk: self})
-        for node in self.get_descendants():
+        for node in self.descendants():
             # Assign already-updated instance:
             node.parent = nodes[node.parent_id]
             if not node.static_path:
@@ -97,7 +98,7 @@ class AbstractPage(CTENode):
             return
 
         clash_candidates = self.__class__._default_manager.exclude(
-            pk__in=self.get_descendants(include_self=True),
+            Q(pk__in=self.descendants()) | Q(pk=self.pk),
         )
         for pk, node in self._branch_for_update().items():
             if clash_candidates.filter(path=node.path).exists():
@@ -148,7 +149,7 @@ class AbstractPage(CTENode):
         return reverse('pages:page', kwargs={'path': self.path.strip('/')})
 
     def get_ancestors(self, ascending=True, include_self=True):
-        return self.ancestors()  # TODO FIX THIS
+        return self.ancestors().order_by('-depth')  # TODO FIX THIS
 
     def is_descendant_of(self, other, include_self=True):
         if include_self and self == other:

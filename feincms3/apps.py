@@ -379,15 +379,14 @@ class AppsMixin(models.Model):
         super(AppsMixin, self).clean()
 
         if self.parent:
-            ancestors = self.parent.get_ancestors(include_self=True)
-            if ancestors.exclude(application='').exists():
+            if self.parent.ancestors().exclude(application='').exists():
                 raise ValidationError({
                     'parent': _(
                         'Invalid parent: Apps may not have any descendants.'
                     ),
                 })
 
-        if self.application and not self.is_leaf_node():
+        if self.application and not self.is_leaf():
             raise ValidationError({
                 'application': _(
                     'Apps may not have any descendants in the tree.',
