@@ -648,9 +648,9 @@ class Test(TestCase):
             slug='child',
         )
 
-        ContentType.objects.clear_cache()  # because of 26. below
+        ContentType.objects.clear_cache()  # because of 13. below
 
-        with self.assertNumQueries(19):
+        with self.assertNumQueries(15):
             # NOTE NOTE NOTE!
             # The exact count is not actually important. What IS important is
             # that the query count does not change without us having a chance
@@ -661,20 +661,16 @@ class Test(TestCase):
             #  3. request.user
             #  4. SAVEPOINT
             #  5. fetch child
-            #  6. I don't really get this one
-            #  7. exists() new parent
-            #  8. ancestors have apps? No? Good.
-            #  9. Descendant's path uniqueness (no descendants, so...)
-            # 10. Path uniqueness
-            # 11. MPTT create gap in tree 2
-            # 12. MPTT move node and close gaps
-            # 13. MPTT refresh child
-            # 14. MPTT refresh parent
-            # 15. page.save()
-            # 16. MPTT refresh child
-            # 17. get page Django content type
-            # 18. insert into admin log
-            # 19. RELEASE SAVEPOINT
+            #  6. fetch root-2
+            #  7. exists() new parent (root-2)
+            #  8. fetch descendants (why?)
+            #  9. path uniqueness check of descendants with (/root-2/child/)
+            # 10. path uniqueness of self
+            # 11. page.save()
+            # 12. fetch descendants for looping
+            # 13. get page Django content type
+            # 14. insert into admin log
+            # 15. RELEASE SAVEPOINT
             response = client.post(
                 reverse('admin:testapp_page_change', args=(child.id,)),
                 merge_dicts(
@@ -700,12 +696,14 @@ class Test(TestCase):
         self.assertEqual(response.status_code, 302)
 
         self.assertEqual(
-            list(Page.objects.order_by('tree_id', 'lft').values_list(
-                'lft', 'rght', 'level', 'tree_id', 'parent_id'
-            )),
+            [(
+                page.pk,
+                page.parent_id,
+                page.position,
+            ) for page in Page.objects.all()],
             [
-                (1, 2, 0, 1, None),
-                (1, 4, 0, 2, None),
-                (2, 3, 1, 2, 2),
+                (r1.pk, None, 10),
+                (r2.pk, None, 20),
+                (child.pk, r2.pk, 10),
             ]
         )
