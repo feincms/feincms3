@@ -527,27 +527,6 @@ class Test(TestCase):
             1,
         )
 
-    def test_duplicated_path_changelist(self):
-        """The change list should not crash but handle the constraint error"""
-
-        client = self.login()
-        home, sub = self.duplicated_path_setup()
-
-        response = client.post('/admin/testapp/page/', {
-            'cmd': 'move_node',
-            'position': 'last-child',
-            'cut_item': sub.pk,
-            'pasted_on': home.pk,
-        }, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-
-        messages = CookieStorage(response)._decode(
-            response.cookies['messages'].value,
-        )
-
-        self.assertEqual(len(messages), 1)
-        self.assertTrue(('%s' % messages[0]).startswith(
-            'Database error:'))
-
     def test_i18n_patterns(self):
         """i18n_patterns in ROOT_URLCONF work even with AppsMiddleware"""
 
