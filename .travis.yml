@@ -11,7 +11,7 @@ env:
 install:
 - pip install -U pip wheel
 - pip install $REQ django-ckeditor django-content-editor django-mptt-nomagic django-versatileimagefield
-  feincms-cleanse pytz requests
+  feincms-cleanse pytz requests psycopg2
 - python setup.py install
 script: cd tests && ./manage.py test testapp && cd ..
 deploy:
