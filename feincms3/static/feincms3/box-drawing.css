@@ -1,0 +1,20 @@
+.box {
+    white-space: nowrap;
+    position: relative;
+}
+
+.box-drawing {
+    display: block;
+    position: absolute;
+    display: inline-block;
+    font-size: 25px;
+    font-weight: normal;
+}
+
+.box-drawing span {
+    display: inline-block;
+    width: 40px;
+}
+
+.box-text {
+}
