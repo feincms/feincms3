@@ -218,9 +218,9 @@ class MoveForm(forms.Form):
 
         for index, instance in enumerate(siblings):
             if instance == self.instance:
-                instance.position = index
+                instance.position = (index + 1) * 10
                 instance.save()
             else:
                 self.model.objects.filter(pk=instance.pk).update(
-                    position=index,
+                    position=(index + 1) * 10,
                 )

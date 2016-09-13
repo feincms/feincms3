@@ -70,7 +70,7 @@ class Test(TestCase):
         response = client.get('/admin/testapp/page/')
         self.assertContains(
             response,
-            '/static/mptt/draggable-admin.js',
+            '/static/feincms3/box-drawing.css',
             1,
         )
         self.assertNotContains(
@@ -83,10 +83,6 @@ class Test(TestCase):
             response,
             '/static/content_editor/content_editor.js',
             1,
-        )
-        self.assertNotContains(
-            response,
-            '/static/mptt/draggable-admin.js',
         )
 
     def test_add_empty_page(self):
@@ -674,16 +670,6 @@ class Test(TestCase):
         )
 
         ContentType.objects.clear_cache()  # because of 26. below
-        self.assertEqual(
-            list(Page.objects.order_by('tree_id', 'lft').values_list(
-                'lft', 'rght', 'level', 'tree_id', 'parent_id'
-            )),
-            [
-                (1, 4, 0, 1, None),
-                (2, 3, 1, 1, 1),
-                (1, 2, 0, 2, None),
-            ]
-        )
 
         with self.assertNumQueries(19):
             # NOTE NOTE NOTE!

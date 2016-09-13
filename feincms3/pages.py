@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models import Q
+from django.db.models import Max, Q
 from django.utils.translation import ugettext_lazy as _
 try:
     from django.urls import reverse
@@ -128,6 +128,11 @@ class AbstractPage(CTENode):
             self.path = '{}{}/'.format(
                 self.parent.path if self.parent else '/',
                 self.slug)
+
+        if not self.position:
+            self.position = (self.__class__._default_manager.filter(
+                parent_id=self.parent_id,
+            ).order_by().aggregate(p=Max('position'))['p'] or 0) + 10
 
         super(AbstractPage, self).save(*args, **kwargs)
 
