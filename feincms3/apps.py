@@ -379,7 +379,8 @@ class AppsMixin(models.Model):
         super(AppsMixin, self).clean()
 
         if self.parent:
-            if self.parent.application or self.parent.ancestors().exclude(application='').exists():
+            if (self.parent.application or
+                    self.parent.ancestors().exclude(application='').exists()):
                 raise ValidationError(_(
                     'Invalid parent: Apps may not have any descendants.'
                 ))
