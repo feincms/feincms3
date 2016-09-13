@@ -11,7 +11,7 @@ except ImportError:  # pragma: no cover
     # Django <1.10
     from django.core.urlresolvers import reverse
 
-from cte_tree.models import CTENode
+from cte_forest.models import CTENode
 
 
 class NoCommitException(Exception):

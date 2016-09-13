@@ -10,8 +10,8 @@ env:
 - REQ="Django>=1.10,<1.11"
 install:
 - pip install -U pip wheel
-- pip install $REQ django-ckeditor django-content-editor django-versatileimagefield
-  feincms-cleanse pytz requests psycopg2 https://github.com/matthiask/django-cte-trees/archive/master.zip
+- pip install $REQ django-ckeditor django-content-editor django-cte-forest
+  django-versatileimagefield feincms-cleanse pytz requests psycopg2
 - python setup.py install
 script: cd tests && ./manage.py test testapp && cd ..
 deploy:

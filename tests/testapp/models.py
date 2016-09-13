@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cte_tree.models import CTENodeManager
+from cte_forest.models import CTENodeManager
 
 from content_editor.models import Region, Template, create_plugin_base
 
