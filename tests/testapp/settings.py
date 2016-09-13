@@ -4,8 +4,8 @@ SITE_ID = 1
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'feincms3',
     }
 }
 
@@ -20,7 +20,6 @@ INSTALLED_APPS = [
 
     # Libraries
     'feincms3',
-    'mptt',
     'content_editor',
 
     # Libraries for content-editor plugins

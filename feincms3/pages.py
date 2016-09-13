@@ -25,7 +25,8 @@ class AbstractPage(CTENode):
 
     It comes with the following fields:
 
-    - ``parent``: (a nullable tree foreign key) and all MPTT fields
+    - ``parent``: (a nullable tree foreign key) and a ``position`` field for
+      relatively ordering pages.
     - ``is_active``: Boolean field. The ``save()`` method ensures that inactive
       pages never have any active descendants.
     - ``title`` and ``slug``
@@ -43,10 +44,13 @@ class AbstractPage(CTENode):
       ``/en/``, ``/de/``, ``/pt-br/`` etc.)
     """
     _cte_node_path = 'cte_path'
+    _cte_node_order_by = ('position',)
 
     is_active = models.BooleanField(_('is active'), default=True)
     title = models.CharField(_('title'), max_length=200)
     slug = models.SlugField(_('slug'))
+    position = models.PositiveIntegerField(
+        db_index=True, editable=False, default=0)
 
     # Who even cares about MySQL
     path = models.CharField(
@@ -148,6 +152,7 @@ class AbstractPage(CTENode):
             return reverse('pages:root')
         return reverse('pages:page', kwargs={'path': self.path.strip('/')})
 
+    # Compatibility wrappers for code still expecting django-mptt's API
     def get_ancestors(self, ascending=True, include_self=True):
         return self.ancestors().order_by('-depth')  # TODO FIX THIS
 

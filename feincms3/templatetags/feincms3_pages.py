@@ -94,6 +94,7 @@ def menu(context, menu, *, level=0, depth=1, **kwargs):
     # TODO we need some better way to identify the page class.
     return context['page'].__class__.objects.active().filter(
         menu=menu,
-        level__range=[level, level + depth - 1],
-        **kwargs
-    )
+        # **kwargs
+    ).extra(where=[
+        'depth BETWEEN %d AND %d' % (level + 1, level + depth),
+    ])

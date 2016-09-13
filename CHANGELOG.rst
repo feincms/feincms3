@@ -5,6 +5,12 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Switched from django-mptt_ to django-cte-trees_ which means that feincms3
+  is for the moment PostgreSQL_-only. By switching we completely avoid the
+  MPTT attribute corruption which plagued projects for years. The `lft`
+  attribute is directly reusable as `position`, and should be renamed in a
+  migration insteaf of created from scratch to avoid losing the ordering of
+  nodes within a branch.
 - Avoided a deprecation warning on Django 1.10 regarding
   ``django.core.urlresolvers``.
 - Started rolling releases using Travis CI's PyPI deployment provider.
@@ -133,6 +139,8 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
 .. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
+.. _django-cte-trees: https://github.com/matthiask/django-cte-trees
+.. _PostgreSQL: https://www.postgresql.org/
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
 .. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2

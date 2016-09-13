@@ -1,9 +1,11 @@
 Django>=1.9
 django-ckeditor
 django-content-editor
-django-mptt-nomagic
 django-versatileimagefield
 feincms-cleanse
 requests
+psycopg2
 pytz
 coverage
+
+-e git+https://github.com/matthiask/django-cte-trees#egg=django_cte_trees_python3

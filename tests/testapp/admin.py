@@ -4,17 +4,16 @@ from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditor
 
-from mptt.admin import DraggableMPTTAdmin
-
 from feincms3 import plugins
+from feincms3.admin import TreeAdmin
 
 from . import models
 
 
 @admin.register(models.Page)
-class PageAdmin(DraggableMPTTAdmin, ContentEditor):
+class PageAdmin(ContentEditor, TreeAdmin):
     list_display = [
-        'tree_actions', 'indented_title',
+        'indented_title', 'move_column',
         'is_active', 'menu',
         'language_code',
         'template_key',
@@ -22,7 +21,6 @@ class PageAdmin(DraggableMPTTAdmin, ContentEditor):
     ]
     list_filter = ['is_active', 'menu']
     list_editable = ['is_active']
-    list_display_links = ['indented_title']
     prepopulated_fields = {
         'slug': ('title',),
     }
@@ -33,8 +31,6 @@ class PageAdmin(DraggableMPTTAdmin, ContentEditor):
         'application': admin.HORIZONTAL,
     }
     raw_id_fields = ['parent']
-
-    mptt_level_indent = 30
 
     fieldsets = [
         (None, {
