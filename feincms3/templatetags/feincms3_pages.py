@@ -74,7 +74,9 @@ def is_descendant_of(node1, node2, include_self=False):
     # Strings mean that either node1 or node2 was no page instance.
     if any(isinstance(node, str) for node in (node1, node2)):
         return False
-    return node1.is_descendant_of(node2, include_self=include_self)
+    if include_self and node1 == node2:
+        return True
+    return node1.is_descendant_of(node2)
 
 
 @register.simple_tag(takes_context=True)

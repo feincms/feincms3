@@ -160,8 +160,3 @@ class AbstractPage(CTENode):
     # Compatibility wrappers for code still expecting django-mptt's API
     def get_ancestors(self, ascending=True, include_self=True):
         return self.ancestors().order_by('-depth')  # TODO FIX THIS
-
-    def is_descendant_of(self, other, include_self=True):
-        if include_self and self == other:
-            return True
-        return super().is_descendant_of(other)
