@@ -1,6 +1,6 @@
 Django>=1.9
 django-ckeditor
-django-content-editor
+django-content-editor>=0.10.1
 django-cte-forest
 django-versatileimagefield
 feincms-cleanse

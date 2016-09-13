@@ -2,11 +2,9 @@ import warnings
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.messages.storage.cookie import CookieStorage
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
-from django.utils.deprecation import RemovedInDjango20Warning
 from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import (
@@ -17,11 +15,6 @@ from feincms3.plugins.external import ExternalForm
 from .models import Page, External, Article
 
 
-# I know that field.rel and rel.to have been deprecated, thank you.
-warnings.filterwarnings(
-    'ignore',
-    category=RemovedInDjango20Warning,
-    module=r'mptt')
 # Something about inspect.getargspec in beautifulsoup4.
 warnings.filterwarnings(
     'ignore',
@@ -484,7 +477,6 @@ class Test(TestCase):
 
         self.assertEqual(sub.get_absolute_url(), '/sub/')
         self.assertEqual(home.get_absolute_url(), '/en/')
-        sub.refresh_from_db()  # mptt bookkeeping
 
         return home, sub
 
@@ -763,7 +755,7 @@ class Test(TestCase):
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
-        response = client.post(
+        client.post(
             reverse('admin:testapp_page_move', args=(p2.pk,)),
             {
                 'move_to': 'first',
@@ -782,7 +774,7 @@ class Test(TestCase):
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
-        response = client.post(
+        client.post(
             reverse('admin:testapp_page_move', args=(p2.pk,)),
             {
                 'move_to': 'first',
@@ -823,7 +815,7 @@ class Test(TestCase):
         )
         client = self.login()
 
-        response = client.post(
+        client.post(
             reverse('admin:testapp_page_move', args=(p3.pk,)),
             {
                 'move_to': 'right',

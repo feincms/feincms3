@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.utils.html import format_html
 
-from content_editor.contents import contents_for_mptt_item
+from content_editor.contents import contents_for_item
 
 from feincms3 import plugins
 from feincms3.renderer import TemplatePluginRenderer
@@ -41,6 +41,7 @@ def page_detail(request, path=None):
     page.activate_language(request)
     return render(request, page.template.template_name, {
         'page': page,
-        'contents': contents_for_mptt_item(page, renderer.plugins()),
+        'contents': contents_for_item(
+            page, renderer.plugins(), page.ancestors().reverse()),
         'renderer': renderer,
     })
