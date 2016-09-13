@@ -156,7 +156,3 @@ class AbstractPage(CTENode):
         if self.path == '/':
             return reverse('pages:root')
         return reverse('pages:page', kwargs={'path': self.path.strip('/')})
-
-    # Compatibility wrappers for code still expecting django-mptt's API
-    def get_ancestors(self, ascending=True, include_self=True):
-        return self.ancestors().order_by('-depth')  # TODO FIX THIS
