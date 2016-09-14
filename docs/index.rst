@@ -3,8 +3,8 @@ feincms3
 ========
 
 feincms3 provides additional building blocks on top of
-django-content-editor_ and django-mptt_ which make building a page CMS
-(and also other types of CMS) simpler.
+django-content-editor_ and django-cte-forest_ which make building a page
+CMS (and also other types of CMS) simpler.
 
 This documentation consists of the following parts:
 
@@ -46,7 +46,7 @@ Parts and responsibilities
 ==========================
 
 To understand feincms3 you'll first have to know about
-django-content-editor_ and django-mptt_.
+django-content-editor_ and django-cte-forest_.
 
 Django's builtin admin application provides a really good and usable
 administration interface for managing structured content.
@@ -56,16 +56,14 @@ often necessary for content management systems. For example, articles
 may be composed of text blocks with images and videos interspersed
 throughout. Those content elements are called plugins [#]_.
 
-django-mptt_ provides a smart way to efficiently fetch
-tree-shaped data in a relational database. Since version 0.8.x (the
-current django-mptt_ release at the time of writing) django-mptt_ comes
-with a a graphical changelist replacement which offers a drag-drop
-interface for rearranging nodes in a tree [#]_.
+django-cte-forest_ provides a smart way to efficiently fetch
+tree-shaped data in a relational database supporting Common Table
+Expressions [#]_.
 
 feincms3 has the following main parts:
 
-- A base class for your own **pages** model if you want to use django-mptt_
-  to build a hierarchical page tree.
+- A base class for your own **pages** model if you want to use
+  django-cte-forest_ to build a hierarchical page tree.
 - Model **mixins** for common tasks such as building navigation menus from a
   page tree, multilingual sites and sites with differing templates on
   different parts of the site.
@@ -78,6 +76,8 @@ feincms3 has the following main parts:
 - Various utilities (**shortcuts** and **template tags**).
 - A **renderer** and associated template tags if you don't want to use
   django-content-editor_'s ``PluginRenderer``.
+- A **admin** class for show the tree hierarchy with helpers for moving
+  nodes to other places in the forest.
 
 Please note that there exist only abstract model classes in feincms3 and
 its dependencies. The concrete class (for example, the page model and
@@ -86,8 +86,10 @@ its plugins) **have** to be added by you.
 .. [#] FeinCMS_ used to call those content types, a name which
    unfortunately was often confused with
    ``django.contrib.contenttypes``' content types.
-.. [#] The code in django-mptt_ is a derivative of FeinCMS_'s
-   ``TreeEditor``.
+.. [#] Previously, feincms3 built on top of django-mptt_ and its
+   ``DraggableMPTTAdmin``, a derivative of FeinCMS_'s ``TreeEditor``. This
+   was dropped to completely avoid the tree corruption which plagued
+   projects for years.
 
 
 Pages (``feincms3.pages``)
@@ -184,6 +186,13 @@ Template tags
    :members:
 
 
+Admin classes (``feincms3.admin``)
+==================================
+
+.. automodule:: feincms3.admin
+   :members:
+
+
 Next steps
 ==========
 
@@ -202,7 +211,6 @@ You'll have to add at least the following apps to ``INSTALLED_APPS``:
 
 - ``feincms3``
 - ``content_editor``
-- ``mptt`` for :mod:`feincms3.pages`
 - ``ckeditor`` if you want to use :mod:`feincms3.plugins.richtext`
 - ``versatileimagefield`` for :mod:`feincms3.plugins.versatileimage`
 - ... and of course also the app where you put your concrete models such
@@ -234,7 +242,7 @@ Where ``app.pages.views`` contains the following view::
 
     from django.shortcuts import get_object_or_404, render
 
-    from content_editor.contents import contents_for_mptt_item
+    from content_editor.contents import contents_for_item
 
     from .models import Page, RichText, Image
     from .renderer imoprt renderer
@@ -246,7 +254,10 @@ Where ``app.pages.views`` contains the following view::
             path='/{}/'.format(path) if path else '/',
         )
         page.activate_language(request)
-        contents = contents_for_mptt_item(page, [RichText, Image])
+        contents = contents_for_item(
+            page,
+            [RichText, Image],
+            inherit_from=page.ancestors().reverse())
         return render(request, page.template.template_name, {
             'page': page,
             'content': {
@@ -322,3 +333,4 @@ of your own page model.
 .. _comparable CMS systems: https://www.djangopackages.com/grids/g/cms/
 .. _oEmbed: http://oembed.com/
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor
+.. _django-cte-forest: https://github.com/matthiask/django-cte-forest

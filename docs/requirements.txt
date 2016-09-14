@@ -1,7 +1,7 @@
-Django<1.10
+Django
 django-ckeditor
-django-content-editor
-django-mptt
+django-content-editor>0.10.1
+django-cte-forest
 django-versatileimagefield
 feincms-cleanse
 requests
