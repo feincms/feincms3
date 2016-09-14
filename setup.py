@@ -29,7 +29,7 @@ setup(
     #     'Django',
     #     'django-ckeditor',
     #     'django-content-editor',
-    #     'django-mptt-nomagic',  # For now!
+    #     'django-cte-forest',
     #     'django-versatileimagefield',
     #     'feincms-cleanse',
     #     'requests',
