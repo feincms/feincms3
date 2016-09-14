@@ -322,6 +322,48 @@ of your own page model.
    functionality into your own views code.
 
 
+For completeness, here's an example how the ``app.pages.admin`` module
+might look like::
+
+    from django.contrib import admin
+
+    from content_editor.admin import ContentEditor
+    from feincms3.admin import TreeAdmin
+    from feincms3 import plugins
+
+    from app.pages import models
+
+
+    class PageAdmin(ContentEditor, TreeAdmin):
+        list_display = (
+            'indented_title', 'move_column', 'is_active',
+            'menu', 'template_key', 'language_code', 'application')
+        list_per_page = 250
+        prepopulated_fields = {'slug': ('title',)}
+        raw_id_fields = ('parent',)
+
+        # fieldsets = ... (Recommended! No example here though. Note
+        # that the content editor not only allows collapsed, but also
+        # tabbed fieldsets -- simply add 'tabbed' to the 'classes' key.
+
+        inlines = [
+            plugins.RichTextInline.create(
+                models.RichText,
+            ),
+            plugins.ImageInline.create(
+                models.Image,
+            ),
+        ]
+
+        # class Media: ... (Add font-awesome from a CDN and nicely
+        # looking buttons for plugins as is described in
+        # django-content-editor's documentation -- search for
+        # "plugin_buttons.js")
+
+
+    admin.site.register(models.Page, PageAdmin)
+
+
 .. _Django: https://www.djangoproject.com/
 .. _django-content-editor: http://django-content-editor.readthedocs.org/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
