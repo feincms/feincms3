@@ -14,10 +14,6 @@ except ImportError:  # pragma: no cover
 from cte_forest.models import CTENode
 
 
-class NoCommitException(Exception):
-    pass
-
-
 class AbstractPage(CTENode):
     """
     Short version: If you want to build a CMS with a hierarchical page
