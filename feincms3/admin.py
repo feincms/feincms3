@@ -19,15 +19,37 @@ csrf_protect_m = method_decorator(csrf_protect)
 
 
 class TreeAdmin(ModelAdmin):
+    """
+    ``ModelAdmin`` subclass for managing models using django-cte-forest_
+    trees.
+
+    Shows the tree's hierarchy and adds a view to move nodes around. To use
+    this class the two columns ``indented_title`` and ``move_column`` should be
+    added to subclasses ``list_display``::
+
+        class PageAdmin(TreeAdmin):  # Maybe also ContentEditor for pages.
+            list_display = ('indented_title', 'move_column', ...)
+
+        admin.site.register(Page, PageAdmin)
+    """
+
+    list_display = ('indented_title', 'move_column')
+
     class Media:
         css = {'all': {
             'feincms3/box-drawing.css',
         }}
 
     def get_ordering(self, request):
+        """
+        Order by tree (depth-first traversal) and ``position`` within a level
+        """
         return (self.model._cte_node_ordering, 'position')
 
     def indented_title(self, instance):
+        """
+        Use Unicode box-drawing characters to visualize the tree hierarchy.
+        """
         box_drawing = []
         for i in range(instance.depth - 2):
             box_drawing.append('<span>&#x2502;</span>')
@@ -46,6 +68,10 @@ class TreeAdmin(ModelAdmin):
     indented_title.short_description = _('title')
 
     def move_column(self, instance):
+        """
+        Show a ``move`` link which leads to a separate page where the move
+        destination may be selected.
+        """
         opts = self.model._meta
         return format_html(
             '<a href="{}">{}</a>',
@@ -58,6 +84,9 @@ class TreeAdmin(ModelAdmin):
     move_column.short_description = ''
 
     def get_urls(self):
+        """
+        Add our own ``move`` view.
+        """
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
@@ -86,7 +115,7 @@ class TreeAdmin(ModelAdmin):
             raise Http404()
 
         if request.method == 'POST':
-            form = MoveForm(request.POST, obj=obj, model=model)
+            form = MoveForm(request.POST, obj=obj)
 
             if form.is_valid():
                 form.save()
@@ -105,7 +134,7 @@ class TreeAdmin(ModelAdmin):
                     opts.app_label, opts.model_name))
 
         else:
-            form = MoveForm(obj=obj, model=model)
+            form = MoveForm(obj=obj)
 
         adminForm = helpers.AdminForm(
             form,
@@ -139,6 +168,12 @@ class TreeAdmin(ModelAdmin):
 
 
 class MoveForm(forms.Form):
+    """
+    Allows making the node the left or right sibling or the first or last
+    child of another node.
+
+    Requires the node to be moved as ``obj`` keyword argument.
+    """
     MOVE_CHOICES = (
         ('left', _('left sibling')),
         ('right', _('right sibling')),
@@ -154,7 +189,7 @@ class MoveForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('obj')
-        self.model = kwargs.pop('model')
+        self.model = self.instance.__class__
 
         super().__init__(*args, **kwargs)
 
