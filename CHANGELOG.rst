@@ -5,6 +5,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed the implementation of the ``is_descendant_of`` template tag do
+  not depend on django-mptt_'s API anymore, and removed the
+  compatibility shims from ``AbstractPage``.
+- Made the documentation build again and added some documentation for
+  the new ``feincms3.admin`` module.
+
+
 `0.10`_ (2016-09-13)
 ~~~~~~~~~~~~~~~~~~~~
 
