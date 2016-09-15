@@ -6,7 +6,7 @@ from django.contrib.admin import ModelAdmin, helpers
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.db import transaction
+from django.db import router, transaction
 from django.http import Http404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -101,70 +101,70 @@ class TreeAdmin(ModelAdmin):
         ] + super().get_urls()
 
     @csrf_protect_m
-    @transaction.atomic
     def move_view(self, request, object_id):
-        model = self.model
-        opts = model._meta
+        with transaction.atomic(using=router.db_for_write(self.model)):
+            model = self.model
+            opts = model._meta
 
-        obj = self.get_object(request, unquote(object_id))
+            obj = self.get_object(request, unquote(object_id))
 
-        if not self.has_change_permission(request, obj):
-            raise PermissionDenied
+            if not self.has_change_permission(request, obj):
+                raise PermissionDenied
 
-        if obj is None:
-            raise Http404()
+            if obj is None:
+                raise Http404()
 
-        if request.method == 'POST':
-            form = MoveForm(request.POST, obj=obj)
+            if request.method == 'POST':
+                form = MoveForm(request.POST, obj=obj)
 
-            if form.is_valid():
-                form.save()
-                self.message_user(request, _(
-                    'The node %(node)s has been made the'
-                    ' %(move_to)s of node %(to)s.'
-                ) % {
-                    'node': obj,
-                    'move_to': dict(MoveForm.MOVE_CHOICES).get(
-                        form.cleaned_data['move_to'],
-                        form.cleaned_data['move_to']),
-                    'to': form.cleaned_data['of'] or _('root node'),
-                })
+                if form.is_valid():
+                    form.save()
+                    self.message_user(request, _(
+                        'The node %(node)s has been made the'
+                        ' %(move_to)s of node %(to)s.'
+                    ) % {
+                        'node': obj,
+                        'move_to': dict(MoveForm.MOVE_CHOICES).get(
+                            form.cleaned_data['move_to'],
+                            form.cleaned_data['move_to']),
+                        'to': form.cleaned_data['of'] or _('root node'),
+                    })
 
-                return redirect('admin:%s_%s_changelist' % (
-                    opts.app_label, opts.model_name))
+                    return redirect('admin:%s_%s_changelist' % (
+                        opts.app_label, opts.model_name))
 
-        else:
-            form = MoveForm(obj=obj)
+            else:
+                form = MoveForm(obj=obj)
 
-        adminForm = helpers.AdminForm(
-            form,
-            [(None, {
-                'fields': ('move_to', 'of'),
-            })],  # list(self.get_fieldsets(request, obj)),
-            {},  # self.get_prepopulated_fields(request, obj),
-            (),  # self.get_readonly_fields(request, obj),
-            model_admin=self)
-        media = self.media + adminForm.media
+            adminForm = helpers.AdminForm(
+                form,
+                [(None, {
+                    'fields': ('move_to', 'of'),
+                })],  # list(self.get_fieldsets(request, obj)),
+                {},  # self.get_prepopulated_fields(request, obj),
+                (),  # self.get_readonly_fields(request, obj),
+                model_admin=self)
+            media = self.media + adminForm.media
 
-        context = dict(
-            self.admin_site.each_context(request),
-            title=_('Move %s') % obj,
-            object_id=object_id,
-            original=obj,
-            adminform=adminForm,
-            errors=helpers.AdminErrorList(form, ()),
-            preserved_filters=self.get_preserved_filters(request),
-            media=media,
-            is_popup=False,
+            context = dict(
+                self.admin_site.each_context(request),
+                title=_('Move %s') % obj,
+                object_id=object_id,
+                original=obj,
+                adminform=adminForm,
+                errors=helpers.AdminErrorList(form, ()),
+                preserved_filters=self.get_preserved_filters(request),
+                media=media,
+                is_popup=False,
 
-            save_as_new=False,
-            show_save_and_add_another=False,
-            show_save_and_continue=False,
-            show_delete=False,
-        )
+                save_as_new=False,
+                show_save_and_add_another=False,
+                show_save_and_continue=False,
+                show_delete=False,
+            )
 
-        return self.render_change_form(
-            request, context, add=False, change=False, obj=obj)
+            return self.render_change_form(
+                request, context, add=False, change=False, obj=obj)
 
 
 class MoveForm(forms.Form):
