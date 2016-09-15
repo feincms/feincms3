@@ -12,6 +12,7 @@ Change log
   the new ``feincms3.admin`` module.
 - Made ``TreeAdmin.move_view`` run transactions on the correct database
   in multi-DB setups.
+- Removed the unused ``NoCommitException`` class.
 
 
 `0.10`_ (2016-09-13)
