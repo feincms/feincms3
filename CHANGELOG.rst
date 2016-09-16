@@ -13,6 +13,7 @@ Change log
 - Made ``TreeAdmin.move_view`` run transactions on the correct database
   in multi-DB setups.
 - Removed the unused ``NoCommitException`` class.
+- Fixed a crash in the ``MoveForm`` validation.
 
 
 `0.10`_ (2016-09-13)

@@ -217,6 +217,9 @@ class MoveForm(forms.Form):
 
     def clean(self):
         data = super().clean()
+        if not data.get('move_to'):
+            return data
+
         if data.get('of') and data.get('of') == self.instance:
             raise forms.ValidationError({
                 'of': _('Cannot move node to a position relative to itself.'),
