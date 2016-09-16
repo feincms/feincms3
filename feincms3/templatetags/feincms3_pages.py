@@ -95,12 +95,7 @@ def menu(context, menu, *, level=0, depth=1, **kwargs):
 
     The default is to return all root nodes from the matching ``menu``.
     """
-    try:
-        page_manager = context['page'].__class__.objects
-    except (AttributeError, KeyError):
-        page_manager = concrete_model(MenuMixin).objects
-
-    return page_manager.active().filter(
+    return concrete_model(MenuMixin).objects.active().filter(
         menu=menu,
         **kwargs
     ).extra(where=[
