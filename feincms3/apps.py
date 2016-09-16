@@ -42,7 +42,6 @@ from django.conf.urls import url, include
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, signals
-from django.utils.functional import SimpleLazyObject
 from django.utils.translation import get_language, ugettext_lazy as _
 try:
     from django.urls import NoReverseMatch, reverse
