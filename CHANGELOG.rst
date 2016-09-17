@@ -15,6 +15,8 @@ Change log
 - Removed the unused ``NoCommitException`` class.
 - Fixed a crash in the ``MoveForm`` validation.
 - Made ``AppsMiddleware`` work with Django's ``MIDDLEWARE`` setting.
+- Made the ``{% menu %}`` template tag not depend on a ``page`` variable
+  in context.
 
 
 `0.10`_ (2016-09-13)
