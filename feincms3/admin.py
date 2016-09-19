@@ -5,7 +5,6 @@ from django.conf.urls import url
 from django.contrib.admin import ModelAdmin, helpers
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.db import router, transaction
 from django.http import Http404
 from django.shortcuts import redirect
@@ -13,6 +12,11 @@ from django.utils.decorators import method_decorator
 from django.utils.html import format_html, mark_safe
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext_lazy as _, pgettext
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    # Django <1.10
+    from django.core.urlresolvers import reverse
 
 
 csrf_protect_m = method_decorator(csrf_protect)
