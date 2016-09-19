@@ -14,6 +14,7 @@ Change log
   in multi-DB setups.
 - Removed the unused ``NoCommitException`` class.
 - Fixed a crash in the ``MoveForm`` validation.
+- Made ``AppsMiddleware`` work with Django's ``MIDDLEWARE`` setting.
 
 
 `0.10`_ (2016-09-13)

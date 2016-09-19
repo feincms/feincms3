@@ -49,6 +49,11 @@ try:
 except ImportError:  # pragma: no cover
     # Django <1.10
     from django.core.urlresolvers import NoReverseMatch, reverse
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:  # pragma: no cover
+    class MiddlewareMixin(object):
+        pass
 
 
 __all__ = (
@@ -255,7 +260,7 @@ def page_for_app_request(request):
     return page
 
 
-class AppsMiddleware(object):
+class AppsMiddleware(MiddlewareMixin):
     """
     This middleware must be put in ``MIDDLEWARE_CLASSES``; it simply assigns
     the return value of :func:`~feincms3.apps.apps_urlconf` to
