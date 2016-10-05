@@ -63,13 +63,11 @@ __all__ = (
 )
 
 
-def reverse_any(viewnames, *args, **kwargs):
+def reverse_any(viewnames, urlconf=None, args=None, kwargs=None,
+                *fargs, **fkwargs):
     """
     Tries reversing a list of viewnames with the same arguments, and returns
     the first result where no ``NoReverseMatch`` exception is raised.
-
-    The ``NoReverseMatch`` exception of the last viewname is passed on if
-    reversing fails for all viewnames.
 
     Usage::
 
@@ -79,14 +77,18 @@ def reverse_any(viewnames, *args, **kwargs):
         ), kwargs={'slug': 'article-slug'})
     """
 
-    for viewname in viewnames[:-1]:
+    for viewname in viewnames:
         try:
-            return reverse(viewname, *args, **kwargs)
+            return reverse(viewname, urlconf, args, kwargs, *fargs, **fkwargs)
         except NoReverseMatch:
             pass
 
-    # Let the exception bubble for the last viewname
-    return reverse(viewnames[-1], *args, **kwargs)
+    raise NoReverseMatch(
+        "Reverse for any of '%s' with arguments '%s' and keyword arguments"
+        " '%s' not found." % (
+            "', '".join(viewnames),
+            args or [],
+            kwargs or {}))
 
 
 def reverse_app(namespaces, viewname, *args, **kwargs):
@@ -269,17 +271,17 @@ class AppsMixin(models.Model):
     required dependency of :mod:`feincms3.apps`.
 
     ``APPLICATIONS`` contains a list of application configurations consisting
-    of tuples containing:
+    of:
 
-    - Application name (It is recommended to use the value of the app
-      URLconf's ``app_name`` because it is less confusing that way.)
+    - Application name (used as instance namespace)
     - User-visible name
     - Options dictionary
 
     Available options include:
 
     - ``urlconf``: The path to the URLconf module for the application. Besides
-      the ``urlpatterns`` list the module should specify an ``app_name``.
+      the ``urlpatterns`` list the module should probably also specify a
+      ``app_name``.
     - ``required_fields``: A list of page class fields which must be non-empty
       for the application to work. The values are checked in
       ``AppsMixin.clean``.

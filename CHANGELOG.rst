@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Made ``reverse_any`` mention all viewnames in the ``NoReverseMatch``
+  exception instead of bubbling the last viewname's exception.
+
 
 `0.11`_ (2016-09-19)
 ~~~~~~~~~~~~~~~~~~~~
