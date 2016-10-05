@@ -269,17 +269,17 @@ class AppsMixin(models.Model):
     required dependency of :mod:`feincms3.apps`.
 
     ``APPLICATIONS`` contains a list of application configurations consisting
-    of:
+    of tuples containing:
 
-    - Application name (used as instance namespace)
+    - Application name (It is recommended to use the value of the app
+      URLconf's ``app_name`` because it is less confusing that way.)
     - User-visible name
     - Options dictionary
 
     Available options include:
 
     - ``urlconf``: The path to the URLconf module for the application. Besides
-      the ``urlpatterns`` list the module should probably also specify a
-      ``app_name``.
+      the ``urlpatterns`` list the module should specify an ``app_name``.
     - ``required_fields``: A list of page class fields which must be non-empty
       for the application to work. The values are checked in
       ``AppsMixin.clean``.
