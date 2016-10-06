@@ -2,6 +2,7 @@ import warnings
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
@@ -100,6 +101,7 @@ class Test(TestCase):
                 zero_management_form_data('testapp_image_set'),
                 zero_management_form_data('testapp_snippet_set'),
                 zero_management_form_data('testapp_external_set'),
+                zero_management_form_data('testapp_html_set'),
             ),
         )
 
@@ -142,6 +144,7 @@ class Test(TestCase):
                 zero_management_form_data('testapp_image_set'),
                 zero_management_form_data('testapp_snippet_set'),
                 zero_management_form_data('testapp_external_set'),
+                zero_management_form_data('testapp_html_set'),
                 {
                     'testapp_richtext_set-0-text': '<span style="font-weight:bold">Hello!</span>',  # noqa
                     'testapp_richtext_set-TOTAL_FORMS': 1,
@@ -524,6 +527,7 @@ class Test(TestCase):
                 zero_management_form_data('testapp_image_set'),
                 zero_management_form_data('testapp_snippet_set'),
                 zero_management_form_data('testapp_external_set'),
+                zero_management_form_data('testapp_html_set'),
             ),
         )
 
@@ -605,6 +609,7 @@ class Test(TestCase):
             zero_management_form_data('testapp_image_set'),
             zero_management_form_data('testapp_snippet_set'),
             zero_management_form_data('testapp_external_set'),
+            zero_management_form_data('testapp_html_set'),
         ))
         self.assertContains(
             response,
@@ -700,6 +705,7 @@ class Test(TestCase):
                     zero_management_form_data('testapp_image_set'),
                     zero_management_form_data('testapp_snippet_set'),
                     zero_management_form_data('testapp_external_set'),
+                    zero_management_form_data('testapp_html_set'),
                 ),
             )
 
@@ -848,3 +854,53 @@ class Test(TestCase):
                 (p3.pk, root.pk, 20),
                 (p2.pk, root.pk, 30),
             ])
+
+    def test_redirects(self):
+        page1 = Page.objects.create(
+            title='home',
+            slug='home',
+            path='/de/',
+            static_path=True,
+            language_code='de',
+            is_active=True,
+        )
+        page2 = Page.objects.create(
+            title='something',
+            slug='something',
+            path='/something/',
+            static_path=True,
+            language_code='de',
+            is_active=True,
+            redirect_to_page=page1,
+        )
+        page3 = Page.objects.create(
+            title='something2',
+            slug='something2',
+            path='/something2/',
+            static_path=True,
+            language_code='de',
+            is_active=True,
+            redirect_to_url='http://example.com/',
+        )
+
+        self.assertRedirects(
+            self.client.get(page2.get_absolute_url()),
+            page1.get_absolute_url(),
+        )
+
+        self.assertRedirects(
+            self.client.get(page3.get_absolute_url(), follow=False),
+            'http://example.com/',
+            fetch_redirect_response=False,
+        )
+
+        self.assertRaises(
+           ValidationError,
+           lambda: Page(
+                title='test',
+                slug='test',
+                language_code='de',
+                redirect_to_page=page1,
+                redirect_to_url='nonempty',
+            ).full_clean(),
+        )

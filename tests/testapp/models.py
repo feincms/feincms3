@@ -7,7 +7,8 @@ from content_editor.models import Region, Template, create_plugin_base
 
 from feincms3 import plugins
 from feincms3.apps import AppsMixin, reverse_app
-from feincms3.mixins import TemplateMixin, MenuMixin, LanguageMixin
+from feincms3.mixins import (
+    TemplateMixin, MenuMixin, LanguageMixin, RedirectMixin)
 from feincms3.pages import AbstractPage
 
 
@@ -25,6 +26,8 @@ class Page(
     LanguageMixin,  # We're building a multilingual CMS. (Also,
                     # feincms3.apps depends on LanguageMixin
                     # currently.)
+    RedirectMixin,  # Allow redirecting pages to other pages and/or arbitrary
+                    # URLs.
 ):
 
     # TemplateMixin
@@ -94,6 +97,10 @@ class Snippet(plugins.Snippet, PagePlugin):
 
 
 class External(plugins.External, PagePlugin):
+    pass
+
+
+class HTML(plugins.HTML, PagePlugin):
     pass
 
 

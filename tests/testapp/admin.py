@@ -64,6 +64,7 @@ class PageAdmin(ContentEditor, TreeAdmin):
         plugins.ImageInline.create(model=models.Image),
         plugins.SnippetInline.create(model=models.Snippet),
         plugins.ExternalInline.create(model=models.External),
+        plugins.HTMLInline.create(model=models.HTML),
     ]
 
     class Media:
