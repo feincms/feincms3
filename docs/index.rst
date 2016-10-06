@@ -120,6 +120,13 @@ External
    :members:
 
 
+HTML
+~~~~
+
+.. automodule:: feincms3.plugins.html
+   :members:
+
+
 Rich text
 ~~~~~~~~~
 
