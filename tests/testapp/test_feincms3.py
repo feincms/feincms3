@@ -894,6 +894,10 @@ class Test(TestCase):
             fetch_redirect_response=False,
         )
 
+        # Everything fine in clean-land
+        self.assertIs(page2.clean(), None)
+
+        # Both redirects cannot be set at the same time
         self.assertRaises(
            ValidationError,
            lambda: Page(
@@ -904,3 +908,18 @@ class Test(TestCase):
                 redirect_to_url='nonempty',
             ).full_clean(),
         )
+
+        # No chain redirects
+        self.assertRaises(
+           ValidationError,
+           lambda: Page(
+                title='test',
+                slug='test',
+                language_code='de',
+                redirect_to_page=page2,
+            ).full_clean(),
+        )
+
+        # No redirects to self
+        page2.redirect_to_page = page2
+        self.assertRaises(ValidationError, page2.clean)
