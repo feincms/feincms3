@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals
 from django.utils.translation import activate, get_language, ugettext_lazy as _
@@ -150,7 +151,7 @@ class LanguageMixin(models.Model):
             page = ...  # MAGIC! (or maybe get_object_or_404...)
             page.activate_language(request)
 
-    Note that this does not persist the language across requests as Django's
+    Note that this does not persist the language across requests as Django´s
     ``django.views.i18n.set_language`` does. (``set_language`` modifies the
     session and sets cookies.)
     """
@@ -169,3 +170,65 @@ class LanguageMixin(models.Model):
         # Do what LocaleMiddleware does.
         activate(self.language_code)
         request.LANGUAGE_CODE = get_language()
+
+
+class RedirectMixin(models.Model):
+    """
+    The ``RedirectMixin`` allows redirecting pages to other pages or arbitrary
+    URLs::
+
+        from feincms3.mixins import RedirectMixin
+        from feincms3.pages import AbstractPage
+
+        class Page(RedirectMixin, AbstractPage):
+            pass
+
+    At most one of ``redirect_to_url`` or ``redirect_to_page`` may be set,
+    never both at the same time. The actual redirecting is not provided. This
+    has to be implemented in the page view::
+
+        def page_detail(request, path):
+            page = ...
+            if page.redirect_to_url or page.redirect_to_page:
+                return redirect(page.redirect_to_url or page.redirect_to_page)
+            # Default rendering continues here.
+    """
+
+    redirect_to_url = models.CharField(
+        _('Redirect to URL'),
+        max_length=200,
+        blank=True,
+    )
+    redirect_to_page = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        related_name='+',
+        verbose_name=_('Redirect to page'),
+    )
+
+    class Meta:
+        abstract = True
+
+    def clean(self):
+        super().clean()
+
+        if self.redirect_to_url and self.redirect_to_page_id:
+            raise ValidationError({
+                'redirect_to_url': _('Only set one redirect value.'),
+            })
+        if self.redirect_to_page_id:
+            if self.redirect_to_page_id == self.pk:
+                raise ValidationError({
+                    'redirect_to_page': _('Cannot redirect to self.'),
+                })
+            if self.redirect_to_page.redirect_to_page_id:
+                raise ValidationError({
+                    'redirect_to_page': _(
+                        'Do not chain redirects. The selected page redirects'
+                        ' to %(title)s (%(path)s).'
+                    ) % {
+                        'title': self.redirect_to_page,
+                        'path': self.redirect_to_page.get_absolute_url(),
+                    },
+                })

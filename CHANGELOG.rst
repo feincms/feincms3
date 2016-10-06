@@ -7,6 +7,8 @@ Change log
 
 - Made ``reverse_any`` mention all viewnames in the ``NoReverseMatch``
   exception instead of bubbling the last viewname's exception.
+- Added a ``RedirectMixin`` to ``feincms3.mixins`` for redirecting
+  pages to other pages or arbitrary URLs.
 
 
 `0.11`_ (2016-09-19)
