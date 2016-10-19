@@ -193,7 +193,7 @@ def apps_urlconf():
             for app in page_model.APPLICATIONS if app[0]
         }
 
-        m = types.ModuleType(module_name)
+        m = types.ModuleType(str(module_name))  # Correct for Python 2 and 3
 
         mapping = defaultdict(list)
         for path, application, app_instance_namespace, language_code in apps:

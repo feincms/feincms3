@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
+from django.utils import six
 from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import (
@@ -635,7 +636,8 @@ class Test(TestCase):
             )),
             '/admin/',
         )
-        with self.assertRaisesRegex(
+        with six.assertRaisesRegex(
+                self,
                 NoReverseMatch,
                 "Reverse for any of 'not-exists-1', 'not-exists-2' with"
                 " arguments '\[\]' and keyword arguments '{}' not found."

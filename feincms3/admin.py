@@ -102,7 +102,7 @@ class TreeAdmin(ModelAdmin):
         return [
             url(r'^(.+)/move/$', wrap(self.move_view),
                 name='%s_%s_move' % info),
-        ] + super().get_urls()
+        ] + super(TreeAdmin, self).get_urls()
 
     @csrf_protect_m
     def move_view(self, request, object_id):
@@ -195,7 +195,7 @@ class MoveForm(forms.Form):
         self.instance = kwargs.pop('obj')
         self.model = self.instance.__class__
 
-        super().__init__(*args, **kwargs)
+        super(MoveForm, self).__init__(*args, **kwargs)
 
         self.fields['of'] = forms.ModelChoiceField(
             label=pgettext('MoveForm', 'Of'),
@@ -220,7 +220,7 @@ class MoveForm(forms.Form):
         ]
 
     def clean(self):
-        data = super().clean()
+        data = super(MoveForm, self).clean()
         if not data.get('move_to'):
             return data
 

@@ -10,6 +10,8 @@ Change log
 - Added a ``RedirectMixin`` to ``feincms3.mixins`` for redirecting
   pages to other pages or arbitrary URLs.
 - Added a footgun plugin (raw HTML code).
+- Reinstate Python 2 compatibility because Python 2 still seems to be in
+  wide use.
 
 
 `0.11`_ (2016-09-19)

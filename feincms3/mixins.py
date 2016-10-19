@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -211,7 +213,7 @@ class RedirectMixin(models.Model):
         abstract = True
 
     def clean(self):
-        super().clean()
+        super(RedirectMixin, self).clean()
 
         if self.redirect_to_url and self.redirect_to_page_id:
             raise ValidationError({

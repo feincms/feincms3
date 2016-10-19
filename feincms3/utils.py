@@ -1,4 +1,5 @@
-from functools import lru_cache
+# from functools import lru_cache
+from django.utils.lru_cache import lru_cache
 
 
 def _iterate_subclasses(cls):
@@ -8,7 +9,9 @@ def _iterate_subclasses(cls):
 
     for scls in cls.__subclasses__():
         yield scls
-        yield from _iterate_subclasses(scls)
+        # yield from _iterate_subclasses(scls)
+        for c in _iterate_subclasses(scls):
+            yield c
 
 
 @lru_cache(maxsize=8)
