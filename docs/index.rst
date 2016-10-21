@@ -278,17 +278,17 @@ Here's an example how plugins could be rendered,
 
     from django.utils.html import format_html, mark_safe
 
-    from content_editor.renderer import PluginRenderer
+    from feincms3.renderer import TemplatePluginRenderer
 
     from .models import Page, RichText, Image
 
 
-    renderer = PluginRenderer()
-    renderer.register(
+    renderer = TemplatePluginRenderer()
+    renderer.register_string_renderer(
         RichText,
         lambda plugin: mark_safe(plugin.text),
     )
-    renderer.register(
+    renderer.register_string_renderer(
         Image,
         lambda plugin: format_html(
             '<figure><img src="{}" alt=""/><figcaption>{}</figcaption></figure>',
@@ -297,25 +297,16 @@ Here's an example how plugins could be rendered,
         ),
     )
 
-Of course if you'd rather let plugins use templates instead of inlining
-HTML, simply register a function using ``render_to_string``. The
-following snippet might be useful in this case::
+Of course if you'd rather let plugins use templates, do this::
 
-    from django.template.loader import render_to_string
+    renderer.register_template_renderer(
+        Image,
+        'plugins/image.html',
+    )
 
-    def render_plugin_with_template(plugin):
-        return render_to_string(
-            '%s/plugins/%s.html' % (
-                plugin._meta.app_label,
-                plugin._meta.model_name,
-            ),
-            {'plugin': plugin},
-        )
+And the associated template::
 
-    # renderer = PluginRenderer()
-    # renderer.register(Image, render_plugin_with_template)
-    # page images would now use ``pages/plugins/image.html`` to render
-    # themselves
+    <figure><img src="{{ plugin.image.url }}" alt=""/></figure>
 
 If you don't like this, you're commpletely free to write your own views
 and URLs. All you have to do is override the ``get_absolute_url`` method
