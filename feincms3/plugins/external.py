@@ -47,7 +47,7 @@ def oembed_html(url, cache_failures=True):
             },
             timeout=2,
         ).json().get('html', '')
-    except requests.ConnectionError:
+    except (requests.ConnectionError, requests.ReadTimeout):
         # Connection failed? Hopefully temporary, try again soon.
         if cache_failures:
             cache.set(key, '', timeout=60)
