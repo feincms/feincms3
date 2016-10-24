@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed oEmbed read timeouts to not crash but retry after 60 seconds
+  instead.
+
 
 `0.12`_ (2016-10-23)
 ~~~~~~~~~~~~~~~~~~~~
