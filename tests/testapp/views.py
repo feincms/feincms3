@@ -1,8 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import format_html
 
-from content_editor.contents import contents_for_item
-
 from feincms3 import plugins
 from feincms3.renderer import TemplatePluginRenderer
 
@@ -48,7 +46,7 @@ def page_detail(request, path=None):
         return redirect(page.redirect_to_url or page.redirect_to_page)
     return render(request, page.template.template_name, {
         'page': page,
-        'contents': contents_for_item(
-            page, renderer.plugins(), page.ancestors().reverse()),
+        'contents': renderer.contents_for_item(
+            page, page.ancestors().reverse()),
         'renderer': renderer,
     })
