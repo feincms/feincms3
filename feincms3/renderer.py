@@ -1,4 +1,7 @@
+from django.core.cache import cache
 from django.utils.functional import SimpleLazyObject
+from django.utils.html import mark_safe
+
 from content_editor.contents import contents_for_item
 
 
@@ -7,6 +10,36 @@ __all__ = ('TemplatePluginRenderer',)
 
 def default_context(plugin, context):
     return {'plugin': plugin}
+
+
+class Regions(object):
+    def __init__(self, item, contents, renderer):
+        self._item = item
+        self._contents = contents
+        self._renderer = renderer
+
+    def cache_key(self, region):
+        return '%s-%s-%s' % (
+            self._item._meta.label_lower,
+            self._item.pk,
+            region,
+        )
+
+    def render(self, region, context, timeout):
+        if timeout is not None:
+            key = self.cache_key(region)
+            html = cache.get(key)
+            if html is not None:
+                return html
+
+        html = mark_safe(''.join(
+            self._renderer.render_plugin_in_context(plugin, context)
+            for plugin in self._contents[region]
+        ))
+
+        if timeout is not None:
+            cache.set(key, html, timeout=timeout)
+        return html
 
 
 class TemplatePluginRenderer(object):
@@ -91,15 +124,13 @@ class TemplatePluginRenderer(object):
 
         return list(self._renderers.keys())
 
-    def contents_for_item(self, item, *args, **kwargs):
-        """
-        Wrapper around django-content-editor_'s ``contents_for_item`` helper
-        which returns a lazily instantiated ``Contents`` instance. This is
-        most useful if the plugins instances are not always used, for example
-        when the plugin representation is cached to achieve better performance.
-        """
-        return SimpleLazyObject(
-            lambda: contents_for_item(item, self.plugins(), *args, **kwargs)
+    def regions(self, item, inherit_from=None, regions=Regions):
+        return regions(
+            item,
+            SimpleLazyObject(
+                lambda: contents_for_item(item, self.plugins(), inherit_from)
+            ),
+            self,
         )
 
     def render_plugin_in_context(self, plugin, context):

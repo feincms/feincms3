@@ -7,7 +7,7 @@
 {% block content %}
 <h1>{{ page }}</h1>
 <div class="columns">
-  <div class="main">{% render_plugins contents.main %}</div>
-  <div class="sidebar">{% for c in contents.sidebar %}{% render_plugin c %}{% endfor %}</div>
+  <div class="main">{% render_region regions 'main' %}</div>
+  <div class="sidebar">{% render_region regions 'sidebar' %}</div>
 </div>
 {% endblock %}

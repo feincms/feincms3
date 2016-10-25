@@ -25,3 +25,12 @@ def render_plugins(context, plugins):
         renderer.render_plugin_in_context(plugin, context)
         for plugin in plugins
     ))
+
+
+@register.simple_tag(takes_context=True)
+def render_region(context, regions, region, **kwargs)
+    """
+    Render a single region. See :mod:`feincms3.renderer` for additional
+    details.
+    """
+    return regions.render(region, context, **kwargs)
