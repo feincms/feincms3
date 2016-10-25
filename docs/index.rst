@@ -251,8 +251,8 @@ Where ``app.pages.views`` contains the following view::
 
     from content_editor.contents import contents_for_item
 
-    from .models import Page, RichText, Image
-    from .renderer imoprt renderer
+    from .models import Page
+    from .renderer import renderer
 
 
     def page_detail(request, path=None):
@@ -261,16 +261,10 @@ Where ``app.pages.views`` contains the following view::
             path='/{}/'.format(path) if path else '/',
         )
         page.activate_language(request)
-        contents = contents_for_item(
-            page,
-            [RichText, Image],
-            inherit_from=page.ancestors().reverse())
         return render(request, page.template.template_name, {
             'page': page,
-            'content': {
-                region.key: renderer.render(contents[region.key])
-                for region in page.regions
-            },
+            'regions': renderer.regions(
+                page, inherit_from=page.ancestors().reverse()),
         })
 
 Here's an example how plugins could be rendered,
@@ -360,6 +354,20 @@ might look like::
 
 
     admin.site.register(models.Page, PageAdmin)
+
+And a ``pages/standard.html`` template::
+
+    {% extends "base.html" %}
+
+    {% load feincms3_renderer %}
+
+    {% block content %}
+        <main>
+            <h1>{{ page.title }}</h1>
+            {% render_region regions "main" %}
+            {# or maybe {% render_region regions "main" timeout=30 %} #}
+        </main>
+    {% endblock %}
 
 
 .. _Django: https://www.djangoproject.com/
