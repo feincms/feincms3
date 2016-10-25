@@ -25,7 +25,7 @@ class Regions(object):
             region,
         )
 
-    def render(self, region, context, timeout):
+    def render(self, region, context, timeout=None):
         if timeout is not None:
             key = self.cache_key(region)
             html = cache.get(key)
