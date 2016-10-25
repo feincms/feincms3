@@ -7,6 +7,9 @@ Change log
 
 - Fixed oEmbed read timeouts to not crash but retry after 60 seconds
   instead.
+- Added the ``TemplatePluginRenderer.contents_for_item`` helper for
+  returning a lazy ``Contents`` instance most useful in conjunction with
+  plugin output caching.
 
 
 `0.12`_ (2016-10-23)

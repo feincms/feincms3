@@ -1,3 +1,7 @@
+from django.utils.functional import SimpleLazyObject
+from content_editor.contents import contents_for_item
+
+
 __all__ = ('TemplatePluginRenderer',)
 
 
@@ -86,6 +90,17 @@ class TemplatePluginRenderer(object):
         """
 
         return list(self._renderers.keys())
+
+    def contents_for_item(self, item, *args, **kwargs):
+        """
+        Wrapper around django-content-editor_'s ``contents_for_item`` helper
+        which returns a lazily instantiated ``Contents`` instance. This is
+        most useful if the plugins instances are not always used, for example
+        when the plugin representation is cached to achieve better performance.
+        """
+        return SimpleLazyObject(
+            lambda: contents_for_item(item, self.plugins(), *args, **kwargs)
+        )
 
     def render_plugin_in_context(self, plugin, context):
         """
