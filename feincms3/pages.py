@@ -86,7 +86,12 @@ class AbstractPage(CTENode):
         """
         Check for path uniqueness problems.
         """
-        if not self.static_path:
+        if self.static_path:
+            if not self.path:
+                raise ValidationError(_(
+                    'Static paths cannot be empty. Did you mean \'/\'?'
+                ))
+        else:
             self.path = '{}{}/'.format(
                 self.parent.path if self.parent else '/',
                 self.slug)

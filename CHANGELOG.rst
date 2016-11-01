@@ -8,7 +8,9 @@ Change log
 - Fixed oEmbed read timeouts to not crash but retry after 60 seconds
   instead.
 - Added the ``TemplatePluginRenderer.regions`` helper and the
-  ``{⅜ render_region %}`` template tag which support caching of plugins.
+  ``{% render_region %}`` template tag which support caching of plugins.
+- Disallowed empty static paths for pages. ``Page.get_absolute_url()``
+  fails with the recommended URL pattern when ``path`` equals ``''``.
 
 
 `0.12`_ (2016-10-23)

@@ -618,6 +618,31 @@ class Test(TestCase):
             status_code=200,
         )
 
+    def test_non_empty_static_paths(self):
+        """Static paths may not be left empty"""
+        client = self.login()
+        response = client.post('/admin/testapp/page/add/', merge_dicts(
+            {
+                'title': 'main',
+                'slug': 'main',
+                'language_code': 'en',
+                'application': '',
+                'template_key': 'standard',
+                'static_path': True,
+                'path': '',
+            },
+            zero_management_form_data('testapp_richtext_set'),
+            zero_management_form_data('testapp_image_set'),
+            zero_management_form_data('testapp_snippet_set'),
+            zero_management_form_data('testapp_external_set'),
+            zero_management_form_data('testapp_html_set'),
+        ))
+        self.assertContains(
+            response,
+            'Static paths cannot be empty. Did you mean',
+            status_code=200,
+        )
+
     def test_reverse(self):
         """Test all code paths through reverse_fallback and reverse_any"""
 
