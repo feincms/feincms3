@@ -141,13 +141,6 @@ Snippets
    :members:
 
 
-Versatile images
-~~~~~~~~~~~~~~~~
-
-.. automodule:: feincms3.plugins.versatileimage
-   :members:
-
-
 HTML cleansing (``feincms3.cleanse``)
 =====================================
 

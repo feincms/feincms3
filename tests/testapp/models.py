@@ -10,6 +10,7 @@ from feincms3.apps import AppsMixin, reverse_app
 from feincms3.mixins import (
     TemplateMixin, MenuMixin, LanguageMixin, RedirectMixin)
 from feincms3.pages import AbstractPage
+from feincms3_images.plugins import ImageBase
 
 
 class PageManager(CTENodeManager):
@@ -82,7 +83,7 @@ class RichText(plugins.RichText, PagePlugin):
     pass
 
 
-class Image(plugins.Image, PagePlugin):
+class Image(ImageBase, PagePlugin):
     caption = models.CharField(
         _('caption'),
         max_length=200,

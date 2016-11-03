@@ -6,6 +6,7 @@ from content_editor.admin import ContentEditor
 
 from feincms3 import plugins
 from feincms3.admin import TreeAdmin
+from feincms3_images.plugins import ImageInline
 
 from . import models
 
@@ -61,7 +62,7 @@ class PageAdmin(ContentEditor, TreeAdmin):
 
     inlines = [
         plugins.RichTextInline.create(model=models.RichText),
-        plugins.ImageInline.create(model=models.Image),
+        ImageInline.create(model=models.Image),
         plugins.SnippetInline.create(model=models.Snippet),
         plugins.ExternalInline.create(model=models.External),
         plugins.HTMLInline.create(model=models.HTML),

@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Moved ``feincms3.plugins.versatileimage`` into its own module,
+  feincms3-images_, thereby removing the need to have to install
+  django-versatileimagefield_ for feincms3.
 - Fixed oEmbed read timeouts to not crash but retry after 60 seconds
   instead.
 - Added the ``TemplatePluginRenderer.regions`` helper and the
@@ -181,7 +184,9 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
 .. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
+.. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
+.. _feincms3-images: https://github.com/matthiask/feincms3-images/
 .. _django-cte-forest: https://github.com/matthiask/django-cte-forest
 .. _PostgreSQL: https://www.postgresql.org/
 
