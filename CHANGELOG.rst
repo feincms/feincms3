@@ -14,6 +14,7 @@ Change log
   ``{% render_region %}`` template tag which support caching of plugins.
 - Disallowed empty static paths for pages. ``Page.get_absolute_url()``
   fails with the recommended URL pattern when ``path`` equals ``''``.
+- Added flake8_ and isort_ style checking.
 
 
 `0.12`_ (2016-10-23)
@@ -189,6 +190,8 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _feincms3-images: https://github.com/matthiask/feincms3-images/
 .. _django-cte-forest: https://github.com/matthiask/django-cte-forest
 .. _PostgreSQL: https://www.postgresql.org/
+.. _flake8: https://pypi.python.org/pypi/flake8
+.. _isort: https://pypi.python.org/pypi/isort
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
 .. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2
