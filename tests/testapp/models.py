@@ -111,6 +111,9 @@ class Article(models.Model):
         ('blog', 'blog'),
     ))
 
+    class Meta:
+        ordering = ['-pk']
+
     def __str__(self):
         return self.title
 
