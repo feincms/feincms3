@@ -5,9 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-- Moved ``feincms3.plugins.versatileimage`` into its own module,
-  feincms3-images_, thereby removing the need to have to install
-  django-versatileimagefield_ for feincms3.
+- **BACKWARDS INCOMPATIBLE** Moved ``feincms3.plugins.versatileimage``
+  into its own module, feincms3-images_, thereby removing the need to
+  have to install django-versatileimagefield_ for feincms3.
 - Fixed oEmbed read timeouts to not crash but retry after 60 seconds
   instead.
 - Added the ``TemplatePluginRenderer.regions`` helper and the
