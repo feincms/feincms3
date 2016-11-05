@@ -9,6 +9,7 @@ services:
 env:
 - REQ="Django>=1.9,<1.10"
 - REQ="Django>=1.10,<1.11"
+- REQ="https://github.com/django/django/archive/master.zip#egg=Django"
 install:
 - pip install -U pip wheel
 - pip install $REQ django-ckeditor django-content-editor django-cte-forest
