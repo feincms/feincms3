@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-07 11:42+0200\n"
+"POT-Creation-Date: 2016-11-05 17:21+0100\n"
 "PO-Revision-Date: 2013-10-25 09:15+0000\n"
 "Last-Translator: Matthias Kestenholz <mk@feinheit.ch>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/feincms/language/"
@@ -20,131 +20,197 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps.py:273
+#: admin.py:73 pages.py:47
+msgid "title"
+msgstr "Titel"
+
+#: admin.py:87
+msgid "move"
+msgstr "verschieben"
+
+#: admin.py:128
+#, python-format
+msgid "The node %(node)s has been made the %(move_to)s of node %(to)s."
+msgstr "%(node)s wurde %(move_to)s von %(to)s."
+
+#: admin.py:135
+msgid "root node"
+msgstr "Wurzel"
+
+#: admin.py:156
+#, python-format
+msgid "Move %s"
+msgstr "%s verschieben"
+
+#: admin.py:183
+msgid "left sibling"
+msgstr "linkes Geschwister"
+
+#: admin.py:184
+msgid "right sibling"
+msgstr "rechtes Geschwister"
+
+#: admin.py:185
+msgid "first child"
+msgstr "erstes Kind"
+
+#: admin.py:186
+msgid "last child"
+msgstr "letztes Kind"
+
+#: admin.py:190
+msgid "Make node"
+msgstr "Mach Knoten"
+
+#: admin.py:202
+msgctxt "MoveForm"
+msgid "Of"
+msgstr "Von"
+
+#: admin.py:230
+msgid "Cannot move node to a position relative to itself."
+msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
+
+#: apps.py:322
 msgid "application"
 msgstr "Applikation"
 
-#: apps.py:279
+#: apps.py:328
 msgid "app instance namespace"
 msgstr "Appinstanz-Namensraum"
 
-#: apps.py:320
+#: apps.py:378
 msgid "Invalid parent: Apps may not have any descendants."
 msgstr "Ungültig: Apps dürfen keine Unterlemente haben."
 
-#: apps.py:327
+#: apps.py:383
 msgid "Apps may not have any descendants in the tree."
 msgstr "Apps dürfen keine Unterelemente haben."
 
-#: apps.py:340
+#: apps.py:395
 #, python-format
 msgid "This field is required for the application %s."
 msgstr "Dieses Feld wird für die App %s benötigt."
 
-#: apps.py:360
+#: apps.py:415
 msgid "This exact app already exists."
 msgstr "Diese exakte App existiert bereits."
 
-#: mixins.py:33
+#: mixins.py:34
 msgid "menu"
 msgstr "Menü"
 
-#: mixins.py:98
+#: mixins.py:99
 msgid "template"
 msgstr "Template"
 
-#: mixins.py:161
+#: mixins.py:162
 msgid "language"
 msgstr "Sprache"
 
-#: pages.py:42
+#: mixins.py:200
+msgid "Redirect to URL"
+msgstr "Weiterleiten zu URL"
+
+#: mixins.py:209
+msgid "Redirect to page"
+msgstr "Weiterleiten zu Seite"
+
+#: mixins.py:220
+msgid "Only set one redirect value."
+msgstr "Bitte nur einen Weiterleitungs-Wert setzen."
+
+#: mixins.py:225
+msgid "Cannot redirect to self."
+msgstr "Kann nicht zu sich selbst weiterleiten."
+
+#: mixins.py:230
+#, python-format
+msgid ""
+"Do not chain redirects. The selected page redirects to %(title)s (%(path)s)."
+msgstr ""
+"Die gewählte Seite leitet schon zu %(title)s (%(path)s) weiter, bitte"
+" Verkettungen von Weiterleitungen vermeiden."
+
+#: pages.py:46
 msgid "is active"
 msgstr "ist aktiv"
 
-#: pages.py:43
-msgid "title"
-msgstr "Titel"
-
-#: pages.py:44
+#: pages.py:48
 msgid "slug"
 msgstr "Slug"
 
-#: pages.py:48
+#: pages.py:54
 msgid "path"
 msgstr "Pfad"
 
-#: pages.py:49
+#: pages.py:55
 msgid "Generated automatically if 'static path' is unset."
 msgstr "Automatisch generiert falls 'statischer Pfad' nicht gesetzt ist."
 
-#: pages.py:52
+#: pages.py:58
 msgid "Path must start and end with a slash (/)."
 msgstr "Pfad muss mit einem Slash (/) starten und enden."
 
-#: pages.py:54
+#: pages.py:60
 msgid "static path"
 msgstr "statischer Pfad"
 
-#: pages.py:58
+#: pages.py:64
 msgid "page"
 msgstr "Seite"
 
-#: pages.py:59
+#: pages.py:65
 msgid "pages"
 msgstr "Seiten"
 
-#: plugins/external.py:91
+#: pages.py:93
+msgid "Static paths cannot be empty. Did you mean '/'?"
+msgstr "Statische Pfade können nicht leer sein. Meinten Sie '/'?"
+
+#: pages.py:113
+#, python-format
+msgid "The page %(page)s's new path %(path)s would not be unique."
+msgstr "Der Pfad %(path)s der Seite %(page)s würde nicht eindeutig sein."
+
+#: plugins/external.py:86
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:95
+#: plugins/external.py:90
 msgid "external content"
 msgstr "externer Inhalt"
 
-#: plugins/external.py:110
+#: plugins/external.py:105
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Kann das HTML für diese URL nicht abholen, tut mir leid!"
 
-#: plugins/richtext.py:37
+#: plugins/html.py:21
+msgid ""
+"The content will be inserted directly into the page. It is VERY important "
+"that the HTML snippet is well-formed!"
+msgstr ""
+
+#: plugins/richtext.py:31
 msgid "text"
 msgstr "Text"
 
-#: plugins/richtext.py:41
+#: plugins/richtext.py:35
 msgid "rich text"
 msgstr "Text"
 
-#: plugins/richtext.py:42
+#: plugins/richtext.py:36
 msgid "rich texts"
 msgstr "Texte"
 
-#: plugins/snippet.py:28
+#: plugins/snippet.py:23
 msgid "template name"
 msgstr "Template-Name"
 
-#: plugins/snippet.py:35
+#: plugins/snippet.py:30
 msgid "snippet"
 msgstr "Schnipsel"
 
-#: plugins/snippet.py:36
+#: plugins/snippet.py:31
 msgid "snippets"
 msgstr "Schnipsel"
-
-#: plugins/versatileimage.py:27 plugins/versatileimage.py:49
-msgid "image"
-msgstr "Bild"
-
-#: plugins/versatileimage.py:34
-msgid "image width"
-msgstr "Bildbreite"
-
-#: plugins/versatileimage.py:40
-msgid "image height"
-msgstr "Bildhöhe"
-
-#: plugins/versatileimage.py:45
-msgid "primary point of interest"
-msgstr "Fokuspunkt"
-
-#: plugins/versatileimage.py:50
-msgid "images"
-msgstr "Bilder"
