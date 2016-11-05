@@ -29,20 +29,23 @@ attached. If the app does not have a URLconf entry for ``r'^$'`` the standard
 page rendering still happens.
 """
 
-from collections import defaultdict
 import hashlib
-from importlib import import_module
 import itertools
 import re
 import sys
 import types
+from collections import defaultdict
+from importlib import import_module
 
 from django.conf import settings
-from django.conf.urls import url, include
+from django.conf.urls import include, url
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, signals
 from django.utils.translation import get_language, ugettext_lazy as _
+
+from feincms3.utils import concrete_model
+
 try:
     from django.urls import NoReverseMatch, reverse
 except ImportError:  # pragma: no cover
@@ -51,10 +54,7 @@ except ImportError:  # pragma: no cover
 try:
     from django.utils.deprecation import MiddlewareMixin
 except ImportError:  # pragma: no cover
-    class MiddlewareMixin(object):
-        pass
-
-from feincms3.utils import concrete_model
+    MiddlewareMixin = object
 
 
 __all__ = (

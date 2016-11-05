@@ -4,9 +4,7 @@ from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
-
 from feincms3.cleanse import CleansedRichTextField
-
 
 __all__ = ('RichText', 'RichTextInline', 'render_richtext')
 

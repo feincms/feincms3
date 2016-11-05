@@ -35,7 +35,6 @@ from django import template
 from feincms3.mixins import MenuMixin
 from feincms3.utils import concrete_model
 
-
 register = template.Library()
 
 

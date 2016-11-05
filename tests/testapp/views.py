@@ -4,8 +4,7 @@ from django.utils.html import format_html
 from feincms3 import plugins
 from feincms3.renderer import TemplatePluginRenderer
 
-from .models import Page, RichText, Image, Snippet, External, HTML
-
+from .models import HTML, External, Image, Page, RichText, Snippet
 
 renderer = TemplatePluginRenderer()
 renderer.register_string_renderer(

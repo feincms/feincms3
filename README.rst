@@ -18,6 +18,19 @@ Consult the documentation_ or the example project feincms3-example_ for
 additional details.
 
 
+Coding style
+============
+
+feincms3 uses both flake8 and isort to check for style violations. It is
+recommended to add the following git hook as an executable file at
+``git/hooks/pre-commit``::
+
+    #!/bin/bash
+    set -ex
+    flake8 .
+    isort --recursive --check-only --diff
+
+
 .. _django-content-editor: http://django-content-editor.readthedocs.org/
 .. _django-cte-forest: https://github.com/matthiask/django-cte-forest
 .. _feincms3-example: https://github.com/matthiask/feincms3-example

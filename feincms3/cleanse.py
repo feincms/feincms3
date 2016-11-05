@@ -7,9 +7,7 @@ I have.
 """
 
 from ckeditor.fields import RichTextField
-
 from feincms_cleanse import Cleanse
-
 
 __all__ = ('CleansedRichTextField', 'cleanse_html')
 

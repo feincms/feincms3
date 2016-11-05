@@ -3,7 +3,6 @@ from django.utils.text import capfirst
 from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditor
-
 from feincms3 import plugins
 from feincms3.admin import TreeAdmin
 from feincms3_images.plugins import ImageInline

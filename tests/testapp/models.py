@@ -1,14 +1,13 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from cte_forest.models import CTENodeManager
-
 from content_editor.models import Region, Template, create_plugin_base
-
+from cte_forest.models import CTENodeManager
 from feincms3 import plugins
 from feincms3.apps import AppsMixin, reverse_app
 from feincms3.mixins import (
-    TemplateMixin, MenuMixin, LanguageMixin, RedirectMixin)
+    LanguageMixin, MenuMixin, RedirectMixin, TemplateMixin,
+)
 from feincms3.pages import AbstractPage
 from feincms3_images.plugins import ImageBase
 

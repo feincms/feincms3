@@ -12,15 +12,16 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
+import sys
+
+import django
+from django.conf import settings
 
 BASE = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, BASE)
 sys.path.insert(0, os.path.join(BASE, 'tests'))
 
-import django
-from django.conf import settings
 settings.configure(
     DATABASES={
         'default': {

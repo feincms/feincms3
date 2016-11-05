@@ -5,13 +5,14 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Max, Q
 from django.utils.translation import ugettext_lazy as _
+
+from cte_forest.models import CTENode
+
 try:
     from django.urls import reverse
 except ImportError:  # pragma: no cover
     # Django <1.10
     from django.core.urlresolvers import reverse
-
-from cte_forest.models import CTENode
 
 
 class AbstractPage(CTENode):

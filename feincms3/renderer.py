@@ -4,7 +4,6 @@ from django.utils.html import mark_safe
 
 from content_editor.contents import contents_for_item
 
-
 __all__ = ('TemplatePluginRenderer',)
 
 

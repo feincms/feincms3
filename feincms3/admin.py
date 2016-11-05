@@ -10,8 +10,9 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html, mark_safe
+from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
-from django.utils.translation import ugettext_lazy as _, pgettext
+
 try:
     from django.urls import reverse
 except ImportError:  # pragma: no cover

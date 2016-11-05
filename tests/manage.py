@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-from os.path import abspath, dirname
 import os
 import sys
+from os.path import abspath, dirname
 
 
 if __name__ == "__main__":

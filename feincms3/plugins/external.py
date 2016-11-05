@@ -1,5 +1,4 @@
 from hashlib import md5
-import requests
 
 from django import forms
 from django.core.cache import cache
@@ -7,8 +6,8 @@ from django.db import models
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext, ugettext_lazy as _
 
+import requests
 from content_editor.admin import ContentEditorInline
-
 
 __all__ = ('External', 'ExternalInline', 'oembed_html', 'render_external')
 

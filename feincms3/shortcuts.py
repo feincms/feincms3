@@ -12,7 +12,6 @@ Because of this, ``render_list`` and ``render_detail``.
 from django.core import paginator
 from django.shortcuts import render
 
-
 __all__ = ('template_name', 'render_list', 'render_detail')
 
 

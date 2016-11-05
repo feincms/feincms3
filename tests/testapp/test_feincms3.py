@@ -10,12 +10,11 @@ from django.utils import six
 from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import (
-    NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback
+    NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
 
-from .models import Page, External, Article
-
+from .models import Article, External, Page
 
 # Something about inspect.getargspec in beautifulsoup4.
 warnings.filterwarnings(
