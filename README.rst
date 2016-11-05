@@ -27,6 +27,7 @@ recommended to add the following git hook as an executable file at
 
     #!/bin/bash
     set -ex
+    export PYTHONWARNINGS=ignore
     flake8 .
     isort --recursive --check-only --diff
 
