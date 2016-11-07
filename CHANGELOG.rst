@@ -12,6 +12,15 @@ Change log
 - Disallowed empty static paths for pages. ``Page.get_absolute_url()``
   fails with the recommended URL pattern when ``path`` equals ``''``.
 - Added flake8_ and isort_ style checking.
+- Made the dependency on feincms-cleanse_, requests_ and
+  django-versatileimagefield_ less strong than before. Plugins depending
+  on those apps simply will not be available in the ``feincms3.plugins``
+  namespace, but you have to be careful yourself to not import the
+  actual modules yourself.
+- Added Django_, django-content-editor_ and django-cte-forest_ to
+  ``install_requires`` so that they are automatically installed, and
+  added an extra with dependencies for all included plugins, so if you
+  want that simply install ``feincms3[all]``.
 
 
 `0.12`_ (2016-10-23)
@@ -182,11 +191,13 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
 .. _django-mptt: http://django-mptt.github.io/django-mptt/
 .. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
+.. _django-versatileimagefield: https://github.com/respondcreate/django-versatileimagefield/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
 .. _django-cte-forest: https://github.com/matthiask/django-cte-forest
 .. _PostgreSQL: https://www.postgresql.org/
 .. _flake8: https://pypi.python.org/pypi/flake8
 .. _isort: https://pypi.python.org/pypi/isort
+.. _requests: http://docs.python-requests.org/
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
 .. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2

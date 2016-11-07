@@ -26,15 +26,19 @@ setup(
         exclude=['tests', 'testapp']
     ),
     include_package_data=True,
-    # install_requires=[
-    #     'Django',
-    #     'django-ckeditor',
-    #     'django-content-editor',
-    #     'django-cte-forest',
-    #     'django-versatileimagefield',
-    #     'feincms-cleanse',
-    #     'requests',
-    # ],
+    install_requires=[
+        'Django',
+        'django-content-editor',
+        'django-cte-forest',
+    ],
+    extras_require={
+        'all': [
+            'django-ckeditor',
+            'django-versatileimagefield',
+            'feincms-cleanse',
+            'requests',
+        ],
+    },
     classifiers=[
         # 'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
