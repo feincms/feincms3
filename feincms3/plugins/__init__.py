@@ -1,23 +1,25 @@
-from .html import *  # noqa
-from .snippet import *  # noqa
+# flake8: noqa
+
+from .html import *
+from .snippet import *
 
 try:
-    import feincms_cleanse  # noqa
-except ImportError:
+    import feincms_cleanse
+except ImportError:  # pragma: no cover
     pass
 else:
-    from .richtext import *  # noqa
+    from .richtext import *
 
 try:
-    import requests  # noqa
-except ImportError:
+    import requests
+except ImportError:  # pragma: no cover
     pass
 else:
-    from .external import *  # noqa
+    from .external import *
 
 try:
-    import versatileimagefield  # noqa
-except ImportError:
+    import versatileimagefield
+except ImportError:  # pragma: no cover
     pass
 else:
-    from .versatileimage import *  # noqa
+    from .versatileimage import *
