@@ -22,6 +22,10 @@ only a few easy steps (as long as you have the necessary build tools and
 development libraries to setup the Python virtualenv_ and all its
 dependencies).
 
+The `Change log`_ should also be mentioned here because, while feincms3
+is used in production on several sites and backwards incompatibility
+isn't broken lightly, it still is a moving target.
+
 
 Introduction
 ============
@@ -380,6 +384,7 @@ And a ``pages/standard.html`` template::
     {% endblock %}
 
 
+.. _Change log: https://github.com/matthiask/feincms3/blob/master/CHANGELOG.rst
 .. _Django: https://www.djangoproject.com/
 .. _FeinCMS: https://github.com/feincms/feincms/
 .. _comparable CMS systems: https://www.djangopackages.com/grids/g/cms/
