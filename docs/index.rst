@@ -381,16 +381,17 @@ And a ``pages/standard.html`` template::
 
 
 .. _Django: https://www.djangoproject.com/
-.. _django-content-editor: http://django-content-editor.readthedocs.org/
-.. _django-mptt: http://django-mptt.github.io/django-mptt/
-.. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
-.. _feincms3-example: https://github.com/matthiask/feincms3-example
-.. _documentation: http://feincms3.readthedocs.io/
-.. _virtualenv: https://virtualenv.pypa.io/
 .. _FeinCMS: https://github.com/feincms/feincms/
 .. _comparable CMS systems: https://www.djangopackages.com/grids/g/cms/
-.. _oEmbed: http://oembed.com/
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor
+.. _django-content-editor: http://django-content-editor.readthedocs.org/
 .. _django-cte-forest: https://github.com/matthiask/django-cte-forest
-.. _requests: http://docs.python-requests.org
+.. _django-mptt: http://django-mptt.github.io/django-mptt/
+.. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
+.. _documentation: http://feincms3.readthedocs.io/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
+.. _feincms3-example: https://github.com/matthiask/feincms3-example
+.. _oEmbed: http://oembed.com/
+.. _pip: https://pip.pypa.io/
+.. _requests: http://docs.python-requests.org
+.. _virtualenv: https://virtualenv.pypa.io/
