@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.13`_ (2016-11-07)
+~~~~~~~~~~~~~~~~~~~~
+
 - Fixed oEmbed read timeouts to not crash but retry after 60 seconds
   instead.
 - Added the ``TemplatePluginRenderer.regions`` helper and the
@@ -211,4 +215,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.10: https://github.com/matthiask/feincms3/compare/0.9...0.10
 .. _0.11: https://github.com/matthiask/feincms3/compare/0.10...0.11
 .. _0.12: https://github.com/matthiask/feincms3/compare/0.11...0.12
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.12...master
+.. _0.13: https://github.com/matthiask/feincms3/compare/0.12...0.13
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.13...master
