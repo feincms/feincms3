@@ -1,5 +1,8 @@
 """
-This plugin uses django-versatileimagefield_ to do the heavy lifting.
+Provides an image plugin with support for setting the primary point of
+interest. This is very useful especially when cropping images.
+
+Depends on django-versatileimagefield_.
 """
 
 from django import forms

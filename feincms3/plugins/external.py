@@ -1,3 +1,10 @@
+"""
+Uses the `Noembed <https://noembed.com/>`_ oEmbed service to embed (almost)
+arbitrary URLs.
+
+Depends on requests_.
+"""
+
 from hashlib import md5
 
 from django import forms

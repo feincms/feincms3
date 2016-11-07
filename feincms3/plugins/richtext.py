@@ -1,3 +1,9 @@
+"""
+Provides a rich text area whose content is automatically cleaned using a
+very restrictive white list of tags and attributes.
+
+Depends on feincms-cleanse_.
+"""
 from django.db import models
 from django.utils.html import mark_safe, strip_tags
 from django.utils.text import Truncator
