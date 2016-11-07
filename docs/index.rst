@@ -387,6 +387,7 @@ And a ``pages/standard.html`` template::
 .. _Change log: https://github.com/matthiask/feincms3/blob/master/CHANGELOG.rst
 .. _Django: https://www.djangoproject.com/
 .. _FeinCMS: https://github.com/feincms/feincms/
+.. _Noembed: https://noembed.com/
 .. _comparable CMS systems: https://www.djangopackages.com/grids/g/cms/
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor
 .. _django-content-editor: http://django-content-editor.readthedocs.org/

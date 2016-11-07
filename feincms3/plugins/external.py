@@ -1,6 +1,5 @@
 """
-Uses the `Noembed <https://noembed.com/>`_ oEmbed service to embed (almost)
-arbitrary URLs.
+Uses the Noembed_ oEmbed service to embed (almost) arbitrary URLs.
 
 Depends on requests_.
 """
@@ -21,7 +20,7 @@ __all__ = ('External', 'ExternalInline', 'oembed_html', 'render_external')
 
 def oembed_html(url, cache_failures=True):
     """
-    Asks noembed.com for the embedding HTML code for arbitrary URLs. Sites
+    Asks Noembed_ for the embedding HTML code for arbitrary URLs. Sites
     supported include Youtube, Vimeo, Twitter and many others.
 
     Successful embeds are always cached for 30 days.
