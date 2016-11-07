@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Removed ``Django`` from ``install_requires``, so that updating
+  feincms3 without updating Django is easier.
+
 
 `0.13`_ (2016-11-07)
 ~~~~~~~~~~~~~~~~~~~~
