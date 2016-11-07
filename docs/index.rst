@@ -42,6 +42,16 @@ building (if you didn't want that you'd probably not be using Django_
 anyway).
 
 
+Installation
+============
+
+feincms3 should be installed using pip_. The default of ``pip install
+feincms3`` depends on django-content-editor_ and django-cte-forest_
+(explained below). By specifying ``pip install feincms3[all]`` instead
+you can also install all optional dependencies (otherwise you'll not be
+able to use the built-in rich text, image and oEmbed plugins).
+
+
 Parts and responsibilities
 ==========================
 
@@ -382,3 +392,5 @@ And a ``pages/standard.html`` template::
 .. _oEmbed: http://oembed.com/
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor
 .. _django-cte-forest: https://github.com/matthiask/django-cte-forest
+.. _requests: http://docs.python-requests.org
+.. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
