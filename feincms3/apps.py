@@ -220,7 +220,7 @@ def apps_urlconf():
     return module_name
 
 
-def page_for_app_request(request):
+def page_for_app_request(request, queryset=None):
     """
     Returns the current page if we're inside an app. Should only be called
     while processing app views. Will pass along exceptions caused by
@@ -238,14 +238,19 @@ def page_for_app_request(request):
                 'article': article,
                 'page': page,
             })
+
+    It is possible to override the queryset used to fetch a page instance. The
+    default implementation simply uses the first concrete subclass of
+    :class:`~feincms3.apps.AppsMixin`.
     """
 
+    if queryset is None:
+        queryset = concrete_model(AppsMixin).objects
     # Unguarded - if this fails, we shouldn't even be here.
-    page = concrete_model(AppsMixin).objects.get(
+    return queryset.get(
         language_code=request.resolver_match.namespaces[0],
         app_instance_namespace=request.resolver_match.namespaces[1],
     )
-    return page
 
 
 class AppsMiddleware(MiddlewareMixin):

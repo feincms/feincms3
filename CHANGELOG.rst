@@ -7,6 +7,8 @@ Change log
 
 - Removed ``Django`` from ``install_requires``, so that updating
   feincms3 without updating Django is easier.
+- Allowed overriding the Page queryset used in ``page_for_app_request``
+  (for example for adding ``select_related``).
 
 
 `0.13`_ (2016-11-07)
