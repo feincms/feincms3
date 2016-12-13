@@ -7,12 +7,12 @@ python:
 services:
 - postgresql
 env:
-- REQ="Django>=1.9,<1.10"
-- REQ="Django>=1.10,<1.11"
-- REQ="https://github.com/django/django/archive/master.zip#egg=Django"
+- REQ="Django>=1.9,<1.10 django-cte-forest<0.2"
+- REQ="Django>=1.10,<1.11 django-cte-forest"
+- REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
 install:
 - pip install -U pip wheel
-- pip install $REQ django-ckeditor django-content-editor django-cte-forest
+- pip install $REQ django-ckeditor django-content-editor
   django-versatileimagefield feincms-cleanse pytz requests psycopg2
 - python setup.py install
 script: cd tests && ./manage.py test testapp && cd ..
