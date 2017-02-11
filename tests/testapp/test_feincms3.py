@@ -948,4 +948,4 @@ class Test(TestCase):
 
         # No redirects to self
         page2.redirect_to_page = page2
-        self.assertRaises(ValidationError, page2.clean)
+        self.assertRaises(ValidationError, page2.full_clean)

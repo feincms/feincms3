@@ -9,6 +9,9 @@ Change log
   feincms3 without updating Django is easier.
 - Allowed overriding the Page queryset used in ``page_for_app_request``
   (for example for adding ``select_related``).
+- Moved validation logic in varous model mixins from ``clean()`` to
+  ``clean_fields(exclude)`` to be able to attach errors to individual
+  form fields (if they are available on the given form).
 
 
 `0.13`_ (2016-11-07)

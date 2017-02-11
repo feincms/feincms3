@@ -212,25 +212,32 @@ class RedirectMixin(models.Model):
     class Meta:
         abstract = True
 
-    def clean(self):
-        super(RedirectMixin, self).clean()
+    def clean_fields(self, exclude=None):
+        exclude = [] if exclude is None else exclude
+        super(RedirectMixin, self).clean_fields(exclude)
 
         if self.redirect_to_url and self.redirect_to_page_id:
-            raise ValidationError({
-                'redirect_to_url': _('Only set one redirect value.'),
-            })
+            error = _('Only set one redirect value.')
+            raise ValidationError(
+                error if 'redirect_to_url' in exclude else
+                {'redirect_to_url': error}
+            )
         if self.redirect_to_page_id:
             if self.redirect_to_page_id == self.pk:
-                raise ValidationError({
-                    'redirect_to_page': _('Cannot redirect to self.'),
-                })
+                error = _('Cannot redirect to self.')
+                raise ValidationError(
+                    error if 'redirect_to_page' in exclude else
+                    {'redirect_to_page': error}
+                )
             if self.redirect_to_page.redirect_to_page_id:
-                raise ValidationError({
-                    'redirect_to_page': _(
-                        'Do not chain redirects. The selected page redirects'
-                        ' to %(title)s (%(path)s).'
-                    ) % {
-                        'title': self.redirect_to_page,
-                        'path': self.redirect_to_page.get_absolute_url(),
-                    },
-                })
+                error = _(
+                    'Do not chain redirects. The selected page redirects'
+                    ' to %(title)s (%(path)s).'
+                ) % {
+                    'title': self.redirect_to_page,
+                    'path': self.redirect_to_page.get_absolute_url(),
+                }
+                raise ValidationError(
+                    error if 'redirect_to_page' in exclude else
+                    {'redirect_to_page': error}
+                )

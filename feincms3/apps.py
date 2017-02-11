@@ -367,26 +367,32 @@ class AppsMixin(models.Model):
         super(AppsMixin, self).save(*args, **kwargs)
     save.alters_data = True
 
-    def clean(self):
+    def clean_fields(self, exclude=None):
         """
         Checks that application nodes do not have any descendants, and that
         required fields for the selected application (if any) are filled out,
         and that app instances with the same instance namespace and same
         language only exist once on a site.
         """
-        super(AppsMixin, self).clean()
+        exclude = [] if exclude is None else exclude
+        super(AppsMixin, self).clean_fields(exclude)
 
         if self.parent:
             if (self.parent.application or
                     self.parent.ancestors().exclude(application='').exists()):
-                raise ValidationError(_(
-                    'Invalid parent: Apps may not have any descendants.'
-                ))
+                error = _('Apps may nove have any descendants.')
+                raise ValidationError(
+                    _('Invalid parent: %s') % (error,)
+                    if 'parent' in exclude else
+                    {'parent': _('Apps may not have any descendants.')}
+                )
 
         if self.application and not self.is_leaf():
-            raise ValidationError(_(
-                    'Apps may not have any descendants in the tree.',
-            ))
+            error = _('Apps may not have any descendants in the tree.')
+            raise ValidationError(
+                error if 'application' in exclude else
+                {'application': error}
+            )
 
         app_config = self.application_config()
         if app_config and app_config.get('required_fields'):
@@ -395,12 +401,19 @@ class AppsMixin(models.Model):
                 if not getattr(self, field)
             ]
             if missing:
-                raise ValidationError({
-                    field: _(
-                        'This field is required for the application %s.'
-                    ) % (self.get_application_display(),)
-                    for field in missing
-                })
+                error = _(
+                    'This field is required for the application %s.'
+                ) % (self.get_application_display(),)
+                errors = {}
+                for field in missing:
+                    if field in exclude:
+                        errors.setdefault('__all__', []).append(
+                            '%s: %s' % (field, error)
+                        )
+                    else:
+                        errors[field] = error
+
+                raise ValidationError(errors)
 
         if app_config:
             app_instance_namespace = app_config.get(
@@ -433,5 +446,6 @@ class AppsMixin(models.Model):
             sender._meta.get_field('application').choices = [
                 app[:2] for app in sender.APPLICATIONS
             ]
+
 
 signals.class_prepared.connect(AppsMixin.fill_application_choices)
