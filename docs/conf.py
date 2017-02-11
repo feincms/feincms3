@@ -44,6 +44,14 @@ settings.configure(
     SECRET_KEY='tests',
     ROOT_URLCONF='testapp.urls',
     ALLOWED_HOSTS=['*'],
+    MIDDLEWARE=(
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
+    ),
     MIDDLEWARE_CLASSES=(
         'django.middleware.common.CommonMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
