@@ -12,6 +12,7 @@ Change log
 - Moved validation logic in varous model mixins from ``clean()`` to
   ``clean_fields(exclude)`` to be able to attach errors to individual
   form fields (if they are available on the given form).
+- Added Django 1.11 to the build matrix on Travis CI.
 
 
 `0.13`_ (2016-11-07)
