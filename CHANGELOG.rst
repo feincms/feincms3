@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.14`_ (2016-03-14)
+~~~~~~~~~~~~~~~~~~~~
+
 - Removed ``Django`` from ``install_requires``, so that updating
   feincms3 without updating Django is easier.
 - Allowed overriding the Page queryset used in ``page_for_app_request``
@@ -227,4 +231,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.11: https://github.com/matthiask/feincms3/compare/0.10...0.11
 .. _0.12: https://github.com/matthiask/feincms3/compare/0.11...0.12
 .. _0.13: https://github.com/matthiask/feincms3/compare/0.12...0.13
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.13...master
+.. _0.14: https://github.com/matthiask/feincms3/compare/0.13...0.14
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.14...master
