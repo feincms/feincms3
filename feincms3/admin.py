@@ -45,6 +45,10 @@ class TreeAdmin(ModelAdmin):
             'feincms3/box-drawing.css',
         }}
 
+    def __init__(self, *args, **kwargs):
+        super(TreeAdmin, self).__init__(*args, **kwargs)
+        self.model._default_manager._ensure_parameters()
+
     def get_ordering(self, request):
         """
         Order by tree (depth-first traversal) and ``position`` within a level

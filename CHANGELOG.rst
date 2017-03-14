@@ -13,6 +13,8 @@ Change log
   ``clean_fields(exclude)`` to be able to attach errors to individual
   form fields (if they are available on the given form).
 - Added Django 1.11 to the build matrix on Travis CI.
+- Fixed an "interesting" bug where the ``TreeAdmin`` would crash with
+  an ``AttributeError`` if no query has been run on the model before.
 
 
 `0.13`_ (2016-11-07)
