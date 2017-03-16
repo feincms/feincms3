@@ -10,14 +10,12 @@
   {% menu "main" level=1 depth=2 language_code=page.language_code|default:'de' as pages %}
   {% for main, children in pages|group_by_tree %}
 
-    {% is_descendant_of page main include_self=True as active %}
-    <a {% if active %}class="active"{% endif %} href="{{ main.get_absolute_url }}">{{ main.title }}</a>
+    <a {% if page and main.id in page.cte_path %}class="active"{% endif %} href="{{ main.get_absolute_url }}">{{ main.title }}</a>
 
       {% if children %}
       <nav>
         {% for child in children %}
-          {% is_descendant_of page child include_self=True as active %}
-          <a {% if active %}class="active"{% endif %} href="{{ child.get_absolute_url }}">{{ child.title }}</a>
+          <a {% if page and child.id in page.cte_path %}class="active"{% endif %} href="{{ child.get_absolute_url }}">{{ child.title }}</a>
         {% endfor %}
       </nav>
     {% endif %}

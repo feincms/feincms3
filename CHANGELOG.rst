@@ -5,6 +5,11 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Dropped the ``is_descendant_of`` template tag. It was probably never
+  used without ``include_self=True``, and this particular use case is
+  better covered by checking whether a given primary key is a member
+  of ``page.cte_path``.
+
 
 `0.14`_ (2016-03-14)
 ~~~~~~~~~~~~~~~~~~~~

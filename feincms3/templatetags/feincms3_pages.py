@@ -12,15 +12,13 @@ This example showcases all template tags in this template tag library::
     {% menu "main" level=1 depth=2 tree_id=page.tree_id as pages %}
     {% for main, children in pages|group_by_tree %}
 
-      {% is_descendant_of page main include_self=True as active %}
-      <a {% if active %}class="active"{% endif %}
+      <a {% if page and main.id in page.cte_path %}class="active"{% endif %}
          href="{{ main.get_absolute_url }}">{{ main.title }}</a>
 
         {% if children %}
         <nav>
           {% for child in children %}
-            {% is_descendant_of page child include_self=True as active %}
-            <a {% if active %}class="active"{% endif %}
+            <a {% if page and child.id in page.cte_path %}class="active"{% endif %}
                href="{{ child.get_absolute_url }}">{{ child.title }}</a>
           {% endfor %}
         </nav>
@@ -63,22 +61,6 @@ def group_by_tree(iterable):
 
     if parent:
         yield parent, children
-
-
-@register.simple_tag
-def is_descendant_of(node1, node2, include_self=False):
-    """
-    Return whether the first argument is a descendant of the second argument.
-
-    If using this tag to determine whether menu entries should be active or
-    not ``include_self=True`` should be specified.
-    """
-    # Strings mean that either node1 or node2 was no page instance.
-    if any(isinstance(node, str) for node in (node1, node2)):
-        return False
-    if include_self and node1 == node2:
-        return True
-    return node1.is_descendant_of(node2)
 
 
 @register.simple_tag
