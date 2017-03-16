@@ -62,7 +62,7 @@ Change log
 `0.11`_ (2016-09-19)
 ~~~~~~~~~~~~~~~~~~~~
 
-- Changed the implementation of the ``is_descendant_of`` template tag do
+- Changed the implementation of the ``is_descendant_of`` template tag to
   not depend on django-mptt_'s API anymore, and removed the
   compatibility shims from ``AbstractPage``.
 - Made the documentation build again and added some documentation for

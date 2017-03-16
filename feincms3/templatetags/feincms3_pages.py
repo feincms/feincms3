@@ -2,14 +2,14 @@
 The template tags in ``feincms3_pages`` are mainly concerned with rendering
 menus.
 
-An example where there is a root node per language (that is, a MPTT ``tree_id``
-per language), and the first two navigation levels should be rendered follows.
-This example showcases all template tags in this template tag library::
+An example where there is a root node per language, and the first two
+navigation levels should be rendered follows.  This example showcases all
+template tags in this template tag library::
 
     {% load feincms3_pages %}
 
     <nav class="nav-main">
-    {% menu "main" level=1 depth=2 tree_id=page.tree_id as pages %}
+    {% menu "main" level=1 depth=2 language_code=page.language_code as pages %}
     {% for main, children in pages|group_by_tree %}
 
       <a {% if page and main.id in page.cte_path %}class="active"{% endif %}
@@ -39,8 +39,8 @@ register = template.Library()
 @register.filter
 def group_by_tree(iterable):
     """
-    Given a list of MPTT objects in tree order, generate pairs consisting of
-    the parents and their descendants in a list.
+    Given a list of pages in tree order, generate pairs consisting of the
+    parents and their descendants in a list.
     """
 
     parent = None
