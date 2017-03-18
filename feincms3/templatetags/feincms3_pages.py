@@ -17,9 +17,9 @@ template tags in this template tag library::
 
         {% if children %}
         <nav>
-          {% for child in children %}
-            <a {% if page and child.id in page.cte_path %}class="active"{% endif %}
-               href="{{ child.get_absolute_url }}">{{ child.title }}</a>
+          {% for p in children %}
+            <a {% if page and p.id in page.cte_path %}class="active"{% endif %}
+               href="{{ p.get_absolute_url }}">{{ p.title }}</a>
           {% endfor %}
         </nav>
       {% endif %}
