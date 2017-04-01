@@ -6,13 +6,28 @@ from django.db import models
 from django.db.models import Max, Q
 from django.utils.translation import ugettext_lazy as _
 
-from cte_forest.models import CTENode
+from cte_forest.models import CTENode, CTENodeManager
 
 try:
     from django.urls import reverse
 except ImportError:  # pragma: no cover
     # Django <1.10
     from django.core.urlresolvers import reverse
+
+
+class AbstractPageManager(CTENodeManager):
+    """
+    Defines a single method, ``active``, which only returns pages with
+    ``is_active=True``.
+    """
+    def active(self):
+        """
+        Return only active pages
+
+        This function is used in :func:`~feincms3.apps.apps_urlconf` and
+        in the bundled ``menu`` template tag.
+        """
+        return self.filter(is_active=True)
 
 
 class AbstractPage(CTENode):
@@ -58,6 +73,8 @@ class AbstractPage(CTENode):
             message=_('Path must start and end with a slash (/).'),
         )])
     static_path = models.BooleanField(_('static path'), default=False)
+
+    objects = AbstractPageManager()
 
     class Meta:
         abstract = True

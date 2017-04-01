@@ -9,6 +9,7 @@ Change log
   used without ``include_self=True``, and this particular use case is
   better covered by checking whether a given primary key is a member
   of ``page.cte_path``.
+- Added a default manager implementing ``active()`` to ``AbstractPage``.
 
 
 `0.14`_ (2016-03-14)
