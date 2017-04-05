@@ -26,8 +26,31 @@ class MenuMixin(models.Model):
                 ('meta', _('meta navigation')),
             )
 
-    The ``menu`` template tag may be used to fetch navigation entries
-    from the template. See feincms3.templatetags.feincms3_pages.menu.
+    An example for a template tag which fetches menu entries follows, but note
+    that needs differ so much between different sites that none is bundled with
+    feincms3::
+
+        from collections import defaultdict
+        from django import template
+        from django.db.models import Q
+        from django.utils.translation import get_language
+        from app.pages.models import Page
+
+        register = template.Library()
+
+        @register.simple_tag
+        def menus():
+            menus = defaultdict(list)
+            pages = Page.objects.filter(
+                Q(is_active=True),
+                Q(language_code=get_language()),
+                ~Q(menu=''),
+            ).extra(
+                where=['depth BETWEEN 2 AND 3'],
+            )
+            for page in pages:
+                menus[page.menu].append(page)
+            return menus
     """
 
     menu = models.CharField(

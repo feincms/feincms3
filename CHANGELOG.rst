@@ -9,6 +9,11 @@ Change log
   used without ``include_self=True``, and this particular use case is
   better covered by checking whether a given primary key is a member
   of ``page.cte_path``.
+- Dropped the ``menu`` template tag, and with it also the
+  ``group_by_tree`` filter. Its arguments were interpreted according to
+  the long-gone django-mptt_ and it promoted bad database querying
+  patterns.
+- Dropped the now-empty ``feincms3_pages`` template tag library.
 - Added a default manager implementing ``active()`` to ``AbstractPage``.
 
 

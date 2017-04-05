@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
-{% load feincms3_pages %}
+{% load menus %}
 <html>
 <head>
   <title>{% block title %}testapp{% endblock %}</title>
 </head>
 <body>
 
+  {% menus as menus %}
   <nav class="nav-main">
-  {% menu "main" level=1 depth=2 language_code=page.language_code|default:'de' as pages %}
-  {% for main, children in pages|group_by_tree %}
+  {% for main, children in menus.main|group_by_tree %}
 
     <a {% if page and main.id in page.cte_path %}class="active"{% endif %} href="{{ main.get_absolute_url }}">{{ main.title }}</a>
 

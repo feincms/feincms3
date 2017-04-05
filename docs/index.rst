@@ -193,13 +193,6 @@ Shortcuts (``feincms3.shortcuts``)
 Template tags
 =============
 
-``feincms3_pages``
-~~~~~~~~~~~~~~~~~~
-
-.. automodule:: feincms3.templatetags.feincms3_pages
-   :members:
-
-
 ``feincms3_renderer``
 ~~~~~~~~~~~~~~~~~~~~~
 
