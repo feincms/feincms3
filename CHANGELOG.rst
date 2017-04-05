@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.15`_ (2016-04-05)
+~~~~~~~~~~~~~~~~~~~~
+
 - Dropped the ``is_descendant_of`` template tag. It was probably never
   used without ``include_self=True``, and this particular use case is
   better covered by checking whether a given primary key is a member
@@ -243,4 +246,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.12: https://github.com/matthiask/feincms3/compare/0.11...0.12
 .. _0.13: https://github.com/matthiask/feincms3/compare/0.12...0.13
 .. _0.14: https://github.com/matthiask/feincms3/compare/0.13...0.14
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.14...master
+.. _0.15: https://github.com/matthiask/feincms3/compare/0.14...0.15
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.15...master
