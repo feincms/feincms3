@@ -34,5 +34,5 @@ deploy:
     tags: true
     branch: master
     python: '3.5'
-    condition: "$REQ = 'Django>=1.11,<2.0'"
+    condition: "$REQ = 'Django>=1.11,<2.0 django-cte-forest'"
     repo: matthiask/feincms3

@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed the releasing-via-PyPI configuration.
+
+
 `0.15`_ (2016-04-05)
 ~~~~~~~~~~~~~~~~~~~~
 
