@@ -1,4 +1,5 @@
 import os
+import warnings
 
 SITE_ID = 1
 
@@ -54,7 +55,6 @@ TEMPLATES = [
     },
 ]
 
-
 MIDDLEWARE_CLASSES = MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,6 +66,8 @@ MIDDLEWARE_CLASSES = MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'feincms3.apps.AppsMiddleware',
 ]
+# Do not warn about MIDDLEWARE_CLASSES
+SILENCED_SYSTEM_CHECKS = ['1_10.W001']
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -83,3 +85,17 @@ CKEDITOR_CONFIGS = {
 
 # Settings for feincms3.plugins.richtext.RichText
 CKEDITOR_CONFIGS['richtext-plugin'] = CKEDITOR_CONFIGS['default']
+
+
+# Something about inspect.getargspec in beautifulsoup4.
+warnings.filterwarnings(
+    'ignore',
+    module=r'bs4\.builder\._lxml')
+
+try:
+    # We do not yet care about those.
+    from django.utils.deprecation import RemovedInDjango21Warning
+
+    warnings.simplefilter('ignore', RemovedInDjango21Warning)
+except ImportError:  # pragma: no cover
+    pass

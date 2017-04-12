@@ -1,5 +1,3 @@
-import warnings
-
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
@@ -15,11 +13,6 @@ from feincms3.apps import (
 from feincms3.plugins.external import ExternalForm
 
 from .models import Article, External, Page
-
-# Something about inspect.getargspec in beautifulsoup4.
-warnings.filterwarnings(
-    'ignore',
-    module=r'bs4\.builder\._lxml')
 
 
 def zero_management_form_data(prefix):
