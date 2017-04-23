@@ -6,6 +6,13 @@ Change log
 ~~~~~~~~~~~~~~~
 
 - Fixed the releasing-via-PyPI configuration.
+- Removed strikethrough from our recommended rich text configuration,
+  since feincms-cleanse_ would remove the tag anyway.
+- Made ``TemplatePluginRenderer.regions`` and the ``Regions`` class into
+  documented API.
+- Made ``register_template_renderer``'s ``context`` argument default to
+  ``default_context`` instead of ``None``, so please stop passing
+  ``None`` and expecting the default context to work as before.
 
 
 `0.15`_ (2016-04-05)

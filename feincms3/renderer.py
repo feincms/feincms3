@@ -4,20 +4,74 @@ from django.utils.html import mark_safe
 
 from content_editor.contents import contents_for_item
 
-__all__ = ('TemplatePluginRenderer',)
+
+__all__ = ('TemplatePluginRenderer', 'Regions', 'default_context')
 
 
 def default_context(plugin, context):
+    """
+    Return the default context for plugins rendered with a template, which
+    simply is a single variable named ``plugin`` containing the plugin
+    instance.
+    """
     return {'plugin': plugin}
 
 
 class Regions(object):
+    """
+    Wrapper for a ``Contents`` attribute with support for caching the
+    potentially somewhat expensive plugin loading and rendering step.
+
+    A view using this facility would look as follows::
+
+        def page_detail(request, slug):
+            page = get_object_or_404(Page, slug=slug)
+            return render(request, 'page.html', {
+                'page': page,
+                'regions': renderer.regions(
+                    page,
+                    # Optional:
+                    inherit_from=page.ancestors().reverse(),
+                ),
+                # Note! No 'contents' and no 'renderer' necessary in the
+                # template.
+            })
+
+    The template itself should contain the following snippet::
+
+        {% load feincms3_renderer %}
+
+        {% block content %}
+
+        <h1>{{ page.title }}</h1>
+        <main>
+          {% render_region regions "main" timeout=60 %}
+        </main>
+        <aside>
+          {% render_region regions "sidebar" timeout=60 %}
+        </aside>
+
+        {% endblock %}
+
+    Caching is, of course, completely optional. When you're caching regions
+    though you should probably cache them all, because accessing the content of
+    a single region loads the content of all regions. (It might still make
+    sense if the rendering is the expensive part, not the database access.)
+
+    .. note::
+       You should probably always let the renderer instantiate this class and
+       not depend on the API, especially since the lazyness happens in the
+       renderer, not in the ``Regions`` instance.
+    """
     def __init__(self, item, contents, renderer):
         self._item = item
         self._contents = contents
         self._renderer = renderer
 
     def cache_key(self, region):
+        """
+        Return a cache key suitable for the given ``region`` passed
+        """
         return '%s-%s-%s' % (
             self._item._meta.label_lower,
             self._item.pk,
@@ -25,6 +79,15 @@ class Regions(object):
         )
 
     def render(self, region, context, timeout=None):
+        """
+        Render a single region using the context passed
+
+        If ``timeout`` is ``None`` caching is disabled.
+
+        .. note::
+           You should treat anything except for the ``region`` and ``context``
+           argument as keyword-only.
+        """
         if timeout is not None:
             key = self.cache_key(region)
             html = cache.get(key)
@@ -70,8 +133,10 @@ class TemplatePluginRenderer(object):
         """
         self._renderers[plugin] = (None, renderer)
 
-    def register_template_renderer(self, plugin, template_name, context=None):
-        """
+    def register_template_renderer(
+            self, plugin, template_name, context=default_context):
+        """register_template_renderer(self, plugin, template_name,\
+context=default_context)
         Register a renderer for ``plugin`` using a template. The template uses
         the same mechanism as ``{% include %}`` meaning that the full template
         context is available to the plugin renderer.
@@ -84,8 +149,10 @@ class TemplatePluginRenderer(object):
         - A callable receiving the plugin as only parameter and returning any
           of the above.
 
-        ``context`` may be ``None``, a dictionary, or a callable receiving the
-        plugin instance and the template context and returning a dictionary.
+        ``context`` must be a callable receiving the plugin instance and the
+        template context and returning a dictionary. The default implementation
+        simply returns a dictionary containing a single key named ``plugin``
+        containing the plugin instance.
 
         Usage::
 
@@ -109,7 +176,7 @@ class TemplatePluginRenderer(object):
             )
 
         """
-        self._renderers[plugin] = (template_name, context or default_context)
+        self._renderers[plugin] = (template_name, context)
 
     def plugins(self):
         """
@@ -124,12 +191,19 @@ class TemplatePluginRenderer(object):
         return list(self._renderers.keys())
 
     def regions(self, item, inherit_from=None, regions=Regions):
+        """
+        Return a ``Regions`` instance which lazily wraps the
+        ``contents_for_item`` call. This is especially useful in conjunction
+        with the ``render_region`` template tag. The ``inherit_from`` argument
+        is directly forwarded to ``contents_for_item`` to allow regions with
+        inherited content.
+        """
         return regions(
-            item,
-            SimpleLazyObject(
+            item=item,
+            contents=SimpleLazyObject(
                 lambda: contents_for_item(item, self.plugins(), inherit_from)
             ),
-            self,
+            renderer=self,
         )
 
     def render_plugin_in_context(self, plugin, context):

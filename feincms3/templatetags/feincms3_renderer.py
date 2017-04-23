@@ -29,7 +29,8 @@ def render_plugins(context, plugins):
 @register.simple_tag(takes_context=True)
 def render_region(context, regions, region, **kwargs):
     """
-    Render a single region. See :mod:`feincms3.renderer` for additional
-    details.
+    Render a single region. See :class:`~feincms3.renderer.Region` for
+    additional details. Any and all keyword arguments are forwarded to the
+    ``render`` method of the ``Regions`` instance.
     """
     return regions.render(region, context, **kwargs)
