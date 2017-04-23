@@ -75,7 +75,7 @@ CKEDITOR_CONFIGS = {
         'format_tags': 'h1;h2;h3;p;pre',
         'toolbar_Custom': [
             ['Format', 'RemoveFormat'],
-            ['Bold', 'Italic', 'Strike', '-',
+            ['Bold', 'Italic', '-',
              'NumberedList', 'BulletedList', '-',
              'Anchor', 'Link', 'Unlink', '-',
              'Source'],
