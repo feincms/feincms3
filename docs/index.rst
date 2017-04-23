@@ -179,7 +179,14 @@ Apps (``feincms3.apps``)
 Renderer (``feincms3.renderer``)
 ================================
 
-.. automodule:: feincms3.renderer
+.. module:: feincms3.renderer
+
+.. autoclass:: TemplatePluginRenderer
+   :members:
+
+.. autofunction:: feincms3.renderer.
+
+.. autoclass:: Regions
    :members:
 
 
