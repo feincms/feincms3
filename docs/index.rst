@@ -46,14 +46,27 @@ building (if you didn't want that you'd probably not be using Django_
 anyway).
 
 
-Installation
-============
+Prerequisites and installation
+==============================
+
+feincms3 runs on Python 2.7 and Python 3.4 or better. The minimum
+required Django version is 1.9 (because of django-content-editor_'s
+dependency on Django's features that have only been added in this
+version). Also, because of django-cte-forest_ it is currently
+PostgreSQL_ only because it lacks support for other database engines'
+recursive common table expressions (patches welcome!).
 
 feincms3 should be installed using pip_. The default of ``pip install
 feincms3`` depends on django-content-editor_ and django-cte-forest_
 (explained below). By specifying ``pip install feincms3[all]`` instead
 you can also install all optional dependencies (otherwise you'll not be
 able to use the built-in rich text, image and oEmbed plugins).
+
+.. note::
+   This documentation uses Python 3's keyword-only syntax in a few
+   places. Of course keyword-only arguments are only available with
+   older Python versions, but you still cannot pass them as positional
+   arguments or you'll get ``TypeError`` exceptions.
 
 
 Parts and responsibilities
@@ -184,7 +197,7 @@ Renderer (``feincms3.renderer``)
 .. autoclass:: TemplatePluginRenderer
    :members:
 
-.. autofunction:: feincms3.renderer.
+.. autofunction:: default_context
 
 .. autoclass:: Regions
    :members:
@@ -399,5 +412,6 @@ And a ``pages/standard.html`` template::
 .. _feincms3-example: https://github.com/matthiask/feincms3-example
 .. _oEmbed: http://oembed.com/
 .. _pip: https://pip.pypa.io/
+.. _PostgreSQL: https://www.postgresql.org/
 .. _requests: http://docs.python-requests.org
 .. _virtualenv: https://virtualenv.pypa.io/
