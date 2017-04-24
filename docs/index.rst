@@ -415,3 +415,5 @@ And a ``pages/standard.html`` template::
 .. _PostgreSQL: https://www.postgresql.org/
 .. _requests: http://docs.python-requests.org
 .. _virtualenv: https://virtualenv.pypa.io/
+
+.. include:: ../CHANGELOG.rst

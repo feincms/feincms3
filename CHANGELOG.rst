@@ -3,11 +3,11 @@ Change log
 ==========
 
 `Next version`_
-~~~~~~~~~~~~~~~
+===============
 
 
 `0.16`_ (2016-04-24)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - Fixed the releasing-via-PyPI configuration.
 - Removed strikethrough from our recommended rich text configuration,
@@ -24,7 +24,7 @@ Change log
 
 
 `0.15`_ (2016-04-05)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - Dropped the ``is_descendant_of`` template tag. It was probably never
   used without ``include_self=True``, and this particular use case is
@@ -39,7 +39,7 @@ Change log
 
 
 `0.14`_ (2016-03-14)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - Removed ``Django`` from ``install_requires``, so that updating
   feincms3 without updating Django is easier.
@@ -54,7 +54,7 @@ Change log
 
 
 `0.13`_ (2016-11-07)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - Fixed oEmbed read timeouts to not crash but retry after 60 seconds
   instead.
@@ -75,7 +75,7 @@ Change log
 
 
 `0.12`_ (2016-10-23)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - Made ``reverse_any`` mention all viewnames in the ``NoReverseMatch``
   exception instead of bubbling the last viewname's exception.
@@ -87,7 +87,7 @@ Change log
 
 
 `0.11`_ (2016-09-19)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - Changed the implementation of the ``is_descendant_of`` template tag to
   not depend on django-mptt_'s API anymore, and removed the
@@ -104,7 +104,7 @@ Change log
 
 
 `0.10`_ (2016-09-13)
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 - **BACKWARDS INCOMPATIBLE** Switched from django-mptt_ to
   django-cte-forest_ which means that feincms3 is for the moment
@@ -123,7 +123,7 @@ Change log
 
 
 `0.9`_ (2016-08-17)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Dropped compatibility with Python 2.
 - Fixed ``AbstractPage.save()`` to actually detect page moves correctly
@@ -134,7 +134,7 @@ Change log
 
 
 `0.8`_ (2016-08-05)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Added ``feincms3.apps.reverse_fallback`` to streamline reversing with
   fallback values in case of crashes.
@@ -150,7 +150,7 @@ Change log
 
 
 `0.7`_ (2016-07-21)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Removed all dependencies from ``install_requires`` to make it easier
   to replace individual items.
@@ -164,7 +164,7 @@ Change log
 
 
 `0.6`_ (2016-07-11)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Updated the translation files.
 - Fixed crashes when path of pages would not be unique when moving
@@ -172,7 +172,7 @@ Change log
 
 
 `0.5`_ (2016-07-07)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Fixed a crash where apps without ``required_fields`` could not be
   saved.
@@ -182,14 +182,14 @@ Change log
 
 
 `0.4`_ (2016-07-04)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Made application instances (``feincms3.apps``) more flexible by
   allowing programmatically generated instance namespace specifiers.
 
 
 `0.3`_ (2016-07-02)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - Lots of work on the documentation.
 - Moved all signal receivers into their classes as staticmethods.
@@ -201,7 +201,7 @@ Change log
 
 
 `0.2`_ (2016-06-28)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 - The external plugin admin form now checks whether the URL can be
   embedded using OEmbed or not.
@@ -215,7 +215,7 @@ Change log
 
 
 `0.1`_ (2016-06-25)
-~~~~~~~~~~~~~~~~~~~
+===================
 
 Added
 -----
