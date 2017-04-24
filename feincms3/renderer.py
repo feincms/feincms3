@@ -4,6 +4,8 @@ from django.utils.html import mark_safe
 
 from content_editor.contents import contents_for_item
 
+from feincms3.utils import positional
+
 
 __all__ = ('TemplatePluginRenderer', 'Regions', 'default_context')
 
@@ -63,6 +65,7 @@ class Regions(object):
        not depend on the API, especially since the lazyness happens in the
        renderer, not in the ``Regions`` instance.
     """
+    @positional(1)
     def __init__(self, item, contents, renderer):
         self._item = item
         self._contents = contents
@@ -78,8 +81,9 @@ class Regions(object):
             region,
         )
 
+    @positional(3)
     def render(self, region, context, timeout=None):
-        """
+        """render(self, region, context, *, timeout=None)
         Render a single region using the context passed
 
         If ``timeout`` is ``None`` caching is disabled.
@@ -190,8 +194,9 @@ context=default_context)
 
         return list(self._renderers.keys())
 
+    @positional(2)
     def regions(self, item, inherit_from=None, regions=Regions):
-        """
+        """regions(self, item, *, inherit_from=None, regions=Regions)
         Return a ``Regions`` instance which lazily wraps the
         ``contents_for_item`` call. This is especially useful in conjunction
         with the ``render_region`` template tag. The ``inherit_from`` argument

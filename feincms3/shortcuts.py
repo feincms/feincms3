@@ -12,6 +12,9 @@ Because of this, ``render_list`` and ``render_detail``.
 from django.core import paginator
 from django.shortcuts import render
 
+from feincms3.utils import positional
+
+
 __all__ = ('template_name', 'render_list', 'render_detail')
 
 
@@ -33,9 +36,11 @@ def template_name(model, template_name_suffix):
     )
 
 
+@positional(3)
 def render_list(request, queryset, context=None,
                 template_name_suffix='_list', paginate_by=None):
-    """
+    """render_list(request, queryset, context=None, *,\
+ template_name_suffix='_list', paginate_by=None)
     Render a list of items
 
     Usage example::
@@ -80,9 +85,11 @@ def render_list(request, queryset, context=None,
     )
 
 
+@positional(3)
 def render_detail(request, object, context=None,
                   template_name_suffix='_detail'):
-    """
+    """render_detail(request, object, context=None, *,\
+ template_name_suffix='_detail')
     Render a single item
 
     Usage example::

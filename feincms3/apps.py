@@ -44,7 +44,7 @@ from django.db import models
 from django.db.models import Q, signals
 from django.utils.translation import get_language, ugettext_lazy as _
 
-from feincms3.utils import concrete_model
+from feincms3.utils import concrete_model, positional
 
 try:
     from django.urls import NoReverseMatch, reverse
@@ -220,8 +220,9 @@ def apps_urlconf():
     return module_name
 
 
+@positional(1)
 def page_for_app_request(request, queryset=None):
-    """
+    """page_for_app_request(request, *, queryset=None)
     Returns the current page if we're inside an app. Should only be called
     while processing app views. Will pass along exceptions caused by
     non-existing or duplicated apps (this should never happen inside an app

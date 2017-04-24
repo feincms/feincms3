@@ -13,6 +13,10 @@ Change log
 - Made ``register_template_renderer``'s ``context`` argument default to
   ``default_context`` instead of ``None``, so please stop passing
   ``None`` and expecting the default context to work as before.
+- Before adding Python 2 compatibility, a few methods and functions had
+  keyword-only arguments. Python 2-compatible keyword-only enforcement
+  has been added back to make it straightforward to transition back to
+  keyword-only arguments later.
 
 
 `0.15`_ (2016-04-05)
