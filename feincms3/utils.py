@@ -1,23 +1,32 @@
+""""
+NOTE! Please do not depend upon any utilities in this file. Utilities are
+added, modified and dropped without prior notice. This file is only for
+feincms3's internal use.
+
+Of course you may always copy the code somewhere else if you like it
+(according to the very permissive license of course).
+"""
+
 from functools import wraps
 
 from django.utils.lru_cache import lru_cache
 
 
-def _iterate_subclasses(cls):
+def iterate_subclasses(cls):
     """
     Yields the passed class and all its subclasses in depth-first order.
     """
 
     for scls in cls.__subclasses__():
         yield scls
-        # yield from _iterate_subclasses(scls)
-        for c in _iterate_subclasses(scls):
+        # yield from iterate_subclasses(scls)
+        for c in iterate_subclasses(scls):
             yield c
 
 
 @lru_cache(maxsize=8)
 def concrete_model(abstract):
-    for cls in _iterate_subclasses(abstract):
+    for cls in iterate_subclasses(abstract):
         if not cls._meta.abstract:
             return cls
 
