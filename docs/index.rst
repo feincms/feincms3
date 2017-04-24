@@ -2,6 +2,8 @@
 feincms3
 ========
 
+Version |release|
+
 feincms3 provides additional building blocks on top of
 django-content-editor_ and django-cte-forest_ which make building a page
 CMS (and also other types of CMS) simpler.
