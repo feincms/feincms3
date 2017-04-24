@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.16`_ (2016-04-24)
+~~~~~~~~~~~~~~~~~~~~
+
 - Fixed the releasing-via-PyPI configuration.
 - Removed strikethrough from our recommended rich text configuration,
   since feincms-cleanse_ would remove the tag anyway.
@@ -261,4 +265,5 @@ Changed / Deprecated / Removed / Fixed / Security
 .. _0.13: https://github.com/matthiask/feincms3/compare/0.12...0.13
 .. _0.14: https://github.com/matthiask/feincms3/compare/0.13...0.14
 .. _0.15: https://github.com/matthiask/feincms3/compare/0.14...0.15
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.15...master
+.. _0.16: https://github.com/matthiask/feincms3/compare/0.15...0.16
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.16...master
