@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-05 17:21+0100\n"
+"POT-Creation-Date: 2017-04-25 11:05+0200\n"
 "PO-Revision-Date: 2013-10-25 09:15+0000\n"
 "Last-Translator: Matthias Kestenholz <mk@feinheit.ch>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/feincms/language/"
@@ -20,168 +20,177 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:73 pages.py:47
+#: admin.py:81 pages.py:62
 msgid "title"
 msgstr "Titel"
 
-#: admin.py:87
+#: admin.py:95
 msgid "move"
 msgstr "verschieben"
 
-#: admin.py:128
+#: admin.py:136
 #, python-format
 msgid "The node %(node)s has been made the %(move_to)s of node %(to)s."
 msgstr "%(node)s wurde %(move_to)s von %(to)s."
 
-#: admin.py:135
+#: admin.py:143
 msgid "root node"
 msgstr "Wurzel"
 
-#: admin.py:156
+#: admin.py:164
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:183
+#: admin.py:191
 msgid "left sibling"
 msgstr "linkes Geschwister"
 
-#: admin.py:184
+#: admin.py:192
 msgid "right sibling"
 msgstr "rechtes Geschwister"
 
-#: admin.py:185
+#: admin.py:193
 msgid "first child"
 msgstr "erstes Kind"
 
-#: admin.py:186
+#: admin.py:194
 msgid "last child"
 msgstr "letztes Kind"
 
-#: admin.py:190
+#: admin.py:198
 msgid "Make node"
 msgstr "Mach Knoten"
 
-#: admin.py:202
+#: admin.py:210
 msgctxt "MoveForm"
 msgid "Of"
 msgstr "Von"
 
-#: admin.py:230
+#: admin.py:238
 msgid "Cannot move node to a position relative to itself."
 msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
 
-#: apps.py:322
+#: admin.py:281
+msgid "ancestor"
+msgstr "übergeordnet"
+
+#: apps.py:328
 msgid "application"
 msgstr "Applikation"
 
-#: apps.py:328
+#: apps.py:334
 msgid "app instance namespace"
 msgstr "Appinstanz-Namensraum"
 
-#: apps.py:378
-msgid "Invalid parent: Apps may not have any descendants."
-msgstr "Ungültig: Apps dürfen keine Unterlemente haben."
+#: apps.py:384
+msgid "Apps may nove have any descendants."
+msgstr "Apps dürfen keine Unterelemente haben."
 
-#: apps.py:383
+#: apps.py:386
+#, python-format
+msgid "Invalid parent: %s"
+msgstr "Ungültiger übergeordneter Knoten: %s"
+
+#: apps.py:392
 msgid "Apps may not have any descendants in the tree."
 msgstr "Apps dürfen keine Unterelemente haben."
 
-#: apps.py:395
+#: apps.py:406
 #, python-format
 msgid "This field is required for the application %s."
 msgstr "Dieses Feld wird für die App %s benötigt."
 
-#: apps.py:415
+#: apps.py:434
 msgid "This exact app already exists."
 msgstr "Diese exakte App existiert bereits."
 
-#: mixins.py:34
+#: mixins.py:57
 msgid "menu"
 msgstr "Menü"
 
-#: mixins.py:99
+#: mixins.py:122
 msgid "template"
 msgstr "Template"
 
-#: mixins.py:162
+#: mixins.py:185
 msgid "language"
 msgstr "Sprache"
 
-#: mixins.py:200
+#: mixins.py:223
 msgid "Redirect to URL"
 msgstr "Weiterleiten zu URL"
 
-#: mixins.py:209
+#: mixins.py:232
 msgid "Redirect to page"
 msgstr "Weiterleiten zu Seite"
 
-#: mixins.py:220
+#: mixins.py:243
 msgid "Only set one redirect value."
 msgstr "Bitte nur einen Weiterleitungs-Wert setzen."
 
-#: mixins.py:225
+#: mixins.py:250
 msgid "Cannot redirect to self."
 msgstr "Kann nicht zu sich selbst weiterleiten."
 
-#: mixins.py:230
+#: mixins.py:257
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page redirects to %(title)s (%(path)s)."
 msgstr ""
-"Die gewählte Seite leitet schon zu %(title)s (%(path)s) weiter, bitte"
-" Verkettungen von Weiterleitungen vermeiden."
+"Die gewählte Seite leitet schon zu %(title)s (%(path)s) weiter, bitte "
+"Verkettungen von Weiterleitungen vermeiden."
 
-#: pages.py:46
+#: pages.py:61
 msgid "is active"
 msgstr "ist aktiv"
 
-#: pages.py:48
+#: pages.py:63
 msgid "slug"
 msgstr "Slug"
 
-#: pages.py:54
+#: pages.py:69
 msgid "path"
 msgstr "Pfad"
 
-#: pages.py:55
+#: pages.py:70
 msgid "Generated automatically if 'static path' is unset."
 msgstr "Automatisch generiert falls 'statischer Pfad' nicht gesetzt ist."
 
-#: pages.py:58
+#: pages.py:73
 msgid "Path must start and end with a slash (/)."
 msgstr "Pfad muss mit einem Slash (/) starten und enden."
 
-#: pages.py:60
+#: pages.py:75
 msgid "static path"
 msgstr "statischer Pfad"
 
-#: pages.py:64
+#: pages.py:81
 msgid "page"
 msgstr "Seite"
 
-#: pages.py:65
+#: pages.py:82
 msgid "pages"
 msgstr "Seiten"
 
-#: pages.py:93
+#: pages.py:112
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statische Pfade können nicht leer sein. Meinten Sie '/'?"
 
-#: pages.py:113
+#: pages.py:133
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Der Pfad %(path)s der Seite %(page)s würde nicht eindeutig sein."
 
-#: plugins/external.py:86
+#: plugins/external.py:92
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:90
+#: plugins/external.py:96
 msgid "external content"
 msgstr "externer Inhalt"
 
-#: plugins/external.py:105
+#: plugins/external.py:111
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Kann das HTML für diese URL nicht abholen, tut mir leid!"
 
@@ -190,16 +199,18 @@ msgid ""
 "The content will be inserted directly into the page. It is VERY important "
 "that the HTML snippet is well-formed!"
 msgstr ""
+"Der Inhalt wird direkt in die Seite eingefügt. Es ist SEHR wichtig, dass "
+"das HTML gültig ist!"
 
-#: plugins/richtext.py:31
+#: plugins/richtext.py:37
 msgid "text"
 msgstr "Text"
 
-#: plugins/richtext.py:35
+#: plugins/richtext.py:41
 msgid "rich text"
 msgstr "Text"
 
-#: plugins/richtext.py:36
+#: plugins/richtext.py:42
 msgid "rich texts"
 msgstr "Texte"
 
@@ -214,3 +225,26 @@ msgstr "Schnipsel"
 #: plugins/snippet.py:31
 msgid "snippets"
 msgstr "Schnipsel"
+
+#: plugins/versatileimage.py:25 plugins/versatileimage.py:47
+msgid "image"
+msgstr "Bild"
+
+#: plugins/versatileimage.py:32
+msgid "image width"
+msgstr "Bildbreite"
+
+#: plugins/versatileimage.py:38
+msgid "image height"
+msgstr "Bildhöhe"
+
+#: plugins/versatileimage.py:43
+msgid "primary point of interest"
+msgstr "Fokuspunkt"
+
+#: plugins/versatileimage.py:48
+msgid "images"
+msgstr "Bilder"
+
+#~ msgid "Invalid parent: Apps may not have any descendants."
+#~ msgstr "Ungültig: Apps dürfen keine Unterlemente haben."
