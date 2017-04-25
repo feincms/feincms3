@@ -278,6 +278,23 @@ class MoveForm(forms.Form):
 
 
 class AncestorFilter(SimpleListFilter):
+    """
+    Only show the subtree of an ancestor
+
+    By default, the first two levels are shown in the ``list_filter`` sidebar.
+    This can be changed by setting the ``max_depth`` class attribute to a
+    different value.
+
+    Usage::
+
+        class PageAdmin(TreeAdmin):
+            # TreeAdmin is not a strict requirement, but you'll probably want
+            # to use them both.
+            list_display = ('indented_title', 'move_column', ...)
+            list_filter = ('is_active', AncestorFilter, ...)
+
+        admin.site.register(Page, PageAdmin)
+    """
     title = _('ancestor')
     parameter_name = 'ancestor'
     max_depth = 2
