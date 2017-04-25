@@ -5,6 +5,11 @@ Change log
 `Next version`_
 ===============
 
+- Minor documentation edits.
+- Added the ``AncestorFilter`` for filtering the admin changelist by
+  ancestor. The default setting is to allow filtering by the first two
+  tree levels.
+
 
 `0.16`_ (2016-04-24)
 ====================

@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditor
 from feincms3 import plugins
-from feincms3.admin import TreeAdmin
+from feincms3.admin import AncestorFilter, TreeAdmin
 
 from . import models
 
@@ -18,7 +18,7 @@ class PageAdmin(ContentEditor, TreeAdmin):
         'template_key',
         'application',
     ]
-    list_filter = ['is_active', 'menu']
+    list_filter = ['is_active', 'menu', AncestorFilter]
     list_editable = ['is_active']
     prepopulated_fields = {
         'slug': ('title',),

@@ -204,8 +204,8 @@ class Test(TestCase):
             '<li>Unable to fetch HTML for this URL, sorry!</li>',
             '%s' % form.errors)
 
-    def test_navigation(self):
-        """Test menu template tags"""
+    def test_navigation_and_changelist(self):
+        """Test menu template tags and the admin changelist"""
 
         home_de = Page.objects.create(
             title='home',
@@ -319,6 +319,33 @@ class Test(TestCase):
             'href="/de/',
             8,
             status_code=404,
+        )
+
+        # Changelist and filtering
+        client = self.login()
+        self.assertContains(
+            client.get('/admin/testapp/page/'),
+            'name="_selected_action"',
+            15,  # 15 pages
+        )
+        self.assertContains(
+            client.get('/admin/testapp/page/?ancestor=%s' % home_de.pk),
+            'name="_selected_action"',
+            10,  # 10 de
+        )
+        self.assertContains(
+            client.get('/admin/testapp/page/?ancestor=%s' % home_en.pk),
+            'name="_selected_action"',
+            5,  # 5 en
+        )
+        self.assertContains(
+            client.get('/admin/testapp/page/'),
+            'href="?ancestor=',
+            11,  # 2 root pages, 5 de children, 4 en children
+        )
+        self.assertRedirects(
+            client.get('/admin/testapp/page/?ancestor=abc', follow=False),
+            '/admin/testapp/page/?e=1',
         )
 
     def test_apps(self):

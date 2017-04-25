@@ -2,7 +2,8 @@ from functools import update_wrapper
 
 from django import forms
 from django.conf.urls import url
-from django.contrib.admin import ModelAdmin, helpers
+from django.contrib.admin import ModelAdmin, SimpleListFilter, helpers
+from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
 from django.db import router, transaction
@@ -18,6 +19,9 @@ try:
 except ImportError:  # pragma: no cover
     # Django <1.10
     from django.core.urlresolvers import reverse
+
+
+__all__ = ('TreeAdmin', 'MoveForm', 'AncestorFilter')
 
 
 csrf_protect_m = method_decorator(csrf_protect)
@@ -271,3 +275,36 @@ class MoveForm(forms.Form):
                 self.model.objects.filter(pk=instance.pk).update(
                     position=(index + 1) * 10,
                 )
+
+
+class AncestorFilter(SimpleListFilter):
+    title = _('ancestor')
+    parameter_name = 'ancestor'
+    max_depth = 2
+
+    def lookups(self, request, model_admin):
+        return [(
+            node.id,
+            '%s %s' % (
+                '-' * (node.depth - 1),
+                node,
+            ),
+        ) for node in model_admin.model._default_manager.extra(
+            where=['depth <= %s' % self.max_depth],
+        )]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            try:
+                node = queryset.model._default_manager.get(pk=self.value())
+            except (TypeError, ValueError, queryset.model.DoesNotExist):
+                raise IncorrectLookupParameters()
+            return queryset.extra(
+                where=[
+                    '%s = ANY(%s)' % (
+                        node.pk,
+                        queryset.model._cte_node_path,
+                    ),
+                ],
+            )
+        return queryset
