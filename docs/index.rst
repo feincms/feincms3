@@ -250,7 +250,7 @@ You'll have to add at least the following apps to ``INSTALLED_APPS``:
 - ``ckeditor`` if you want to use :mod:`feincms3.plugins.richtext`
 - ``versatileimagefield`` for :mod:`feincms3.plugins.versatileimage`
 - ... and of course also the app where you put your concrete models such
-  as the page model
+  as the page model, named ``app.pages`` in this guide.
 
 If you're using the rich text plugin it is very much recommended to add
 a ``CKEDITOR_CONFIGS`` setting as documented in :mod:`feincms3.cleanse`.
@@ -278,22 +278,22 @@ Where ``app.pages.views`` contains the following view::
 
     from django.shortcuts import get_object_or_404, render
 
-    from content_editor.contents import contents_for_item
-
     from .models import Page
     from .renderer import renderer
 
 
     def page_detail(request, path=None):
         page = get_object_or_404(
-            Page.objects.a[MaþEctive(),
+            Page.objects.active(),
             path='/{}/'.format(path) if path else '/',
         )
         page.activate_language(request)
         return render(request, page.template.template_name, {
             'page': page,
             'regions': renderer.regions(
-                page, inherit_from=page.ancestors().reverse()),
+                page,
+                inherit_from=page.ancestors().reverse(),
+            ),
         })
 
 Here's an example how plugins could be rendered,
@@ -327,21 +327,18 @@ Of course if you'd rather let plugins use templates, do this::
         'plugins/image.html',
     )
 
-And the associated template::
+And the associated template with downscaling of bigger images::
 
-    <figure><img src="{{ plugin.image.url }}" alt=""/></figure>
+    <figure><img src="{{ plugin.image.thumbnail.400x400 }}" alt=""/></figure>
 
-If you don't like this, you're commpletely free to write your own views
-and URLs. All you have to do is override the ``get_absolute_url`` method
-of your own page model.
-
+If you don't like this, you're completely free to write your own views,
+URLs and ``get_absolute_url`` method.
 
 .. note::
    FeinCMS_ provided request and response processors and several ways
    how plugins (content types) could hook into the request-response
    processing. This isn't necessary with feincms3 -- simply put the
    functionality into your own views code.
-
 
 For completeness, here's an example how the ``app.pages.admin`` module
 might look like::
@@ -365,7 +362,8 @@ might look like::
 
         # fieldsets = ... (Recommended! No example here though. Note
         # that the content editor not only allows collapsed, but also
-        # tabbed fieldsets -- simply add 'tabbed' to the 'classes' key.
+        # tabbed fieldsets -- simply add 'tabbed' to the 'classes' key
+        # the same way you'd add 'collapse'.
 
         inlines = [
             plugins.RichTextInline.create(

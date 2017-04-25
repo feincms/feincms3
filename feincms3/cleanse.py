@@ -30,7 +30,7 @@ def cleanse_html(html):
 
 class CleansedRichTextField(RichTextField):
     """
-    This is a subclass of django-ckeditor's ``RichTextField``. The recommended
+    This is a subclass of django-ckeditor_'s ``RichTextField``. The recommended
     configuration is as follows::
 
         CKEDITOR_CONFIGS = {
