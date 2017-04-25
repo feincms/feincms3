@@ -217,9 +217,6 @@ Change log
 `0.1`_ (2016-06-25)
 ===================
 
-Added
------
-
 - Plugins (apps, external, richtext, snippet and versatileimage)
   for use with `django-content-editor`_.
 - HTML editing and cleansing using `django-ckeditor`_ and
@@ -232,19 +229,14 @@ Added
   templates.
 - A german translation.
 
-Changed / Deprecated / Removed / Fixed / Security
--------------------------------------------------
 
-- Nothing!
-
-
-.. _django-ckeditor: https://pypi.python.org/pypi/django-ckeditor
-.. _django-content-editor: http://django-content-editor.readthedocs.org/en/latest/
-.. _django-mptt: http://django-mptt.github.io/django-mptt/
+.. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor/
+.. _django-content-editor: https://django-content-editor.readthedocs.io/
+.. _django-cte-forest: https://django-cte-forest.readthedocs.io/
+.. _django-mptt: https://django-mptt.readthedocs.io/
 .. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
-.. _django-versatileimagefield: https://github.com/respondcreate/django-versatileimagefield/
-.. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse
-.. _django-cte-forest: https://github.com/matthiask/django-cte-forest
+.. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
+.. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse/
 .. _PostgreSQL: https://www.postgresql.org/
 .. _flake8: https://pypi.python.org/pypi/flake8
 .. _isort: https://pypi.python.org/pypi/isort
