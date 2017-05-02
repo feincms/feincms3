@@ -1,7 +1,7 @@
 Django
 django-ckeditor
-django-content-editor>=0.10.1
+django-content-editor
 django-cte-forest
 django-versatileimagefield
-html-sanitizer
+html-sanitizer>=1.1.1
 requests

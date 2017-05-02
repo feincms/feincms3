@@ -27,6 +27,7 @@ setup(
     ),
     include_package_data=True,
     install_requires=[
+        # 'Django>=1.9', commented out to make `pip install -U` easier
         'django-content-editor',
         'django-cte-forest',
     ],
@@ -34,7 +35,7 @@ setup(
         'all': [
             'django-ckeditor',
             'django-versatileimagefield',
-            'html-sanitizer>=1.1',
+            'html-sanitizer>=1.1.1',
             'requests',
         ],
     },
@@ -51,6 +52,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
