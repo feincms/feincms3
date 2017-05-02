@@ -49,9 +49,9 @@ class CleansedRichTextField(RichTextField):
         CKEDITOR_CONFIGS['richtext-plugin'] = CKEDITOR_CONFIGS['default']
 
     The corresponding ``FEINCMS3_SANITIZER_SETTINGS`` configuration for
-    html-sanitizer_ would look as follows:
+    html-sanitizer_ would look as follows::
 
-        SANITIZER_SETTINGS = {
+        FEINCMS3_SANITIZER_SETTINGS = {
             'tags': {
                 'a', 'h1', 'h2', 'h3', 'strong', 'em', 'p', 'ul', 'ol', 'li',
                 'br', 'sub', 'sup', 'hr',
