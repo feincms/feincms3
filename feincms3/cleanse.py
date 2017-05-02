@@ -53,8 +53,8 @@ class CleansedRichTextField(RichTextField):
 
         FEINCMS3_SANITIZER_SETTINGS = {
             'tags': {
-                'a', 'h1', 'h2', 'h3', 'strong', 'em', 'p', 'ul', 'ol', 'li',
-                'br', 'sub', 'sup', 'hr',
+                'a', 'h1', 'h2', 'h3', 'strong', 'em', 'p',
+                'ul', 'ol', 'li', 'br', 'sub', 'sup', 'hr',
             },
             'attributes': {
                 'a': ('href', 'name', 'target', 'title', 'id'),
