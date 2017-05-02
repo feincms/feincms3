@@ -34,7 +34,7 @@ setup(
         'all': [
             'django-ckeditor',
             'django-versatileimagefield',
-            'feincms-cleanse',
+            'html-sanitizer',
             'requests',
         ],
     },

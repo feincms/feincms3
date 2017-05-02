@@ -4,7 +4,7 @@ from .html import *
 from .snippet import *
 
 try:
-    import feincms_cleanse
+    import html_sanitizer
 except ImportError:  # pragma: no cover
     pass
 else:

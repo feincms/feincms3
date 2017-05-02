@@ -3,5 +3,5 @@ django-ckeditor
 django-content-editor>=0.10.1
 django-cte-forest
 django-versatileimagefield
-feincms-cleanse
+html-sanitizer
 requests

@@ -2,7 +2,7 @@
 Provides a rich text area whose content is automatically cleaned using a
 very restrictive white list of tags and attributes.
 
-Depends on feincms-cleanse_.
+Depends on html-sanitizer_.
 """
 from django.db import models
 from django.utils.html import mark_safe, strip_tags

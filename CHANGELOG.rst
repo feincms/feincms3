@@ -9,6 +9,7 @@ Change log
 - Added the ``AncestorFilter`` for filtering the admin changelist by
   ancestor. The default setting is to allow filtering by the first two
   tree levels.
+- Switched from feincms-cleanse_ to html-sanitizer_.
 
 
 `0.16`_ (2016-04-24)
@@ -242,6 +243,7 @@ Change log
 .. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
 .. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse/
+.. _html-sanitizer: https://pypi.python.org/pypi/html-sanitizer/
 .. _PostgreSQL: https://www.postgresql.org/
 .. _flake8: https://pypi.python.org/pypi/flake8
 .. _isort: https://pypi.python.org/pypi/isort

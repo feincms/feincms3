@@ -410,6 +410,7 @@ And a ``pages/standard.html`` template::
 .. _documentation: http://feincms3.readthedocs.io/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse/
 .. _feincms3-example: https://github.com/matthiask/feincms3-example/
+.. _html-sanitizer: https://pypi.python.org/pypi/html-sanitizer/
 .. _oEmbed: http://oembed.com/
 .. _pip: https://pip.pypa.io/
 .. _PostgreSQL: https://www.postgresql.org/
