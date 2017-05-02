@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ===============
 
+`0.17`_ (2016-05-02)
+====================
+
 - Minor documentation edits.
 - Added the ``AncestorFilter`` for filtering the admin changelist by
   ancestor. The default setting is to allow filtering by the first two
@@ -265,4 +268,5 @@ Change log
 .. _0.14: https://github.com/matthiask/feincms3/compare/0.13...0.14
 .. _0.15: https://github.com/matthiask/feincms3/compare/0.14...0.15
 .. _0.16: https://github.com/matthiask/feincms3/compare/0.15...0.16
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.16...master
+.. _0.17: https://github.com/matthiask/feincms3/compare/0.16...0.17
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.17...master
