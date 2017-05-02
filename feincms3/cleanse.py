@@ -6,23 +6,18 @@ to be, and a strict white-list based HTML sanitizer is the best answer
 I have.
 """
 
-from django.conf import settings
-
 from ckeditor.fields import RichTextField
-from html_sanitizer import Sanitizer
+from html_sanitizer.django import get_sanitizer
 
 
 __all__ = ('CleansedRichTextField', 'cleanse_html')
-
-
-sanitizer = Sanitizer(getattr(settings, 'FEINCMS3_SANITIZER_SETTINGS', {}))
 
 
 def cleanse_html(html):
     """
     Pass ugly HTML, get nice HTML back.
     """
-    return sanitizer.sanitize(html)
+    return get_sanitizer().sanitize(html)
 
 
 class CleansedRichTextField(RichTextField):
@@ -48,23 +43,25 @@ class CleansedRichTextField(RichTextField):
         # Settings for feincms3.plugins.richtext.RichText
         CKEDITOR_CONFIGS['richtext-plugin'] = CKEDITOR_CONFIGS['default']
 
-    The corresponding ``FEINCMS3_SANITIZER_SETTINGS`` configuration for
-    html-sanitizer_ would look as follows::
+    The corresponding ``HTML_SANITIZERS`` configuration for html-sanitizer_
+    would look as follows::
 
-        FEINCMS3_SANITIZER_SETTINGS = {
-            'tags': {
-                'a', 'h1', 'h2', 'h3', 'strong', 'em', 'p',
-                'ul', 'ol', 'li', 'br', 'sub', 'sup', 'hr',
+        HTML_SANITIZERS = {
+            'default': {
+                'tags': {
+                    'a', 'h1', 'h2', 'h3', 'strong', 'em', 'p',
+                    'ul', 'ol', 'li', 'br', 'sub', 'sup', 'hr',
+                },
+                'attributes': {
+                    'a': ('href', 'name', 'target', 'title', 'id'),
+                },
+                'empty': {'hr', 'a', 'br'},
+                'separate': {'a', 'p', 'li'},
+                # 'add_nofollow': False,
+                # 'autolink': False,
+                # 'element_filters': [],
+                # 'sanitize_href': sanitize_href,
             },
-            'attributes': {
-                'a': ('href', 'name', 'target', 'title', 'id'),
-            },
-            'empty': {'hr', 'a', 'br'},
-            'separate': {'a', 'p', 'li'},
-            # 'add_nofollow': False,
-            # 'autolink': False,
-            # 'element_filters': [],
-            # 'sanitize_href': sanitize_href,
         }
 
     At the time of writing those are the defaults of html-sanitizer_, so you

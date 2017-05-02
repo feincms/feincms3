@@ -34,7 +34,7 @@ setup(
         'all': [
             'django-ckeditor',
             'django-versatileimagefield',
-            'html-sanitizer',
+            'html-sanitizer>=1.1',
             'requests',
         ],
     },
