@@ -5,7 +5,7 @@ Change log
 `Next version`_
 ===============
 
-`0.17.1`_ (2016-05-02)
+`0.17.1`_ (2017-05-02)
 ======================
 
 - Minor documentation edits.
@@ -17,7 +17,7 @@ Change log
   ``HTML_SANITIZERS`` setting.
 
 
-`0.16`_ (2016-04-24)
+`0.16`_ (2017-04-24)
 ====================
 
 - Fixed the releasing-via-PyPI configuration.
@@ -34,7 +34,7 @@ Change log
   keyword-only arguments later.
 
 
-`0.15`_ (2016-04-05)
+`0.15`_ (2017-04-05)
 ====================
 
 - Dropped the ``is_descendant_of`` template tag. It was probably never
@@ -49,7 +49,7 @@ Change log
 - Added a default manager implementing ``active()`` to ``AbstractPage``.
 
 
-`0.14`_ (2016-03-14)
+`0.14`_ (2017-03-14)
 ====================
 
 - Removed ``Django`` from ``install_requires``, so that updating
