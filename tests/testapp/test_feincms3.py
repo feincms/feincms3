@@ -144,12 +144,6 @@ class Test(TestCase):
                     'testapp_richtext_set-0-region': 'main',
                     'testapp_richtext_set-0-ordering': 10,
                 },
-                {
-                    'testapp_external_set-TOTAL_FORMS': 1,
-                    'testapp_external_set-0-region': 'main',
-                    'testapp_external_set-0-ordering': 10,
-                    'testapp_external_set-0-url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',  # noqa
-                },
             ),
         )
 
@@ -171,16 +165,6 @@ class Test(TestCase):
         self.assertContains(
             response,
             '<strong>Hello!</strong>',  # HTML cleansing worked.
-            1,
-        )
-        self.assertContains(
-            response,
-            'src="https://www.youtube.com/embed/dQw4w9WgXcQ?feature=oembed"',
-            1,
-        )
-        self.assertContains(
-            response,
-            'flex-video widescreen',
             1,
         )
 
