@@ -299,13 +299,13 @@ class AncestorFilter(SimpleListFilter):
     parameter_name = 'ancestor'
     max_depth = 2
 
+    def indent(self, depth):
+        return mark_safe('&#x251c;' * (depth - 1))
+
     def lookups(self, request, model_admin):
         return [(
             node.id,
-            '%s %s' % (
-                '-' * (node.depth - 1),
-                node,
-            ),
+            format_html('{} {}', self.indent(node.depth), node),
         ) for node in model_admin.model._default_manager.extra(
             where=['depth <= %s' % self.max_depth],
         )]
