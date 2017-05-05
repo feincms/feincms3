@@ -65,9 +65,9 @@ class TreeAdmin(ModelAdmin):
         """
         box_drawing = []
         for i in range(instance.depth - 2):
-            box_drawing.append('<span>&#x2502;</span>')
+            box_drawing.append('<i class="l"></i>')
         if instance.depth > 1:
-            box_drawing.append('<span>&#x251c;</span>')
+            box_drawing.append('<i class="a"></i>')
 
         return format_html(
             '<div class="box">'

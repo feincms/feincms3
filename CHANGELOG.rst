@@ -5,6 +5,9 @@ Change log
 `Next version`_
 ===============
 
+- Slight improvements to ``TreeAdmin``'s alignment of box drawing characters.
+
+
 `0.17.1`_ (2017-05-02)
 ======================
 

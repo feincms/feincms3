@@ -9,12 +9,25 @@
     display: inline-block;
     font-size: 25px;
     font-weight: normal;
+    top: -.07em;
 }
 
-.box-drawing span {
+.box-drawing i {
     display: inline-block;
+    font-style: normal;
     width: 40px;
 }
+
+.box-drawing i.l::after {
+    content: '\2502';
+    position: relative;
+    left: .07em;
+}
+
+.box-drawing i.a::after {
+    content: '\251c';
+}
+
 
 .box-text {
 }
