@@ -24,7 +24,7 @@ def iterate_subclasses(cls):
             yield c
 
 
-@lru_cache(maxsize=8)
+@lru_cache(maxsize=None)
 def concrete_model(abstract):
     for cls in iterate_subclasses(abstract):
         if not cls._meta.abstract:
