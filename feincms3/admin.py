@@ -75,7 +75,7 @@ class TreeAdmin(ModelAdmin):
             '<div class="box-text" style="text-indent:{}px">{}</div>'
             '</div>',
             mark_safe(''.join(box_drawing)),
-            (instance.depth - 1) * 40,
+            (instance.depth - 1) * 30,
             instance,
         )
     indented_title.short_description = _('title')
