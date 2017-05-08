@@ -1,6 +1,7 @@
 .box {
     white-space: nowrap;
     position: relative;
+    margin: -8px;
 }
 
 .box-drawing {
@@ -8,9 +9,9 @@
     position: absolute;
     display: inline-block;
     font-family: monospace;
-    font-size: 25px;
+    font-size: 28px;
+    line-height: 1.2;
     font-weight: normal;
-    top: -.07em;
 }
 
 .box-drawing i {
@@ -27,6 +28,6 @@
     content: '\251c';
 }
 
-
 .box-text {
+    padding: 8px;
 }
