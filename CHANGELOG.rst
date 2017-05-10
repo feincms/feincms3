@@ -9,7 +9,10 @@ Change log
 - Allow overriding the outer namespace name used in ``feincms3.apps`` by
   setting the ``LANGUAGE_CODES_NAMESPACE`` class attribute of the pages
   class. The default value of ``language-codes`` has  been changed to
-  ``apps``.
+  ``apps``. Also, the outer instance namespaces of apps are now of the
+  form ``<LANGUAGE_CODES_NAMESPACE>-<language_code>`` (example:
+  ``apps-en`` for english), not only ``<language_code>``. This makes
+  namespace collisions less of a concern.
 
 
 `0.17.1`_ (2017-05-02)

@@ -103,12 +103,12 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
     languages, french as active language and that the current article is a
     publication, the viewnames are:
 
-    - ``fr.publications.article-detail``
-    - ``fr.articles.article-detail``
-    - ``de.publications.article-detail``
-    - ``de.articles.article-detail``
-    - ``en.publications.article-detail``
-    - ``en.articles.article-detail``
+    - ``apps-fr.publications.article-detail``
+    - ``apps-fr.articles.article-detail``
+    - ``apps-de.publications.article-detail``
+    - ``apps-de.articles.article-detail``
+    - ``apps-en.publications.article-detail``
+    - ``apps-en.articles.article-detail``
 
     reverse_app tries harder returning an URL in the correct language than
     returning an URL for the correct instance namespace.
@@ -122,10 +122,14 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
         )
     """
 
+    page_model = concrete_model(AppsMixin)
     current = get_language()
     viewnames = [':'.join(r) for r in itertools.product(
-        [current] + [
-            language[0] for language in settings.LANGUAGES
+        [
+            '%s-%s' % (page_model.LANGUAGE_CODES_NAMESPACE, current),
+        ] + [
+            '%s-%s' % (page_model.LANGUAGE_CODES_NAMESPACE, language[0])
+            for language in settings.LANGUAGES
             if language[0] != current
         ],
         (
@@ -160,11 +164,12 @@ def apps_urlconf():
 
     The application URLconfs are put in nested namespaces:
 
-    - The outer namespace is the page language as instance namespace and
-      ``'apps'`` as application namespace. The application namespace
-      does not have to be used anywhere as long as you're always using
-      ``reverse_app``. The namespace can be changed by setting
-      ``AppsMixin.LANGUAGE_CODES_NAMESPACE`` to a different value.
+    - The outer application namespace is ``apps`` by default. This value can be
+      overridden by setting the ``LANGUAGE_CODES_NAMESPACE`` class attribute of
+      the page class to a different value. The instance namespaces consist of
+      the ``LANGUAGE_CODES_NAMESPACE`` value with a language added at the end.
+      As long as you're always using ``reverse_app`` you do not have to know
+      the specifics.
     - The inner namespace is the app namespace, where the application
       namespace is defined by the app itself (assign ``app_name`` in the
       same module as ``urlpatterns``) and the instance namespace is defined
@@ -212,7 +217,10 @@ def apps_urlconf():
             r'',
             include(
                 (instances, page_model.LANGUAGE_CODES_NAMESPACE),
-                namespace=language_code,
+                namespace='%s-%s' % (
+                    page_model.LANGUAGE_CODES_NAMESPACE,
+                    language_code,
+                ),
             ),
         ) for language_code, instances in mapping.items()]
 
@@ -249,11 +257,14 @@ def page_for_app_request(request, queryset=None):
     :class:`~feincms3.apps.AppsMixin`.
     """
 
+    page_model = concrete_model(AppsMixin)
     if queryset is None:
-        queryset = concrete_model(AppsMixin).objects
+        queryset = page_model.objects
     # Unguarded - if this fails, we shouldn't even be here.
     return queryset.get(
-        language_code=request.resolver_match.namespaces[0],
+        language_code=request.resolver_match.namespaces[0][
+            len(page_model.LANGUAGE_CODES_NAMESPACE) + 1:
+        ],
         app_instance_namespace=request.resolver_match.namespaces[1],
     )
 
