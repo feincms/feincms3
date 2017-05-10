@@ -161,9 +161,10 @@ def apps_urlconf():
     The application URLconfs are put in nested namespaces:
 
     - The outer namespace is the page language as instance namespace and
-      ``'language-codes'`` as application namespace. The application namespace
+      ``'apps'`` as application namespace. The application namespace
       does not have to be used anywhere as long as you're always using
-      ``reverse_app``.
+      ``reverse_app``. The namespace can be changed by setting
+      ``AppsMixin.LANGUAGE_CODES_NAMESPACE`` to a different value.
     - The inner namespace is the app namespace, where the application
       namespace is defined by the app itself (assign ``app_name`` in the
       same module as ``urlpatterns``) and the instance namespace is defined
@@ -209,7 +210,10 @@ def apps_urlconf():
 
         m.urlpatterns = [url(
             r'',
-            include((instances, 'language-codes'), namespace=language_code),
+            include(
+                (instances, page_model.LANGUAGE_CODES_NAMESPACE),
+                namespace=language_code,
+            ),
         ) for language_code, instances in mapping.items()]
 
         # Append patterns from ROOT_URLCONF instead of including them because
@@ -323,6 +327,9 @@ class AppsMixin(models.Model):
                 }),
             ]
     """
+
+    #: Override this to set a different name for the outer namespace.
+    LANGUAGE_CODES_NAMESPACE = 'apps'
 
     application = models.CharField(
         _('application'),

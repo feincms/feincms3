@@ -6,6 +6,10 @@ Change log
 ===============
 
 - Slight improvements to ``TreeAdmin``'s alignment of box drawing characters.
+- Allow overriding the outer namespace name used in ``feincms3.apps`` by
+  setting the ``LANGUAGE_CODES_NAMESPACE`` class attribute of the pages
+  class. The default value of ``language-codes`` has  been changed to
+  ``apps``.
 
 
 `0.17.1`_ (2017-05-02)
