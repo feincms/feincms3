@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ===============
 
+
+`0.18`_ (2017-05-10)
+====================
+
 - Slight improvements to ``TreeAdmin``'s alignment of box drawing characters.
 - Allow overriding the outer namespace name used in ``feincms3.apps`` by
   setting the ``LANGUAGE_CODES_NAMESPACE`` class attribute of the pages
@@ -281,4 +285,5 @@ Change log
 .. _0.15: https://github.com/matthiask/feincms3/compare/0.14...0.15
 .. _0.16: https://github.com/matthiask/feincms3/compare/0.15...0.16
 .. _0.17.1: https://github.com/matthiask/feincms3/compare/0.16...0.17.1
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.17.1...master
+.. _0.18: https://github.com/matthiask/feincms3/compare/0.17.1...0.18
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.18...master
