@@ -9,6 +9,10 @@ def render_plugin(context, plugin):
     """
     Render a single plugin. See :mod:`feincms3.renderer` for additional
     details.
+
+    In general you should prefer
+    :func:`~feincms3.templatetags.feincms3_renderer.render_region` over this
+    tag.
     """
     return context['renderer'].render_plugin_in_context(plugin, context)
 
@@ -18,6 +22,10 @@ def render_plugins(context, plugins):
     """
     Render and concatenate a list of plugins. See
     :mod:`feincms3.renderer` for additional details.
+
+    In general you should prefer
+    :func:`~feincms3.templatetags.feincms3_renderer.render_region` over this
+    tag.
     """
     renderer = context['renderer']
     return mark_safe(''.join(
