@@ -144,7 +144,25 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
 def reverse_fallback(fallback, fn, *args, **kwargs):
     """
     Returns the result of ``fn(*args, **kwargs)``, or ``fallback`` if the
-    former raises an exception.
+    former raises an exception. This is especially useful for reversing app
+    URLs from outside the app and you do not want crashes if the app isn't
+    available anywhere.
+
+    The following two examples are equivalent, choose whichever you like best::
+
+        reverse_fallback('/', lambda: reverse_app(
+            ('articles',),
+            'article-detail',
+            kwargs={'slug': self.slug},
+        ))
+
+        reverse_fallback(
+            '/',
+            reverse_app
+            ('articles',),
+            'article-detail',
+            kwargs={'slug': self.slug},
+        )
     """
     try:
         return fn(*args, **kwargs)
