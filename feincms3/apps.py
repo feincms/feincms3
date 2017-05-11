@@ -144,9 +144,9 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
 def reverse_fallback(fallback, fn, *args, **kwargs):
     """
     Returns the result of ``fn(*args, **kwargs)``, or ``fallback`` if the
-    former raises an exception. This is especially useful for reversing app
-    URLs from outside the app and you do not want crashes if the app isn't
-    available anywhere.
+    former raises a ``NoReverseMatch`` exception. This is especially useful for
+    reversing app URLs from outside the app and you do not want crashes if the
+    app isn't available anywhere.
 
     The following two examples are equivalent, choose whichever you like best::
 
@@ -166,7 +166,7 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
     """
     try:
         return fn(*args, **kwargs)
-    except Exception:
+    except NoReverseMatch:
         return fallback
 
 

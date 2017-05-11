@@ -650,7 +650,7 @@ class Test(TestCase):
         """Test all code paths through reverse_fallback and reverse_any"""
 
         self.assertEqual(
-            reverse_fallback('test', 'not-exists'),
+            reverse_fallback('test', reverse, 'not-exists'),
             'test',
         )
         self.assertEqual(

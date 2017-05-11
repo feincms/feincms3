@@ -5,6 +5,10 @@ Change log
 `Next version`_
 ===============
 
+- Minor documentation edits.
+- Made ``reverse_fallback`` catch ``NoReverseMatch`` exceptions only,
+  and fixed a related test which didn't reverse anything at all.
+
 
 `0.18`_ (2017-05-10)
 ====================
