@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError, models, transaction
 from django.forms.models import modelform_factory
 from django.test import Client, TestCase
 from django.utils import six
@@ -11,7 +11,7 @@ from feincms3.apps import (
     NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
-from feincms3.utils import positional
+from feincms3.utils import concrete_model, iterate_subclasses, positional
 
 from .models import Article, External, Page
 
@@ -964,3 +964,31 @@ class Test(TestCase):
             test(1, 2, 3)
 
         test(1, 2, c=3)
+
+    def test_subclasses(self):
+        class A(object):
+            pass
+
+        class B(A):
+            pass
+
+        class C(B):
+            pass
+
+        self.assertEqual(
+            set(iterate_subclasses(A)),
+            {B, C},
+        )
+
+        class Test(models.Model):
+            class Meta:
+                abstract = True
+
+        class Test2(Test):
+            class Meta:
+                abstract = True
+
+        self.assertEqual(
+            concrete_model(Test),
+            None,
+        )
