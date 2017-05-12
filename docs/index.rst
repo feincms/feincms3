@@ -340,6 +340,26 @@ URLs and ``get_absolute_url`` method.
    processing. This isn't necessary with feincms3 -- simply put the
    functionality into your own views code.
 
+And a ``pages/standard.html`` template::
+
+    {% extends "base.html" %}
+
+    {% load feincms3_renderer %}
+
+    {% block title %}{{ page.title }} - {{ block.super }}{% endblock %}
+
+    {% block content %}
+        <main>
+            <h1>{{ page.title }}</h1>
+            {% render_region regions "main" %}
+            {# or maybe {% render_region regions "main" timeout=30 %} #}
+        </main>
+    {% endblock %}
+
+
+Admin classes
+~~~~~~~~~~~~~
+
 For completeness, here's an example how the ``app.pages.admin`` module
 might look like::
 
@@ -382,19 +402,110 @@ might look like::
 
     admin.site.register(models.Page, PageAdmin)
 
-And a ``pages/standard.html`` template::
+
+An example forms builder app
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following example app uses form_designer_ to provide a forms builder
+integrated with the pages app described above. Apart from installing
+form_designer_ itself the following steps are necessary:
+
+- Add an entry to ``Page.APPLICATIONS`` for the forms app. The
+  ``app_instance_namespace`` bit is not strictly necessary, but it might
+  be helpful to reverse URLs where a specific form is integrated using
+  ``reverse_app(('forms-%s' % form.pk,), 'form')``::
+
+    # ...
+    class Page(...):
+        # ...
+        APPLICATIONS = [
+            ('forms', _('forms'), {
+                'urlconf': 'app.forms',
+                'app_instance_namespace': lambda page: '%s-%s' % (
+                    page.application,
+                    page.form_id,
+                ),
+                'required_fields': ('form',),
+            }),
+            # ...
+        ]
+        form = models.ForeignKey(
+            'form_designer.Form',
+            on_delete=models.SET_NULL,
+            blank=True, null=True,
+            verbose_name=_('form'),
+        )
+
+- Add the ``app/forms.py`` module itself::
+
+    from django.conf.urls import url
+    from django.http import HttpResponseRedirect
+    from django.shortcuts import render
+
+    from feincms3.apps import page_for_app_request
+
+    from app.pages.renderer import renderer
+
+
+    def form(request):
+        page = page_for_app_request(request)
+        page.activate_language(request)
+        context = {}
+
+        if 'ok' not in request.GET:
+            form_class = page.form.form()
+
+            if request.method == 'POST':
+                form = form_class(request.POST)
+
+                if form.is_valid():
+                    # Discard return values from form processing.
+                    page.form.process(form, request)
+                    return HttpResponseRedirect('?ok')
+
+            else:
+                form = form_class()
+
+            context['form'] = form
+
+        context.update({
+            'page': page,
+            'regions': renderer.regions(
+                page, inherit_from=page.ancestors().reverse()),
+        })
+
+        return render(request, 'form.html', context)
+
+
+    app_name = 'forms'
+    urlpatterns = [
+        url(r'^$', form, name='form'),
+    ]
+
+- Add the required template::
 
     {% extends "base.html" %}
 
     {% load feincms3_renderer %}
 
     {% block content %}
-        <main>
-            <h1>{{ page.title }}</h1>
-            {% render_region regions "main" %}
-            {# or maybe {% render_region regions "main" timeout=30 %} #}
-        </main>
+
+    {% render_region regions 'main' timeout=15 %}
+
+    {% if form %}
+      <form method="post" action=".#form" id="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+      </form>
+    {% else %}
+      <h1>Thank you!</h1>
+    {% endif %}
     {% endblock %}
+
+Of course if you'd rather add another URL for the "thank you" page
+you're free to add a second entry to the ``urlpatterns`` list and
+redirect to this URL instead.
 
 
 .. _Change log: https://github.com/matthiask/feincms3/blob/master/CHANGELOG.rst
@@ -410,6 +521,7 @@ And a ``pages/standard.html`` template::
 .. _documentation: http://feincms3.readthedocs.io/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse/
 .. _feincms3-example: https://github.com/matthiask/feincms3-example/
+.. _form_designer: https://pypi.python.org/pypi/form_designer/
 .. _html-sanitizer: https://pypi.python.org/pypi/html-sanitizer/
 .. _oEmbed: http://oembed.com/
 .. _pip: https://pip.pypa.io/

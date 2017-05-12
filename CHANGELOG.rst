@@ -5,7 +5,8 @@ Change log
 `Next version`_
 ===============
 
-- Minor documentation edits.
+- Minor documentation edits, added a form builder example app to the
+  documentation.
 - Made ``reverse_fallback`` catch ``NoReverseMatch`` exceptions only,
   and fixed a related test which didn't reverse anything at all.
 
