@@ -11,6 +11,7 @@ from feincms3.apps import (
     NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
+from feincms3.utils import positional
 
 from .models import Article, External, Page
 
@@ -953,3 +954,13 @@ class Test(TestCase):
         # No redirects to self
         page2.redirect_to_page = page2
         self.assertRaises(ValidationError, page2.full_clean)
+
+    def test_positional(self):
+        @positional(2)
+        def test(a, b, c):
+            pass
+
+        with self.assertRaises(TypeError):
+            test(1, 2, 3)
+
+        test(1, 2, c=3)
