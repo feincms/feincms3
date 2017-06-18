@@ -123,7 +123,7 @@ class TemplateMixin(models.Model):
 
         from content_editor.models import Region
 
-        class Article(models.Model):
+        class SingleTemplateThing(models.Model):
             title = models.CharField(...)
 
             regions = [Region(key='main', title='main region')]
