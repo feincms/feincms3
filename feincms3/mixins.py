@@ -114,8 +114,21 @@ class TemplateMixin(models.Model):
     The selected ``Template`` instance is available using the ``template``
     property. If the value in ``template_key`` does not match any template,
     ``None`` is returned instead. django-content-editor also requires a
-    ``regions`` property for its editing interface; the property returns the
-    regions list from the selected template.
+    ``regions`` property for its editing interface; the
+    ``TemplateMixin.regions`` property returns the regions list from the
+    selected template.
+
+    If you do not need multiple templates you can also add a ``regions``
+    attribute to your model::
+
+        from content_editor.models import Region
+
+        class Article(models.Model):
+            title = models.CharField(...)
+
+            regions = [Region(key='main', title='main region')]
+
+            # ...
     """
 
     template_key = models.CharField(
