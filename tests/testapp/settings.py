@@ -1,7 +1,6 @@
 import os
 import warnings
 
-SITE_ID = 1
 
 DATABASES = {
     'default': {

@@ -7,12 +7,11 @@
 ._*
 *.egg-info
 /MANIFEST
-/_build
-/build
+_build
+build
 dist
-tests/test.zip
-/docs/_build
 /.eggs
 .coverage
 htmlcov
 venv
+.tox
