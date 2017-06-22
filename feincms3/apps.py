@@ -417,15 +417,16 @@ class AppsMixin(models.Model):
         exclude = [] if exclude is None else exclude
         super(AppsMixin, self).clean_fields(exclude)
 
-        if self.parent:
-            if (self.parent.application or
-                    self.parent.ancestors().exclude(application='').exists()):
-                error = _('Apps may nove have any descendants.')
-                raise ValidationError(
-                    _('Invalid parent: %s') % (error,)
-                    if 'parent' in exclude else
-                    {'parent': error}
-                )
+        if self.parent and (
+                self.parent.application or
+                self.parent.ancestors().exclude(application='').exists()
+        ):
+            error = _('Apps may nove have any descendants.')
+            raise ValidationError(
+                _('Invalid parent: %s') % (error,)
+                if 'parent' in exclude else
+                {'parent': error}
+            )
 
         if self.application and not self.is_leaf():
             error = _('Apps may not have any descendants in the tree.')
