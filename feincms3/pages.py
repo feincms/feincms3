@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from cte_forest.models import CTENode, CTENodeManager
 
+
 try:
     from django.urls import reverse
 except ImportError:  # pragma: no cover

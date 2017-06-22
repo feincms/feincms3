@@ -6,6 +6,7 @@ from feincms3.renderer import TemplatePluginRenderer
 
 from .models import HTML, External, Image, Page, RichText, Snippet
 
+
 renderer = TemplatePluginRenderer()
 renderer.register_string_renderer(
     RichText,

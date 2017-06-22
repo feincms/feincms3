@@ -10,6 +10,8 @@ Change log
   documentation.
 - Made ``reverse_fallback`` catch ``NoReverseMatch`` exceptions only,
   and fixed a related test which didn't reverse anything at all.
+- Switch to tox_ for building docs, code style checking and local test
+  running.
 
 
 `0.18`_ (2017-05-10)
@@ -273,6 +275,7 @@ Change log
 .. _flake8: https://pypi.python.org/pypi/flake8
 .. _isort: https://pypi.python.org/pypi/isort
 .. _requests: http://docs.python-requests.org/
+.. _tox: https://tox.readthedocs.io/
 
 .. _0.1: https://github.com/matthiask/feincms3/commit/9f421bb48
 .. _0.2: https://github.com/matthiask/feincms3/compare/0.1...0.2

@@ -48,6 +48,7 @@ from django.utils.translation import get_language, ugettext_lazy as _
 
 from feincms3.utils import concrete_model, positional
 
+
 try:
     from django.urls import NoReverseMatch, reverse
 except ImportError:  # pragma: no cover

@@ -3,7 +3,6 @@ from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
 
 from content_editor.contents import contents_for_item
-
 from feincms3.utils import positional
 
 

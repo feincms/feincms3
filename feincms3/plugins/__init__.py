@@ -3,6 +3,7 @@
 from .html import *
 from .snippet import *
 
+
 try:
     import html_sanitizer
 except ImportError:  # pragma: no cover

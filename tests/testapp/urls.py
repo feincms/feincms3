@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 from testapp import views
 
+
 pages_urlpatterns = ([
     url(
         r'^$',
