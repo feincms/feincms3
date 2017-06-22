@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import os
 import re
+import subprocess
 import sys
 from django import setup
 from django.conf import settings
@@ -13,7 +14,9 @@ project = 'feincms3'
 author = 'Feinheit AG'
 copyright = '2016-2017,' + author
 version = __import__('feincms3').__version__
-release = version
+release = subprocess.check_output(
+    'git fetch --tags; git describe',
+    shell=True, universal_newlines=True).strip()
 language = 'en'
 
 #######################################
