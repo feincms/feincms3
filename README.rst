@@ -5,9 +5,12 @@ feincms3
 .. image:: https://travis-ci.org/matthiask/feincms3.svg?branch=master
     :target: https://travis-ci.org/matthiask/feincms3
 
-.. image:: http://readthedocs.org/projects/feincms3/badge/?version=latest
-    :target: http://feincms3.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/feincms3/badge/?version=latest
+    :target: https://feincms3.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+
+.. image:: https://codeclimate.com/github/matthiask/feincms3.png
+    :target: https://codeclimate.com/github/matthiask/feincms3
 
 
 feincms3 provides additional building blocks on top of
