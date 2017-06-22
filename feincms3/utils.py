@@ -51,7 +51,8 @@ def positional(count):
     return _dec
 
 
-def validation_error(error, *, field, exclude, **kwargs):
+@positional(1)
+def validation_error(error, field, exclude, **kwargs):
     """
     Return a validation error that is associated with a particular field if it
     isn't excluded from validation.
