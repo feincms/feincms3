@@ -2,8 +2,6 @@ import os
 import warnings
 
 
-SITE_ID = 1
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
