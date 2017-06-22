@@ -1,12 +1,12 @@
 from collections import OrderedDict
 
-from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Max, Q
 from django.utils.translation import ugettext_lazy as _
 
 from cte_forest.models import CTENode, CTENodeManager
+from feincms3.utils import validation_error
 
 
 try:
@@ -105,15 +105,14 @@ class AbstractPage(CTENode):
         """
         Check for path uniqueness problems.
         """
-        exclude = [] if exclude is None else exclude
         super(AbstractPage, self).clean_fields(exclude)
 
         if self.static_path:
             if not self.path:
-                error = _('Static paths cannot be empty. Did you mean \'/\'?')
-                raise ValidationError(
-                    error if 'path' in exclude else {'path': error}
-                )
+                raise validation_error(
+                    _('Static paths cannot be empty. Did you mean \'/\'?'),
+                    field='path',
+                    exclude=exclude)
         else:
             self.path = '{}{}/'.format(
                 self.parent.path if self.parent else '/',
@@ -130,16 +129,16 @@ class AbstractPage(CTENode):
         )
         for pk, node in self._branch_for_update().items():
             if clash_candidates.filter(path=node.path).exists():
-                error = _(
-                    'The page %(page)s\'s new path %(path)s would'
-                    ' not be unique.'
-                ) % {
-                    'page': node,
-                    'path': node.path,
-                }
-                raise ValidationError(
-                    error if 'path' in exclude else {'path': error}
-                )
+                raise validation_error(
+                    _(
+                        'The page %(page)s\'s new path %(path)s would'
+                        ' not be unique.'
+                    ) % {
+                        'page': node,
+                        'path': node.path,
+                    },
+                    field='path',
+                    exclude=exclude)
 
     def save(self, *args, **kwargs):
         """save(self, ..., save_descendants=True)

@@ -9,6 +9,7 @@ Of course you may always copy the code somewhere else if you like it
 
 from functools import wraps
 
+from django.core.exceptions import ValidationError
 from django.utils.lru_cache import lru_cache
 
 
@@ -48,3 +49,16 @@ def positional(count):
             return fn(*args, **kwargs)
         return _fn
     return _dec
+
+
+def validation_error(error, *, field, exclude, **kwargs):
+    """
+    Return a validation error that is associated with a particular field if it
+    isn't excluded from validation.
+
+    See https://github.com/django/django/commit/e8c056c31 for some background.
+    """
+    return ValidationError(
+        error if field in (exclude or ()) else {field: error},
+        **kwargs
+    )

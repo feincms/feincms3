@@ -1,10 +1,11 @@
 # coding=utf-8
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals
 from django.utils.translation import activate, get_language, ugettext_lazy as _
+
+from feincms3.utils import validation_error
 
 
 class MenuMixin(models.Model):
@@ -249,31 +250,29 @@ class RedirectMixin(models.Model):
         abstract = True
 
     def clean_fields(self, exclude=None):
-        exclude = [] if exclude is None else exclude
         super(RedirectMixin, self).clean_fields(exclude)
 
         if self.redirect_to_url and self.redirect_to_page_id:
-            error = _('Only set one redirect value.')
-            raise ValidationError(
-                error if 'redirect_to_url' in exclude else
-                {'redirect_to_url': error}
-            )
+            raise validation_error(
+                _('Only set one redirect value.'),
+                field='redirect_to_url',
+                exclude=exclude)
+
         if self.redirect_to_page_id:
             if self.redirect_to_page_id == self.pk:
-                error = _('Cannot redirect to self.')
-                raise ValidationError(
-                    error if 'redirect_to_page' in exclude else
-                    {'redirect_to_page': error}
-                )
+                raise validation_error(
+                    _('Cannot redirect to self.'),
+                    field='redirect_to_page',
+                    exclude=exclude)
+
             if self.redirect_to_page.redirect_to_page_id:
-                error = _(
-                    'Do not chain redirects. The selected page redirects'
-                    ' to %(title)s (%(path)s).'
-                ) % {
-                    'title': self.redirect_to_page,
-                    'path': self.redirect_to_page.get_absolute_url(),
-                }
-                raise ValidationError(
-                    error if 'redirect_to_page' in exclude else
-                    {'redirect_to_page': error}
-                )
+                raise validation_error(
+                    _(
+                        'Do not chain redirects. The selected page redirects'
+                        ' to %(title)s (%(path)s).'
+                    ) % {
+                        'title': self.redirect_to_page,
+                        'path': self.redirect_to_page.get_absolute_url(),
+                    },
+                    field='redirect_to_page',
+                    exclude=exclude)

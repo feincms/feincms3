@@ -46,7 +46,7 @@ from django.db import models
 from django.db.models import Q, signals
 from django.utils.translation import get_language, ugettext_lazy as _
 
-from feincms3.utils import concrete_model, positional
+from feincms3.utils import concrete_model, positional, validation_error
 
 
 try:
@@ -422,18 +422,16 @@ class AppsMixin(models.Model):
                 self.parent.ancestors().exclude(application='').exists()
         ):
             error = _('Apps may nove have any descendants.')
-            raise ValidationError(
-                _('Invalid parent: %s') % (error,)
-                if 'parent' in exclude else
-                {'parent': error}
-            )
+            raise validation_error(
+                _('Invalid parent: %s') % (error,),
+                field='parent',
+                exclude=exclude)
 
         if self.application and not self.is_leaf():
-            error = _('Apps may not have any descendants in the tree.')
-            raise ValidationError(
-                error if 'application' in exclude else
-                {'application': error}
-            )
+            raise validation_error(
+                _('Apps may not have any descendants in the tree.'),
+                field='application',
+                exclude=exclude)
 
         app_config = self.application_config()
         if app_config and app_config.get('required_fields'):
