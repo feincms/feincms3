@@ -74,7 +74,7 @@ Change log
 `0.14`_ (2017-03-14)
 ~~~~~~~~~~~~~~~~~~~~
 
-- Removed ``Django`` from ``install_requires``, so that updating
+- Removed Django_ from ``install_requires`` so that updating
   feincms3 without updating Django is easier.
 - Allowed overriding the Page queryset used in ``page_for_app_request``
   (for example for adding ``select_related``).
@@ -263,6 +263,7 @@ Change log
 - A german translation.
 
 
+.. _Django: https://www.djangoproject.com/
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor/
 .. _django-content-editor: https://django-content-editor.readthedocs.io/
 .. _django-cte-forest: https://django-cte-forest.readthedocs.io/
