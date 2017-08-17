@@ -6,12 +6,20 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.19`_ (2017-08-17)
+~~~~~~~~~~~~~~~~~~~~
+
+The diff for this release is big, but there are almost no changes in
+functionality.
+
 - Minor documentation edits, added a form builder example app to the
   documentation.
 - Made ``reverse_fallback`` catch ``NoReverseMatch`` exceptions only,
   and fixed a related test which didn't reverse anything at all.
 - Switch to tox_ for building docs, code style checking and local test
   running.
+- Made the ``forms.Media`` CSS a list, not a set.
 
 
 `0.18`_ (2017-05-10)
@@ -296,4 +304,5 @@ Change log
 .. _0.16: https://github.com/matthiask/feincms3/compare/0.15...0.16
 .. _0.17.1: https://github.com/matthiask/feincms3/compare/0.16...0.17.1
 .. _0.18: https://github.com/matthiask/feincms3/compare/0.17.1...0.18
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.18...master
+.. _0.19: https://github.com/matthiask/feincms3/compare/0.18...0.19
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.19...master
