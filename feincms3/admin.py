@@ -46,9 +46,9 @@ class TreeAdmin(ModelAdmin):
     list_display = ('indented_title', 'move_column')
 
     class Media:
-        css = {'all': {
+        css = {'all': [
             'feincms3/box-drawing.css',
-        }}
+        ]}
 
     def __init__(self, *args, **kwargs):
         super(TreeAdmin, self).__init__(*args, **kwargs)
