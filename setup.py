@@ -15,7 +15,7 @@ def read(filename):
 setup(
     name='feincms3',
     version=__import__('feincms3').__version__,
-    description='feincms3',
+    description='CMS-building toolkit for Django',
     long_description=read('README.rst'),
     author='Matthias Kestenholz',
     author_email='mk@feinheit.ch',
