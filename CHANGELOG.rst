@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed ``render_list`` and ``render_detail`` to return
+  ``TemplateResponse`` instances instead of pre-rendered instances to
+  increase the shortcuts' flexibility.
+
 
 `0.19`_ (2017-08-17)
 ~~~~~~~~~~~~~~~~~~~~

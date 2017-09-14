@@ -10,7 +10,7 @@ Because of this, ``render_list`` and ``render_detail``.
 """
 
 from django.core import paginator
-from django.shortcuts import render
+from django.template.response import TemplateResponse
 
 from feincms3.utils import positional
 
@@ -78,7 +78,7 @@ def render_list(request, queryset, context=None,
         'object_list': object_list,
         '%s_list' % queryset.model._meta.model_name: object_list,
     })
-    return render(
+    return TemplateResponse(
         request,
         template_name(queryset.model, template_name_suffix),
         context,
@@ -113,7 +113,7 @@ def render_detail(request, object, context=None,
         'object': object,
         object._meta.model_name: object,
     })
-    return render(
+    return TemplateResponse(
         request,
         template_name(object, template_name_suffix),
         context,
