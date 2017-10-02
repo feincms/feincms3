@@ -15,7 +15,6 @@ env:
 - REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
 matrix:
   allow_failures:
-    - env: REQ="https://github.com/django/django/archive/2.0.x.zip#egg=Django django-cte-forest"
     - env: REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
   exclude:
     - python: '2.7'
