@@ -11,11 +11,15 @@ env:
 - REQ="Django>=1.9,<1.10 django-cte-forest<0.2"
 - REQ="Django>=1.10,<1.11 django-cte-forest"
 - REQ="Django>=1.11,<2.0 django-cte-forest"
+- REQ="https://github.com/django/django/archive/stable/2.0.x.zip#egg=Django django-cte-forest"
 - REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
 matrix:
   allow_failures:
+    - env: REQ="https://github.com/django/django/archive/2.0.x.zip#egg=Django django-cte-forest"
     - env: REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
   exclude:
+    - python: '2.7'
+      env: REQ="https://github.com/django/django/archive/stable/2.0.x.zip#egg=Django django-cte-forest"
     - python: '2.7'
       env: REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
 install:
