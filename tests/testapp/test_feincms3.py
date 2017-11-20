@@ -37,9 +37,12 @@ def monkeypatches():
 
     if django.VERSION >= (2, 1):
         from ckeditor.widgets import CKEditorWidget
+
         _original_render = CKEditorWidget.render
+
         def render(self, name, value, attrs=None, renderer=None):
             return _original_render(self, name, value, attrs=attrs)
+
         CKEditorWidget.render = render
 
 
