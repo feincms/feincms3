@@ -25,7 +25,7 @@ __all__ = (
 
 @positional(1)
 def oembed_json(url, cache_failures=True):
-    """
+    """oembed_json(url, *, cache_failures=True)
     Asks Noembed_ for the embedding HTML code for arbitrary URLs. Sites
     supported include Youtube, Vimeo, Twitter and many others.
 
@@ -77,7 +77,7 @@ def oembed_json(url, cache_failures=True):
 
 @positional(1)
 def oembed_html(url, cache_failures=True):
-    """
+    """oembed_html(url, *, cache_failures=True)
     Wraps :func:`~feincms3.plugins.external.oembed_json`, but only returns
     the HTML part of the OEmbed response.
 

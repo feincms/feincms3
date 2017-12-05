@@ -19,7 +19,7 @@ def default_context(plugin, context):
 
 
 class Regions(object):
-    """
+    """Regions(item, *, contents, renderer)
     Wrapper for a ``Contents`` attribute with support for caching the
     potentially somewhat expensive plugin loading and rendering step.
 
