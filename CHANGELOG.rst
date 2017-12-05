@@ -11,6 +11,8 @@ Change log
   increase the shortcuts' flexibility.
 - Factored the JSON fetching from ``oembed_html`` into a new
   ``oembed_json`` helper.
+- Added Django 2.0 to the Travis CI build (nothing had to be changed,
+  0.19 was already compatible)
 
 
 `0.19`_ (2017-08-17)
