@@ -170,6 +170,7 @@ class TreeAdmin(ModelAdmin):
                 preserved_filters=self.get_preserved_filters(request),
                 media=media,
                 is_popup=False,
+                inline_admin_formsets=[],
 
                 save_as_new=False,
                 show_save_and_add_another=False,
