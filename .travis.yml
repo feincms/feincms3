@@ -5,8 +5,8 @@ python:
 - '3.6'
 - '3.5'
 - '2.7'
-services:
-- postgresql
+addons:
+- postgresql: "9.4"
 env:
 - REQ="Django>=1.9,<1.10 django-cte-forest<0.2"
 - REQ="Django>=1.10,<1.11 django-cte-forest"
