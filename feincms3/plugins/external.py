@@ -14,12 +14,17 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 
 import requests
 from content_editor.admin import ContentEditorInline
+from feincms3.utils import positional
 
 
-__all__ = ('External', 'ExternalInline', 'oembed_html', 'render_external')
+__all__ = (
+    'External', 'ExternalInline', 'oembed_json', 'oembed_html',
+    'render_external',
+)
 
 
-def oembed_html(url, cache_failures=True):
+@positional(1)
+def oembed_json(url, cache_failures=True):
     """
     Asks Noembed_ for the embedding HTML code for arbitrary URLs. Sites
     supported include Youtube, Vimeo, Twitter and many others.
@@ -34,16 +39,16 @@ def oembed_html(url, cache_failures=True):
     - HTTP errors codes and responses in an unexpected format (no JSON) are
       cached for 24 hours.
 
-    The return value is always either a HTML fragment or an empty string.
+    The return value is always a dictionary, but it may be empty.
     """
     # Thundering herd problem etc...
-    key = 'oembed-url-%s' % md5(url.encode('utf-8')).hexdigest()
-    html = cache.get(key)
-    if html is not None:
-        return html
+    key = 'oembed-url-%s-data' % md5(url.encode('utf-8')).hexdigest()
+    data = cache.get(key)
+    if data is not None:
+        return data
 
     try:
-        html = requests.get(
+        data = requests.get(
             'https://noembed.com/embed',
             params={
                 'url': url,
@@ -52,22 +57,33 @@ def oembed_html(url, cache_failures=True):
                 'maxheight': 800,
             },
             timeout=2,
-        ).json().get('html', '')
+        ).json()
     except (requests.ConnectionError, requests.ReadTimeout):
         # Connection failed? Hopefully temporary, try again soon.
-        if cache_failures:
-            cache.set(key, '', timeout=60)
-        return ''
+        timeout = 60
     except (ValueError, requests.HTTPError):
         # Oof... HTTP error code, or no JSON? Try again tomorrow,
         # and we should really log this.
-        if cache_failures:
-            cache.set(key, '', timeout=86400)
-        return ''
+        timeout = 86400
     else:
         # Perfect, cache for 30 days
-        cache.set(key, html, timeout=30 * 86400)
-        return html
+        cache.set(key, data, timeout=30 * 86400)
+        return data
+
+    if cache_failures:
+        cache.set(key, {}, timeout=timeout)
+    return {}
+
+
+@positional(1)
+def oembed_html(url, cache_failures=True):
+    """
+    Wraps :func:`~feincms3.plugins.external.oembed_json`, but only returns
+    the HTML part of the OEmbed response.
+
+    The return value is always either a HTML fragment or an empty string.
+    """
+    return oembed_json(url, cache_failures=cache_failures).get('html', '')
 
 
 def render_external(plugin, **kwargs):

@@ -9,6 +9,8 @@ Change log
 - Changed ``render_list`` and ``render_detail`` to return
   ``TemplateResponse`` instances instead of pre-rendered instances to
   increase the shortcuts' flexibility.
+- Factored the JSON fetching from ``oembed_html`` into a new
+  ``oembed_json`` helper.
 
 
 `0.19`_ (2017-08-17)
