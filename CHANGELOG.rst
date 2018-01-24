@@ -13,6 +13,8 @@ Change log
   ``oembed_json`` helper.
 - Added Django 2.0 to the Travis CI build (nothing had to be changed,
   0.19 was already compatible)
+- Changed the ``TemplatePluginRenderer`` to also work when used
+  standalone, not from inside a template.
 
 
 `0.19`_ (2017-08-17)

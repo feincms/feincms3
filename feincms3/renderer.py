@@ -1,4 +1,5 @@
 from django.core.cache import cache
+from django.template import Engine
 from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
 
@@ -246,7 +247,6 @@ context=default_context)
 
             {% endblock %}
         """
-        engine = context.template.engine
         plugin_template, plugin_context = self._renderers[plugin.__class__]
 
         if plugin_template is None:
@@ -258,6 +258,11 @@ context=default_context)
             plugin_context = plugin_context(plugin, context)
 
         if not hasattr(plugin_template, 'render'):  # Quacks like a template?
+            try:
+                engine = context.template.engine
+            except AttributeError:
+                engine = Engine.get_default()
+
             if isinstance(plugin_template, (list, tuple)):
                 plugin_template = engine.select_template(plugin_template)
             else:

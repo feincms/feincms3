@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, models, transaction
 from django.forms.models import modelform_factory
+from django.template import Context
 from django.test import Client, TestCase
 from django.utils import six
 from django.utils.translation import deactivate_all, override
@@ -11,9 +12,10 @@ from feincms3.apps import (
     NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
+from feincms3.renderer import TemplatePluginRenderer
 from feincms3.utils import concrete_model, iterate_subclasses, positional
 
-from .models import Article, External, Page
+from .models import HTML, Article, External, Page
 
 
 def zero_management_form_data(prefix):
@@ -1006,4 +1008,29 @@ class Test(TestCase):
         self.assertEqual(
             concrete_model(Test),
             None,
+        )
+
+    def test_standalone_renderer(self):
+        """The renderer also works when used without a wrapping template"""
+
+        renderer = TemplatePluginRenderer()
+        renderer.register_template_renderer(
+            HTML,
+            'renderer/html.html',
+        )
+
+        page = Page.objects.create(
+            template_key='standard',
+        )
+        HTML.objects.create(
+            parent=page,
+            ordering=10,
+            region='main',
+            html='<b>Hello</b>',
+        )
+
+        regions = renderer.regions(page)
+        self.assertEqual(
+            regions.render('main', Context()),
+            '<b>Hello</b>\n',
         )
