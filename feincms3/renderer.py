@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from django.template import Engine
+from django.template import Context, Engine
 from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
 
@@ -82,8 +82,8 @@ class Regions(object):
         )
 
     @positional(3)
-    def render(self, region, context, timeout=None):
-        """render(self, region, context, *, timeout=None)
+    def render(self, region, context=None, timeout=None):
+        """render(self, region, context=None, *, timeout=None)
         Render a single region using the context passed
 
         If ``timeout`` is ``None`` caching is disabled.
@@ -211,7 +211,7 @@ context=default_context)
             renderer=self,
         )
 
-    def render_plugin_in_context(self, plugin, context):
+    def render_plugin_in_context(self, plugin, context=None):
         """
         Render a plugin, passing on the template context into the plugin's
         template (if the plugin uses a template renderer).
@@ -251,6 +251,9 @@ context=default_context)
 
         if plugin_template is None:
             return plugin_context(plugin)  # Simple string renderer
+
+        if context is None:
+            context = Context()
 
         if callable(plugin_template):
             plugin_template = plugin_template(plugin)
