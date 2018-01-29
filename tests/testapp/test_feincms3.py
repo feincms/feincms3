@@ -1034,3 +1034,9 @@ class Test(TestCase):
             regions.render('main', Context()),
             '<b>Hello</b>\n',
         )
+
+        regions = renderer.regions(page)
+        self.assertEqual(
+            regions.render('main', Context({'outer': 'Test'})),
+            '<b>Hello</b>Test\n',
+        )
