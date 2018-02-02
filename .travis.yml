@@ -8,22 +8,20 @@ python:
 addons:
   postgresql: "9.4"
 env:
-- REQ="Django>=1.9,<1.10 django-cte-forest<0.2"
-- REQ="Django>=1.10,<1.11 django-cte-forest"
-- REQ="Django>=1.11,<2.0 django-cte-forest"
-- REQ="Django>=2.0,<2.1 django-cte-forest"
-- REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
+- REQ="Django>=1.11,<2.0"
+- REQ="Django>=2.0,<2.1"
+- REQ="https://github.com/django/django/archive/master.zip#egg=Django"
 matrix:
   allow_failures:
-    - env: REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
+    - env: REQ="https://github.com/django/django/archive/master.zip#egg=Django"
   exclude:
     - python: '2.7'
-      env: REQ="Django>=2.0,<2.1 django-cte-forest"
+      env: REQ="Django>=2.0,<2.1"
     - python: '2.7'
-      env: REQ="https://github.com/django/django/archive/master.zip#egg=Django django-cte-forest"
+      env: REQ="https://github.com/django/django/archive/master.zip#egg=Django"
 install:
 - pip install -U pip wheel
-- pip install $REQ django-ckeditor django-content-editor
+- pip install $REQ django-ckeditor django-content-editor django-cte-forest
   django-versatileimagefield html-sanitizer pytz requests psycopg2
 - python setup.py install
 script: cd tests && ./manage.py test testapp && cd ..

@@ -44,20 +44,10 @@ from django.conf.urls import include, url
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, signals
+from django.urls import NoReverseMatch, reverse
 from django.utils.translation import get_language, ugettext_lazy as _
 
 from feincms3.utils import concrete_model, positional, validation_error
-
-
-try:
-    from django.urls import NoReverseMatch, reverse
-except ImportError:  # pragma: no cover
-    # Django <1.10
-    from django.core.urlresolvers import NoReverseMatch, reverse
-try:
-    from django.utils.deprecation import MiddlewareMixin
-except ImportError:  # pragma: no cover
-    MiddlewareMixin = object
 
 
 __all__ = (
@@ -290,16 +280,19 @@ def page_for_app_request(request, queryset=None):
     )
 
 
-class AppsMiddleware(MiddlewareMixin):
+class AppsMiddleware(object):
     """
-    This middleware must be put in ``MIDDLEWARE_CLASSES``; it simply assigns
+    This middleware must be put in ``MIDDLEWARE``; it simply assigns
     the return value of :func:`~feincms3.apps.apps_urlconf` to
     ``request.urlconf``. This middleware should probably be one of the first
     since it has to run before any resolving happens.
     """
+    def __init__(self, get_response):
+        self.get_response = get_response
 
-    def process_request(self, request):
+    def __call__(self, request):
         request.urlconf = apps_urlconf()
+        return self.get_response(request)
 
 
 class AppsMixin(models.Model):

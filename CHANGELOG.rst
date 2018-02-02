@@ -15,6 +15,7 @@ Change log
   0.19 was already compatible)
 - Changed the ``TemplatePluginRenderer`` to also work when used
   standalone, not from inside a template.
+- Dropped compatibility with Django versions older than 1.11.
 
 
 `0.19`_ (2017-08-17)

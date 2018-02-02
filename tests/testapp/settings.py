@@ -54,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = MIDDLEWARE = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -65,8 +65,6 @@ MIDDLEWARE_CLASSES = MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'feincms3.apps.AppsMiddleware',
 ]
-# Do not warn about MIDDLEWARE_CLASSES
-SILENCED_SYSTEM_CHECKS = ['1_10.W001']
 
 CKEDITOR_CONFIGS = {
     'default': {

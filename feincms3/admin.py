@@ -9,17 +9,11 @@ from django.core.exceptions import PermissionDenied
 from django.db import router, transaction
 from django.http import Http404
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
-
-
-try:
-    from django.urls import reverse
-except ImportError:  # pragma: no cover
-    # Django <1.10
-    from django.core.urlresolvers import reverse
 
 
 __all__ = ('TreeAdmin', 'MoveForm', 'AncestorFilter')

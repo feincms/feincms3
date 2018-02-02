@@ -3,17 +3,11 @@ from collections import OrderedDict
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Max, Q
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from cte_forest.models import CTENode, CTENodeManager
 from feincms3.utils import validation_error
-
-
-try:
-    from django.urls import reverse
-except ImportError:  # pragma: no cover
-    # Django <1.10
-    from django.core.urlresolvers import reverse
 
 
 class AbstractPageManager(CTENodeManager):
