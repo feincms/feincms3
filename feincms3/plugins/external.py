@@ -89,16 +89,16 @@ def oembed_html(url, cache_failures=True):
 def render_external(plugin, **kwargs):
     """
     Render the plugin, embedding it in the appropriate markup for Foundation's
-    flex-video element (http://foundation.zurb.com/sites/docs/flex-video.html)
+    responsive-embed element (https://foundation.zurb.com/sites/docs/responsive-embed.html)
     """
 
     html = oembed_html(plugin.url)
     if 'youtube.com' in html:
         return mark_safe(
-            '<div class="flex-video widescreen">{}</div>'.format(html))
+            '<div class="responsive-embed widescreen">{}</div>'.format(html))
     if 'vimeo.com' in html:
         return mark_safe(
-            '<div class="flex-video widescreen vimeo">{}</div>'.format(html))
+            '<div class="responsive-embed widescreen vimeo">{}</div>'.format(html))
     return mark_safe(html)
 
 
