@@ -9,7 +9,7 @@ from hashlib import md5
 from django import forms
 from django.core.cache import cache
 from django.db import models
-from django.utils.html import mark_safe
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 import requests
@@ -89,16 +89,21 @@ def oembed_html(url, cache_failures=True):
 def render_external(plugin, **kwargs):
     """
     Render the plugin, embedding it in the appropriate markup for Foundation's
-    responsive-embed element (https://foundation.zurb.com/sites/docs/responsive-embed.html)
+    responsive-embed element
+    (https://foundation.zurb.com/sites/docs/responsive-embed.html)
     """
 
     html = oembed_html(plugin.url)
     if 'youtube.com' in html:
-        return mark_safe(
-            '<div class="responsive-embed widescreen">{}</div>'.format(html))
+        return format_html(
+            '<div class="responsive-embed widescreen">{}</div>',
+            html,
+        )
     if 'vimeo.com' in html:
-        return mark_safe(
-            '<div class="responsive-embed widescreen vimeo">{}</div>'.format(html))
+        return format_html(
+            '<div class="responsive-embed widescreen vimeo">{}</div>',
+            html,
+        )
     return mark_safe(html)
 
 
