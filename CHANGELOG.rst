@@ -16,6 +16,8 @@ Change log
 - Changed the ``TemplatePluginRenderer`` to also work when used
   standalone, not from inside a template.
 - Dropped compatibility with Django versions older than 1.11.
+- Changed ``AppsMixin.clean_fields`` to use ``_default_manager`` instead
+  of ``_base_manager`` to search for already existing app instances.
 
 
 `0.19`_ (2017-08-17)
