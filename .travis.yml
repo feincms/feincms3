@@ -22,6 +22,6 @@ matrix:
 install:
 - pip install -U pip wheel
 - pip install $REQ django-ckeditor django-content-editor django-cte-forest
-  django-versatileimagefield html-sanitizer pytz requests psycopg2
+  django-versatileimagefield html-sanitizer pytz requests psycopg2-binary
 - python setup.py install
 script: cd tests && ./manage.py test testapp && cd ..
