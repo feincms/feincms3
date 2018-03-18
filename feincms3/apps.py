@@ -457,10 +457,10 @@ class AppsMixin(models.Model):
                 lambda instance: instance.application,
             )(self)
 
-            if self.__class__._base_manager.filter(
+            if self.__class__._default_manager.filter(
                 Q(app_instance_namespace=app_instance_namespace),
                 Q(language_code=self.language_code),
-                ~Q(pk=self.pk or 0),
+                ~Q(pk=self.pk),
             ).exists():
                 fields = ['application']
                 fields.extend(app_config.get('required_fields', ()))
