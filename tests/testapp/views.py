@@ -38,7 +38,7 @@ renderer.register_string_renderer(
 def page_detail(request, path=None):
     page = get_object_or_404(
         Page.objects.active(),
-        path='/{}/'.format(path) if path else '/',
+        path=('/%s/' % path) if path else '/',
     )
     page.activate_language(request)
 

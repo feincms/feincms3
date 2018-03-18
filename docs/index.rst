@@ -285,7 +285,7 @@ Where ``app.pages.views`` contains the following view::
     def page_detail(request, path=None):
         page = get_object_or_404(
             Page.objects.active(),
-            path='/{}/'.format(path) if path else '/',
+            path=('/%s/' % path) if path else '/',
         )
         page.activate_language(request)
         return render(request, page.template.template_name, {

@@ -85,9 +85,10 @@ class AbstractPage(CTENode):
             # Assign already-updated instance:
             node.parent = nodes[node.parent_id]
             if not node.static_path:
-                node.path = '{}{}/'.format(
+                node.path = '%s%s/' % (
                     node.parent.path,
-                    node.slug)
+                    node.slug,
+                )
 
             # Descendants of inactive nodes cannot be active themselves:
             if not node.parent.is_active:
@@ -106,11 +107,13 @@ class AbstractPage(CTENode):
                 raise validation_error(
                     _('Static paths cannot be empty. Did you mean \'/\'?'),
                     field='path',
-                    exclude=exclude)
+                    exclude=exclude,
+                )
         else:
-            self.path = '{}{}/'.format(
+            self.path = '%s%s/' % (
                 self.parent.path if self.parent else '/',
-                self.slug)
+                self.slug,
+            )
 
         super(AbstractPage, self).clean()
 
@@ -143,9 +146,10 @@ class AbstractPage(CTENode):
         save_descendants = kwargs.pop('save_descendants', True)
 
         if not self.static_path:
-            self.path = '{}{}/'.format(
+            self.path = '%s%s/' % (
                 self.parent.path if self.parent else '/',
-                self.slug)
+                self.slug,
+            )
 
         if not self.position:
             self.position = (self.__class__._default_manager.filter(
