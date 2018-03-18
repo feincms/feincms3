@@ -81,7 +81,9 @@ def reverse_any(viewnames, urlconf=None, args=None, kwargs=None,
         " '%s' not found." % (
             "', '".join(viewnames),
             args or [],
-            kwargs or {}))
+            kwargs or {},
+        ),
+    )
 
 
 def reverse_app(namespaces, viewname, *args, **kwargs):
@@ -418,13 +420,15 @@ class AppsMixin(models.Model):
             raise validation_error(
                 _('Invalid parent: %s') % (error,),
                 field='parent',
-                exclude=exclude)
+                exclude=exclude,
+            )
 
         if self.application and not self.is_leaf():
             raise validation_error(
                 _('Apps may not have any descendants in the tree.'),
                 field='application',
-                exclude=exclude)
+                exclude=exclude,
+            )
 
         app_config = self.application_config()
         if app_config and app_config.get('required_fields'):

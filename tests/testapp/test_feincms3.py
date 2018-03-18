@@ -204,7 +204,8 @@ class Test(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn(
             '<li>Unable to fetch HTML for this URL, sorry!</li>',
-            '%s' % form.errors)
+            '%s' % form.errors,
+        )
 
     def test_navigation_and_changelist(self):
         """Test menu template tags and the admin changelist"""
@@ -794,7 +795,8 @@ class Test(TestCase):
                 (root.pk, None, 10),
                 (p1.pk, root.pk, 10),
                 (p2.pk, root.pk, 20),
-            ])
+            ],
+        )
 
         return root, p1, p2
 
@@ -813,7 +815,8 @@ class Test(TestCase):
             {
                 'move_to': 'last',
                 'of': '',
-            })
+            },
+        )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
@@ -821,7 +824,8 @@ class Test(TestCase):
                 (root.pk, None, 10),
                 (p2.pk, root.pk, 20),
                 (p1.pk, None, 20),
-            ])
+            ],
+        )
 
     def test_move_to_root_first(self):
         root, p1, p2 = self.prepare_for_move()
@@ -832,7 +836,8 @@ class Test(TestCase):
             {
                 'move_to': 'first',
                 'of': '',
-            })
+            },
+        )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
@@ -840,7 +845,8 @@ class Test(TestCase):
                 (p2.pk, None, 10),
                 (root.pk, None, 20),
                 (p1.pk, root.pk, 10),
-            ])
+            ],
+        )
 
     def test_move_to_child(self):
         root, p1, p2 = self.prepare_for_move()
@@ -851,7 +857,8 @@ class Test(TestCase):
             {
                 'move_to': 'first',
                 'of': p1.pk,
-            })
+            },
+        )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
@@ -859,7 +866,8 @@ class Test(TestCase):
                 (root.pk, None, 10),
                 (p1.pk, root.pk, 10),
                 (p2.pk, p1.pk, 10),
-            ])
+            ],
+        )
 
     def test_invalid_move(self):
         root, p1, p2 = self.prepare_for_move()
@@ -870,7 +878,8 @@ class Test(TestCase):
             {
                 'move_to': 'first',
                 'of': p1.pk,
-            })
+            },
+        )
 
         self.assertContains(
             response,
@@ -892,7 +901,8 @@ class Test(TestCase):
             {
                 'move_to': 'right',
                 'of': p1.pk,
-            })
+            },
+        )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
@@ -901,7 +911,8 @@ class Test(TestCase):
                 (p1.pk, root.pk, 10),
                 (p3.pk, root.pk, 20),
                 (p2.pk, root.pk, 30),
-            ])
+            ],
+        )
 
     def test_redirects(self):
         page1 = Page.objects.create(

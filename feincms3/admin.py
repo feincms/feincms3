@@ -104,8 +104,11 @@ class TreeAdmin(ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         return [
-            url(r'^(.+)/move/$', wrap(self.move_view),
-                name='%s_%s_move' % info),
+            url(
+                r'^(.+)/move/$',
+                wrap(self.move_view),
+                name='%s_%s_move' % info,
+            ),
         ] + super(TreeAdmin, self).get_urls()
 
     @csrf_protect_m
@@ -134,12 +137,15 @@ class TreeAdmin(ModelAdmin):
                         'node': obj,
                         'move_to': dict(MoveForm.MOVE_CHOICES).get(
                             form.cleaned_data['move_to'],
-                            form.cleaned_data['move_to']),
+                            form.cleaned_data['move_to'],
+                        ),
                         'to': form.cleaned_data['of'] or _('root node'),
                     })
 
                     return redirect('admin:%s_%s_changelist' % (
-                        opts.app_label, opts.model_name))
+                        opts.app_label,
+                        opts.model_name,
+                    ))
 
             else:
                 form = MoveForm(obj=obj)
@@ -151,7 +157,8 @@ class TreeAdmin(ModelAdmin):
                 })],  # list(self.get_fieldsets(request, obj)),
                 {},  # self.get_prepopulated_fields(request, obj),
                 (),  # self.get_readonly_fields(request, obj),
-                model_admin=self)
+                model_admin=self,
+            )
             media = self.media + adminForm.media
 
             context = dict(
@@ -173,7 +180,8 @@ class TreeAdmin(ModelAdmin):
             )
 
             return self.render_change_form(
-                request, context, add=False, change=False, obj=obj)
+                request, context, add=False, change=False, obj=obj,
+            )
 
 
 class MoveForm(forms.Form):

@@ -53,21 +53,41 @@ class AbstractPage(CTENode):
     _cte_node_path = 'cte_path'
     _cte_node_order_by = ('position',)
 
-    is_active = models.BooleanField(_('is active'), default=True)
-    title = models.CharField(_('title'), max_length=200)
-    slug = models.SlugField(_('slug'))
+    is_active = models.BooleanField(
+        _('is active'),
+        default=True,
+    )
+    title = models.CharField(
+        _('title'),
+        max_length=200,
+    )
+    slug = models.SlugField(
+        _('slug'),
+    )
     position = models.PositiveIntegerField(
-        db_index=True, editable=False, default=0)
+        db_index=True,
+        editable=False,
+        default=0,
+    )
 
     # Who even cares about MySQL
     path = models.CharField(
-        _('path'), max_length=1000, blank=True, unique=True,
+        _('path'),
+        max_length=1000,
+        blank=True,
+        unique=True,
         help_text=_('Generated automatically if \'static path\' is unset.'),
-        validators=[RegexValidator(
-            regex=r'^/(|.+/)$',
-            message=_('Path must start and end with a slash (/).'),
-        )])
-    static_path = models.BooleanField(_('static path'), default=False)
+        validators=[
+            RegexValidator(
+                regex=r'^/(|.+/)$',
+                message=_('Path must start and end with a slash (/).'),
+            ),
+        ],
+    )
+    static_path = models.BooleanField(
+        _('static path'),
+        default=False,
+    )
 
     objects = AbstractPageManager()
 
@@ -135,7 +155,8 @@ class AbstractPage(CTENode):
                         'path': node.path,
                     },
                     field='path',
-                    exclude=exclude)
+                    exclude=exclude,
+                )
 
     def save(self, *args, **kwargs):
         """save(self, ..., save_descendants=True)
@@ -152,9 +173,11 @@ class AbstractPage(CTENode):
             )
 
         if not self.position:
-            self.position = (self.__class__._default_manager.filter(
-                parent_id=self.parent_id,
-            ).order_by().aggregate(p=Max('position'))['p'] or 0) + 10
+            self.position = 10 + (
+                self.__class__._default_manager.filter(
+                    parent_id=self.parent_id,
+                ).order_by().aggregate(p=Max('position'))['p'] or 0
+            )
 
         super(AbstractPage, self).save(*args, **kwargs)
 
@@ -177,4 +200,6 @@ class AbstractPage(CTENode):
         """
         if self.path == '/':
             return reverse('pages:root')
-        return reverse('pages:page', kwargs={'path': self.path.strip('/')})
+        return reverse('pages:page', kwargs={
+            'path': self.path.strip('/'),
+        })

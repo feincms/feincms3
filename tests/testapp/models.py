@@ -96,11 +96,18 @@ class HTML(plugins.HTML, PagePlugin):
 
 
 class Article(models.Model):
-    title = models.CharField(_('title'), max_length=100)
-    category = models.CharField(_('category'), max_length=20, choices=(
-        ('publications', 'publications'),
-        ('blog', 'blog'),
-    ))
+    title = models.CharField(
+        _('title'),
+        max_length=100,
+    )
+    category = models.CharField(
+        _('category'),
+        max_length=20,
+        choices=(
+            ('publications', 'publications'),
+            ('blog', 'blog'),
+        ),
+    )
 
     class Meta:
         ordering = ['-pk']

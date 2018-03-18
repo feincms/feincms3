@@ -42,5 +42,5 @@ app_name = 'articles'
 urlpatterns = [
     url(r'^all/$', article_list_all, name='article-list-all'),
     url(r'^$', article_list, name='article-list'),
-    url(r'^(?P<pk>\d+)/$', article_detail, name='article-detail'),
+    url(r'^(?P<pk>[0-9]+)/$', article_detail, name='article-detail'),
 ]

@@ -256,14 +256,16 @@ class RedirectMixin(models.Model):
             raise validation_error(
                 _('Only set one redirect value.'),
                 field='redirect_to_url',
-                exclude=exclude)
+                exclude=exclude,
+            )
 
         if self.redirect_to_page_id:
             if self.redirect_to_page_id == self.pk:
                 raise validation_error(
                     _('Cannot redirect to self.'),
                     field='redirect_to_page',
-                    exclude=exclude)
+                    exclude=exclude,
+                )
 
             if self.redirect_to_page.redirect_to_page_id:
                 raise validation_error(
@@ -275,4 +277,5 @@ class RedirectMixin(models.Model):
                         'path': self.redirect_to_page.get_absolute_url(),
                     },
                     field='redirect_to_page',
-                    exclude=exclude)
+                    exclude=exclude,
+                )
