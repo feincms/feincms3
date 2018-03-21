@@ -18,6 +18,8 @@ Change log
 - Dropped compatibility with Django versions older than 1.11.
 - Changed ``AppsMixin.clean_fields`` to use ``_default_manager`` instead
   of ``_base_manager`` to search for already existing app instances.
+- Changed the page move view to suppress the "Save and add another"
+  button with great force.
 
 
 `0.19`_ (2017-08-17)

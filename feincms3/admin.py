@@ -179,9 +179,13 @@ class TreeAdmin(ModelAdmin):
                 show_delete=False,
             )
 
-            return self.render_change_form(
+            response = self.render_change_form(
                 request, context, add=False, change=False, obj=obj,
             )
+
+            # Suppress the rendering of the "save and add another" button.
+            response.context_data['has_add_permission'] = False
+            return response
 
 
 class MoveForm(forms.Form):
