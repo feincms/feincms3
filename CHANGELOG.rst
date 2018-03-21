@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.20`_ (2018-03-21)
+~~~~~~~~~~~~~~~~~~~~
+
 - Changed ``render_list`` and ``render_detail`` to return
   ``TemplateResponse`` instances instead of pre-rendered instances to
   increase the shortcuts' flexibility.
@@ -320,4 +324,5 @@ functionality.
 .. _0.17.1: https://github.com/matthiask/feincms3/compare/0.16...0.17.1
 .. _0.18: https://github.com/matthiask/feincms3/compare/0.17.1...0.18
 .. _0.19: https://github.com/matthiask/feincms3/compare/0.18...0.19
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.19...master
+.. _0.20: https://github.com/matthiask/feincms3/compare/0.19...0.20
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.20...master
