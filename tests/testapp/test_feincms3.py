@@ -3,8 +3,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, models, transaction
 from django.forms.models import modelform_factory
-from django.template import Context
+from django.template import Context, Template
 from django.test import Client, TestCase
+from django.urls import set_urlconf
 from django.utils import six
 from django.utils.translation import deactivate_all, override
 
@@ -1051,3 +1052,59 @@ class Test(TestCase):
             regions.render('main', Context({'outer': 'Test'})),
             '<b>Hello</b>Test\n',
         )
+
+    def test_reverse_app_tag(self):
+        Page.objects.create(
+            title='blog',
+            slug='blog',
+            static_path=False,
+            language_code='en',
+            is_active=True,
+            application='blog',
+        )
+        set_urlconf(apps_urlconf())
+
+        tests = [(
+            "{% reverse_app 'blog' 'article-detail' pk=42 %}",
+            '/blog/42/',
+            {},
+        ), (
+            "{% reverse_app 'blog' 'article-detail' pk=42 fallback='/a/' %}",
+            '/blog/42/',
+            {},
+        ), (
+            "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",  # noqa
+            '/blog/42/',
+            {'namespaces': ['stuff', 'blog']},
+        ), (
+            "{% reverse_app 'bla' 'bla' fallback='/test/' %}",
+            '/test/',
+            {},
+        ), (
+            "{% reverse_app 'bla' 'bla' fallback='/test/' as t %}{{ t }}",
+            '/test/',
+            {},
+        ), (
+            "{% reverse_app 'bla' 'bla' as t %}{{ t|default:'blub' }}",
+            'blub',
+            {},
+        )]
+
+        try:
+            for tpl, out, ctx in tests:
+                t = Template('{% load feincms3_apps %}' + tpl)
+                self.assertEqual(
+                    t.render(Context(ctx)).strip(),
+                    out,
+                )
+
+            self.assertRaises(
+                NoReverseMatch,
+                Template(
+                    "{% load feincms3_apps %}{% reverse_app 'a' 'a' %}",
+                ).render,
+                Context(),
+            )
+
+        finally:
+            set_urlconf(None)

@@ -47,8 +47,8 @@ class ReverseAppNode(Node):
             )
         except apps.NoReverseMatch:
             if fallback is not None:
-                return fallback
-            if self.asvar is None:
+                url = fallback
+            elif self.asvar is None:
                 raise
 
         if self.asvar:
