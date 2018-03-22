@@ -62,7 +62,7 @@ class ReverseAppNode(Node):
 
 @register.tag
 def reverse_app(parser, token):
-    r"""
+    """
     Reverse app URLs, preferring the active language.
 
     Usage::
@@ -72,8 +72,14 @@ def reverse_app(parser, token):
 
     ``namespaces`` can either be a list or a comma-separated list of
     namespaces. ``NoReverseMatch`` exceptions can be avoided by providing a
-    fallback URL as a keyword argument or by saving the result in a variable,
-    similar to ``{% url 'view' as url %}`` does.
+    ``fallback`` as a keyword argument or by saving the result in a variable,
+    similar to ``{% url 'view' as url %}`` does::
+
+        {% reverse_app 'newsletter' 'subscribe-form' fallback='/newsletter/' %}
+
+    Or::
+
+        {% reverse_app 'extranet' 'login' as login_url %}
     """
     bits = token.split_contents()
     if len(bits) < 3:
