@@ -6,6 +6,8 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Added a template tag for ``reverse_app``.
+
 
 `0.20`_ (2018-03-21)
 ~~~~~~~~~~~~~~~~~~~~

@@ -190,6 +190,9 @@ Apps (``feincms3.apps``)
 .. automodule:: feincms3.apps
    :members:
 
+.. automodule:: feincms3.templatetags.feincms3_apps
+   :members:
+
 
 Renderer (``feincms3.renderer``)
 ================================
@@ -204,21 +207,14 @@ Renderer (``feincms3.renderer``)
 .. autoclass:: Regions
    :members:
 
+.. automodule:: feincms3.templatetags.feincms3_renderer
+   :members:
+
 
 Shortcuts (``feincms3.shortcuts``)
 ==================================
 
 .. automodule:: feincms3.shortcuts
-   :members:
-
-
-Template tags
-=============
-
-``feincms3_renderer``
-~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: feincms3.templatetags.feincms3_renderer
    :members:
 
 
