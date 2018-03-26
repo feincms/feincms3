@@ -156,6 +156,13 @@ HTML
    :members:
 
 
+Images
+~~~~~~
+
+.. automodule:: feincms3.plugins.image
+   :members:
+
+
 Rich text
 ~~~~~~~~~
 
@@ -244,7 +251,7 @@ You'll have to add at least the following apps to ``INSTALLED_APPS``:
 - ``feincms3``
 - ``content_editor``
 - ``ckeditor`` if you want to use :mod:`feincms3.plugins.richtext`
-- ``versatileimagefield`` for :mod:`feincms3.plugins.versatileimage`
+- ``imagefield`` for :mod:`feincms3.plugins.image`
 - ... and of course also the app where you put your concrete models such
   as the page model, named ``app.pages`` in this guide.
 
@@ -323,9 +330,13 @@ Of course if you'd rather let plugins use templates, do this::
         'plugins/image.html',
     )
 
-And the associated template with downscaling of bigger images::
+And the associated template::
 
-    <figure><img src="{{ plugin.image.thumbnail.400x400 }}" alt=""/></figure>
+    <figure><img src="{{ plugin.image.url }}" alt=""/></figure>
+
+The default image field also offers built-in support for thumbnailing
+and cropping with a PPOI (primary point of interest); have a look at the
+django-imagefield_ docs to find out how.
 
 If you don't like this, you're completely free to write your own views,
 URLs and ``get_absolute_url`` method.
@@ -511,6 +522,7 @@ redirect to this URL instead.
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor/
 .. _django-content-editor: https://django-content-editor.readthedocs.io/
 .. _django-cte-forest: https://django-cte-forest.readthedocs.io/
+.. _django-imagefield: https://django-imagefield.readthedocs.io/
 .. _django-mptt: https://django-mptt.readthedocs.io/
 .. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
 .. _documentation: http://feincms3.readthedocs.io/

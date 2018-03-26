@@ -24,7 +24,7 @@ INSTALLED_APPS = [
 
     # Libraries for content-editor plugins
     'ckeditor',
-    'versatileimagefield',
+    'imagefield',
 ]
 
 MEDIA_ROOT = '/media/'

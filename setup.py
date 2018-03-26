@@ -33,6 +33,12 @@ setup(
     extras_require={
         'all': [
             'django-ckeditor',
+            'django-imagefield',
+            'html-sanitizer>=1.1.1',
+            'requests',
+        ],
+        'versatileimagefield': [
+            'django-ckeditor',
             'django-versatileimagefield',
             'html-sanitizer>=1.1.1',
             'requests',

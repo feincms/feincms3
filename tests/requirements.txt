@@ -2,7 +2,7 @@ Django
 django-ckeditor
 django-content-editor
 django-cte-forest
-django-versatileimagefield
+django-imagefield
 html-sanitizer>=1.1.1
 requests
 psycopg2-binary
