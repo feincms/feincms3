@@ -19,15 +19,15 @@ else:
     from .external import *
 
 try:
-    import imagefield
-except ImportError:  # pragma: no cover
-    pass
-else:
-    from .image import *
-
-try:
     import versatileimagefield
 except ImportError:  # pragma: no cover
     pass
 else:
     from .versatileimage import *
+
+try:
+    import imagefield
+except ImportError:  # pragma: no cover
+    pass
+else:
+    from .image import *
