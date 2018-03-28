@@ -6,13 +6,17 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.21`_ (2018-03-28)
+~~~~~~~~~~~~~~~~~~~~
+
 - Added a template tag for ``reverse_app``.
 - **(At least a bit) BACKWARDS INCOMPATIBLE** Switched the preferred
   image field from django-versatileimagefield_ to django-imagefield_.
   The transition should mostly require replacing ``versatileimagefield``
   with ``imagefield`` in your settings etc., adding the appropriate
   ``IMAGEFIELD_FORMATS`` setting and running ``./manage.py
-  process_all_imagefields`` once. Switch from ``feincms3[all]`` to
+  process_imagefields`` once. Switch from ``feincms3[all]`` to
   ``feincms3[versatileimagefield]`` to stay with
   django-versatileimagefield_ for the moment.
 
