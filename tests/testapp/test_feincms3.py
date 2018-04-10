@@ -915,6 +915,35 @@ class Test(TestCase):
             ],
         )
 
+    def test_invalid_parent(self):
+        root, p1, p2 = self.prepare_for_move()
+        p1.application = 'blog'
+        p1.save()
+
+        p2 = Page.objects.get(pk=p2.pk)
+        p2.parent_id = p1.pk
+
+        # Apps may not have descendants
+        self.assertRaises(
+           ValidationError,
+           p2.full_clean,
+        )
+
+        client = self.login()
+        response = client.post(
+            reverse('admin:testapp_page_move', args=(p2.pk,)),
+            {
+                'move_to': 'first',
+                'of': p1.pk,
+            },
+        )
+
+        self.assertContains(
+            response,
+            '<li>Invalid parent: Apps may nove have any descendants.</li>',
+            status_code=200,
+        )
+
     def test_redirects(self):
         page1 = Page.objects.create(
             title='home',

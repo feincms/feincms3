@@ -253,7 +253,10 @@ class MoveForm(forms.Form):
         else:
             self.instance.parent = data.get('of')
 
-        self.instance.full_clean()
+        # All fields of model are not in this form
+        self.instance.full_clean(
+            exclude=[f.name for f in self.model._meta.get_fields()],
+        )
 
         return data
 
