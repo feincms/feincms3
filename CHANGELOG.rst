@@ -101,7 +101,7 @@ functionality.
 ~~~~~~~~~~~~~~~~~~~~
 
 - Dropped the ``is_descendant_of`` template tag. It was probably never
-  used without ``include_self~True``, and this particular use case is
+  used without ``include_self=True``, and this particular use case is
   better covered by checking whether a given primary key is a member
   of ``page.cte_path``.
 - Dropped the ``menu`` template tag, and with it also the
@@ -340,4 +340,5 @@ functionality.
 .. _0.18: https://github.com/matthiask/feincms3/compare/0.17.1...0.18
 .. _0.19: https://github.com/matthiask/feincms3/compare/0.18...0.19
 .. _0.20: https://github.com/matthiask/feincms3/compare/0.19...0.20
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.20...master
+.. _0.21: https://github.com/matthiask/feincms3/compare/0.20...0.21
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.21...master
