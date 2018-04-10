@@ -19,6 +19,9 @@ Change log
   process_imagefields`` once. Switch from ``feincms3[all]`` to
   ``feincms3[versatileimagefield]`` to stay with
   django-versatileimagefield_ for the moment.
+- Fixed a problem in ``MoveForm`` where invalid move targets would crash
+  because of missing form fields to attach the error to instead of
+  showing the underlying problem.
 
 
 `0.20`_ (2018-03-21)
