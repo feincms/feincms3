@@ -165,8 +165,9 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
         return fallback
 
 
-def apps_urlconf():
-    """
+@positional(0)
+def apps_urlconf(apps=None):
+    """apps_urlconf(*, apps=None):
     Generates a dynamic URLconf Python module including all applications in
     their assigned place and adding the ``urlpatterns`` from ``ROOT_URLCONF``
     at the end. Returns the value of ``ROOT_URLCONF`` directly if there are
@@ -191,13 +192,19 @@ def apps_urlconf():
     Modules stay around as long as the Python (most of the time WSGI) process
     lives. Unloading modules is tricky and probably not worth it since the
     URLconf modules shouldn't gobble up much memory.
+
+    The set of applications can be overridden by passing a list of
+    ``(path, application, app_instance_namespace, language_code)`` tuples.
     """
 
     page_model = concrete_model(AppsMixin)
-    fields = ('path', 'application', 'app_instance_namespace', 'language_code')
-    apps = page_model.objects.active().exclude(
-        app_instance_namespace=''
-    ).values_list(*fields).order_by(*fields)
+    if apps is None:
+        fields = (
+            'path', 'application', 'app_instance_namespace', 'language_code',
+        )
+        apps = page_model.objects.active().exclude(
+            app_instance_namespace=''
+        ).values_list(*fields).order_by(*fields)
 
     if not apps:
         # No point wrapping ROOT_URLCONF if there are no additional URLs

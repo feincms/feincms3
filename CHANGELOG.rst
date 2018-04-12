@@ -9,6 +9,8 @@ Change log
 - Fixed a problem in ``MoveForm`` where invalid move targets would crash
   because of missing form fields to attach the error to instead of
   showing the underlying problem.
+- Made it possible to override the list of apps processed in
+  ``apps_urlconf``.
 
 
 `0.21`_ (2018-03-28)
