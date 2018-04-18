@@ -562,7 +562,7 @@ class Test(TestCase):
         )
 
     def test_i18n_patterns(self):
-        """i18n_patterns in ROOT_URLCONF work even with AppsMiddleware"""
+        """i18n_patterns in ROOT_URLCONF work even with apps_middleware"""
 
         self.assertRedirects(
             self.client.get('/i18n/'),
@@ -722,7 +722,7 @@ class Test(TestCase):
             # to inspect.
             #
             #  1. session
-            #  2. AppsMiddleware / apps_urlconf
+            #  2. apps_middleware / apps_urlconf
             #  3. request.user
             #  4. SAVEPOINT
             #  5. fetch child

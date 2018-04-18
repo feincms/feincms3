@@ -11,6 +11,9 @@ Change log
   showing the underlying problem.
 - Made it possible to override the list of apps processed in
   ``apps_urlconf``.
+- Converted the apps middleware into a function, now named
+  ``apps_middleware``. The old name ``AppsMiddleware`` will stay
+  available for some undefined time.
 
 
 `0.21`_ (2018-03-28)

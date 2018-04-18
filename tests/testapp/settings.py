@@ -55,6 +55,7 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE = [
+    'feincms3.apps.apps_middleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'feincms3.apps.AppsMiddleware',
 ]
 
 CKEDITOR_CONFIGS = {

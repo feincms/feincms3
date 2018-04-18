@@ -14,7 +14,7 @@ the end of this documentation.
 The activation of apps happens through a dynamically created URLconf module
 (probably the trickiest code in all of feincms3,
 :func:`~feincms3.apps.apps_urlconf`). The
-:class:`~feincms3.apps.AppsMiddleware` assigns the module to
+:class:`~feincms3.apps.apps_middleware` assigns the module to
 ``request.urlconf`` which ensures that apps are available. No page code runs at
 all, control is directly passed to the app views. Apps are contained in nested
 URLconf namespaces which allows for URL reversing using Django's ``reverse()``
@@ -51,8 +51,8 @@ from feincms3.utils import concrete_model, positional, validation_error
 
 
 __all__ = (
-    'AppsMiddleware', 'AppsMixin', 'apps_urlconf', 'page_for_app_request',
-    'reverse_any', 'reverse_app', 'reverse_fallback',
+    'AppsMiddleware', 'AppsMixin', 'apps_middleware', 'apps_urlconf',
+    'page_for_app_request', 'reverse_any', 'reverse_app', 'reverse_fallback',
 )
 
 
@@ -289,19 +289,21 @@ def page_for_app_request(request, queryset=None):
     )
 
 
-class AppsMiddleware(object):
+def apps_middleware(get_response):
     """
     This middleware must be put in ``MIDDLEWARE``; it simply assigns
     the return value of :func:`~feincms3.apps.apps_urlconf` to
     ``request.urlconf``. This middleware should probably be one of the first
     since it has to run before any resolving happens.
     """
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
+    def middleware(request):
         request.urlconf = apps_urlconf()
-        return self.get_response(request)
+        return get_response(request)
+    return middleware
+
+
+# Alias, for old times
+AppsMiddleware = apps_middleware
 
 
 class AppsMixin(models.Model):
