@@ -116,6 +116,11 @@ class AbstractPage(CTENode):
             nodes[node.id] = node
         return nodes
 
+    def _path_clash_candidates(self):
+        return self.__class__._default_manager.exclude(
+            Q(pk__in=self.descendants()) | Q(pk=self.pk),
+        )
+
     def clean_fields(self, exclude=None):
         """
         Check for path uniqueness problems.
@@ -141,9 +146,7 @@ class AbstractPage(CTENode):
         if not self.pk:
             return
 
-        clash_candidates = self.__class__._default_manager.exclude(
-            Q(pk__in=self.descendants()) | Q(pk=self.pk),
-        )
+        clash_candidates = self._path_clash_candidates()
         for pk, node in self._branch_for_update().items():
             if clash_candidates.filter(path=node.path).exists():
                 raise validation_error(
