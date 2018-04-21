@@ -28,4 +28,9 @@
             });
         }
     );
+
+    // Move CKEditor up a bit to hide the text label.
+    // var style = document.createElement('style');
+    // style.textContent = '.order-machine .django-ckeditor-widget { margin: -30px 0 0 -1px; }';
+    // document.head.appendChild(style);
 })(django.jQuery);
