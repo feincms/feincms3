@@ -14,6 +14,7 @@ Change log
 - Converted the apps middleware into a function, now named
   ``apps_middleware``. The old name ``AppsMiddleware`` will stay
   available for some undefined time.
+- Made the path clash check less expensive by running less SQL queries.
 
 
 `0.21`_ (2018-03-28)

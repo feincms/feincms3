@@ -146,9 +146,11 @@ class AbstractPage(CTENode):
         if not self.pk:
             return
 
-        clash_candidates = self._path_clash_candidates()
+        clash_candidates = set(
+            self._path_clash_candidates().values_list('path', flat=True)
+        )
         for pk, node in self._branch_for_update().items():
-            if clash_candidates.filter(path=node.path).exists():
+            if node.path in clash_candidates:
                 raise validation_error(
                     _(
                         'The page %(page)s\'s new path %(path)s would'
