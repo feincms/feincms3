@@ -99,6 +99,10 @@ class AbstractPage(CTENode):
     def __str__(self):
         return self.title
 
+    def __init__(self, *args, **kwargs):
+        super(AbstractPage, self).__init__(*args, **kwargs)
+        self._save_descendants_cache = (self.is_active, self.path)
+
     def _branch_for_update(self):
         nodes = OrderedDict({self.pk: self})
         for node in self.descendants():
@@ -164,12 +168,17 @@ class AbstractPage(CTENode):
                 )
 
     def save(self, *args, **kwargs):
-        """save(self, ..., save_descendants=True)
+        """save(self, ..., save_descendants=None)
         Saves the page instance, and traverses all descendants to update their
         ``path`` fields and ensure that inactive pages (``is_active=False``)
         never have any descendants with ``is_active=True``.
+
+        By default, descendants are only updated when any of ``is_active`` and
+        ``path`` change. This can be overridden by either forcing updates using
+        ``save_descendants=True`` or skipping them using
+        ``save_descendants=False``.
         """
-        save_descendants = kwargs.pop('save_descendants', True)
+        save_descendants = kwargs.pop('save_descendants', None)
 
         if not self.static_path:
             self.path = '%s%s/' % (
@@ -186,7 +195,10 @@ class AbstractPage(CTENode):
 
         super(AbstractPage, self).save(*args, **kwargs)
 
-        if save_descendants:
+        if save_descendants is True or (
+            save_descendants is None and
+            (self.is_active, self.path) != self._save_descendants_cache
+        ):
             for pk, node in self._branch_for_update().items():
                 if pk == self.pk:
                     continue
