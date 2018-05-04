@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.22`_ (2018-05-04)
+~~~~~~~~~~~~~~~~~~~~
+
 - Fixed a problem in ``MoveForm`` where invalid move targets would crash
   because of missing form fields to attach the error to instead of
   showing the underlying problem.
@@ -353,4 +357,5 @@ functionality.
 .. _0.19: https://github.com/matthiask/feincms3/compare/0.18...0.19
 .. _0.20: https://github.com/matthiask/feincms3/compare/0.19...0.20
 .. _0.21: https://github.com/matthiask/feincms3/compare/0.20...0.21
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.21...master
+.. _0.22: https://github.com/matthiask/feincms3/compare/0.21...0.22
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.22...master
