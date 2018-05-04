@@ -940,7 +940,7 @@ class Test(TestCase):
 
         self.assertContains(
             response,
-            '<li>Invalid parent: Apps may nove have any descendants.</li>',
+            '<li>Invalid parent: Apps may not have any descendants.</li>',
             status_code=200,
         )
 

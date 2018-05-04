@@ -425,7 +425,7 @@ class AppsMixin(models.Model):
                 self.parent.application or
                 self.parent.ancestors().exclude(application='').exists()
         ):
-            error = _('Apps may nove have any descendants.')
+            error = _('Apps may not have any descendants.')
             raise validation_error(
                 _('Invalid parent: %s') % (error,),
                 field='parent',

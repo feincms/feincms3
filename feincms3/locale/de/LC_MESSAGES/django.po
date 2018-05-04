@@ -84,7 +84,7 @@ msgid "app instance namespace"
 msgstr "Appinstanz-Namensraum"
 
 #: apps.py:384
-msgid "Apps may nove have any descendants."
+msgid "Apps may not have any descendants."
 msgstr "Apps dürfen keine Unterelemente haben."
 
 #: apps.py:386
