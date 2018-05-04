@@ -15,6 +15,8 @@ Change log
   ``apps_middleware``. The old name ``AppsMiddleware`` will stay
   available for some undefined time.
 - Made the path clash check less expensive by running less SQL queries.
+- Made page saving a bit less expensive by only saving descendants when
+  ``is_active`` or ``path`` changed.
 
 
 `0.21`_ (2018-03-28)

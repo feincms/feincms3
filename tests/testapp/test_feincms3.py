@@ -1137,3 +1137,20 @@ class Test(TestCase):
 
         finally:
             set_urlconf(None)
+
+    def test_descendant_update(self):
+        self.prepare_for_move()
+        root, p1, p2 = list(Page.objects.all())
+
+        with self.assertNumQueries(1):
+            # Only update self
+            root.save()
+
+        with self.assertNumQueries(4):
+            # Update self, fetch two descendants and save them
+            root.save(save_descendants=True)
+
+        root.slug = 'blaaa'
+        with self.assertNumQueries(4):
+            # Update self, fetch two descendants and save them
+            root.save(save_descendants=True)
