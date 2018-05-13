@@ -26,21 +26,14 @@ class Image(models.Model):
         width_field="width",
         height_field="height",
         ppoi_field="ppoi",
-
         # NOTE! You probably want to use auto_add_fields=True in your own
         # models and not worry about setting the *_field vars above.
     )
     width = models.PositiveIntegerField(
-        _("image width"),
-        blank=True,
-        null=True,
-        editable=False,
+        _("image width"), blank=True, null=True, editable=False
     )
     height = models.PositiveIntegerField(
-        _("image height"),
-        blank=True,
-        null=True,
-        editable=False,
+        _("image height"), blank=True, null=True, editable=False
     )
     ppoi = PPOIField(_("primary point of interest"))
 

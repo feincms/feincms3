@@ -15,6 +15,7 @@ class AbstractPageManager(CTENodeManager):
     Defines a single method, ``active``, which only returns pages with
     ``is_active=True``.
     """
+
     def active(self):
         """
         Return only active pages
@@ -53,21 +54,11 @@ class AbstractPage(CTENode):
     _cte_node_path = "cte_path"
     _cte_node_order_by = ("position",)
 
-    is_active = models.BooleanField(
-        _("is active"),
-        default=True,
-    )
-    title = models.CharField(
-        _("title"),
-        max_length=200,
-    )
-    slug = models.SlugField(
-        _("slug"),
-    )
+    is_active = models.BooleanField(_("is active"), default=True)
+    title = models.CharField(_("title"), max_length=200)
+    slug = models.SlugField(_("slug"))
     position = models.PositiveIntegerField(
-        db_index=True,
-        editable=False,
-        default=0,
+        db_index=True, editable=False, default=0
     )
 
     # Who even cares about MySQL
@@ -76,18 +67,15 @@ class AbstractPage(CTENode):
         max_length=1000,
         blank=True,
         unique=True,
-        help_text=_('Generated automatically if \'static path\' is unset.'),
+        help_text=_("Generated automatically if 'static path' is unset."),
         validators=[
             RegexValidator(
-                regex=r'^/(|.+/)$',
+                regex=r"^/(|.+/)$",
                 message=_("Path must start and end with a slash (/)."),
-            ),
+            )
         ],
     )
-    static_path = models.BooleanField(
-        _("static path"),
-        default=False,
-    )
+    static_path = models.BooleanField(_("static path"), default=False)
 
     objects = AbstractPageManager()
 
@@ -109,10 +97,7 @@ class AbstractPage(CTENode):
             # Assign already-updated instance:
             node.parent = nodes[node.parent_id]
             if not node.static_path:
-                node.path = "%s%s/" % (
-                    node.parent.path,
-                    node.slug,
-                )
+                node.path = "%s%s/" % (node.parent.path, node.slug)
 
             # Descendants of inactive nodes cannot be active themselves:
             if not node.parent.is_active:
@@ -122,7 +107,7 @@ class AbstractPage(CTENode):
 
     def _path_clash_candidates(self):
         return self.__class__._default_manager.exclude(
-            Q(pk__in=self.descendants()) | Q(pk=self.pk),
+            Q(pk__in=self.descendants()) | Q(pk=self.pk)
         )
 
     def clean_fields(self, exclude=None):
@@ -134,14 +119,13 @@ class AbstractPage(CTENode):
         if self.static_path:
             if not self.path:
                 raise validation_error(
-                    _('Static paths cannot be empty. Did you mean \'/\'?'),
+                    _("Static paths cannot be empty. Did you mean '/'?"),
                     field="path",
                     exclude=exclude,
                 )
         else:
             self.path = "%s%s/" % (
-                self.parent.path if self.parent else "/",
-                self.slug,
+                self.parent.path if self.parent else "/", self.slug
             )
 
         super(AbstractPage, self).clean()
@@ -157,12 +141,10 @@ class AbstractPage(CTENode):
             if node.path in clash_candidates:
                 raise validation_error(
                     _(
-                        'The page %(page)s\'s new path %(path)s would'
+                        "The page %(page)s's new path %(path)s would"
                         " not be unique."
-                    ) % {
-                        "page": node,
-                        "path": node.path,
-                    },
+                    )
+                    % {"page": node, "path": node.path},
                     field="path",
                     exclude=exclude,
                 )
@@ -182,27 +164,35 @@ class AbstractPage(CTENode):
 
         if not self.static_path:
             self.path = "%s%s/" % (
-                self.parent.path if self.parent else "/",
-                self.slug,
+                self.parent.path if self.parent else "/", self.slug
             )
 
         if not self.position:
             self.position = 10 + (
                 self.__class__._default_manager.filter(
-                    parent_id=self.parent_id,
-                ).order_by().aggregate(p=Max("position"))["p"] or 0
+                    parent_id=self.parent_id
+                ).order_by().aggregate(
+                    p=Max("position")
+                )[
+                    "p"
+                ]
+                or 0
             )
 
         super(AbstractPage, self).save(*args, **kwargs)
 
-        if save_descendants is True or (
-            save_descendants is None and
-            (self.is_active, self.path) != self._save_descendants_cache
+        if (
+            save_descendants is True
+            or (
+                save_descendants is None
+                and (self.is_active, self.path) != self._save_descendants_cache
+            )
         ):
             for pk, node in self._branch_for_update().items():
                 if pk == self.pk:
                     continue
                 node.save(save_descendants=False)
+
     save.alters_data = True
 
     def get_absolute_url(self):
@@ -217,6 +207,4 @@ class AbstractPage(CTENode):
         """
         if self.path == "/":
             return reverse("pages:root")
-        return reverse("pages:page", kwargs={
-            "path": self.path.strip("/"),
-        })
+        return reverse("pages:page", kwargs={"path": self.path.strip("/")})

@@ -157,9 +157,7 @@ class TemplateMixin(models.Model):
         """
         if issubclass(sender, TemplateMixin) and not sender._meta.abstract:
             field = sender._meta.get_field("template_key")
-            field.choices = [
-                (t.key, t.title) for t in sender.TEMPLATES
-            ]
+            field.choices = [(t.key, t.title) for t in sender.TEMPLATES]
             field.default = sender.TEMPLATES[0].key
             sender.TEMPLATES_DICT = {t.key: t for t in sender.TEMPLATES}
 
@@ -234,14 +232,13 @@ class RedirectMixin(models.Model):
     """
 
     redirect_to_url = models.CharField(
-        _("Redirect to URL"),
-        max_length=200,
-        blank=True,
+        _("Redirect to URL"), max_length=200, blank=True
     )
     redirect_to_page = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        blank=True, null=True,
+        blank=True,
+        null=True,
         related_name="+",
         verbose_name=_("Redirect to page"),
     )
@@ -272,7 +269,8 @@ class RedirectMixin(models.Model):
                     _(
                         "Do not chain redirects. The selected page redirects"
                         " to %(title)s (%(path)s)."
-                    ) % {
+                    )
+                    % {
                         "title": self.redirect_to_page,
                         "path": self.redirect_to_page.get_absolute_url(),
                     },

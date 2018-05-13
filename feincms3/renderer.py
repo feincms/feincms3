@@ -65,6 +65,7 @@ class Regions(object):
        not depend on the API, especially since the lazyness happens in the
        renderer, not in the ``Regions`` instance.
     """
+
     @positional(1)
     def __init__(self, item, contents, renderer):
         self._item = item
@@ -76,9 +77,7 @@ class Regions(object):
         Return a cache key suitable for the given ``region`` passed
         """
         return "%s-%s-%s" % (
-            self._item._meta.label_lower,
-            self._item.pk,
-            region,
+            self._item._meta.label_lower, self._item.pk, region
         )
 
     @positional(3)
@@ -98,10 +97,12 @@ class Regions(object):
             if html is not None:
                 return html
 
-        html = mark_safe("".join(
-            self._renderer.render_plugin_in_context(plugin, context)
-            for plugin in self._contents[region]
-        ))
+        html = mark_safe(
+            "".join(
+                self._renderer.render_plugin_in_context(plugin, context)
+                for plugin in self._contents[region]
+            )
+        )
 
         if timeout is not None:
             cache.set(key, html, timeout=timeout)
@@ -138,7 +139,8 @@ class TemplatePluginRenderer(object):
         self._renderers[plugin] = (None, renderer)
 
     def register_template_renderer(
-            self, plugin, template_name, context=default_context):
+        self, plugin, template_name, context=default_context
+    ):
         """register_template_renderer(self, plugin, template_name,\
 context=default_context)
         Register a renderer for ``plugin`` using a template. The template uses

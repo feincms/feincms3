@@ -40,9 +40,7 @@ class TreeAdmin(ModelAdmin):
     list_display = ("indented_title", "move_column")
 
     class Media:
-        css = {"all": [
-            "feincms3/box-drawing.css",
-        ]}
+        css = {"all": ["feincms3/box-drawing.css"]}
 
     def __init__(self, *args, **kwargs):
         super(TreeAdmin, self).__init__(*args, **kwargs)
@@ -73,6 +71,7 @@ class TreeAdmin(ModelAdmin):
             (instance.depth - 1) * 30,
             instance,
         )
+
     indented_title.short_description = _("title")
 
     def move_column(self, instance):
@@ -89,15 +88,19 @@ class TreeAdmin(ModelAdmin):
             ),
             _("move"),
         )
+
     move_column.short_description = ""
 
     def get_urls(self):
         """
         Add our own ``move`` view.
         """
+
         def wrap(view):
+
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
+
             wrapper.model_admin = self
             return update_wrapper(wrapper, view)
 
@@ -105,11 +108,11 @@ class TreeAdmin(ModelAdmin):
 
         return [
             url(
-                r'^(.+)/move/$',
-                wrap(self.move_view),
-                name="%s_%s_move" % info,
-            ),
-        ] + super(TreeAdmin, self).get_urls()
+                r"^(.+)/move/$", wrap(self.move_view), name="%s_%s_move" % info
+            )
+        ] + super(
+            TreeAdmin, self
+        ).get_urls()
 
     @csrf_protect_m
     def move_view(self, request, object_id):
@@ -130,31 +133,35 @@ class TreeAdmin(ModelAdmin):
 
                 if form.is_valid():
                     form.save()
-                    self.message_user(request, _(
-                        "The node %(node)s has been made the"
-                        " %(move_to)s of node %(to)s."
-                    ) % {
-                        "node": obj,
-                        "move_to": dict(MoveForm.MOVE_CHOICES).get(
-                            form.cleaned_data["move_to"],
-                            form.cleaned_data["move_to"],
-                        ),
-                        "to": form.cleaned_data["of"] or _("root node"),
-                    })
+                    self.message_user(
+                        request,
+                        _(
+                            "The node %(node)s has been made the"
+                            " %(move_to)s of node %(to)s."
+                        )
+                        % {
+                            "node": obj,
+                            "move_to": dict(MoveForm.MOVE_CHOICES).get(
+                                form.cleaned_data["move_to"],
+                                form.cleaned_data["move_to"],
+                            ),
+                            "to": form.cleaned_data["of"] or _("root node"),
+                        },
+                    )
 
-                    return redirect("admin:%s_%s_changelist" % (
-                        opts.app_label,
-                        opts.model_name,
-                    ))
+                    return redirect(
+                        "admin:%s_%s_changelist"
+                        % (opts.app_label, opts.model_name)
+                    )
 
             else:
                 form = MoveForm(obj=obj)
 
             adminForm = helpers.AdminForm(
                 form,
-                [(None, {
-                    "fields": ("move_to", "of"),
-                })],  # list(self.get_fieldsets(request, obj)),
+                [
+                    (None, {"fields": ("move_to", "of")})
+                ],  # list(self.get_fieldsets(request, obj)),
                 {},  # self.get_prepopulated_fields(request, obj),
                 (),  # self.get_readonly_fields(request, obj),
                 model_admin=self,
@@ -172,7 +179,6 @@ class TreeAdmin(ModelAdmin):
                 media=media,
                 is_popup=False,
                 inline_admin_formsets=[],
-
                 save_as_new=False,
                 show_save_and_add_another=False,
                 show_save_and_continue=False,
@@ -180,7 +186,7 @@ class TreeAdmin(ModelAdmin):
             )
 
             response = self.render_change_form(
-                request, context, add=False, change=False, obj=obj,
+                request, context, add=False, change=False, obj=obj
             )
 
             # Suppress the rendering of the "save and add another" button.
@@ -203,9 +209,7 @@ class MoveForm(forms.Form):
     )
 
     move_to = forms.ChoiceField(
-        label=_("Make node"),
-        choices=MOVE_CHOICES,
-        widget=forms.RadioSelect,
+        label=_("Make node"), choices=MOVE_CHOICES, widget=forms.RadioSelect
     )
 
     def __init__(self, *args, **kwargs):
@@ -218,22 +222,22 @@ class MoveForm(forms.Form):
             label=pgettext("MoveForm", "Of"),
             required=False,
             queryset=self.model.objects.exclude(
-                pk__in=self.instance.descendants(),
+                pk__in=self.instance.descendants()
             ),
             widget=forms.Select(attrs={"size": 30, "style": "height:auto"}),
         )
 
-        self.fields["of"].choices = [
-            (None, "----------"),
-        ] + [
+        self.fields["of"].choices = [(None, "----------")] + [
             (
                 obj.pk,
-                "%s%s" % (
-                    (obj.depth - 1) * (
-                        "*** " if obj == self.instance else "--- "),
+                "%s%s"
+                % (
+                    (obj.depth - 1)
+                    * ("*** " if obj == self.instance else "--- "),
                     obj,
                 ),
-            ) for obj in self.fields["of"].queryset
+            )
+            for obj in self.fields["of"].queryset
         ]
 
     def clean(self):
@@ -242,9 +246,9 @@ class MoveForm(forms.Form):
             return data
 
         if data.get("of") and data.get("of") == self.instance:
-            raise forms.ValidationError({
-                "of": _("Cannot move node to a position relative to itself."),
-            })
+            raise forms.ValidationError(
+                {"of": _("Cannot move node to a position relative to itself.")}
+            )
 
         if not data.get("of"):
             self.instance.parent = None
@@ -255,17 +259,17 @@ class MoveForm(forms.Form):
 
         # All fields of model are not in this form
         self.instance.full_clean(
-            exclude=[f.name for f in self.model._meta.get_fields()],
+            exclude=[f.name for f in self.model._meta.get_fields()]
         )
 
         return data
 
     def save(self):
-        siblings = list(self.model.objects.filter(
-            parent=self.instance.parent,
-        ).exclude(
-            pk=self.instance.pk,
-        ))
+        siblings = list(
+            self.model.objects.filter(parent=self.instance.parent).exclude(
+                pk=self.instance.pk
+            )
+        )
         of = self.cleaned_data["of"]
         move_to = self.cleaned_data["move_to"]
 
@@ -284,7 +288,7 @@ class MoveForm(forms.Form):
                 instance.save()
             else:
                 self.model.objects.filter(pk=instance.pk).update(
-                    position=(index + 1) * 10,
+                    position=(index + 1) * 10
                 )
 
 
@@ -314,12 +318,12 @@ class AncestorFilter(SimpleListFilter):
         return mark_safe("&#x251c;" * (depth - 1))
 
     def lookups(self, request, model_admin):
-        return [(
-            node.id,
-            format_html("{} {}", self.indent(node.depth), node),
-        ) for node in model_admin.model._default_manager.extra(
-            where=["depth <= %s" % self.max_depth],
-        )]
+        return [
+            (node.id, format_html("{} {}", self.indent(node.depth), node))
+            for node in model_admin.model._default_manager.extra(
+                where=["depth <= %s" % self.max_depth]
+            )
+        ]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -329,10 +333,7 @@ class AncestorFilter(SimpleListFilter):
                 raise IncorrectLookupParameters()
             return queryset.extra(
                 where=[
-                    "%s = ANY(%s)" % (
-                        node.pk,
-                        queryset.model._cte_node_path,
-                    ),
-                ],
+                    "%s = ANY(%s)" % (node.pk, queryset.model._cte_node_path)
+                ]
             )
         return queryset

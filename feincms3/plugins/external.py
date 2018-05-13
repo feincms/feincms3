@@ -18,7 +18,10 @@ from feincms3.utils import positional
 
 
 __all__ = (
-    "External", "ExternalInline", "oembed_json", "oembed_html",
+    "External",
+    "ExternalInline",
+    "oembed_json",
+    "oembed_html",
     "render_external",
 )
 
@@ -51,10 +54,7 @@ def oembed_json(url, cache_failures=True):
         data = requests.get(
             "https://noembed.com/embed",
             params={
-                "url": url,
-                "nowrap": "on",
-                "maxwidth": 1200,
-                "maxheight": 800,
+                "url": url, "nowrap": "on", "maxwidth": 1200, "maxheight": 800
             },
             timeout=2,
         ).json()
@@ -95,9 +95,7 @@ def render_external(plugin, **kwargs):
 
     html = oembed_html(plugin.url)
     if "youtube.com" in html:
-        html = '<div class="responsive-embed widescreen">%s</div>' % (
-            html,
-        )
+        html = '<div class="responsive-embed widescreen">%s</div>' % (html,)
     elif "vimeo.com" in html:
         html = '<div class="responsive-embed widescreen vimeo">%s</div>' % (
             html,
@@ -123,6 +121,7 @@ class ExternalForm(forms.ModelForm):
     """
     Tries fetching the oEmbed code for the given URL when cleaning form data
     """
+
     def clean(self):
         data = super(ExternalForm, self).clean()
         url = data.get("url")

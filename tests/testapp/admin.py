@@ -12,17 +12,17 @@ from . import models
 @admin.register(models.Page)
 class PageAdmin(ContentEditor, TreeAdmin):
     list_display = [
-        "indented_title", "move_column",
-        "is_active", "menu",
+        "indented_title",
+        "move_column",
+        "is_active",
+        "menu",
         "language_code",
         "template_key",
         "application",
     ]
     list_filter = ["is_active", "menu", AncestorFilter]
     list_editable = ["is_active"]
-    prepopulated_fields = {
-        "slug": ("title",),
-    }
+    prepopulated_fields = {"slug": ("title",)}
     radio_fields = {
         "menu": admin.HORIZONTAL,
         "language_code": admin.HORIZONTAL,
@@ -32,30 +32,23 @@ class PageAdmin(ContentEditor, TreeAdmin):
     raw_id_fields = ["parent"]
 
     fieldsets = [
-        (None, {
-            "fields": (
-                "is_active",
-                "title",
-                "parent",
-            )
-        }),
-        (capfirst(_("path")), {
-            "fields": (
-                "slug",
-                "static_path",
-                "path",
-            ),
-            "classes": ("tabbed",),
-        }),
-        (capfirst(_("settings")), {
-            "fields": (
-                "menu",
-                "language_code",
-                "template_key",
-                "application",
-            ),
-            "classes": ("tabbed",),
-        }),
+        (None, {"fields": ("is_active", "title", "parent")}),
+        (
+            capfirst(_("path")),
+            {
+                "fields": ("slug", "static_path", "path"),
+                "classes": ("tabbed",),
+            },
+        ),
+        (
+            capfirst(_("settings")),
+            {
+                "fields": (
+                    "menu", "language_code", "template_key", "application"
+                ),
+                "classes": ("tabbed",),
+            },
+        ),
     ]
 
     inlines = [
@@ -67,9 +60,9 @@ class PageAdmin(ContentEditor, TreeAdmin):
     ]
 
     class Media:
-        css = {"all": (
-            "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",  # noqa
-        )}
-        js = (
-            "app/plugin_buttons.js",
-        )
+        css = {
+            "all": (
+                "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",  # noqa
+            )
+        }
+        js = ("app/plugin_buttons.js",)

@@ -32,15 +32,13 @@ def article_detail(request, pk):
     page = page_for_app_request(request)
     page.activate_language(request)
     return render_detail(
-        request,
-        get_object_or_404(Article, pk=pk),
-        {"page": page},
+        request, get_object_or_404(Article, pk=pk), {"page": page}
     )
 
 
 app_name = "articles"
 urlpatterns = [
-    url(r'^all/$', article_list_all, name="article-list-all"),
-    url(r'^$', article_list, name="article-list"),
-    url(r'^(?P<pk>[0-9]+)/$', article_detail, name="article-detail"),
+    url(r"^all/$", article_list_all, name="article-list-all"),
+    url(r"^$", article_list, name="article-list"),
+    url(r"^(?P<pk>[0-9]+)/$", article_detail, name="article-detail"),
 ]

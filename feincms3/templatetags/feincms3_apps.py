@@ -9,6 +9,7 @@ register = template.Library()
 
 
 class ReverseAppNode(Node):
+
     def __init__(self, namespaces, view_name, args, kwargs, asvar):
         self.namespaces = namespaces
         self.view_name = view_name
@@ -84,7 +85,7 @@ def reverse_app(parser, token):
     bits = token.split_contents()
     if len(bits) < 3:
         raise TemplateSyntaxError(
-            '\'reverse_app\' takes at least two arguments, a namespace and'
+            "'reverse_app' takes at least two arguments, a namespace and"
             " a URL pattern name."
         )
     namespaces = parser.compile_filter(bits[1])
@@ -102,7 +103,7 @@ def reverse_app(parser, token):
             match = kwarg_re.match(bit)
             if not match:
                 raise TemplateSyntaxError(
-                    "Malformed arguments to reverse_app tag",
+                    "Malformed arguments to reverse_app tag"
                 )
             name, value = match.groups()
             if name:

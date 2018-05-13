@@ -5,22 +5,25 @@ from content_editor.models import Region, Template, create_plugin_base
 from feincms3 import plugins
 from feincms3.apps import AppsMixin, reverse_app
 from feincms3.mixins import (
-    LanguageMixin, MenuMixin, RedirectMixin, TemplateMixin,
+    LanguageMixin,
+    MenuMixin,
+    RedirectMixin,
+    TemplateMixin,
 )
 from feincms3.pages import AbstractPage
 
 
 class Page(
     AbstractPage,
-    AppsMixin,      # For adding the articles app to pages through the CMS.
+    AppsMixin,  # For adding the articles app to pages through the CMS.
     TemplateMixin,  # Two page templates, one with only a main
-                    # region and another with a sidebar as well.
-    MenuMixin,      # We have a main and a footer navigation (meta).
+    # region and another with a sidebar as well.
+    MenuMixin,  # We have a main and a footer navigation (meta).
     LanguageMixin,  # We're building a multilingual CMS. (Also,
-                    # feincms3.apps depends on LanguageMixin
-                    # currently.)
+    # feincms3.apps depends on LanguageMixin
+    # currently.)
     RedirectMixin,  # Allow redirecting pages to other pages and/or arbitrary
-                    # URLs.
+    # URLs.
 ):
 
     # TemplateMixin
@@ -29,9 +32,7 @@ class Page(
             key="standard",
             title=_("standard"),
             template_name="pages/standard.html",
-            regions=(
-                Region(key="main", title=_("Main")),
-            ),
+            regions=(Region(key="main", title=_("Main")),),
         ),
         Template(
             key="with-sidebar",
@@ -45,10 +46,7 @@ class Page(
     ]
 
     # MenuMixin
-    MENUS = [
-        ("main", _("main")),
-        ("footer", _("footer")),
-    ]
+    MENUS = [("main", _("main")), ("footer", _("footer"))]
 
     # AppsMixin. We have two apps, one is for company PR, the other
     # for a more informal blog.
@@ -57,12 +55,12 @@ class Page(
     # article categories exactly for URL reversing and filtering articles by
     # app to work! (See app.articles.models.Article.CATEGORIES)
     APPLICATIONS = [
-        ("publications", _("publications"), {
-            "urlconf": "testapp.articles_urls",
-        }),
-        ("blog", _("blog"), {
-            "urlconf": "testapp.articles_urls",
-        }),
+        (
+            "publications",
+            _("publications"),
+            {"urlconf": "testapp.articles_urls"},
+        ),
+        ("blog", _("blog"), {"urlconf": "testapp.articles_urls"}),
     ]
 
 
@@ -74,17 +72,11 @@ class RichText(plugins.RichText, PagePlugin):
 
 
 class Image(plugins.Image, PagePlugin):
-    caption = models.CharField(
-        _("caption"),
-        max_length=200,
-        blank=True,
-    )
+    caption = models.CharField(_("caption"), max_length=200, blank=True)
 
 
 class Snippet(plugins.Snippet, PagePlugin):
-    TEMPLATES = [
-        ("snippet.html", _("snippet")),
-    ]
+    TEMPLATES = [("snippet.html", _("snippet"))]
 
 
 class External(plugins.External, PagePlugin):
@@ -96,17 +88,11 @@ class HTML(plugins.HTML, PagePlugin):
 
 
 class Article(models.Model):
-    title = models.CharField(
-        _("title"),
-        max_length=100,
-    )
+    title = models.CharField(_("title"), max_length=100)
     category = models.CharField(
         _("category"),
         max_length=20,
-        choices=(
-            ("publications", "publications"),
-            ("blog", "blog"),
-        ),
+        choices=(("publications", "publications"), ("blog", "blog")),
     )
 
     class Meta:

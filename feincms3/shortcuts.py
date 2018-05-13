@@ -30,15 +30,18 @@ def template_name(model, template_name_suffix):
     """
 
     return "%s/%s%s.html" % (
-        model._meta.app_label,
-        model._meta.model_name,
-        template_name_suffix,
+        model._meta.app_label, model._meta.model_name, template_name_suffix
     )
 
 
 @positional(3)
-def render_list(request, queryset, context=None,
-                template_name_suffix="_list", paginate_by=None):
+def render_list(
+    request,
+    queryset,
+    context=None,
+    template_name_suffix="_list",
+    paginate_by=None,
+):
     """render_list(request, queryset, context=None, *,\
  template_name_suffix='_list', paginate_by=None)
     Render a list of items
@@ -74,20 +77,21 @@ def render_list(request, queryset, context=None,
     else:
         object_list = queryset
 
-    context.update({
-        "object_list": object_list,
-        "%s_list" % queryset.model._meta.model_name: object_list,
-    })
+    context.update(
+        {
+            "object_list": object_list,
+            "%s_list" % queryset.model._meta.model_name: object_list,
+        }
+    )
     return TemplateResponse(
-        request,
-        template_name(queryset.model, template_name_suffix),
-        context,
+        request, template_name(queryset.model, template_name_suffix), context
     )
 
 
 @positional(3)
-def render_detail(request, object, context=None,
-                  template_name_suffix="_detail"):
+def render_detail(
+    request, object, context=None, template_name_suffix="_detail"
+):
     """render_detail(request, object, context=None, *,\
  template_name_suffix='_detail')
     Render a single item
@@ -109,12 +113,7 @@ def render_detail(request, object, context=None,
     """
 
     context = context or {}
-    context.update({
-        "object": object,
-        object._meta.model_name: object,
-    })
+    context.update({"object": object, object._meta.model_name: object})
     return TemplateResponse(
-        request,
-        template_name(object, template_name_suffix),
-        context,
+        request, template_name(object, template_name_suffix), context
     )

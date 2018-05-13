@@ -29,16 +29,10 @@ class Image(models.Model):
         ppoi_field="ppoi",
     )
     width = models.PositiveIntegerField(
-        _("image width"),
-        blank=True,
-        null=True,
-        editable=False,
+        _("image width"), blank=True, null=True, editable=False
     )
     height = models.PositiveIntegerField(
-        _("image height"),
-        blank=True,
-        null=True,
-        editable=False,
+        _("image height"), blank=True, null=True, editable=False
     )
     ppoi = PPOIField(_("primary point of interest"))
 
@@ -60,6 +54,7 @@ class AlwaysChangedModelForm(forms.ModelForm):
 
     https://github.com/respondcreate/django-versatileimagefield/issues/44
     """
+
     def has_changed(self):
         return True
 

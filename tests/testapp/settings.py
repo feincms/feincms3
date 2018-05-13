@@ -3,10 +3,7 @@ import warnings
 
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "feincms3",
-    }
+    "default": {"ENGINE": "django.db.backends.postgresql", "NAME": "feincms3"}
 }
 
 INSTALLED_APPS = [
@@ -17,11 +14,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.messages",
     "testapp",
-
     # Libraries
     "feincms3",
     "content_editor",
-
     # Libraries for content-editor plugins
     "ckeditor",
     "imagefield",
@@ -49,9 +44,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-            ],
+            ]
         },
-    },
+    }
 ]
 
 MIDDLEWARE = [
@@ -72,12 +67,21 @@ CKEDITOR_CONFIGS = {
         "format_tags": "h1;h2;h3;p;pre",
         "toolbar_Custom": [
             ["Format", "RemoveFormat"],
-            ["Bold", "Italic", "-",
-             "NumberedList", "BulletedList", "-",
-             "Anchor", "Link", "Unlink", "-",
-             "Source"],
+            [
+                "Bold",
+                "Italic",
+                "-",
+                "NumberedList",
+                "BulletedList",
+                "-",
+                "Anchor",
+                "Link",
+                "Unlink",
+                "-",
+                "Source",
+            ],
         ],
-    },
+    }
 }
 
 # Settings for feincms3.plugins.richtext.RichText
@@ -85,10 +89,7 @@ CKEDITOR_CONFIGS["richtext-plugin"] = CKEDITOR_CONFIGS["default"]
 
 
 # Something about inspect.getargspec in beautifulsoup4.
-warnings.filterwarnings(
-    "ignore",
-    module=r'bs4\.builder\._lxml',
-)
+warnings.filterwarnings("ignore", module=r"bs4\.builder\._lxml")
 
 try:
     # We do not yet care about those.

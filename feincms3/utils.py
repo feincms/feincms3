@@ -38,16 +38,20 @@ def positional(count):
 
     Will be removed as soon as we drop support for Python 2.
     """
+
     def _dec(fn):
+
         @wraps(fn)
         def _fn(*args, **kwargs):
             if len(args) > count:
-                raise TypeError("Only %s positional argument%s allowed" % (
-                    count,
-                    "" if count == 1 else "s",
-                ))
+                raise TypeError(
+                    "Only %s positional argument%s allowed"
+                    % (count, "" if count == 1 else "s")
+                )
             return fn(*args, **kwargs)
+
         return _fn
+
     return _dec
 
 
@@ -60,6 +64,5 @@ def validation_error(error, field, exclude, **kwargs):
     See https://github.com/django/django/commit/e8c056c31 for some background.
     """
     return ValidationError(
-        error if field in (exclude or ()) else {field: error},
-        **kwargs
+        error if field in (exclude or ()) else {field: error}, **kwargs
     )

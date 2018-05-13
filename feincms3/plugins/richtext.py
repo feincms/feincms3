@@ -35,10 +35,7 @@ class RichText(models.Model):
     recommended configuration.
     """
 
-    text = CleansedRichTextField(
-        _("text"),
-        config_name="richtext-plugin",
-    )
+    text = CleansedRichTextField(_("text"), config_name="richtext-plugin")
 
     class Meta:
         abstract = True

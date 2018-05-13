@@ -39,10 +39,12 @@ def render_plugins(context, plugins):
     tag.
     """
     renderer = context["renderer"]
-    return mark_safe("".join(
-        renderer.render_plugin_in_context(plugin, context)
-        for plugin in plugins
-    ))
+    return mark_safe(
+        "".join(
+            renderer.render_plugin_in_context(plugin, context)
+            for plugin in plugins
+        )
+    )
 
 
 @register.simple_tag(takes_context=True)

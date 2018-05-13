@@ -10,7 +10,11 @@ from django.utils import six
 from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import (
-    NoReverseMatch, apps_urlconf, reverse, reverse_any, reverse_fallback,
+    NoReverseMatch,
+    apps_urlconf,
+    reverse,
+    reverse_any,
+    reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
 from feincms3.renderer import TemplatePluginRenderer
@@ -50,9 +54,11 @@ def monkeypatches():
 
 
 class Test(TestCase):
+
     def setUp(self):
         self.user = User.objects.create_superuser(
-            "admin", "admin@test.ch", "blabla")
+            "admin", "admin@test.ch", "blabla"
+        )
         deactivate_all()
         monkeypatches()
 
@@ -68,27 +74,18 @@ class Test(TestCase):
 
         response = client.get("/admin/")
         self.assertContains(
-            response,
-            '<a href="/admin/testapp/page/">Pages</a>',
-            1,
+            response, '<a href="/admin/testapp/page/">Pages</a>', 1
         )
 
         response = client.get("/admin/testapp/page/")
-        self.assertContains(
-            response,
-            "/static/feincms3/box-drawing.css",
-            1,
-        )
+        self.assertContains(response, "/static/feincms3/box-drawing.css", 1)
         self.assertNotContains(
-            response,
-            "/static/content_editor/content_editor.js",
+            response, "/static/content_editor/content_editor.js"
         )
 
         response = client.get("/admin/testapp/page/add/")
         self.assertContains(
-            response,
-            "/static/content_editor/content_editor.js",
-            1,
+            response, "/static/content_editor/content_editor.js", 1
         )
 
     def test_add_empty_page(self):
@@ -117,21 +114,14 @@ class Test(TestCase):
             ),
         )
 
-        self.assertRedirects(
-            response,
-            "/admin/testapp/page/",
-        )
+        self.assertRedirects(response, "/admin/testapp/page/")
 
         page = Page.objects.get()
         self.assertEqual(page.slug, "home-en")
         self.assertEqual(page.path, "/en/")  # static_path!
 
         response = client.get(page.get_absolute_url())
-        self.assertContains(
-            response,
-            "<h1>Home EN</h1>",
-            1,
-        )
+        self.assertContains(response, "<h1>Home EN</h1>", 1)
 
     def test_add_page(self):
         """Add a page with some content and test rich text cleansing"""
@@ -166,34 +156,23 @@ class Test(TestCase):
             ),
         )
 
-        self.assertRedirects(
-            response,
-            "/admin/testapp/page/",
-        )
+        self.assertRedirects(response, "/admin/testapp/page/")
 
         page = Page.objects.get()
         self.assertEqual(page.slug, "home-en")
         self.assertEqual(page.path, "/en/")  # static_path!
 
         response = client.get(page.get_absolute_url())
+        self.assertContains(response, "<h1>Home EN</h1>", 1)
         self.assertContains(
-            response,
-            "<h1>Home EN</h1>",
-            1,
-        )
-        self.assertContains(
-            response,
-            "<strong>Hello!</strong>",  # HTML cleansing worked.
-            1,
+            response, "<strong>Hello!</strong>", 1  # HTML cleansing worked.
         )
 
     def test_external_form_validation(self):
         """Test external plugin validation a bit"""
 
         form_class = modelform_factory(
-            External,
-            form=ExternalForm,
-            fields="__all__",
+            External, form=ExternalForm, fields="__all__"
         )
 
         # Should not crash if URL not provided (765a6b6b53e)
@@ -274,56 +253,28 @@ class Test(TestCase):
 
         response_en = self.client.get("/en/a-en/")
         self.assertContains(
-            response_en,
-            '<a class="active" href="/en/a-en/">a-en</a>',
-            1,
+            response_en, '<a class="active" href="/en/a-en/">a-en</a>', 1
         )
-        self.assertNotContains(
-            response_en,
-            "/de/",
-        )
+        self.assertNotContains(response_en, "/de/")
         # No subnavigation (main nav has a class)
-        self.assertNotContains(
-            response_en,
-            "<nav>",
-        )
+        self.assertNotContains(response_en, "<nav>")
 
         response_de = self.client.get("/de/b-de/")
         self.assertContains(
-            response_de,
-            '<a class="active" href="/de/b-de/">b-de</a>',
-            1,
+            response_de, '<a class="active" href="/de/b-de/">b-de</a>', 1
         )
-        self.assertNotContains(
-            response_de,
-            "/en/",
-        )
+        self.assertNotContains(response_de, "/en/")
 
         # 4 Subnavigations
-        self.assertContains(
-            response_de,
-            "<nav>",
-            4,
-        )
+        self.assertContains(response_de, "<nav>", 4)
 
-        self.assertNotContains(
-            response_de,
-            "inactive",
-        )
+        self.assertNotContains(response_de, "inactive")
 
         response_404 = self.client.get("/de/not-exists/")
         self.assertContains(
-            response_404,
-            "<h1>Page not found</h1>",
-            1,
-            status_code=404,
+            response_404, "<h1>Page not found</h1>", 1, status_code=404
         )
-        self.assertContains(
-            response_404,
-            'href="/de/',
-            8,
-            status_code=404,
-        )
+        self.assertContains(response_404, 'href="/de/', 8, status_code=404)
 
         # Changelist and filtering
         client = self.login()
@@ -389,19 +340,14 @@ class Test(TestCase):
         for i in range(7):
             for category in ("publications", "blog"):
                 Article.objects.create(
-                    title="%s %s" % (category, i),
-                    category=category,
+                    title="%s %s" % (category, i), category=category
                 )
 
         self.assertContains(
-            self.client.get("/de/blog/all/"),
-            'class="article"',
-            7,
+            self.client.get("/de/blog/all/"), 'class="article"', 7
         )
         self.assertContains(
-            self.client.get("/de/blog/?page=2"),
-            'class="article"',
-            2,
+            self.client.get("/de/blog/?page=2"), 'class="article"', 2
         )
         self.assertContains(
             self.client.get("/de/blog/?page=42"),
@@ -415,44 +361,29 @@ class Test(TestCase):
         )
 
         response = self.client.get("/de/blog/")
-        self.assertContains(
-            response,
-            'class="article"',
-            5,
-        )
+        self.assertContains(response, 'class="article"', 5)
 
         response = self.client.get("/en/publications/")
-        self.assertContains(
-            response,
-            'class="article"',
-            5,
-        )
+        self.assertContains(response, 'class="article"', 5)
 
         article = Article.objects.order_by("pk").first()
         with override("de"):
             self.assertEqual(
-                article.get_absolute_url(),
-                "/de/publications/%s/" % article.pk,
+                article.get_absolute_url(), "/de/publications/%s/" % article.pk
             )
 
         with override("en"):
             self.assertEqual(
-                article.get_absolute_url(),
-                "/en/publications/%s/" % article.pk,
+                article.get_absolute_url(), "/en/publications/%s/" % article.pk
             )
 
         response = self.client.get("/de/publications/%s/" % article.pk)
-        self.assertContains(
-            response,
-            "<h1>publications 0</h1>",
-            1,
-        )
+        self.assertContains(response, "<h1>publications 0</h1>", 1)
 
         # The exact value of course does not matter, just the fact that the
         # value does not change all the time.
         self.assertEqual(
-            apps_urlconf(),
-            "urlconf_fe9552a8363ece1f7fcf4970bf575a47",
+            apps_urlconf(), "urlconf_fe9552a8363ece1f7fcf4970bf575a47"
         )
 
     def test_snippet(self):
@@ -470,22 +401,14 @@ class Test(TestCase):
         )
 
         home_en.testapp_snippet_set.create(
-            template_name="snippet.html",
-            ordering=10,
-            region="main",
+            template_name="snippet.html", ordering=10, region="main"
         )
 
         response = self.client.get(home_en.get_absolute_url())
         self.assertContains(
-            response,
-            "<h2>snippet on page home (/en/)</h2>",
-            1,
+            response, "<h2>snippet on page home (/en/)</h2>", 1
         )
-        self.assertContains(
-            response,
-            "<h2>context</h2>",
-            1,
-        )
+        self.assertContains(response, "<h2>context</h2>", 1)
 
     def duplicated_path_setup(self):
         """Set up a page structure which leads to duplicated paths when
@@ -506,15 +429,8 @@ class Test(TestCase):
             static_path=True,
             language_code="en",
         )
-        sub = Page.objects.create(
-            title="sub",
-            slug="sub",
-        )
-        Page.objects.create(
-            parent=sub,
-            title="page",
-            slug="page",
-        )
+        sub = Page.objects.create(title="sub", slug="sub")
+        Page.objects.create(parent=sub, title="page", slug="page")
 
         self.assertEqual(sub.get_absolute_url(), "/sub/")
         self.assertEqual(home.get_absolute_url(), "/en/")
@@ -564,23 +480,13 @@ class Test(TestCase):
     def test_i18n_patterns(self):
         """i18n_patterns in ROOT_URLCONF work even with apps_middleware"""
 
+        self.assertRedirects(self.client.get("/i18n/"), "/en/i18n/")
         self.assertRedirects(
-            self.client.get("/i18n/"),
-            "/en/i18n/",
-        )
-        self.assertRedirects(
-            self.client.get("/i18n/", HTTP_ACCEPT_LANGUAGE="de"),
-            "/de/i18n/",
+            self.client.get("/i18n/", HTTP_ACCEPT_LANGUAGE="de"), "/de/i18n/"
         )
 
-        self.assertContains(
-            self.client.get("/en/i18n/"),
-            "en",
-        )
-        self.assertContains(
-            self.client.get("/de/i18n/"),
-            "de",
-        )
+        self.assertContains(self.client.get("/en/i18n/"), "en")
+        self.assertContains(self.client.get("/de/i18n/"), "de")
 
     def test_render_plugins(self):
         """Test both render_plugins and render_plugin"""
@@ -592,74 +498,67 @@ class Test(TestCase):
             template_key="with-sidebar",
         )
         page.testapp_richtext_set.create(
-            ordering=0,
-            region="main",
-            text="<b>main</b>",
+            ordering=0, region="main", text="<b>main</b>"
         )
         page.testapp_richtext_set.create(
-            ordering=0,
-            region="sidebar",
-            text="<i>sidebar</b>",
+            ordering=0, region="sidebar", text="<i>sidebar</b>"
         )
 
         response = self.client.get(page.get_absolute_url())
+        self.assertContains(response, '<div class="main"><b>main</b></div>')
         self.assertContains(
-            response,
-            '<div class="main"><b>main</b></div>',
-        )
-        self.assertContains(
-            response,
-            '<div class="sidebar"><i>sidebar</b></div>',
+            response, '<div class="sidebar"><i>sidebar</b></div>'
         )
 
     def test_add_duplicated_path(self):
         """Non-unique paths should also be detected upon direct addition"""
 
-        Page.objects.create(
-            title="main",
-            slug="main",
-        )
+        Page.objects.create(title="main", slug="main")
 
         client = self.login()
-        response = client.post("/admin/testapp/page/add/", merge_dicts(
-            {
-                "title": "main",
-                "slug": "main",
-                "language_code": "en",
-                "application": "",
-                "template_key": "standard",
-            },
-            zero_management_form_data("testapp_richtext_set"),
-            zero_management_form_data("testapp_image_set"),
-            zero_management_form_data("testapp_snippet_set"),
-            zero_management_form_data("testapp_external_set"),
-            zero_management_form_data("testapp_html_set"),
-        ))
+        response = client.post(
+            "/admin/testapp/page/add/",
+            merge_dicts(
+                {
+                    "title": "main",
+                    "slug": "main",
+                    "language_code": "en",
+                    "application": "",
+                    "template_key": "standard",
+                },
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
+            ),
+        )
         self.assertContains(
-            response,
-            "Page with this Path already exists.",
-            status_code=200,
+            response, "Page with this Path already exists.", status_code=200
         )
 
     def test_non_empty_static_paths(self):
         """Static paths may not be left empty"""
         client = self.login()
-        response = client.post("/admin/testapp/page/add/", merge_dicts(
-            {
-                "title": "main",
-                "slug": "main",
-                "language_code": "en",
-                "application": "",
-                "template_key": "standard",
-                "static_path": True,
-                "path": "",
-            },
-            zero_management_form_data("testapp_richtext_set"),
-            zero_management_form_data("testapp_image_set"),
-            zero_management_form_data("testapp_snippet_set"),
-            zero_management_form_data("testapp_external_set"),
-            zero_management_form_data("testapp_html_set"),
-        ))
+        response = client.post(
+            "/admin/testapp/page/add/",
+            merge_dicts(
+                {
+                    "title": "main",
+                    "slug": "main",
+                    "language_code": "en",
+                    "application": "",
+                    "template_key": "standard",
+                    "static_path": True,
+                    "path": "",
+                },
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
+            ),
+        )
         self.assertContains(
             response,
             "Static paths cannot be empty. Did you mean",
@@ -670,25 +569,17 @@ class Test(TestCase):
         """Test all code paths through reverse_fallback and reverse_any"""
 
         self.assertEqual(
-            reverse_fallback("test", reverse, "not-exists"),
-            "test",
+            reverse_fallback("test", reverse, "not-exists"), "test"
         )
         self.assertEqual(
-            reverse_fallback("test", reverse, "admin:index"),
-            "/admin/",
+            reverse_fallback("test", reverse, "admin:index"), "/admin/"
         )
-        self.assertEqual(
-            reverse_any((
-                "not-exists",
-                "admin:index",
-            )),
-            "/admin/",
-        )
+        self.assertEqual(reverse_any(("not-exists", "admin:index")), "/admin/")
         with six.assertRaisesRegex(
-                self,
-                NoReverseMatch,
-                "Reverse for any of 'not-exists-1', 'not-exists-2' with"
-                " arguments '\[\]' and keyword arguments '{}' not found."
+            self,
+            NoReverseMatch,
+            "Reverse for any of 'not-exists-1', 'not-exists-2' with"
+            " arguments '\[\]' and keyword arguments '{}' not found.",
         ):
             reverse_any(("not-exists-1", "not-exists-2"))
 
@@ -699,18 +590,10 @@ class Test(TestCase):
 
         client = self.login()
 
-        r1 = Page.objects.create(
-            title="root 1",
-            slug="root-1",
-        )
-        r2 = Page.objects.create(
-            title="root 2",
-            slug="root-2",
-        )
+        r1 = Page.objects.create(title="root 1", slug="root-1")
+        r2 = Page.objects.create(title="root 2", slug="root-2")
         child = Page.objects.create(
-            parent_id=r1.id,
-            title="child",
-            slug="child",
+            parent_id=r1.id, title="child", slug="child"
         )
 
         ContentType.objects.clear_cache()  # because of 13. below
@@ -762,41 +645,21 @@ class Test(TestCase):
         self.assertEqual(response.status_code, 302)
 
         self.assertEqual(
-            [(
-                page.pk,
-                page.parent_id,
-                page.position,
-            ) for page in Page.objects.all()],
             [
-                (r1.pk, None, 10),
-                (r2.pk, None, 20),
-                (child.pk, r2.pk, 10),
-            ]
+                (page.pk, page.parent_id, page.position)
+                for page in Page.objects.all()
+            ],
+            [(r1.pk, None, 10), (r2.pk, None, 20), (child.pk, r2.pk, 10)],
         )
 
     def prepare_for_move(self):
-        root = Page.objects.create(
-            title="root",
-            slug="root",
-        )
-        p1 = Page.objects.create(
-            title="p1",
-            slug="p1",
-            parent=root,
-        )
-        p2 = Page.objects.create(
-            title="p2",
-            slug="p2",
-            parent=root,
-        )
+        root = Page.objects.create(title="root", slug="root")
+        p1 = Page.objects.create(title="p1", slug="p1", parent=root)
+        p2 = Page.objects.create(title="p2", slug="p2", parent=root)
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
-            [
-                (root.pk, None, 10),
-                (p1.pk, root.pk, 10),
-                (p2.pk, root.pk, 20),
-            ],
+            [(root.pk, None, 10), (p1.pk, root.pk, 10), (p2.pk, root.pk, 20)],
         )
 
         return root, p1, p2
@@ -806,26 +669,19 @@ class Test(TestCase):
         client = self.login()
 
         response = client.get(
-            reverse("admin:testapp_page_move", args=(p1.pk,)),
+            reverse("admin:testapp_page_move", args=(p1.pk,))
         )
         self.assertContains(response, "*** p1", 1)
         self.assertContains(response, "--- p2", 1)
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p1.pk,)),
-            {
-                "move_to": "last",
-                "of": "",
-            },
+            {"move_to": "last", "of": ""},
         )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
-            [
-                (root.pk, None, 10),
-                (p2.pk, root.pk, 20),
-                (p1.pk, None, 20),
-            ],
+            [(root.pk, None, 10), (p2.pk, root.pk, 20), (p1.pk, None, 20)],
         )
 
     def test_move_to_root_first(self):
@@ -834,19 +690,12 @@ class Test(TestCase):
 
         client.post(
             reverse("admin:testapp_page_move", args=(p2.pk,)),
-            {
-                "move_to": "first",
-                "of": "",
-            },
+            {"move_to": "first", "of": ""},
         )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
-            [
-                (p2.pk, None, 10),
-                (root.pk, None, 20),
-                (p1.pk, root.pk, 10),
-            ],
+            [(p2.pk, None, 10), (root.pk, None, 20), (p1.pk, root.pk, 10)],
         )
 
     def test_move_to_child(self):
@@ -855,19 +704,12 @@ class Test(TestCase):
 
         client.post(
             reverse("admin:testapp_page_move", args=(p2.pk,)),
-            {
-                "move_to": "first",
-                "of": p1.pk,
-            },
+            {"move_to": "first", "of": p1.pk},
         )
 
         self.assertEqual(
             [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
-            [
-                (root.pk, None, 10),
-                (p1.pk, root.pk, 10),
-                (p2.pk, p1.pk, 10),
-            ],
+            [(root.pk, None, 10), (p1.pk, root.pk, 10), (p2.pk, p1.pk, 10)],
         )
 
     def test_invalid_move(self):
@@ -876,10 +718,7 @@ class Test(TestCase):
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(root.pk,)),
-            {
-                "move_to": "first",
-                "of": p1.pk,
-            },
+            {"move_to": "first", "of": p1.pk},
         )
 
         self.assertContains(
@@ -890,19 +729,12 @@ class Test(TestCase):
     def test_reorder_siblings(self):
         root, p1, p2 = self.prepare_for_move()
 
-        p3 = Page.objects.create(
-            title="p3",
-            slug="p3",
-            parent=root,
-        )
+        p3 = Page.objects.create(title="p3", slug="p3", parent=root)
         client = self.login()
 
         client.post(
             reverse("admin:testapp_page_move", args=(p3.pk,)),
-            {
-                "move_to": "right",
-                "of": p1.pk,
-            },
+            {"move_to": "right", "of": p1.pk},
         )
 
         self.assertEqual(
@@ -924,18 +756,12 @@ class Test(TestCase):
         p2.parent_id = p1.pk
 
         # Apps may not have descendants
-        self.assertRaises(
-           ValidationError,
-           p2.full_clean,
-        )
+        self.assertRaises(ValidationError, p2.full_clean)
 
         client = self.login()
         response = client.post(
             reverse("admin:testapp_page_move", args=(p2.pk,)),
-            {
-                "move_to": "first",
-                "of": p1.pk,
-            },
+            {"move_to": "first", "of": p1.pk},
         )
 
         self.assertContains(
@@ -973,8 +799,7 @@ class Test(TestCase):
         )
 
         self.assertRedirects(
-            self.client.get(page2.get_absolute_url()),
-            page1.get_absolute_url(),
+            self.client.get(page2.get_absolute_url()), page1.get_absolute_url()
         )
 
         self.assertRedirects(
@@ -988,8 +813,8 @@ class Test(TestCase):
 
         # Both redirects cannot be set at the same time
         self.assertRaises(
-           ValidationError,
-           lambda: Page(
+            ValidationError,
+            lambda: Page(
                 title="test",
                 slug="test",
                 language_code="de",
@@ -1000,8 +825,8 @@ class Test(TestCase):
 
         # No chain redirects
         self.assertRaises(
-           ValidationError,
-           lambda: Page(
+            ValidationError,
+            lambda: Page(
                 title="test",
                 slug="test",
                 language_code="de",
@@ -1014,6 +839,7 @@ class Test(TestCase):
         self.assertRaises(ValidationError, page2.full_clean)
 
     def test_positional(self):
+
         @positional(2)
         def test(a, b, c):
             pass
@@ -1024,6 +850,7 @@ class Test(TestCase):
         test(1, 2, c=3)
 
     def test_subclasses(self):
+
         class A(object):
             pass
 
@@ -1033,48 +860,33 @@ class Test(TestCase):
         class C(B):
             pass
 
-        self.assertEqual(
-            set(iterate_subclasses(A)),
-            {B, C},
-        )
+        self.assertEqual(set(iterate_subclasses(A)), {B, C})
 
         class Test(models.Model):
+
             class Meta:
                 abstract = True
 
         class Test2(Test):
+
             class Meta:
                 abstract = True
 
-        self.assertEqual(
-            concrete_model(Test),
-            None,
-        )
+        self.assertEqual(concrete_model(Test), None)
 
     def test_standalone_renderer(self):
         """The renderer also works when used without a wrapping template"""
 
         renderer = TemplatePluginRenderer()
-        renderer.register_template_renderer(
-            HTML,
-            "renderer/html.html",
-        )
+        renderer.register_template_renderer(HTML, "renderer/html.html")
 
-        page = Page.objects.create(
-            template_key="standard",
-        )
+        page = Page.objects.create(template_key="standard")
         HTML.objects.create(
-            parent=page,
-            ordering=10,
-            region="main",
-            html="<b>Hello</b>",
+            parent=page, ordering=10, region="main", html="<b>Hello</b>"
         )
 
         regions = renderer.regions(page)
-        self.assertEqual(
-            regions.render("main", Context()),
-            "<b>Hello</b>\n",
-        )
+        self.assertEqual(regions.render("main", Context()), "<b>Hello</b>\n")
 
         regions = renderer.regions(page)
         self.assertEqual(
@@ -1093,44 +905,44 @@ class Test(TestCase):
         )
         set_urlconf(apps_urlconf())
 
-        tests = [(
-            "{% reverse_app 'blog' 'article-detail' pk=42 %}",
-            "/blog/42/",
-            {},
-        ), (
-            "{% reverse_app 'blog' 'article-detail' pk=42 fallback='/a/' %}",
-            "/blog/42/",
-            {},
-        ), (
-            "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",  # noqa
-            "/blog/42/",
-            {"namespaces": ["stuff", "blog"]},
-        ), (
-            "{% reverse_app 'bla' 'bla' fallback='/test/' %}",
-            "/test/",
-            {},
-        ), (
-            "{% reverse_app 'bla' 'bla' fallback='/test/' as t %}{{ t }}",
-            "/test/",
-            {},
-        ), (
-            "{% reverse_app 'bla' 'bla' as t %}{{ t|default:'blub' }}",
-            "blub",
-            {},
-        )]
+        tests = [
+            (
+                "{% reverse_app 'blog' 'article-detail' pk=42 %}",
+                "/blog/42/",
+                {},
+            ),
+            (
+                "{% reverse_app 'blog' 'article-detail' pk=42 fallback='/a/' %}",
+                "/blog/42/",
+                {},
+            ),
+            (
+                "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",  # noqa
+                "/blog/42/",
+                {"namespaces": ["stuff", "blog"]},
+            ),
+            ("{% reverse_app 'bla' 'bla' fallback='/test/' %}", "/test/", {}),
+            (
+                "{% reverse_app 'bla' 'bla' fallback='/test/' as t %}{{ t }}",
+                "/test/",
+                {},
+            ),
+            (
+                "{% reverse_app 'bla' 'bla' as t %}{{ t|default:'blub' }}",
+                "blub",
+                {},
+            ),
+        ]
 
         try:
             for tpl, out, ctx in tests:
                 t = Template("{% load feincms3_apps %}" + tpl)
-                self.assertEqual(
-                    t.render(Context(ctx)).strip(),
-                    out,
-                )
+                self.assertEqual(t.render(Context(ctx)).strip(), out)
 
             self.assertRaises(
                 NoReverseMatch,
                 Template(
-                    "{% load feincms3_apps %}{% reverse_app 'a' 'a' %}",
+                    "{% load feincms3_apps %}{% reverse_app 'a' 'a' %}"
                 ).render,
                 Context(),
             )
