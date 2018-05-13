@@ -18,8 +18,8 @@ from feincms3.utils import positional
 
 
 __all__ = (
-    'External', 'ExternalInline', 'oembed_json', 'oembed_html',
-    'render_external',
+    "External", "ExternalInline", "oembed_json", "oembed_html",
+    "render_external",
 )
 
 
@@ -42,19 +42,19 @@ def oembed_json(url, cache_failures=True):
     The return value is always a dictionary, but it may be empty.
     """
     # Thundering herd problem etc...
-    key = 'oembed-url-%s-data' % md5(url.encode('utf-8')).hexdigest()
+    key = "oembed-url-%s-data" % md5(url.encode("utf-8")).hexdigest()
     data = cache.get(key)
     if data is not None:
         return data
 
     try:
         data = requests.get(
-            'https://noembed.com/embed',
+            "https://noembed.com/embed",
             params={
-                'url': url,
-                'nowrap': 'on',
-                'maxwidth': 1200,
-                'maxheight': 800,
+                "url": url,
+                "nowrap": "on",
+                "maxwidth": 1200,
+                "maxheight": 800,
             },
             timeout=2,
         ).json()
@@ -83,7 +83,7 @@ def oembed_html(url, cache_failures=True):
 
     The return value is always either a HTML fragment or an empty string.
     """
-    return oembed_json(url, cache_failures=cache_failures).get('html', '')
+    return oembed_json(url, cache_failures=cache_failures).get("html", "")
 
 
 def render_external(plugin, **kwargs):
@@ -94,11 +94,11 @@ def render_external(plugin, **kwargs):
     """
 
     html = oembed_html(plugin.url)
-    if 'youtube.com' in html:
+    if "youtube.com" in html:
         html = '<div class="responsive-embed widescreen">%s</div>' % (
             html,
         )
-    elif 'vimeo.com' in html:
+    elif "vimeo.com" in html:
         html = '<div class="responsive-embed widescreen vimeo">%s</div>' % (
             html,
         )
@@ -109,11 +109,11 @@ class External(models.Model):
     """
     External content plugin
     """
-    url = models.URLField(_('URL'))
+    url = models.URLField(_("URL"))
 
     class Meta:
         abstract = True
-        verbose_name = _('external content')
+        verbose_name = _("external content")
 
     def __str__(self):
         return self.url
@@ -125,10 +125,10 @@ class ExternalForm(forms.ModelForm):
     """
     def clean(self):
         data = super(ExternalForm, self).clean()
-        url = data.get('url')
+        url = data.get("url")
         if url and not oembed_html(url, cache_failures=False):
             raise forms.ValidationError(
-                ugettext('Unable to fetch HTML for this URL, sorry!')
+                ugettext("Unable to fetch HTML for this URL, sorry!")
             )
         return data
 

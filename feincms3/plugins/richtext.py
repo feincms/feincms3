@@ -13,7 +13,7 @@ from content_editor.admin import ContentEditorInline
 from feincms3.cleanse import CleansedRichTextField
 
 
-__all__ = ('RichText', 'RichTextInline', 'render_richtext')
+__all__ = ("RichText", "RichTextInline", "render_richtext")
 
 
 class RichText(models.Model):
@@ -36,18 +36,18 @@ class RichText(models.Model):
     """
 
     text = CleansedRichTextField(
-        _('text'),
-        config_name='richtext-plugin',
+        _("text"),
+        config_name="richtext-plugin",
     )
 
     class Meta:
         abstract = True
-        verbose_name = _('rich text')
-        verbose_name_plural = _('rich texts')
+        verbose_name = _("rich text")
+        verbose_name_plural = _("rich texts")
 
     def __str__(self):
         # Return the first few words of the content (with tags stripped)
-        return Truncator(strip_tags(self.text)).words(10, truncate=' ...')
+        return Truncator(strip_tags(self.text)).words(10, truncate=" ...")
 
 
 class RichTextInline(ContentEditorInline):
@@ -58,7 +58,7 @@ class RichTextInline(ContentEditorInline):
     """
 
     class Media:
-        js = ('feincms3/plugin_ckeditor.js',)
+        js = ("feincms3/plugin_ckeditor.js",)
 
 
 def render_richtext(plugin, **kwargs):

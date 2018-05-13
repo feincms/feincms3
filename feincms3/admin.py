@@ -16,7 +16,7 @@ from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 
 
-__all__ = ('TreeAdmin', 'MoveForm', 'AncestorFilter')
+__all__ = ("TreeAdmin", "MoveForm", "AncestorFilter")
 
 
 csrf_protect_m = method_decorator(csrf_protect)
@@ -37,11 +37,11 @@ class TreeAdmin(ModelAdmin):
         admin.site.register(Page, PageAdmin)
     """
 
-    list_display = ('indented_title', 'move_column')
+    list_display = ("indented_title", "move_column")
 
     class Media:
-        css = {'all': [
-            'feincms3/box-drawing.css',
+        css = {"all": [
+            "feincms3/box-drawing.css",
         ]}
 
     def __init__(self, *args, **kwargs):
@@ -52,7 +52,7 @@ class TreeAdmin(ModelAdmin):
         """
         Order by tree (depth-first traversal) and ``position`` within a level
         """
-        return (self.model._cte_node_ordering, 'position')
+        return (self.model._cte_node_ordering, "position")
 
     def indented_title(self, instance):
         """
@@ -68,12 +68,12 @@ class TreeAdmin(ModelAdmin):
             '<div class="box">'
             '<div class="box-drawing">{}</div>'
             '<div class="box-text" style="text-indent:{}px">{}</div>'
-            '</div>',
-            mark_safe(''.join(box_drawing)),
+            "</div>",
+            mark_safe("".join(box_drawing)),
             (instance.depth - 1) * 30,
             instance,
         )
-    indented_title.short_description = _('title')
+    indented_title.short_description = _("title")
 
     def move_column(self, instance):
         """
@@ -84,12 +84,12 @@ class TreeAdmin(ModelAdmin):
         return format_html(
             '<a href="{}">{}</a>',
             reverse(
-                'admin:%s_%s_move' % (opts.app_label, opts.model_name),
+                "admin:%s_%s_move" % (opts.app_label, opts.model_name),
                 args=(instance.pk,),
             ),
-            _('move'),
+            _("move"),
         )
-    move_column.short_description = ''
+    move_column.short_description = ""
 
     def get_urls(self):
         """
@@ -107,7 +107,7 @@ class TreeAdmin(ModelAdmin):
             url(
                 r'^(.+)/move/$',
                 wrap(self.move_view),
-                name='%s_%s_move' % info,
+                name="%s_%s_move" % info,
             ),
         ] + super(TreeAdmin, self).get_urls()
 
@@ -125,24 +125,24 @@ class TreeAdmin(ModelAdmin):
             if obj is None:
                 raise Http404()
 
-            if request.method == 'POST':
+            if request.method == "POST":
                 form = MoveForm(request.POST, obj=obj)
 
                 if form.is_valid():
                     form.save()
                     self.message_user(request, _(
-                        'The node %(node)s has been made the'
-                        ' %(move_to)s of node %(to)s.'
+                        "The node %(node)s has been made the"
+                        " %(move_to)s of node %(to)s."
                     ) % {
-                        'node': obj,
-                        'move_to': dict(MoveForm.MOVE_CHOICES).get(
-                            form.cleaned_data['move_to'],
-                            form.cleaned_data['move_to'],
+                        "node": obj,
+                        "move_to": dict(MoveForm.MOVE_CHOICES).get(
+                            form.cleaned_data["move_to"],
+                            form.cleaned_data["move_to"],
                         ),
-                        'to': form.cleaned_data['of'] or _('root node'),
+                        "to": form.cleaned_data["of"] or _("root node"),
                     })
 
-                    return redirect('admin:%s_%s_changelist' % (
+                    return redirect("admin:%s_%s_changelist" % (
                         opts.app_label,
                         opts.model_name,
                     ))
@@ -153,7 +153,7 @@ class TreeAdmin(ModelAdmin):
             adminForm = helpers.AdminForm(
                 form,
                 [(None, {
-                    'fields': ('move_to', 'of'),
+                    "fields": ("move_to", "of"),
                 })],  # list(self.get_fieldsets(request, obj)),
                 {},  # self.get_prepopulated_fields(request, obj),
                 (),  # self.get_readonly_fields(request, obj),
@@ -163,7 +163,7 @@ class TreeAdmin(ModelAdmin):
 
             context = dict(
                 self.admin_site.each_context(request),
-                title=_('Move %s') % obj,
+                title=_("Move %s") % obj,
                 object_id=object_id,
                 original=obj,
                 adminform=adminForm,
@@ -184,7 +184,7 @@ class TreeAdmin(ModelAdmin):
             )
 
             # Suppress the rendering of the "save and add another" button.
-            response.context_data['has_add_permission'] = False
+            response.context_data["has_add_permission"] = False
             return response
 
 
@@ -196,62 +196,62 @@ class MoveForm(forms.Form):
     Requires the node to be moved as ``obj`` keyword argument.
     """
     MOVE_CHOICES = (
-        ('left', _('left sibling')),
-        ('right', _('right sibling')),
-        ('first', _('first child')),
-        ('last', _('last child')),
+        ("left", _("left sibling")),
+        ("right", _("right sibling")),
+        ("first", _("first child")),
+        ("last", _("last child")),
     )
 
     move_to = forms.ChoiceField(
-        label=_('Make node'),
+        label=_("Make node"),
         choices=MOVE_CHOICES,
         widget=forms.RadioSelect,
     )
 
     def __init__(self, *args, **kwargs):
-        self.instance = kwargs.pop('obj')
+        self.instance = kwargs.pop("obj")
         self.model = self.instance.__class__
 
         super(MoveForm, self).__init__(*args, **kwargs)
 
-        self.fields['of'] = forms.ModelChoiceField(
-            label=pgettext('MoveForm', 'Of'),
+        self.fields["of"] = forms.ModelChoiceField(
+            label=pgettext("MoveForm", "Of"),
             required=False,
             queryset=self.model.objects.exclude(
                 pk__in=self.instance.descendants(),
             ),
-            widget=forms.Select(attrs={'size': 30, 'style': 'height:auto'}),
+            widget=forms.Select(attrs={"size": 30, "style": "height:auto"}),
         )
 
-        self.fields['of'].choices = [
-            (None, '----------'),
+        self.fields["of"].choices = [
+            (None, "----------"),
         ] + [
             (
                 obj.pk,
-                '%s%s' % (
+                "%s%s" % (
                     (obj.depth - 1) * (
-                        '*** ' if obj == self.instance else '--- '),
+                        "*** " if obj == self.instance else "--- "),
                     obj,
                 ),
-            ) for obj in self.fields['of'].queryset
+            ) for obj in self.fields["of"].queryset
         ]
 
     def clean(self):
         data = super(MoveForm, self).clean()
-        if not data.get('move_to'):
+        if not data.get("move_to"):
             return data
 
-        if data.get('of') and data.get('of') == self.instance:
+        if data.get("of") and data.get("of") == self.instance:
             raise forms.ValidationError({
-                'of': _('Cannot move node to a position relative to itself.'),
+                "of": _("Cannot move node to a position relative to itself."),
             })
 
-        if not data.get('of'):
+        if not data.get("of"):
             self.instance.parent = None
-        elif data['move_to'] in ('left', 'right'):
-            self.instance.parent = data.get('of').parent
+        elif data["move_to"] in ("left", "right"):
+            self.instance.parent = data.get("of").parent
         else:
-            self.instance.parent = data.get('of')
+            self.instance.parent = data.get("of")
 
         # All fields of model are not in this form
         self.instance.full_clean(
@@ -266,16 +266,16 @@ class MoveForm(forms.Form):
         ).exclude(
             pk=self.instance.pk,
         ))
-        of = self.cleaned_data['of']
-        move_to = self.cleaned_data['move_to']
+        of = self.cleaned_data["of"]
+        move_to = self.cleaned_data["move_to"]
 
-        if move_to == 'first' or (not of and move_to == 'left'):
+        if move_to == "first" or (not of and move_to == "left"):
             siblings.insert(0, self.instance)
-        elif move_to == 'last' or (not of and move_to == 'right'):
+        elif move_to == "last" or (not of and move_to == "right"):
             siblings.append(self.instance)
-        elif move_to == 'left':
+        elif move_to == "left":
             siblings.insert(siblings.index(of), self.instance)
-        elif move_to == 'right':
+        elif move_to == "right":
             siblings.insert(siblings.index(of) + 1, self.instance)
 
         for index, instance in enumerate(siblings):
@@ -306,19 +306,19 @@ class AncestorFilter(SimpleListFilter):
 
         admin.site.register(Page, PageAdmin)
     """
-    title = _('ancestor')
-    parameter_name = 'ancestor'
+    title = _("ancestor")
+    parameter_name = "ancestor"
     max_depth = 2
 
     def indent(self, depth):
-        return mark_safe('&#x251c;' * (depth - 1))
+        return mark_safe("&#x251c;" * (depth - 1))
 
     def lookups(self, request, model_admin):
         return [(
             node.id,
-            format_html('{} {}', self.indent(node.depth), node),
+            format_html("{} {}", self.indent(node.depth), node),
         ) for node in model_admin.model._default_manager.extra(
-            where=['depth <= %s' % self.max_depth],
+            where=["depth <= %s" % self.max_depth],
         )]
 
     def queryset(self, request, queryset):
@@ -329,7 +329,7 @@ class AncestorFilter(SimpleListFilter):
                 raise IncorrectLookupParameters()
             return queryset.extra(
                 where=[
-                    '%s = ANY(%s)' % (
+                    "%s = ANY(%s)" % (
                         node.pk,
                         queryset.model._cte_node_path,
                     ),

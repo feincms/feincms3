@@ -15,7 +15,7 @@ from django.template.response import TemplateResponse
 from feincms3.utils import positional
 
 
-__all__ = ('template_name', 'render_list', 'render_detail')
+__all__ = ("template_name", "render_list", "render_detail")
 
 
 def template_name(model, template_name_suffix):
@@ -29,7 +29,7 @@ def template_name(model, template_name_suffix):
         'auth/user_form.html'
     """
 
-    return '%s/%s%s.html' % (
+    return "%s/%s%s.html" % (
         model._meta.app_label,
         model._meta.model_name,
         template_name_suffix,
@@ -38,7 +38,7 @@ def template_name(model, template_name_suffix):
 
 @positional(3)
 def render_list(request, queryset, context=None,
-                template_name_suffix='_list', paginate_by=None):
+                template_name_suffix="_list", paginate_by=None):
     """render_list(request, queryset, context=None, *,\
  template_name_suffix='_list', paginate_by=None)
     Render a list of items
@@ -66,7 +66,7 @@ def render_list(request, queryset, context=None,
     if paginate_by:
         p = paginator.Paginator(queryset, paginate_by)
         try:
-            object_list = p.page(request.GET.get('page'))
+            object_list = p.page(request.GET.get("page"))
         except paginator.PageNotAnInteger:
             object_list = p.page(1)
         except paginator.EmptyPage:
@@ -75,8 +75,8 @@ def render_list(request, queryset, context=None,
         object_list = queryset
 
     context.update({
-        'object_list': object_list,
-        '%s_list' % queryset.model._meta.model_name: object_list,
+        "object_list": object_list,
+        "%s_list" % queryset.model._meta.model_name: object_list,
     })
     return TemplateResponse(
         request,
@@ -87,7 +87,7 @@ def render_list(request, queryset, context=None,
 
 @positional(3)
 def render_detail(request, object, context=None,
-                  template_name_suffix='_detail'):
+                  template_name_suffix="_detail"):
     """render_detail(request, object, context=None, *,\
  template_name_suffix='_detail')
     Render a single item
@@ -110,7 +110,7 @@ def render_detail(request, object, context=None,
 
     context = context or {}
     context.update({
-        'object': object,
+        "object": object,
         object._meta.model_name: object,
     })
     return TemplateResponse(

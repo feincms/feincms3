@@ -51,8 +51,8 @@ from feincms3.utils import concrete_model, positional, validation_error
 
 
 __all__ = (
-    'AppsMiddleware', 'AppsMixin', 'apps_middleware', 'apps_urlconf',
-    'page_for_app_request', 'reverse_any', 'reverse_app', 'reverse_fallback',
+    "AppsMiddleware", "AppsMixin", "apps_middleware", "apps_urlconf",
+    "page_for_app_request", "reverse_any", "reverse_app", "reverse_fallback",
 )
 
 
@@ -119,11 +119,11 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
 
     page_model = concrete_model(AppsMixin)
     current = get_language()
-    viewnames = [':'.join(r) for r in itertools.product(
+    viewnames = [":".join(r) for r in itertools.product(
         [
-            '%s-%s' % (page_model.LANGUAGE_CODES_NAMESPACE, current),
+            "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, current),
         ] + [
-            '%s-%s' % (page_model.LANGUAGE_CODES_NAMESPACE, language[0])
+            "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, language[0])
             for language in settings.LANGUAGES
             if language[0] != current
         ],
@@ -200,18 +200,18 @@ def apps_urlconf(apps=None):
     page_model = concrete_model(AppsMixin)
     if apps is None:
         fields = (
-            'path', 'application', 'app_instance_namespace', 'language_code',
+            "path", "application", "app_instance_namespace", "language_code",
         )
         apps = page_model.objects.active().exclude(
-            app_instance_namespace=''
+            app_instance_namespace=""
         ).values_list(*fields).order_by(*fields)
 
     if not apps:
         # No point wrapping ROOT_URLCONF if there are no additional URLs
         return settings.ROOT_URLCONF
 
-    key = ','.join(itertools.chain.from_iterable(apps))
-    module_name = 'urlconf_%s' % hashlib.md5(key.encode('utf-8')).hexdigest()
+    key = ",".join(itertools.chain.from_iterable(apps))
+    module_name = "urlconf_%s" % hashlib.md5(key.encode("utf-8")).hexdigest()
 
     if module_name not in sys.modules:
         app_config = {
@@ -226,9 +226,9 @@ def apps_urlconf(apps=None):
             if application not in app_config:
                 continue
             mapping[language_code].append(url(
-                r'^%s' % re.escape(path.lstrip('/')),
+                r'^%s' % re.escape(path.lstrip("/")),
                 include(
-                    app_config[application]['urlconf'],
+                    app_config[application]["urlconf"],
                     namespace=app_instance_namespace,
                 ),
             ))
@@ -237,7 +237,7 @@ def apps_urlconf(apps=None):
             r'',
             include(
                 (instances, page_model.LANGUAGE_CODES_NAMESPACE),
-                namespace='%s-%s' % (
+                namespace="%s-%s" % (
                     page_model.LANGUAGE_CODES_NAMESPACE,
                     language_code,
                 ),
@@ -365,16 +365,16 @@ class AppsMixin(models.Model):
     """
 
     #: Override this to set a different name for the outer namespace.
-    LANGUAGE_CODES_NAMESPACE = 'apps'
+    LANGUAGE_CODES_NAMESPACE = "apps"
 
     application = models.CharField(
-        _('application'),
+        _("application"),
         max_length=20,
         blank=True,
-        choices=(('', ''),),  # Non-empty choices for get_*_display
+        choices=(("", ""),),  # Non-empty choices for get_*_display
     )
     app_instance_namespace = models.CharField(
-        _('app instance namespace'),
+        _("app instance namespace"),
         max_length=100,
         editable=False,
     )
@@ -403,7 +403,7 @@ class AppsMixin(models.Model):
         # If app_config is empty or None, this simply sets
         # app_instance_namespace to the empty string.
         setter = app_config.get(
-            'app_instance_namespace',
+            "app_instance_namespace",
             lambda instance: instance.application,
         )
         self.app_instance_namespace = setter(self)
@@ -423,37 +423,37 @@ class AppsMixin(models.Model):
 
         if self.parent and (
                 self.parent.application or
-                self.parent.ancestors().exclude(application='').exists()
+                self.parent.ancestors().exclude(application="").exists()
         ):
-            error = _('Apps may not have any descendants.')
+            error = _("Apps may not have any descendants.")
             raise validation_error(
-                _('Invalid parent: %s') % (error,),
-                field='parent',
+                _("Invalid parent: %s") % (error,),
+                field="parent",
                 exclude=exclude,
             )
 
         if self.application and not self.is_leaf():
             raise validation_error(
-                _('Apps may not have any descendants in the tree.'),
-                field='application',
+                _("Apps may not have any descendants in the tree."),
+                field="application",
                 exclude=exclude,
             )
 
         app_config = self.application_config()
-        if app_config and app_config.get('required_fields'):
+        if app_config and app_config.get("required_fields"):
             missing = [
-                field for field in app_config['required_fields']
+                field for field in app_config["required_fields"]
                 if not getattr(self, field)
             ]
             if missing:
                 error = _(
-                    'This field is required for the application %s.'
+                    "This field is required for the application %s."
                 ) % (self.get_application_display(),)
                 errors = {}
                 for field in missing:
                     if field in exclude:
-                        errors.setdefault('__all__', []).append(
-                            '%s: %s' % (field, error)
+                        errors.setdefault("__all__", []).append(
+                            "%s: %s" % (field, error)
                         )
                     else:
                         errors[field] = error
@@ -462,7 +462,7 @@ class AppsMixin(models.Model):
 
         if app_config:
             app_instance_namespace = app_config.get(
-                'app_instance_namespace',
+                "app_instance_namespace",
                 lambda instance: instance.application,
             )(self)
 
@@ -471,11 +471,11 @@ class AppsMixin(models.Model):
                 Q(language_code=self.language_code),
                 ~Q(pk=self.pk),
             ).exists():
-                fields = ['application']
-                fields.extend(app_config.get('required_fields', ()))
+                fields = ["application"]
+                fields.extend(app_config.get("required_fields", ()))
                 raise ValidationError({
                     field: _(
-                        _('This exact app already exists.'),
+                        _("This exact app already exists."),
                     )
                     for field in fields
                 })
@@ -488,7 +488,7 @@ class AppsMixin(models.Model):
         ``class_prepared`` signal.
         """
         if issubclass(sender, AppsMixin) and not sender._meta.abstract:
-            sender._meta.get_field('application').choices = [
+            sender._meta.get_field("application").choices = [
                 app[:2] for app in sender.APPLICATIONS
             ]
 

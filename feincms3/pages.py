@@ -50,19 +50,19 @@ class AbstractPage(CTENode):
       when building a multilingual site, for language root pages (i.e.
       ``/en/``, ``/de/``, ``/pt-br/`` etc.)
     """
-    _cte_node_path = 'cte_path'
-    _cte_node_order_by = ('position',)
+    _cte_node_path = "cte_path"
+    _cte_node_order_by = ("position",)
 
     is_active = models.BooleanField(
-        _('is active'),
+        _("is active"),
         default=True,
     )
     title = models.CharField(
-        _('title'),
+        _("title"),
         max_length=200,
     )
     slug = models.SlugField(
-        _('slug'),
+        _("slug"),
     )
     position = models.PositiveIntegerField(
         db_index=True,
@@ -72,7 +72,7 @@ class AbstractPage(CTENode):
 
     # Who even cares about MySQL
     path = models.CharField(
-        _('path'),
+        _("path"),
         max_length=1000,
         blank=True,
         unique=True,
@@ -80,12 +80,12 @@ class AbstractPage(CTENode):
         validators=[
             RegexValidator(
                 regex=r'^/(|.+/)$',
-                message=_('Path must start and end with a slash (/).'),
+                message=_("Path must start and end with a slash (/)."),
             ),
         ],
     )
     static_path = models.BooleanField(
-        _('static path'),
+        _("static path"),
         default=False,
     )
 
@@ -93,8 +93,8 @@ class AbstractPage(CTENode):
 
     class Meta:
         abstract = True
-        verbose_name = _('page')
-        verbose_name_plural = _('pages')
+        verbose_name = _("page")
+        verbose_name_plural = _("pages")
 
     def __str__(self):
         return self.title
@@ -109,7 +109,7 @@ class AbstractPage(CTENode):
             # Assign already-updated instance:
             node.parent = nodes[node.parent_id]
             if not node.static_path:
-                node.path = '%s%s/' % (
+                node.path = "%s%s/" % (
                     node.parent.path,
                     node.slug,
                 )
@@ -135,12 +135,12 @@ class AbstractPage(CTENode):
             if not self.path:
                 raise validation_error(
                     _('Static paths cannot be empty. Did you mean \'/\'?'),
-                    field='path',
+                    field="path",
                     exclude=exclude,
                 )
         else:
-            self.path = '%s%s/' % (
-                self.parent.path if self.parent else '/',
+            self.path = "%s%s/" % (
+                self.parent.path if self.parent else "/",
                 self.slug,
             )
 
@@ -151,19 +151,19 @@ class AbstractPage(CTENode):
             return
 
         clash_candidates = set(
-            self._path_clash_candidates().values_list('path', flat=True)
+            self._path_clash_candidates().values_list("path", flat=True)
         )
         for pk, node in self._branch_for_update().items():
             if node.path in clash_candidates:
                 raise validation_error(
                     _(
                         'The page %(page)s\'s new path %(path)s would'
-                        ' not be unique.'
+                        " not be unique."
                     ) % {
-                        'page': node,
-                        'path': node.path,
+                        "page": node,
+                        "path": node.path,
                     },
-                    field='path',
+                    field="path",
                     exclude=exclude,
                 )
 
@@ -178,11 +178,11 @@ class AbstractPage(CTENode):
         ``save_descendants=True`` or skipping them using
         ``save_descendants=False``.
         """
-        save_descendants = kwargs.pop('save_descendants', None)
+        save_descendants = kwargs.pop("save_descendants", None)
 
         if not self.static_path:
-            self.path = '%s%s/' % (
-                self.parent.path if self.parent else '/',
+            self.path = "%s%s/" % (
+                self.parent.path if self.parent else "/",
                 self.slug,
             )
 
@@ -190,7 +190,7 @@ class AbstractPage(CTENode):
             self.position = 10 + (
                 self.__class__._default_manager.filter(
                     parent_id=self.parent_id,
-                ).order_by().aggregate(p=Max('position'))['p'] or 0
+                ).order_by().aggregate(p=Max("position"))["p"] or 0
             )
 
         super(AbstractPage, self).save(*args, **kwargs)
@@ -215,8 +215,8 @@ class AbstractPage(CTENode):
         are stripped from the beginning and the end of the string to make
         building an URLconf more straightforward.
         """
-        if self.path == '/':
-            return reverse('pages:root')
-        return reverse('pages:page', kwargs={
-            'path': self.path.strip('/'),
+        if self.path == "/":
+            return reverse("pages:root")
+        return reverse("pages:page", kwargs={
+            "path": self.path.strip("/"),
         })

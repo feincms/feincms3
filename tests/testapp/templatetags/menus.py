@@ -16,9 +16,9 @@ def menus():
     pages = Page.objects.filter(
         Q(is_active=True),
         Q(language_code=get_language()),
-        ~Q(menu=''),
+        ~Q(menu=""),
     ).extra(
-        where=['depth BETWEEN 2 AND 3'],
+        where=["depth BETWEEN 2 AND 3"],
     )
     for page in pages:
         menus[page.menu].append(page)

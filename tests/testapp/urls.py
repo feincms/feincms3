@@ -10,25 +10,25 @@ from testapp import views
 pages_urlpatterns = ([
     url(
         r'^$',
-        lambda request: HttpResponseRedirect('/%s/' % request.LANGUAGE_CODE),
+        lambda request: HttpResponseRedirect("/%s/" % request.LANGUAGE_CODE),
     ),
     url(
         r'^(?P<path>[-\w/]+)/$',
         views.page_detail,
-        name='page',
+        name="page",
     ),
     url(
         r'^$',
         views.page_detail,
-        name='root',
+        name="root",
     ),
-], 'pages')
+], "pages")
 
 
 urlpatterns = i18n_patterns(
     url(r'^i18n/$', lambda request: HttpResponse(request.LANGUAGE_CODE)),
 ) + [
     url(r'^admin/', admin.site.urls),
-    url(r'^404/$', lambda request: render(request, '404.html')),
+    url(r'^404/$', lambda request: render(request, "404.html")),
     url(r'', include(pages_urlpatterns)),
 ]

@@ -21,10 +21,10 @@ from .models import HTML, Article, External, Page
 
 def zero_management_form_data(prefix):
     return {
-        '%s-TOTAL_FORMS' % prefix: 0,
-        '%s-INITIAL_FORMS' % prefix: 0,
-        '%s-MIN_NUM_FORMS' % prefix: 0,
-        '%s-MAX_NUM_FORMS' % prefix: 1000,
+        "%s-TOTAL_FORMS" % prefix: 0,
+        "%s-INITIAL_FORMS" % prefix: 0,
+        "%s-MIN_NUM_FORMS" % prefix: 0,
+        "%s-MAX_NUM_FORMS" % prefix: 1000,
     }
 
 
@@ -52,7 +52,7 @@ def monkeypatches():
 class Test(TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser(
-            'admin', 'admin@test.ch', 'blabla')
+            "admin", "admin@test.ch", "blabla")
         deactivate_all()
         monkeypatches()
 
@@ -66,28 +66,28 @@ class Test(TestCase):
 
         client = self.login()
 
-        response = client.get('/admin/')
+        response = client.get("/admin/")
         self.assertContains(
             response,
             '<a href="/admin/testapp/page/">Pages</a>',
             1,
         )
 
-        response = client.get('/admin/testapp/page/')
+        response = client.get("/admin/testapp/page/")
         self.assertContains(
             response,
-            '/static/feincms3/box-drawing.css',
+            "/static/feincms3/box-drawing.css",
             1,
         )
         self.assertNotContains(
             response,
-            '/static/content_editor/content_editor.js',
+            "/static/content_editor/content_editor.js",
         )
 
-        response = client.get('/admin/testapp/page/add/')
+        response = client.get("/admin/testapp/page/add/")
         self.assertContains(
             response,
-            '/static/content_editor/content_editor.js',
+            "/static/content_editor/content_editor.js",
             1,
         )
 
@@ -96,40 +96,40 @@ class Test(TestCase):
         client = self.login()
 
         response = client.post(
-            '/admin/testapp/page/add/',
+            "/admin/testapp/page/add/",
             merge_dicts(
                 {
-                    'title': 'Home EN',
-                    'slug': 'home-en',
-                    'path': '/en/',
-                    'static_path': 1,
-                    'language_code': 'en',
-                    'application': '',
-                    'is_active': 1,
-                    'menu': 'main',
-                    'template_key': 'standard',
+                    "title": "Home EN",
+                    "slug": "home-en",
+                    "path": "/en/",
+                    "static_path": 1,
+                    "language_code": "en",
+                    "application": "",
+                    "is_active": 1,
+                    "menu": "main",
+                    "template_key": "standard",
                 },
-                zero_management_form_data('testapp_richtext_set'),
-                zero_management_form_data('testapp_image_set'),
-                zero_management_form_data('testapp_snippet_set'),
-                zero_management_form_data('testapp_external_set'),
-                zero_management_form_data('testapp_html_set'),
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
             ),
         )
 
         self.assertRedirects(
             response,
-            '/admin/testapp/page/',
+            "/admin/testapp/page/",
         )
 
         page = Page.objects.get()
-        self.assertEqual(page.slug, 'home-en')
-        self.assertEqual(page.path, '/en/')  # static_path!
+        self.assertEqual(page.slug, "home-en")
+        self.assertEqual(page.path, "/en/")  # static_path!
 
         response = client.get(page.get_absolute_url())
         self.assertContains(
             response,
-            '<h1>Home EN</h1>',
+            "<h1>Home EN</h1>",
             1,
         )
 
@@ -139,51 +139,51 @@ class Test(TestCase):
         client = self.login()
 
         response = client.post(
-            '/admin/testapp/page/add/',
+            "/admin/testapp/page/add/",
             merge_dicts(
                 {
-                    'title': 'Home EN',
-                    'slug': 'home-en',
-                    'path': '/en/',
-                    'static_path': 1,
-                    'language_code': 'en',
-                    'application': '',
-                    'is_active': 1,
-                    'menu': 'main',
-                    'template_key': 'standard',
+                    "title": "Home EN",
+                    "slug": "home-en",
+                    "path": "/en/",
+                    "static_path": 1,
+                    "language_code": "en",
+                    "application": "",
+                    "is_active": 1,
+                    "menu": "main",
+                    "template_key": "standard",
                 },
-                zero_management_form_data('testapp_richtext_set'),
-                zero_management_form_data('testapp_image_set'),
-                zero_management_form_data('testapp_snippet_set'),
-                zero_management_form_data('testapp_external_set'),
-                zero_management_form_data('testapp_html_set'),
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
                 {
-                    'testapp_richtext_set-0-text': '<span style="font-weight:bold">Hello!</span>',  # noqa
-                    'testapp_richtext_set-TOTAL_FORMS': 1,
-                    'testapp_richtext_set-0-region': 'main',
-                    'testapp_richtext_set-0-ordering': 10,
+                    "testapp_richtext_set-0-text": '<span style="font-weight:bold">Hello!</span>',  # noqa
+                    "testapp_richtext_set-TOTAL_FORMS": 1,
+                    "testapp_richtext_set-0-region": "main",
+                    "testapp_richtext_set-0-ordering": 10,
                 },
             ),
         )
 
         self.assertRedirects(
             response,
-            '/admin/testapp/page/',
+            "/admin/testapp/page/",
         )
 
         page = Page.objects.get()
-        self.assertEqual(page.slug, 'home-en')
-        self.assertEqual(page.path, '/en/')  # static_path!
+        self.assertEqual(page.slug, "home-en")
+        self.assertEqual(page.path, "/en/")  # static_path!
 
         response = client.get(page.get_absolute_url())
         self.assertContains(
             response,
-            '<h1>Home EN</h1>',
+            "<h1>Home EN</h1>",
             1,
         )
         self.assertContains(
             response,
-            '<strong>Hello!</strong>',  # HTML cleansing worked.
+            "<strong>Hello!</strong>",  # HTML cleansing worked.
             1,
         )
 
@@ -193,7 +193,7 @@ class Test(TestCase):
         form_class = modelform_factory(
             External,
             form=ExternalForm,
-            fields='__all__',
+            fields="__all__",
         )
 
         # Should not crash if URL not provided (765a6b6b53e)
@@ -201,78 +201,78 @@ class Test(TestCase):
         self.assertFalse(form.is_valid())
 
         # Provide an invalid URL
-        form = form_class({'url': 'http://192.168.250.1:65530'})
+        form = form_class({"url": "http://192.168.250.1:65530"})
         self.assertFalse(form.is_valid())
         self.assertIn(
-            '<li>Unable to fetch HTML for this URL, sorry!</li>',
-            '%s' % form.errors,
+            "<li>Unable to fetch HTML for this URL, sorry!</li>",
+            "%s" % form.errors,
         )
 
     def test_navigation_and_changelist(self):
         """Test menu template tags and the admin changelist"""
 
         home_de = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/de/',
+            title="home",
+            slug="home",
+            path="/de/",
             static_path=True,
-            language_code='de',
+            language_code="de",
             is_active=True,
-            menu='main',
+            menu="main",
         )
         home_en = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/en/',
+            title="home",
+            slug="home",
+            path="/en/",
             static_path=True,
-            language_code='en',
+            language_code="en",
             is_active=True,
-            menu='main',
+            menu="main",
         )
 
-        for slug in ('a', 'b', 'c', 'd'):
+        for slug in ("a", "b", "c", "d"):
             Page.objects.create(
-                title='%s-%s' % (slug, home_en.language_code),
-                slug='%s-%s' % (slug, home_en.language_code),
+                title="%s-%s" % (slug, home_en.language_code),
+                slug="%s-%s" % (slug, home_en.language_code),
                 static_path=False,
                 language_code=home_en.language_code,
                 is_active=True,
-                menu='main',
+                menu="main",
                 parent_id=home_en.pk,
             )
             sub = Page.objects.create(
-                title='%s-%s' % (slug, home_de.language_code),
-                slug='%s-%s' % (slug, home_de.language_code),
+                title="%s-%s" % (slug, home_de.language_code),
+                slug="%s-%s" % (slug, home_de.language_code),
                 static_path=False,
                 language_code=home_de.language_code,
                 is_active=True,
-                menu='main',
+                menu="main",
                 parent_id=home_de.pk,
             )
 
             # Create subpage
             Page.objects.create(
-                title='sub',
-                slug='sub',
+                title="sub",
+                slug="sub",
                 static_path=False,
                 language_code=sub.language_code,
                 is_active=True,
-                menu='main',
+                menu="main",
                 parent_id=sub.pk,
             )
 
         # Create inactive page
         Page.objects.create(
-            title='inactive',
-            slug='inactive',
+            title="inactive",
+            slug="inactive",
             static_path=False,
             language_code=home_de.language_code,
             is_active=False,
-            menu='main',
+            menu="main",
             parent_id=home_de.pk,
         )
 
-        response_en = self.client.get('/en/a-en/')
+        response_en = self.client.get("/en/a-en/")
         self.assertContains(
             response_en,
             '<a class="active" href="/en/a-en/">a-en</a>',
@@ -280,15 +280,15 @@ class Test(TestCase):
         )
         self.assertNotContains(
             response_en,
-            '/de/',
+            "/de/",
         )
         # No subnavigation (main nav has a class)
         self.assertNotContains(
             response_en,
-            '<nav>',
+            "<nav>",
         )
 
-        response_de = self.client.get('/de/b-de/')
+        response_de = self.client.get("/de/b-de/")
         self.assertContains(
             response_de,
             '<a class="active" href="/de/b-de/">b-de</a>',
@@ -296,25 +296,25 @@ class Test(TestCase):
         )
         self.assertNotContains(
             response_de,
-            '/en/',
+            "/en/",
         )
 
         # 4 Subnavigations
         self.assertContains(
             response_de,
-            '<nav>',
+            "<nav>",
             4,
         )
 
         self.assertNotContains(
             response_de,
-            'inactive',
+            "inactive",
         )
 
-        response_404 = self.client.get('/de/not-exists/')
+        response_404 = self.client.get("/de/not-exists/")
         self.assertContains(
             response_404,
-            '<h1>Page not found</h1>',
+            "<h1>Page not found</h1>",
             1,
             status_code=404,
         )
@@ -328,54 +328,54 @@ class Test(TestCase):
         # Changelist and filtering
         client = self.login()
         self.assertContains(
-            client.get('/admin/testapp/page/'),
+            client.get("/admin/testapp/page/"),
             'name="_selected_action"',
             15,  # 15 pages
         )
         self.assertContains(
-            client.get('/admin/testapp/page/?ancestor=%s' % home_de.pk),
+            client.get("/admin/testapp/page/?ancestor=%s" % home_de.pk),
             'name="_selected_action"',
             10,  # 10 de
         )
         self.assertContains(
-            client.get('/admin/testapp/page/?ancestor=%s' % home_en.pk),
+            client.get("/admin/testapp/page/?ancestor=%s" % home_en.pk),
             'name="_selected_action"',
             5,  # 5 en
         )
         self.assertContains(
-            client.get('/admin/testapp/page/'),
+            client.get("/admin/testapp/page/"),
             'href="?ancestor=',
             11,  # 2 root pages, 5 de children, 4 en children
         )
         self.assertRedirects(
-            client.get('/admin/testapp/page/?ancestor=abc', follow=False),
-            '/admin/testapp/page/?e=1',
+            client.get("/admin/testapp/page/?ancestor=abc", follow=False),
+            "/admin/testapp/page/?e=1",
         )
 
     def test_apps(self):
         """Article app test (two instance namespaces, two languages)"""
 
         home_de = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/de/',
+            title="home",
+            slug="home",
+            path="/de/",
             static_path=True,
-            language_code='de',
+            language_code="de",
             is_active=True,
-            menu='main',
+            menu="main",
         )
         home_en = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/en/',
+            title="home",
+            slug="home",
+            path="/en/",
             static_path=True,
-            language_code='en',
+            language_code="en",
             is_active=True,
-            menu='main',
+            menu="main",
         )
 
         for root in (home_de, home_en):
-            for app in ('blog', 'publications'):
+            for app in ("blog", "publications"):
                 Page.objects.create(
                     title=app,
                     slug=app,
@@ -387,64 +387,64 @@ class Test(TestCase):
                 )
 
         for i in range(7):
-            for category in ('publications', 'blog'):
+            for category in ("publications", "blog"):
                 Article.objects.create(
-                    title='%s %s' % (category, i),
+                    title="%s %s" % (category, i),
                     category=category,
                 )
 
         self.assertContains(
-            self.client.get('/de/blog/all/'),
+            self.client.get("/de/blog/all/"),
             'class="article"',
             7,
         )
         self.assertContains(
-            self.client.get('/de/blog/?page=2'),
+            self.client.get("/de/blog/?page=2"),
             'class="article"',
             2,
         )
         self.assertContains(
-            self.client.get('/de/blog/?page=42'),
+            self.client.get("/de/blog/?page=42"),
             'class="article"',
             2,  # Last page with instances (2nd)
         )
         self.assertContains(
-            self.client.get('/de/blog/?page=invalid'),
+            self.client.get("/de/blog/?page=invalid"),
             'class="article"',
             5,  # First page
         )
 
-        response = self.client.get('/de/blog/')
+        response = self.client.get("/de/blog/")
         self.assertContains(
             response,
             'class="article"',
             5,
         )
 
-        response = self.client.get('/en/publications/')
+        response = self.client.get("/en/publications/")
         self.assertContains(
             response,
             'class="article"',
             5,
         )
 
-        article = Article.objects.order_by('pk').first()
-        with override('de'):
+        article = Article.objects.order_by("pk").first()
+        with override("de"):
             self.assertEqual(
                 article.get_absolute_url(),
-                '/de/publications/%s/' % article.pk,
+                "/de/publications/%s/" % article.pk,
             )
 
-        with override('en'):
+        with override("en"):
             self.assertEqual(
                 article.get_absolute_url(),
-                '/en/publications/%s/' % article.pk,
+                "/en/publications/%s/" % article.pk,
             )
 
-        response = self.client.get('/de/publications/%s/' % article.pk)
+        response = self.client.get("/de/publications/%s/" % article.pk)
         self.assertContains(
             response,
-            '<h1>publications 0</h1>',
+            "<h1>publications 0</h1>",
             1,
         )
 
@@ -452,7 +452,7 @@ class Test(TestCase):
         # value does not change all the time.
         self.assertEqual(
             apps_urlconf(),
-            'urlconf_fe9552a8363ece1f7fcf4970bf575a47',
+            "urlconf_fe9552a8363ece1f7fcf4970bf575a47",
         )
 
     def test_snippet(self):
@@ -460,30 +460,30 @@ class Test(TestCase):
         when using TemplatePluginRenderer"""
 
         home_en = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/en/',
+            title="home",
+            slug="home",
+            path="/en/",
             static_path=True,
-            language_code='en',
+            language_code="en",
             is_active=True,
-            menu='main',
+            menu="main",
         )
 
         home_en.testapp_snippet_set.create(
-            template_name='snippet.html',
+            template_name="snippet.html",
             ordering=10,
-            region='main',
+            region="main",
         )
 
         response = self.client.get(home_en.get_absolute_url())
         self.assertContains(
             response,
-            '<h2>snippet on page home (/en/)</h2>',
+            "<h2>snippet on page home (/en/)</h2>",
             1,
         )
         self.assertContains(
             response,
-            '<h2>context</h2>',
+            "<h2>context</h2>",
             1,
         )
 
@@ -492,32 +492,32 @@ class Test(TestCase):
         sub's parent is set to home"""
 
         home = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/en/',
+            title="home",
+            slug="home",
+            path="/en/",
             static_path=True,
-            language_code='en',
+            language_code="en",
         )
         Page.objects.create(
             parent=home,
-            title='sub',
-            slug='sub',
-            path='/en/sub/page/',
+            title="sub",
+            slug="sub",
+            path="/en/sub/page/",
             static_path=True,
-            language_code='en',
+            language_code="en",
         )
         sub = Page.objects.create(
-            title='sub',
-            slug='sub',
+            title="sub",
+            slug="sub",
         )
         Page.objects.create(
             parent=sub,
-            title='page',
-            slug='page',
+            title="page",
+            slug="page",
         )
 
-        self.assertEqual(sub.get_absolute_url(), '/sub/')
-        self.assertEqual(home.get_absolute_url(), '/en/')
+        self.assertEqual(sub.get_absolute_url(), "/sub/")
+        self.assertEqual(home.get_absolute_url(), "/en/")
 
         return home, sub
 
@@ -538,26 +538,26 @@ class Test(TestCase):
         home, sub = self.duplicated_path_setup()
 
         response = client.post(
-            '/admin/testapp/page/%s/change/' % sub.pk,
+            "/admin/testapp/page/%s/change/" % sub.pk,
             merge_dicts(
                 {
-                    'parent': home.pk,
-                    'title': 'sub',
-                    'slug': 'sub',
-                    'language_code': 'en',
-                    'template_key': 'standard',
+                    "parent": home.pk,
+                    "title": "sub",
+                    "slug": "sub",
+                    "language_code": "en",
+                    "template_key": "standard",
                 },
-                zero_management_form_data('testapp_richtext_set'),
-                zero_management_form_data('testapp_image_set'),
-                zero_management_form_data('testapp_snippet_set'),
-                zero_management_form_data('testapp_external_set'),
-                zero_management_form_data('testapp_html_set'),
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
             ),
         )
 
         self.assertContains(
             response,
-            'The page page&#39;s new path /en/sub/page/ would not be unique.',
+            "The page page&#39;s new path /en/sub/page/ would not be unique.",
             1,
         )
 
@@ -565,21 +565,21 @@ class Test(TestCase):
         """i18n_patterns in ROOT_URLCONF work even with apps_middleware"""
 
         self.assertRedirects(
-            self.client.get('/i18n/'),
-            '/en/i18n/',
+            self.client.get("/i18n/"),
+            "/en/i18n/",
         )
         self.assertRedirects(
-            self.client.get('/i18n/', HTTP_ACCEPT_LANGUAGE='de'),
-            '/de/i18n/',
+            self.client.get("/i18n/", HTTP_ACCEPT_LANGUAGE="de"),
+            "/de/i18n/",
         )
 
         self.assertContains(
-            self.client.get('/en/i18n/'),
-            'en',
+            self.client.get("/en/i18n/"),
+            "en",
         )
         self.assertContains(
-            self.client.get('/de/i18n/'),
-            'de',
+            self.client.get("/de/i18n/"),
+            "de",
         )
 
     def test_render_plugins(self):
@@ -587,19 +587,19 @@ class Test(TestCase):
 
         page = Page.objects.create(
             is_active=True,
-            title='main',
-            slug='main',
-            template_key='with-sidebar',
+            title="main",
+            slug="main",
+            template_key="with-sidebar",
         )
         page.testapp_richtext_set.create(
             ordering=0,
-            region='main',
-            text='<b>main</b>',
+            region="main",
+            text="<b>main</b>",
         )
         page.testapp_richtext_set.create(
             ordering=0,
-            region='sidebar',
-            text='<i>sidebar</b>',
+            region="sidebar",
+            text="<i>sidebar</b>",
         )
 
         response = self.client.get(page.get_absolute_url())
@@ -616,53 +616,53 @@ class Test(TestCase):
         """Non-unique paths should also be detected upon direct addition"""
 
         Page.objects.create(
-            title='main',
-            slug='main',
+            title="main",
+            slug="main",
         )
 
         client = self.login()
-        response = client.post('/admin/testapp/page/add/', merge_dicts(
+        response = client.post("/admin/testapp/page/add/", merge_dicts(
             {
-                'title': 'main',
-                'slug': 'main',
-                'language_code': 'en',
-                'application': '',
-                'template_key': 'standard',
+                "title": "main",
+                "slug": "main",
+                "language_code": "en",
+                "application": "",
+                "template_key": "standard",
             },
-            zero_management_form_data('testapp_richtext_set'),
-            zero_management_form_data('testapp_image_set'),
-            zero_management_form_data('testapp_snippet_set'),
-            zero_management_form_data('testapp_external_set'),
-            zero_management_form_data('testapp_html_set'),
+            zero_management_form_data("testapp_richtext_set"),
+            zero_management_form_data("testapp_image_set"),
+            zero_management_form_data("testapp_snippet_set"),
+            zero_management_form_data("testapp_external_set"),
+            zero_management_form_data("testapp_html_set"),
         ))
         self.assertContains(
             response,
-            'Page with this Path already exists.',
+            "Page with this Path already exists.",
             status_code=200,
         )
 
     def test_non_empty_static_paths(self):
         """Static paths may not be left empty"""
         client = self.login()
-        response = client.post('/admin/testapp/page/add/', merge_dicts(
+        response = client.post("/admin/testapp/page/add/", merge_dicts(
             {
-                'title': 'main',
-                'slug': 'main',
-                'language_code': 'en',
-                'application': '',
-                'template_key': 'standard',
-                'static_path': True,
-                'path': '',
+                "title": "main",
+                "slug": "main",
+                "language_code": "en",
+                "application": "",
+                "template_key": "standard",
+                "static_path": True,
+                "path": "",
             },
-            zero_management_form_data('testapp_richtext_set'),
-            zero_management_form_data('testapp_image_set'),
-            zero_management_form_data('testapp_snippet_set'),
-            zero_management_form_data('testapp_external_set'),
-            zero_management_form_data('testapp_html_set'),
+            zero_management_form_data("testapp_richtext_set"),
+            zero_management_form_data("testapp_image_set"),
+            zero_management_form_data("testapp_snippet_set"),
+            zero_management_form_data("testapp_external_set"),
+            zero_management_form_data("testapp_html_set"),
         ))
         self.assertContains(
             response,
-            'Static paths cannot be empty. Did you mean',
+            "Static paths cannot be empty. Did you mean",
             status_code=200,
         )
 
@@ -670,19 +670,19 @@ class Test(TestCase):
         """Test all code paths through reverse_fallback and reverse_any"""
 
         self.assertEqual(
-            reverse_fallback('test', reverse, 'not-exists'),
-            'test',
+            reverse_fallback("test", reverse, "not-exists"),
+            "test",
         )
         self.assertEqual(
-            reverse_fallback('test', reverse, 'admin:index'),
-            '/admin/',
+            reverse_fallback("test", reverse, "admin:index"),
+            "/admin/",
         )
         self.assertEqual(
             reverse_any((
-                'not-exists',
-                'admin:index',
+                "not-exists",
+                "admin:index",
             )),
-            '/admin/',
+            "/admin/",
         )
         with six.assertRaisesRegex(
                 self,
@@ -690,7 +690,7 @@ class Test(TestCase):
                 "Reverse for any of 'not-exists-1', 'not-exists-2' with"
                 " arguments '\[\]' and keyword arguments '{}' not found."
         ):
-            reverse_any(('not-exists-1', 'not-exists-2'))
+            reverse_any(("not-exists-1", "not-exists-2"))
 
     def test_move_clean_and_save(self):
         """Test that a page move does the right thing (model state should be
@@ -700,17 +700,17 @@ class Test(TestCase):
         client = self.login()
 
         r1 = Page.objects.create(
-            title='root 1',
-            slug='root-1',
+            title="root 1",
+            slug="root-1",
         )
         r2 = Page.objects.create(
-            title='root 2',
-            slug='root-2',
+            title="root 2",
+            slug="root-2",
         )
         child = Page.objects.create(
             parent_id=r1.id,
-            title='child',
-            slug='child',
+            title="child",
+            slug="child",
         )
 
         ContentType.objects.clear_cache()  # because of 13. below
@@ -737,25 +737,25 @@ class Test(TestCase):
             # 14. insert into admin log
             # 15. RELEASE SAVEPOINT
             response = client.post(
-                reverse('admin:testapp_page_change', args=(child.id,)),
+                reverse("admin:testapp_page_change", args=(child.id,)),
                 merge_dicts(
                     {
-                        'title': 'child',
-                        'slug': 'child',
-                        'path': '/root-1/child/',
-                        'static_path': '',
-                        'language_code': 'en',
-                        'application': '',
-                        'is_active': 1,
-                        'menu': 'main',
-                        'template_key': 'standard',
-                        'parent': r2.id,
+                        "title": "child",
+                        "slug": "child",
+                        "path": "/root-1/child/",
+                        "static_path": "",
+                        "language_code": "en",
+                        "application": "",
+                        "is_active": 1,
+                        "menu": "main",
+                        "template_key": "standard",
+                        "parent": r2.id,
                     },
-                    zero_management_form_data('testapp_richtext_set'),
-                    zero_management_form_data('testapp_image_set'),
-                    zero_management_form_data('testapp_snippet_set'),
-                    zero_management_form_data('testapp_external_set'),
-                    zero_management_form_data('testapp_html_set'),
+                    zero_management_form_data("testapp_richtext_set"),
+                    zero_management_form_data("testapp_image_set"),
+                    zero_management_form_data("testapp_snippet_set"),
+                    zero_management_form_data("testapp_external_set"),
+                    zero_management_form_data("testapp_html_set"),
                 ),
             )
 
@@ -776,17 +776,17 @@ class Test(TestCase):
 
     def prepare_for_move(self):
         root = Page.objects.create(
-            title='root',
-            slug='root',
+            title="root",
+            slug="root",
         )
         p1 = Page.objects.create(
-            title='p1',
-            slug='p1',
+            title="p1",
+            slug="p1",
             parent=root,
         )
         p2 = Page.objects.create(
-            title='p2',
-            slug='p2',
+            title="p2",
+            slug="p2",
             parent=root,
         )
 
@@ -806,16 +806,16 @@ class Test(TestCase):
         client = self.login()
 
         response = client.get(
-            reverse('admin:testapp_page_move', args=(p1.pk,)),
+            reverse("admin:testapp_page_move", args=(p1.pk,)),
         )
-        self.assertContains(response, '*** p1', 1)
-        self.assertContains(response, '--- p2', 1)
+        self.assertContains(response, "*** p1", 1)
+        self.assertContains(response, "--- p2", 1)
 
         response = client.post(
-            reverse('admin:testapp_page_move', args=(p1.pk,)),
+            reverse("admin:testapp_page_move", args=(p1.pk,)),
             {
-                'move_to': 'last',
-                'of': '',
+                "move_to": "last",
+                "of": "",
             },
         )
 
@@ -833,10 +833,10 @@ class Test(TestCase):
         client = self.login()
 
         client.post(
-            reverse('admin:testapp_page_move', args=(p2.pk,)),
+            reverse("admin:testapp_page_move", args=(p2.pk,)),
             {
-                'move_to': 'first',
-                'of': '',
+                "move_to": "first",
+                "of": "",
             },
         )
 
@@ -854,10 +854,10 @@ class Test(TestCase):
         client = self.login()
 
         client.post(
-            reverse('admin:testapp_page_move', args=(p2.pk,)),
+            reverse("admin:testapp_page_move", args=(p2.pk,)),
             {
-                'move_to': 'first',
-                'of': p1.pk,
+                "move_to": "first",
+                "of": p1.pk,
             },
         )
 
@@ -875,33 +875,33 @@ class Test(TestCase):
         client = self.login()
 
         response = client.post(
-            reverse('admin:testapp_page_move', args=(root.pk,)),
+            reverse("admin:testapp_page_move", args=(root.pk,)),
             {
-                'move_to': 'first',
-                'of': p1.pk,
+                "move_to": "first",
+                "of": p1.pk,
             },
         )
 
         self.assertContains(
             response,
-            'Select a valid choice. That choice is not one of the available choices.',  # noqa
+            "Select a valid choice. That choice is not one of the available choices.",  # noqa
         )
 
     def test_reorder_siblings(self):
         root, p1, p2 = self.prepare_for_move()
 
         p3 = Page.objects.create(
-            title='p3',
-            slug='p3',
+            title="p3",
+            slug="p3",
             parent=root,
         )
         client = self.login()
 
         client.post(
-            reverse('admin:testapp_page_move', args=(p3.pk,)),
+            reverse("admin:testapp_page_move", args=(p3.pk,)),
             {
-                'move_to': 'right',
-                'of': p1.pk,
+                "move_to": "right",
+                "of": p1.pk,
             },
         )
 
@@ -917,7 +917,7 @@ class Test(TestCase):
 
     def test_invalid_parent(self):
         root, p1, p2 = self.prepare_for_move()
-        p1.application = 'blog'
+        p1.application = "blog"
         p1.save()
 
         p2 = Page.objects.get(pk=p2.pk)
@@ -931,45 +931,45 @@ class Test(TestCase):
 
         client = self.login()
         response = client.post(
-            reverse('admin:testapp_page_move', args=(p2.pk,)),
+            reverse("admin:testapp_page_move", args=(p2.pk,)),
             {
-                'move_to': 'first',
-                'of': p1.pk,
+                "move_to": "first",
+                "of": p1.pk,
             },
         )
 
         self.assertContains(
             response,
-            '<li>Invalid parent: Apps may not have any descendants.</li>',
+            "<li>Invalid parent: Apps may not have any descendants.</li>",
             status_code=200,
         )
 
     def test_redirects(self):
         page1 = Page.objects.create(
-            title='home',
-            slug='home',
-            path='/de/',
+            title="home",
+            slug="home",
+            path="/de/",
             static_path=True,
-            language_code='de',
+            language_code="de",
             is_active=True,
         )
         page2 = Page.objects.create(
-            title='something',
-            slug='something',
-            path='/something/',
+            title="something",
+            slug="something",
+            path="/something/",
             static_path=True,
-            language_code='de',
+            language_code="de",
             is_active=True,
             redirect_to_page=page1,
         )
         page3 = Page.objects.create(
-            title='something2',
-            slug='something2',
-            path='/something2/',
+            title="something2",
+            slug="something2",
+            path="/something2/",
             static_path=True,
-            language_code='de',
+            language_code="de",
             is_active=True,
-            redirect_to_url='http://example.com/',
+            redirect_to_url="http://example.com/",
         )
 
         self.assertRedirects(
@@ -979,7 +979,7 @@ class Test(TestCase):
 
         self.assertRedirects(
             self.client.get(page3.get_absolute_url(), follow=False),
-            'http://example.com/',
+            "http://example.com/",
             fetch_redirect_response=False,
         )
 
@@ -990,11 +990,11 @@ class Test(TestCase):
         self.assertRaises(
            ValidationError,
            lambda: Page(
-                title='test',
-                slug='test',
-                language_code='de',
+                title="test",
+                slug="test",
+                language_code="de",
                 redirect_to_page=page1,
-                redirect_to_url='nonempty',
+                redirect_to_url="nonempty",
             ).full_clean(),
         )
 
@@ -1002,9 +1002,9 @@ class Test(TestCase):
         self.assertRaises(
            ValidationError,
            lambda: Page(
-                title='test',
-                slug='test',
-                language_code='de',
+                title="test",
+                slug="test",
+                language_code="de",
                 redirect_to_page=page2,
             ).full_clean(),
         )
@@ -1057,71 +1057,71 @@ class Test(TestCase):
         renderer = TemplatePluginRenderer()
         renderer.register_template_renderer(
             HTML,
-            'renderer/html.html',
+            "renderer/html.html",
         )
 
         page = Page.objects.create(
-            template_key='standard',
+            template_key="standard",
         )
         HTML.objects.create(
             parent=page,
             ordering=10,
-            region='main',
-            html='<b>Hello</b>',
+            region="main",
+            html="<b>Hello</b>",
         )
 
         regions = renderer.regions(page)
         self.assertEqual(
-            regions.render('main', Context()),
-            '<b>Hello</b>\n',
+            regions.render("main", Context()),
+            "<b>Hello</b>\n",
         )
 
         regions = renderer.regions(page)
         self.assertEqual(
-            regions.render('main', Context({'outer': 'Test'})),
-            '<b>Hello</b>Test\n',
+            regions.render("main", Context({"outer": "Test"})),
+            "<b>Hello</b>Test\n",
         )
 
     def test_reverse_app_tag(self):
         Page.objects.create(
-            title='blog',
-            slug='blog',
+            title="blog",
+            slug="blog",
             static_path=False,
-            language_code='en',
+            language_code="en",
             is_active=True,
-            application='blog',
+            application="blog",
         )
         set_urlconf(apps_urlconf())
 
         tests = [(
             "{% reverse_app 'blog' 'article-detail' pk=42 %}",
-            '/blog/42/',
+            "/blog/42/",
             {},
         ), (
             "{% reverse_app 'blog' 'article-detail' pk=42 fallback='/a/' %}",
-            '/blog/42/',
+            "/blog/42/",
             {},
         ), (
             "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",  # noqa
-            '/blog/42/',
-            {'namespaces': ['stuff', 'blog']},
+            "/blog/42/",
+            {"namespaces": ["stuff", "blog"]},
         ), (
             "{% reverse_app 'bla' 'bla' fallback='/test/' %}",
-            '/test/',
+            "/test/",
             {},
         ), (
             "{% reverse_app 'bla' 'bla' fallback='/test/' as t %}{{ t }}",
-            '/test/',
+            "/test/",
             {},
         ), (
             "{% reverse_app 'bla' 'bla' as t %}{{ t|default:'blub' }}",
-            'blub',
+            "blub",
             {},
         )]
 
         try:
             for tpl, out, ctx in tests:
-                t = Template('{% load feincms3_apps %}' + tpl)
+                t = Template("{% load feincms3_apps %}" + tpl)
                 self.assertEqual(
                     t.render(Context(ctx)).strip(),
                     out,
@@ -1150,7 +1150,7 @@ class Test(TestCase):
             # Update self, fetch two descendants and save them
             root.save(save_descendants=True)
 
-        root.slug = 'blaaa'
+        root.slug = "blaaa"
         with self.assertNumQueries(4):
             # Update self, fetch two descendants and save them
             root.save(save_descendants=True)

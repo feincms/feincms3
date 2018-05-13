@@ -18,7 +18,7 @@ def render_plugin(context, plugin):
     :func:`~feincms3.templatetags.feincms3_renderer.render_region` over this
     tag.
     """
-    return context['renderer'].render_plugin_in_context(plugin, context)
+    return context["renderer"].render_plugin_in_context(plugin, context)
 
 
 @register.simple_tag(takes_context=True)
@@ -38,8 +38,8 @@ def render_plugins(context, plugins):
     :func:`~feincms3.templatetags.feincms3_renderer.render_region` over this
     tag.
     """
-    renderer = context['renderer']
-    return mark_safe(''.join(
+    renderer = context["renderer"]
+    return mark_safe("".join(
         renderer.render_plugin_in_context(plugin, context)
         for plugin in plugins
     ))

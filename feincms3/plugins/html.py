@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from content_editor.admin import ContentEditorInline
 
 
-__all__ = ('HTML', 'HTMLInline', 'render_html')
+__all__ = ("HTML", "HTMLInline", "render_html")
 
 
 class HTML(models.Model):
@@ -17,20 +17,20 @@ class HTML(models.Model):
     """
 
     html = models.TextField(
-        'HTML',
+        "HTML",
         help_text=_(
-            'The content will be inserted directly into the page.'
-            ' It is VERY important that the HTML snippet is well-formed!'
+            "The content will be inserted directly into the page."
+            " It is VERY important that the HTML snippet is well-formed!"
         ),
     )
 
     class Meta:
         abstract = True
-        verbose_name = 'HTML'
-        verbose_name_plural = 'HTML'
+        verbose_name = "HTML"
+        verbose_name_plural = "HTML"
 
     def __str__(self):
-        return ''
+        return ""
 
 
 class HTMLInline(ContentEditorInline):

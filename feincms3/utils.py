@@ -42,9 +42,9 @@ def positional(count):
         @wraps(fn)
         def _fn(*args, **kwargs):
             if len(args) > count:
-                raise TypeError('Only %s positional argument%s allowed' % (
+                raise TypeError("Only %s positional argument%s allowed" % (
                     count,
-                    '' if count == 1 else 's',
+                    "" if count == 1 else "s",
                 ))
             return fn(*args, **kwargs)
         return _fn

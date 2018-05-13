@@ -23,7 +23,7 @@ renderer.register_string_renderer(
 renderer.register_template_renderer(
     Snippet,
     lambda plugin: plugin.template_name,
-    lambda plugin, context: {'additional': 'context'},
+    lambda plugin, context: {"additional": "context"},
 )
 renderer.register_string_renderer(
     External,
@@ -38,15 +38,15 @@ renderer.register_string_renderer(
 def page_detail(request, path=None):
     page = get_object_or_404(
         Page.objects.active(),
-        path=('/%s/' % path) if path else '/',
+        path=("/%s/" % path) if path else "/",
     )
     page.activate_language(request)
 
     if page.redirect_to_url or page.redirect_to_page:
         return redirect(page.redirect_to_url or page.redirect_to_page)
     return render(request, page.template.template_name, {
-        'page': page,
-        'regions': renderer.regions(
+        "page": page,
+        "regions": renderer.regions(
             page,
             inherit_from=page.ancestors().reverse(),
         ),

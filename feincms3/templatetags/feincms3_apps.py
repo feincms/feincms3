@@ -30,13 +30,13 @@ class ReverseAppNode(Node):
         kwargs = {k: v.resolve(context) for k, v in self.kwargs.items()}
         namespaces = self.namespaces.resolve(context)
         view_name = self.view_name.resolve(context)
-        fallback = kwargs.pop('fallback', None)
+        fallback = kwargs.pop("fallback", None)
         if not isinstance(namespaces, (list, tuple)):
-            namespaces = namespaces.split(',')
+            namespaces = namespaces.split(",")
         # Try to look up the URL. If it fails, raise NoReverseMatch unless the
         # {% reverse ... as var %} construct is used, in which case return
         # nothing.
-        url = ''
+        url = ""
         try:
             url = apps.reverse_app(
                 namespaces,
@@ -53,7 +53,7 @@ class ReverseAppNode(Node):
 
         if self.asvar:
             context[self.asvar] = url
-            return ''
+            return ""
         else:
             if context.autoescape:
                 url = conditional_escape(url)
@@ -85,7 +85,7 @@ def reverse_app(parser, token):
     if len(bits) < 3:
         raise TemplateSyntaxError(
             '\'reverse_app\' takes at least two arguments, a namespace and'
-            ' a URL pattern name.'
+            " a URL pattern name."
         )
     namespaces = parser.compile_filter(bits[1])
     viewname = parser.compile_filter(bits[2])
@@ -93,7 +93,7 @@ def reverse_app(parser, token):
     kwargs = {}
     asvar = None
     bits = bits[3:]
-    if len(bits) >= 2 and bits[-2] == 'as':
+    if len(bits) >= 2 and bits[-2] == "as":
         asvar = bits[-1]
         bits = bits[:-2]
 
@@ -102,7 +102,7 @@ def reverse_app(parser, token):
             match = kwarg_re.match(bit)
             if not match:
                 raise TemplateSyntaxError(
-                    'Malformed arguments to reverse_app tag',
+                    "Malformed arguments to reverse_app tag",
                 )
             name, value = match.groups()
             if name:

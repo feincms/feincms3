@@ -10,7 +10,7 @@ from ckeditor.fields import RichTextField
 from html_sanitizer.django import get_sanitizer
 
 
-__all__ = ('CleansedRichTextField', 'cleanse_html')
+__all__ = ("CleansedRichTextField", "cleanse_html")
 
 
 def cleanse_html(html):
@@ -74,7 +74,7 @@ class CleansedRichTextField(RichTextField):
     """
 
     def __init__(self, *args, **kwargs):
-        self.cleanse = kwargs.pop('cleanse', cleanse_html)
+        self.cleanse = kwargs.pop("cleanse", cleanse_html)
         super(CleansedRichTextField, self).__init__(*args, **kwargs)
 
     def clean(self, value, instance):

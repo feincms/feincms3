@@ -55,10 +55,10 @@ class MenuMixin(models.Model):
     """
 
     menu = models.CharField(
-        _('menu'),
+        _("menu"),
         max_length=20,
         blank=True,
-        choices=(('', ''),),  # Non-empty choices for get_*_display
+        choices=(("", ""),),  # Non-empty choices for get_*_display
     )
 
     class Meta:
@@ -71,7 +71,7 @@ class MenuMixin(models.Model):
         This method is a receiver of Django's ``class_prepared`` signal.
         """
         if issubclass(sender, MenuMixin) and not sender._meta.abstract:
-            field = sender._meta.get_field('menu')
+            field = sender._meta.get_field("menu")
             field.choices = sender.MENUS
             field.default = field.choices[0][0]
 
@@ -133,9 +133,9 @@ class TemplateMixin(models.Model):
     """
 
     template_key = models.CharField(
-        _('template'),
+        _("template"),
         max_length=100,
-        choices=(('', ''),),  # Non-empty choices for get_*_display
+        choices=(("", ""),),  # Non-empty choices for get_*_display
     )
 
     class Meta:
@@ -156,7 +156,7 @@ class TemplateMixin(models.Model):
         This method is a receiver of Django's ``class_prepared`` signal.
         """
         if issubclass(sender, TemplateMixin) and not sender._meta.abstract:
-            field = sender._meta.get_field('template_key')
+            field = sender._meta.get_field("template_key")
             field.choices = [
                 (t.key, t.title) for t in sender.TEMPLATES
             ]
@@ -196,7 +196,7 @@ class LanguageMixin(models.Model):
     """
 
     language_code = models.CharField(
-        _('language'),
+        _("language"),
         max_length=10,
         choices=settings.LANGUAGES,
         default=settings.LANGUAGES[0][0],
@@ -234,16 +234,16 @@ class RedirectMixin(models.Model):
     """
 
     redirect_to_url = models.CharField(
-        _('Redirect to URL'),
+        _("Redirect to URL"),
         max_length=200,
         blank=True,
     )
     redirect_to_page = models.ForeignKey(
-        'self',
+        "self",
         on_delete=models.SET_NULL,
         blank=True, null=True,
-        related_name='+',
-        verbose_name=_('Redirect to page'),
+        related_name="+",
+        verbose_name=_("Redirect to page"),
     )
 
     class Meta:
@@ -254,28 +254,28 @@ class RedirectMixin(models.Model):
 
         if self.redirect_to_url and self.redirect_to_page_id:
             raise validation_error(
-                _('Only set one redirect value.'),
-                field='redirect_to_url',
+                _("Only set one redirect value."),
+                field="redirect_to_url",
                 exclude=exclude,
             )
 
         if self.redirect_to_page_id:
             if self.redirect_to_page_id == self.pk:
                 raise validation_error(
-                    _('Cannot redirect to self.'),
-                    field='redirect_to_page',
+                    _("Cannot redirect to self."),
+                    field="redirect_to_page",
                     exclude=exclude,
                 )
 
             if self.redirect_to_page.redirect_to_page_id:
                 raise validation_error(
                     _(
-                        'Do not chain redirects. The selected page redirects'
-                        ' to %(title)s (%(path)s).'
+                        "Do not chain redirects. The selected page redirects"
+                        " to %(title)s (%(path)s)."
                     ) % {
-                        'title': self.redirect_to_page,
-                        'path': self.redirect_to_page.get_absolute_url(),
+                        "title": self.redirect_to_page,
+                        "path": self.redirect_to_page.get_absolute_url(),
                     },
-                    field='redirect_to_page',
+                    field="redirect_to_page",
                     exclude=exclude,
                 )

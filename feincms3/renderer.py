@@ -7,7 +7,7 @@ from content_editor.contents import contents_for_item
 from feincms3.utils import positional
 
 
-__all__ = ('TemplatePluginRenderer', 'Regions', 'default_context')
+__all__ = ("TemplatePluginRenderer", "Regions", "default_context")
 
 
 def default_context(plugin, context):
@@ -16,7 +16,7 @@ def default_context(plugin, context):
     simply is a single variable named ``plugin`` containing the plugin
     instance.
     """
-    return {'plugin': plugin}
+    return {"plugin": plugin}
 
 
 class Regions(object):
@@ -75,7 +75,7 @@ class Regions(object):
         """
         Return a cache key suitable for the given ``region`` passed
         """
-        return '%s-%s-%s' % (
+        return "%s-%s-%s" % (
             self._item._meta.label_lower,
             self._item.pk,
             region,
@@ -98,7 +98,7 @@ class Regions(object):
             if html is not None:
                 return html
 
-        html = mark_safe(''.join(
+        html = mark_safe("".join(
             self._renderer.render_plugin_in_context(plugin, context)
             for plugin in self._contents[region]
         ))
@@ -260,7 +260,7 @@ context=default_context)
         if callable(plugin_context):
             plugin_context = plugin_context(plugin, context)
 
-        if not hasattr(plugin_template, 'render'):  # Quacks like a template?
+        if not hasattr(plugin_template, "render"):  # Quacks like a template?
             try:
                 engine = context.template.engine
             except AttributeError:

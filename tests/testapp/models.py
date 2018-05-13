@@ -26,28 +26,28 @@ class Page(
     # TemplateMixin
     TEMPLATES = [
         Template(
-            key='standard',
-            title=_('standard'),
-            template_name='pages/standard.html',
+            key="standard",
+            title=_("standard"),
+            template_name="pages/standard.html",
             regions=(
-                Region(key='main', title=_('Main')),
+                Region(key="main", title=_("Main")),
             ),
         ),
         Template(
-            key='with-sidebar',
-            title=_('with sidebar'),
-            template_name='pages/with-sidebar.html',
+            key="with-sidebar",
+            title=_("with sidebar"),
+            template_name="pages/with-sidebar.html",
             regions=(
-                Region(key='main', title=_('Main')),
-                Region(key='sidebar', title=_('Sidebar')),
+                Region(key="main", title=_("Main")),
+                Region(key="sidebar", title=_("Sidebar")),
             ),
         ),
     ]
 
     # MenuMixin
     MENUS = [
-        ('main', _('main')),
-        ('footer', _('footer')),
+        ("main", _("main")),
+        ("footer", _("footer")),
     ]
 
     # AppsMixin. We have two apps, one is for company PR, the other
@@ -57,11 +57,11 @@ class Page(
     # article categories exactly for URL reversing and filtering articles by
     # app to work! (See app.articles.models.Article.CATEGORIES)
     APPLICATIONS = [
-        ('publications', _('publications'), {
-            'urlconf': 'testapp.articles_urls',
+        ("publications", _("publications"), {
+            "urlconf": "testapp.articles_urls",
         }),
-        ('blog', _('blog'), {
-            'urlconf': 'testapp.articles_urls',
+        ("blog", _("blog"), {
+            "urlconf": "testapp.articles_urls",
         }),
     ]
 
@@ -75,7 +75,7 @@ class RichText(plugins.RichText, PagePlugin):
 
 class Image(plugins.Image, PagePlugin):
     caption = models.CharField(
-        _('caption'),
+        _("caption"),
         max_length=200,
         blank=True,
     )
@@ -83,7 +83,7 @@ class Image(plugins.Image, PagePlugin):
 
 class Snippet(plugins.Snippet, PagePlugin):
     TEMPLATES = [
-        ('snippet.html', _('snippet')),
+        ("snippet.html", _("snippet")),
     ]
 
 
@@ -97,27 +97,27 @@ class HTML(plugins.HTML, PagePlugin):
 
 class Article(models.Model):
     title = models.CharField(
-        _('title'),
+        _("title"),
         max_length=100,
     )
     category = models.CharField(
-        _('category'),
+        _("category"),
         max_length=20,
         choices=(
-            ('publications', 'publications'),
-            ('blog', 'blog'),
+            ("publications", "publications"),
+            ("blog", "blog"),
         ),
     )
 
     class Meta:
-        ordering = ['-pk']
+        ordering = ["-pk"]
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse_app(
-            (self.category, 'articles'),
-            'article-detail',
-            kwargs={'pk': self.pk},
+            (self.category, "articles"),
+            "article-detail",
+            kwargs={"pk": self.pk},
         )
