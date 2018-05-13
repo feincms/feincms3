@@ -35,17 +35,12 @@ class PageAdmin(ContentEditor, TreeAdmin):
         (None, {"fields": ("is_active", "title", "parent")}),
         (
             capfirst(_("path")),
-            {
-                "fields": ("slug", "static_path", "path"),
-                "classes": ("tabbed",),
-            },
+            {"fields": ("slug", "static_path", "path"), "classes": ("tabbed",)},
         ),
         (
             capfirst(_("settings")),
             {
-                "fields": (
-                    "menu", "language_code", "template_key", "application"
-                ),
+                "fields": ("menu", "language_code", "template_key", "application"),
                 "classes": ("tabbed",),
             },
         ),

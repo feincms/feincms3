@@ -102,9 +102,7 @@ def reverse_app(parser, token):
         for bit in bits:
             match = kwarg_re.match(bit)
             if not match:
-                raise TemplateSyntaxError(
-                    "Malformed arguments to reverse_app tag"
-                )
+                raise TemplateSyntaxError("Malformed arguments to reverse_app tag")
             name, value = match.groups()
             if name:
                 kwargs[name] = parser.compile_filter(value)

@@ -231,9 +231,7 @@ class RedirectMixin(models.Model):
             # Default rendering continues here.
     """
 
-    redirect_to_url = models.CharField(
-        _("Redirect to URL"), max_length=200, blank=True
-    )
+    redirect_to_url = models.CharField(_("Redirect to URL"), max_length=200, blank=True)
     redirect_to_page = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,

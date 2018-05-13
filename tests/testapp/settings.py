@@ -2,9 +2,7 @@ import os
 import warnings
 
 
-DATABASES = {
-    "default": {"ENGINE": "django.db.backends.postgresql", "NAME": "feincms3"}
-}
+DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql", "NAME": "feincms3"}}
 
 INSTALLED_APPS = [
     "django.contrib.auth",

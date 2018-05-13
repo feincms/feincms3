@@ -36,11 +36,7 @@ def template_name(model, template_name_suffix):
 
 @positional(3)
 def render_list(
-    request,
-    queryset,
-    context=None,
-    template_name_suffix="_list",
-    paginate_by=None,
+    request, queryset, context=None, template_name_suffix="_list", paginate_by=None
 ):
     """render_list(request, queryset, context=None, *,\
  template_name_suffix='_list', paginate_by=None)
@@ -89,9 +85,7 @@ def render_list(
 
 
 @positional(3)
-def render_detail(
-    request, object, context=None, template_name_suffix="_detail"
-):
+def render_detail(request, object, context=None, template_name_suffix="_detail"):
     """render_detail(request, object, context=None, *,\
  template_name_suffix='_detail')
     Render a single item

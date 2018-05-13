@@ -107,9 +107,7 @@ class TreeAdmin(ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         return [
-            url(
-                r"^(.+)/move/$", wrap(self.move_view), name="%s_%s_move" % info
-            )
+            url(r"^(.+)/move/$", wrap(self.move_view), name="%s_%s_move" % info)
         ] + super(
             TreeAdmin, self
         ).get_urls()
@@ -150,8 +148,7 @@ class TreeAdmin(ModelAdmin):
                     )
 
                     return redirect(
-                        "admin:%s_%s_changelist"
-                        % (opts.app_label, opts.model_name)
+                        "admin:%s_%s_changelist" % (opts.app_label, opts.model_name)
                     )
 
             else:
@@ -221,9 +218,7 @@ class MoveForm(forms.Form):
         self.fields["of"] = forms.ModelChoiceField(
             label=pgettext("MoveForm", "Of"),
             required=False,
-            queryset=self.model.objects.exclude(
-                pk__in=self.instance.descendants()
-            ),
+            queryset=self.model.objects.exclude(pk__in=self.instance.descendants()),
             widget=forms.Select(attrs={"size": 30, "style": "height:auto"}),
         )
 
@@ -231,11 +226,7 @@ class MoveForm(forms.Form):
             (
                 obj.pk,
                 "%s%s"
-                % (
-                    (obj.depth - 1)
-                    * ("*** " if obj == self.instance else "--- "),
-                    obj,
-                ),
+                % ((obj.depth - 1) * ("*** " if obj == self.instance else "--- "), obj),
             )
             for obj in self.fields["of"].queryset
         ]
@@ -332,8 +323,6 @@ class AncestorFilter(SimpleListFilter):
             except (TypeError, ValueError, queryset.model.DoesNotExist):
                 raise IncorrectLookupParameters()
             return queryset.extra(
-                where=[
-                    "%s = ANY(%s)" % (node.pk, queryset.model._cte_node_path)
-                ]
+                where=["%s = ANY(%s)" % (node.pk, queryset.model._cte_node_path)]
             )
         return queryset

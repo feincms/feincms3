@@ -57,9 +57,7 @@ class AbstractPage(CTENode):
     is_active = models.BooleanField(_("is active"), default=True)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"))
-    position = models.PositiveIntegerField(
-        db_index=True, editable=False, default=0
-    )
+    position = models.PositiveIntegerField(db_index=True, editable=False, default=0)
 
     # Who even cares about MySQL
     path = models.CharField(
@@ -124,9 +122,7 @@ class AbstractPage(CTENode):
                     exclude=exclude,
                 )
         else:
-            self.path = "%s%s/" % (
-                self.parent.path if self.parent else "/", self.slug
-            )
+            self.path = "%s%s/" % (self.parent.path if self.parent else "/", self.slug)
 
         super(AbstractPage, self).clean()
 
@@ -140,10 +136,7 @@ class AbstractPage(CTENode):
         for pk, node in self._branch_for_update().items():
             if node.path in clash_candidates:
                 raise validation_error(
-                    _(
-                        "The page %(page)s's new path %(path)s would"
-                        " not be unique."
-                    )
+                    _("The page %(page)s's new path %(path)s would" " not be unique.")
                     % {"page": node, "path": node.path},
                     field="path",
                     exclude=exclude,
@@ -163,9 +156,7 @@ class AbstractPage(CTENode):
         save_descendants = kwargs.pop("save_descendants", None)
 
         if not self.static_path:
-            self.path = "%s%s/" % (
-                self.parent.path if self.parent else "/", self.slug
-            )
+            self.path = "%s%s/" % (self.parent.path if self.parent else "/", self.slug)
 
         if not self.position:
             self.position = 10 + (

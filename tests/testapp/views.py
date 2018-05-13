@@ -39,8 +39,6 @@ def page_detail(request, path=None):
         page.template.template_name,
         {
             "page": page,
-            "regions": renderer.regions(
-                page, inherit_from=page.ancestors().reverse()
-            ),
+            "regions": renderer.regions(page, inherit_from=page.ancestors().reverse()),
         },
     )

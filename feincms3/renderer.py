@@ -76,9 +76,7 @@ class Regions(object):
         """
         Return a cache key suitable for the given ``region`` passed
         """
-        return "%s-%s-%s" % (
-            self._item._meta.label_lower, self._item.pk, region
-        )
+        return "%s-%s-%s" % (self._item._meta.label_lower, self._item.pk, region)
 
     @positional(3)
     def render(self, region, context=None, timeout=None):

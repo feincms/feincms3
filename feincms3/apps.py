@@ -62,9 +62,7 @@ __all__ = (
 )
 
 
-def reverse_any(
-    viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwargs
-):
+def reverse_any(viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwargs):
     """
     Tries reversing a list of viewnames with the same arguments, and returns
     the first result where no ``NoReverseMatch`` exception is raised.
@@ -131,11 +129,7 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
                 for language in settings.LANGUAGES
                 if language[0] != current
             ],
-            (
-                namespaces
-                if isinstance(namespaces, (list, tuple))
-                else (namespaces,)
-            ),
+            (namespaces if isinstance(namespaces, (list, tuple)) else (namespaces,)),
             (viewname,),
         )
     ]
@@ -205,9 +199,7 @@ def apps_urlconf(apps=None):
 
     page_model = concrete_model(AppsMixin)
     if apps is None:
-        fields = (
-            "path", "application", "app_instance_namespace", "language_code"
-        )
+        fields = ("path", "application", "app_instance_namespace", "language_code")
         apps = page_model.objects.active().exclude(
             app_instance_namespace=""
         ).values_list(
@@ -224,9 +216,7 @@ def apps_urlconf(apps=None):
     module_name = "urlconf_%s" % hashlib.md5(key.encode("utf-8")).hexdigest()
 
     if module_name not in sys.modules:
-        app_config = {
-            app[0]: app[2] for app in page_model.APPLICATIONS if app[0]
-        }
+        app_config = {app[0]: app[2] for app in page_model.APPLICATIONS if app[0]}
 
         m = types.ModuleType(str(module_name))  # Correct for Python 2 and 3
 
@@ -441,9 +431,7 @@ class AppsMixin(models.Model):
         ):
             error = _("Apps may not have any descendants.")
             raise validation_error(
-                _("Invalid parent: %s") % (error,),
-                field="parent",
-                exclude=exclude,
+                _("Invalid parent: %s") % (error,), field="parent", exclude=exclude
             )
 
         if self.application and not self.is_leaf():
@@ -490,10 +478,7 @@ class AppsMixin(models.Model):
                 fields = ["application"]
                 fields.extend(app_config.get("required_fields", ()))
                 raise ValidationError(
-                    {
-                        field: _(_("This exact app already exists."))
-                        for field in fields
-                    }
+                    {field: _(_("This exact app already exists.")) for field in fields}
                 )
 
     @staticmethod

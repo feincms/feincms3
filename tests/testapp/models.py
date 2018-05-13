@@ -4,12 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from content_editor.models import Region, Template, create_plugin_base
 from feincms3 import plugins
 from feincms3.apps import AppsMixin, reverse_app
-from feincms3.mixins import (
-    LanguageMixin,
-    MenuMixin,
-    RedirectMixin,
-    TemplateMixin,
-)
+from feincms3.mixins import LanguageMixin, MenuMixin, RedirectMixin, TemplateMixin
 from feincms3.pages import AbstractPage
 
 
@@ -55,11 +50,7 @@ class Page(
     # article categories exactly for URL reversing and filtering articles by
     # app to work! (See app.articles.models.Article.CATEGORIES)
     APPLICATIONS = [
-        (
-            "publications",
-            _("publications"),
-            {"urlconf": "testapp.articles_urls"},
-        ),
+        ("publications", _("publications"), {"urlconf": "testapp.articles_urls"}),
         ("blog", _("blog"), {"urlconf": "testapp.articles_urls"}),
     ]
 
@@ -103,7 +94,5 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse_app(
-            (self.category, "articles"),
-            "article-detail",
-            kwargs={"pk": self.pk},
+            (self.category, "articles"), "article-detail", kwargs={"pk": self.pk}
         )

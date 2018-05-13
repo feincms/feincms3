@@ -78,6 +78,4 @@ class CleansedRichTextField(RichTextField):
         super(CleansedRichTextField, self).__init__(*args, **kwargs)
 
     def clean(self, value, instance):
-        return self.cleanse(
-            super(CleansedRichTextField, self).clean(value, instance)
-        )
+        return self.cleanse(super(CleansedRichTextField, self).clean(value, instance))

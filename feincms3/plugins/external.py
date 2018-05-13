@@ -18,11 +18,7 @@ from feincms3.utils import positional
 
 
 __all__ = (
-    "External",
-    "ExternalInline",
-    "oembed_json",
-    "oembed_html",
-    "render_external",
+    "External", "ExternalInline", "oembed_json", "oembed_html", "render_external"
 )
 
 
@@ -53,9 +49,7 @@ def oembed_json(url, cache_failures=True):
     try:
         data = requests.get(
             "https://noembed.com/embed",
-            params={
-                "url": url, "nowrap": "on", "maxwidth": 1200, "maxheight": 800
-            },
+            params={"url": url, "nowrap": "on", "maxwidth": 1200, "maxheight": 800},
             timeout=2,
         ).json()
     except (requests.ConnectionError, requests.ReadTimeout):
@@ -97,9 +91,7 @@ def render_external(plugin, **kwargs):
     if "youtube.com" in html:
         html = '<div class="responsive-embed widescreen">%s</div>' % (html,)
     elif "vimeo.com" in html:
-        html = '<div class="responsive-embed widescreen vimeo">%s</div>' % (
-            html,
-        )
+        html = '<div class="responsive-embed widescreen vimeo">%s</div>' % (html,)
     return mark_safe(html)
 
 
