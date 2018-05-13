@@ -167,7 +167,7 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
 
 @positional(0)
 def apps_urlconf(apps=None):
-    """apps_urlconf(*, apps=None):
+    """apps_urlconf(*, apps=None)
     Generates a dynamic URLconf Python module including all applications in
     their assigned place and adding the ``urlpatterns`` from ``ROOT_URLCONF``
     at the end. Returns the value of ``ROOT_URLCONF`` directly if there are
