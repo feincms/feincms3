@@ -30,7 +30,9 @@ def template_name(model, template_name_suffix):
     """
 
     return "%s/%s%s.html" % (
-        model._meta.app_label, model._meta.model_name, template_name_suffix
+        model._meta.app_label,
+        model._meta.model_name,
+        template_name_suffix,
     )
 
 

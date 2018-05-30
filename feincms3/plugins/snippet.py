@@ -20,6 +20,7 @@ class Snippet(models.Model):
     """
     Template snippet plugin
     """
+
     template_name = models.CharField(
         _("template name"),
         max_length=200,
@@ -53,4 +54,5 @@ class SnippetInline(ContentEditorInline):
     Snippet inline does nothing special, it simply exists for consistency
     with the other feincms3 plugins
     """
+
     pass

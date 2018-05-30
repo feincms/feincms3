@@ -20,6 +20,7 @@ class Image(models.Model):
     """
     Image plugin
     """
+
     image = ImageField(
         _("image"),
         upload_to="images/%Y/%m",
@@ -50,6 +51,7 @@ class ImageInline(ContentEditorInline):
     """
     Image inline
     """
+
     pass
 
 

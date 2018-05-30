@@ -200,12 +200,11 @@ def apps_urlconf(apps=None):
     page_model = concrete_model(AppsMixin)
     if apps is None:
         fields = ("path", "application", "app_instance_namespace", "language_code")
-        apps = page_model.objects.active().exclude(
-            app_instance_namespace=""
-        ).values_list(
-            *fields
-        ).order_by(
-            *fields
+        apps = (
+            page_model.objects.active()
+            .exclude(app_instance_namespace="")
+            .values_list(*fields)
+            .order_by(*fields)
         )
 
     if not apps:
@@ -285,7 +284,7 @@ def page_for_app_request(request, queryset=None):
     # Unguarded - if this fails, we shouldn't even be here.
     return queryset.get(
         language_code=request.resolver_match.namespaces[0][
-            len(page_model.LANGUAGE_CODES_NAMESPACE) + 1:
+            len(page_model.LANGUAGE_CODES_NAMESPACE) + 1 :
         ],
         app_instance_namespace=request.resolver_match.namespaces[1],
     )
@@ -422,12 +421,9 @@ class AppsMixin(models.Model):
         exclude = [] if exclude is None else exclude
         super(AppsMixin, self).clean_fields(exclude)
 
-        if (
-            self.parent
-            and (
-                self.parent.application
-                or self.parent.ancestors().exclude(application="").exists()
-            )
+        if self.parent and (
+            self.parent.application
+            or self.parent.ancestors().exclude(application="").exists()
         ):
             error = _("Apps may not have any descendants.")
             raise validation_error(
@@ -466,9 +462,7 @@ class AppsMixin(models.Model):
         if app_config:
             app_instance_namespace = app_config.get(
                 "app_instance_namespace", lambda instance: instance.application
-            )(
-                self
-            )
+            )(self)
 
             if self.__class__._default_manager.filter(
                 Q(app_instance_namespace=app_instance_namespace),

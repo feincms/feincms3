@@ -97,7 +97,6 @@ class TreeAdmin(ModelAdmin):
         """
 
         def wrap(view):
-
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
 
@@ -108,9 +107,7 @@ class TreeAdmin(ModelAdmin):
 
         return [
             url(r"^(.+)/move/$", wrap(self.move_view), name="%s_%s_move" % info)
-        ] + super(
-            TreeAdmin, self
-        ).get_urls()
+        ] + super(TreeAdmin, self).get_urls()
 
     @csrf_protect_m
     def move_view(self, request, object_id):
@@ -198,6 +195,7 @@ class MoveForm(forms.Form):
 
     Requires the node to be moved as ``obj`` keyword argument.
     """
+
     MOVE_CHOICES = (
         ("left", _("left sibling")),
         ("right", _("right sibling")),
@@ -301,6 +299,7 @@ class AncestorFilter(SimpleListFilter):
 
         admin.site.register(Page, PageAdmin)
     """
+
     title = _("ancestor")
     parameter_name = "ancestor"
     max_depth = 2

@@ -21,6 +21,7 @@ class Image(models.Model):
     """
     Image plugin
     """
+
     image = VersatileImageField(
         _("image"),
         upload_to="images/%Y/%m",
@@ -64,6 +65,7 @@ class ImageInline(ContentEditorInline):
     Image inline using the ``AlwaysChangedModelForm`` to work around a bug
     where PPOI modifications were not picked up.
     """
+
     form = AlwaysChangedModelForm
 
 

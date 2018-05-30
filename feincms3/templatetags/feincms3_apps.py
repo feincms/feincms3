@@ -9,7 +9,6 @@ register = template.Library()
 
 
 class ReverseAppNode(Node):
-
     def __init__(self, namespaces, view_name, args, kwargs, asvar):
         self.namespaces = namespaces
         self.view_name = view_name

@@ -54,7 +54,6 @@ def monkeypatches():
 
 
 class Test(TestCase):
-
     def setUp(self):
         self.user = User.objects.create_superuser("admin", "admin@test.ch", "blabla")
         deactivate_all()
@@ -789,7 +788,6 @@ class Test(TestCase):
         self.assertRaises(ValidationError, page2.full_clean)
 
     def test_positional(self):
-
         @positional(2)
         def test(a, b, c):
             pass
@@ -800,7 +798,6 @@ class Test(TestCase):
         test(1, 2, c=3)
 
     def test_subclasses(self):
-
         class A(object):
             pass
 
@@ -813,12 +810,10 @@ class Test(TestCase):
         self.assertEqual(set(iterate_subclasses(A)), {B, C})
 
         class Test(models.Model):
-
             class Meta:
                 abstract = True
 
         class Test2(Test):
-
             class Meta:
                 abstract = True
 

@@ -51,6 +51,7 @@ class AbstractPage(CTENode):
       when building a multilingual site, for language root pages (i.e.
       ``/en/``, ``/de/``, ``/pt-br/`` etc.)
     """
+
     _cte_node_path = "cte_path"
     _cte_node_order_by = ("position",)
 
@@ -160,24 +161,17 @@ class AbstractPage(CTENode):
 
         if not self.position:
             self.position = 10 + (
-                self.__class__._default_manager.filter(
-                    parent_id=self.parent_id
-                ).order_by().aggregate(
-                    p=Max("position")
-                )[
-                    "p"
-                ]
+                self.__class__._default_manager.filter(parent_id=self.parent_id)
+                .order_by()
+                .aggregate(p=Max("position"))["p"]
                 or 0
             )
 
         super(AbstractPage, self).save(*args, **kwargs)
 
-        if (
-            save_descendants is True
-            or (
-                save_descendants is None
-                and (self.is_active, self.path) != self._save_descendants_cache
-            )
+        if save_descendants is True or (
+            save_descendants is None
+            and (self.is_active, self.path) != self._save_descendants_cache
         ):
             for pk, node in self._branch_for_update().items():
                 if pk == self.pk:

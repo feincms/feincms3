@@ -40,7 +40,6 @@ def positional(count):
     """
 
     def _dec(fn):
-
         @wraps(fn)
         def _fn(*args, **kwargs):
             if len(args) > count:

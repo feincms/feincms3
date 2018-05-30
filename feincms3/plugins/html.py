@@ -38,6 +38,7 @@ class HTMLInline(ContentEditorInline):
     Just available for consistency, absolutely no difference to a standard
     ``ContentEditorInline``.
     """
+
     pass
 
 

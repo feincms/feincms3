@@ -18,7 +18,11 @@ from feincms3.utils import positional
 
 
 __all__ = (
-    "External", "ExternalInline", "oembed_json", "oembed_html", "render_external"
+    "External",
+    "ExternalInline",
+    "oembed_json",
+    "oembed_html",
+    "render_external",
 )
 
 
@@ -99,6 +103,7 @@ class External(models.Model):
     """
     External content plugin
     """
+
     url = models.URLField(_("URL"))
 
     class Meta:
@@ -129,4 +134,5 @@ class ExternalInline(ContentEditorInline):
     Content editor inline using the ``ExternalForm`` to verify whether the
     given URL is embeddable using oEmbed or not.
     """
+
     form = ExternalForm
