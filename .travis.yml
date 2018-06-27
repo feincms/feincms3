@@ -32,7 +32,6 @@ jobs:
       env: REQ=none
       install: skip
       script:
-        - pip install flake8 isort unify
+        - pip install black flake8
         - flake8 .
-        - isort --check-only --recursive --diff feincms3 tests
-        - unify --check-only --recursive --quote '"' feincms3 tests
+        - black --check feincms3 tests

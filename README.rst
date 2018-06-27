@@ -24,13 +24,8 @@ additional details.
 Development
 ===========
 
-feincms3 uses both flake8 and isort to check for style violations. It is
-recommended to add the following git hook as an executable file at
-``.git/hooks/pre-commit``::
+feincms3 uses both flake8 and black. Run both as follows::
 
-    #!/bin/bash
-    set -ex
-    export PYTHONWARNINGS=ignore
     tox -e style
 
 The easiest way to build the documentation and run the test suite is
