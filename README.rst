@@ -14,7 +14,7 @@ feincms3
 
 
 feincms3 provides additional building blocks on top of
-django-content-editor_ and django-cte-forest_ which make building a page
+django-content-editor_ and django-tree-queries_ which make building a page
 CMS (and also other types of CMS) simpler.
 
 Consult the documentation_ or the example project feincms3-example_ for
@@ -36,7 +36,7 @@ using tox_::
 
 
 .. _django-content-editor: http://django-content-editor.readthedocs.org/
-.. _django-cte-forest: https://github.com/matthiask/django-cte-forest
+.. _django-tree-queries: https://github.com/matthiask/django-tree-queries
 .. _feincms3-example: https://github.com/matthiask/feincms3-example
 .. _documentation: http://feincms3.readthedocs.io/en/latest/
 .. _tox: https://tox.readthedocs.io/

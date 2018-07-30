@@ -5,7 +5,7 @@ feincms3
 Version |release|
 
 feincms3 provides additional building blocks on top of
-django-content-editor_ and django-cte-forest_ which make building a page
+django-content-editor_ and django-tree-queries_ which make building a page
 CMS (and also other types of CMS) simpler.
 
 This documentation consists of the following parts:
@@ -52,14 +52,14 @@ Prerequisites and installation
 ==============================
 
 feincms3 runs on Python 2.7 and Python 3.4 or better. The minimum
-required Django version is 1.9 (because of django-content-editor_'s
-dependency on Django's features that have only been added in this
-version). Also, because of django-cte-forest_ it is currently
-PostgreSQL_ only because it lacks support for other database engines'
-recursive common table expressions (patches welcome!).
+required Django version is 1.11. Database engine support is constrained
+by django-tree-queries_ use of recursive common table expressions. At
+the time of writing, this means that PostgreSQL, sqlite3 (>3.8.3) and
+MariaDB (>10.2.2) are supported. MySQL 8.0 should work as well, but is
+not being tested.
 
 feincms3 should be installed using pip_. The default of ``pip install
-feincms3`` depends on django-content-editor_ and django-cte-forest_
+feincms3`` depends on django-content-editor_ and django-tree-queries_
 (explained below). By specifying ``pip install feincms3[all]`` instead
 you can also install all optional dependencies (otherwise you'll not be
 able to use the built-in rich text, image and oEmbed plugins).
@@ -75,7 +75,7 @@ Parts and responsibilities
 ==========================
 
 To understand feincms3 you'll first have to know about
-django-content-editor_ and django-cte-forest_.
+django-content-editor_ and django-tree-queries_.
 
 Django's builtin admin application provides a really good and usable
 administration interface for managing structured content.
@@ -85,14 +85,14 @@ often necessary for content management systems. For example, articles
 may be composed of text blocks with images and videos interspersed
 throughout. Those content elements are called plugins [#]_.
 
-django-cte-forest_ provides a smart way to efficiently fetch
+django-tree-queries_ provides a smart way to efficiently fetch
 tree-shaped data in a relational database supporting Common Table
 Expressions [#]_.
 
 feincms3 has the following main parts:
 
 - A base class for your own **pages** model if you want to use
-  django-cte-forest_ to build a hierarchical page tree.
+  django-tree-queries_ to build a hierarchical page tree.
 - Model **mixins** for common tasks such as building navigation menus from a
   page tree, multilingual sites and sites with differing templates on
   different parts of the site.
@@ -521,7 +521,7 @@ redirect to this URL instead.
 .. _comparable CMS systems: https://www.djangopackages.com/grids/g/cms/
 .. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor/
 .. _django-content-editor: https://django-content-editor.readthedocs.io/
-.. _django-cte-forest: https://django-cte-forest.readthedocs.io/
+.. _django-tree-queries: https://github.com/matthiask/django-tree-queries/
 .. _django-imagefield: https://django-imagefield.readthedocs.io/
 .. _django-mptt: https://django-mptt.readthedocs.io/
 .. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/

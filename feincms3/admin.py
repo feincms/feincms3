@@ -24,7 +24,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 
 class TreeAdmin(ModelAdmin):
     """
-    ``ModelAdmin`` subclass for managing models using django-cte-forest_
+    ``ModelAdmin`` subclass for managing models using django-tree-queries_
     trees.
 
     Shows the tree's hierarchy and adds a view to move nodes around. To use
