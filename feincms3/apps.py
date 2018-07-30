@@ -281,7 +281,7 @@ def page_for_app_request(request, queryset=None):
 
     page_model = concrete_model(AppsMixin)
     if queryset is None:
-        queryset = page_model.objects
+        queryset = page_model.objects.with_tree_fields()
     # Unguarded - if this fails, we shouldn't even be here.
     return queryset.get(
         language_code=request.resolver_match.namespaces[0][
