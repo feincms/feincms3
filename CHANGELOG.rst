@@ -9,8 +9,27 @@ Change log
 - Switched the preferred quote to ``"`` and started using `black
   <https://pypi.org/project/black/>`_ to automatically format Python
   code.
-- Switched from django-cte-forest_ to the simpler django-tree-queries_
-  which also supports more database engines.
+
+Switched to a new library for recursive common table expressions
+----------------------------------------------------------------
+
+django-tree-queries_ supports more database engines, which means that
+the PostgreSQL_-only days of feincms3 are gone.
+
+Incompatible differences are few:
+
+- The attributes on page objects are named ``tree_depth`` and ``tree_path``
+  now instead of ``depth`` and ``cte_path``. If you're using ``WHERE``
+  clauses on your querysets change ``depth`` to ``__tree.tree_depth``
+  (or only ``tree_depth``). Properties for backward compatibility have
+  been added to the ``AbstractPage`` class, but of course those cannot
+  be used in database queries.
+- django-tree-queries_ uses the correct definition of node depth where
+  root nodes have a depth of ``0``, not ``1``.
+- django-tree-queries_ does not add the CTE by default to all queries,
+  instead, users are expected to call ``.with_tree_fields()`` themselves
+  if they want to use the CTE attributes. For the time being, the
+  ``AbstractPageManager`` always returns querysets with tree fields.
 
 
 `0.22`_ (2018-05-04)
@@ -333,6 +352,7 @@ functionality.
 .. _django-imagefield: https://django-imagefield.readthedocs.io/
 .. _django-mptt: https://django-mptt.readthedocs.io/
 .. _django-mptt-nomagic: https://github.com/django-mptt/django-mptt/pull/486
+.. _django-tree-queries: https://github.com/matthiask/django-tree-queries/
 .. _django-versatileimagefield: https://django-versatileimagefield.readthedocs.io/
 .. _feincms-cleanse: https://pypi.python.org/pypi/feincms-cleanse/
 .. _html-sanitizer: https://pypi.python.org/pypi/html-sanitizer/
