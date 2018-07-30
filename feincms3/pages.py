@@ -6,15 +6,19 @@ from django.db.models import Max, Q
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from cte_forest.models import CTENode, CTENodeManager
+from tree_queries.models import TreeNode, TreeQuerySet
+
 from feincms3.utils import validation_error
 
 
-class AbstractPageManager(CTENodeManager):
+class AbstractPageManager(models.Manager):
     """
     Defines a single method, ``active``, which only returns pages with
     ``is_active=True``.
     """
+
+    def get_queryset(self):
+        return super(AbstractPageManager, self).get_queryset().with_tree_fields()
 
     def active(self):
         """
@@ -26,7 +30,7 @@ class AbstractPageManager(CTENodeManager):
         return self.filter(is_active=True)
 
 
-class AbstractPage(CTENode):
+class AbstractPage(TreeNode):
     """
     Short version: If you want to build a CMS with a hierarchical page
     structure, use this base class.
@@ -52,9 +56,6 @@ class AbstractPage(CTENode):
       ``/en/``, ``/de/``, ``/pt-br/`` etc.)
     """
 
-    _cte_node_path = "cte_path"
-    _cte_node_order_by = ("position",)
-
     is_active = models.BooleanField(_("is active"), default=True)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"))
@@ -76,10 +77,11 @@ class AbstractPage(CTENode):
     )
     static_path = models.BooleanField(_("static path"), default=False)
 
-    objects = AbstractPageManager()
+    objects = AbstractPageManager.from_queryset(TreeQuerySet)()
 
     class Meta:
         abstract = True
+        ordering = ("position",)
         verbose_name = _("page")
         verbose_name_plural = _("pages")
 
@@ -193,3 +195,12 @@ class AbstractPage(CTENode):
         if self.path == "/":
             return reverse("pages:root")
         return reverse("pages:page", kwargs={"path": self.path.strip("/")})
+
+    # Backwards compatibility
+    @property
+    def depth(self):
+        return self.tree_depth + 1
+
+    @property
+    def cte_path(self):
+        return self.tree_path

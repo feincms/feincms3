@@ -42,15 +42,8 @@ class TreeAdmin(ModelAdmin):
     class Media:
         css = {"all": ["feincms3/box-drawing.css"]}
 
-    def __init__(self, *args, **kwargs):
-        super(TreeAdmin, self).__init__(*args, **kwargs)
-        self.model._default_manager._ensure_parameters()
-
-    def get_ordering(self, request):
-        """
-        Order by tree (depth-first traversal) and ``position`` within a level
-        """
-        return (self.model._cte_node_ordering, "position")
+    def get_queryset(self, request):
+        return self.model._default_manager.with_tree_fields()
 
     def indented_title(self, instance):
         """
@@ -216,7 +209,9 @@ class MoveForm(forms.Form):
         self.fields["of"] = forms.ModelChoiceField(
             label=pgettext("MoveForm", "Of"),
             required=False,
-            queryset=self.model.objects.exclude(pk__in=self.instance.descendants()),
+            queryset=self.model.objects.with_tree_fields().exclude(
+                pk__in=self.instance.descendants()
+            ),
             widget=forms.Select(attrs={"size": 30, "style": "height:auto"}),
         )
 
@@ -302,16 +297,16 @@ class AncestorFilter(SimpleListFilter):
 
     title = _("ancestor")
     parameter_name = "ancestor"
-    max_depth = 2
+    max_depth = 1
 
     def indent(self, depth):
-        return mark_safe("&#x251c;" * (depth - 1))
+        return mark_safe("&#x251c;" * depth)
 
     def lookups(self, request, model_admin):
         return [
-            (node.id, format_html("{} {}", self.indent(node.depth), node))
-            for node in model_admin.model._default_manager.extra(
-                where=["depth <= %s" % self.max_depth]
+            (node.id, format_html("{} {}", self.indent(node.tree_depth), node))
+            for node in model_admin.model._default_manager.with_tree_fields().extra(
+                where=["tree_depth <= %s" % self.max_depth]
             )
         ]
 
@@ -321,7 +316,5 @@ class AncestorFilter(SimpleListFilter):
                 node = queryset.model._default_manager.get(pk=self.value())
             except (TypeError, ValueError, queryset.model.DoesNotExist):
                 raise IncorrectLookupParameters()
-            return queryset.extra(
-                where=["%s = ANY(%s)" % (node.pk, queryset.model._cte_node_path)]
-            )
+            return queryset.descendants(node, include_self=True)
         return queryset

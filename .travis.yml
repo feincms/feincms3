@@ -21,10 +21,11 @@ matrix:
       env: REQ="https://github.com/django/django/archive/master.zip#egg=Django"
 install:
 - pip install -U pip setuptools wheel
-- pip install $REQ django-ckeditor django-content-editor django-cte-forest
-  django-imagefield html-sanitizer pytz requests psycopg2-binary
+- pip install $REQ
+- pip install django-ckeditor django-content-editor django-imagefield html-sanitizer psycopg2-binary requests
+- pip install https://github.com/matthiask/django-tree-queries/archive/master.zip
 - python setup.py install
-script: cd tests && ./manage.py test testapp && cd ..
+script: cd tests && ./manage.py test -v 2 testapp && cd ..
 
 jobs:
   include:

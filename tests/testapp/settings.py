@@ -3,6 +3,10 @@ import warnings
 
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql", "NAME": "feincms3"}}
+if os.environ.get("DB") == "sqlite3":
+    DATABASES = {
+        "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
+    }
 
 INSTALLED_APPS = [
     "django.contrib.auth",
