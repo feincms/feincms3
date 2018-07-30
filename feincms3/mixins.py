@@ -42,12 +42,12 @@ class MenuMixin(models.Model):
         @register.simple_tag
         def menus():
             menus = defaultdict(list)
-            pages = Page.objects.filter(
+            pages = Page.objects.with_tree_fields().filter(
                 Q(is_active=True),
                 Q(language_code=get_language()),
                 ~Q(menu=''),
             ).extra(
-                where=['depth BETWEEN 2 AND 3'],
+                where=['tree_depth BETWEEN 1 AND 2'],
             )
             for page in pages:
                 menus[page.menu].append(page)
