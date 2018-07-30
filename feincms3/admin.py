@@ -50,9 +50,9 @@ class TreeAdmin(ModelAdmin):
         Use Unicode box-drawing characters to visualize the tree hierarchy.
         """
         box_drawing = []
-        for i in range(instance.depth - 2):
+        for i in range(instance.tree_depth - 1):
             box_drawing.append('<i class="l"></i>')
-        if instance.depth > 1:
+        if instance.tree_depth > 0:
             box_drawing.append('<i class="a"></i>')
 
         return format_html(
@@ -61,7 +61,7 @@ class TreeAdmin(ModelAdmin):
             '<div class="box-text" style="text-indent:{}px">{}</div>'
             "</div>",
             mark_safe("".join(box_drawing)),
-            (instance.depth - 1) * 30,
+            instance.tree_depth * 30,
             instance,
         )
 
@@ -219,7 +219,7 @@ class MoveForm(forms.Form):
             (
                 obj.pk,
                 "%s%s"
-                % ((obj.depth - 1) * ("*** " if obj == self.instance else "--- "), obj),
+                % (obj.tree_depth * ("*** " if obj == self.instance else "--- "), obj),
             )
             for obj in self.fields["of"].queryset
         ]

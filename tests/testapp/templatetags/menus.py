@@ -35,14 +35,14 @@ def group_by_tree(iterable):
     depth = -1
 
     for element in iterable:
-        if parent is None or element.depth == depth:
+        if parent is None or element.tree_depth == depth:
             if parent:
                 yield parent, children
                 parent = None
                 children = []
 
             parent = element
-            depth = element.depth
+            depth = element.tree_depth
         else:
             children.append(element)
 
