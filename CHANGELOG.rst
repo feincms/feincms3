@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.23`_ (2018-07-30)
+~~~~~~~~~~~~~~~~~~~~
+
 - Switched the preferred quote to ``"`` and started using `black
   <https://pypi.org/project/black/>`_ to automatically format Python
   code.
@@ -384,4 +388,5 @@ functionality.
 .. _0.20: https://github.com/matthiask/feincms3/compare/0.19...0.20
 .. _0.21: https://github.com/matthiask/feincms3/compare/0.20...0.21
 .. _0.22: https://github.com/matthiask/feincms3/compare/0.21...0.22
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.22...master
+.. _0.23: https://github.com/matthiask/feincms3/compare/0.22...0.23
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.23...master
