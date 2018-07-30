@@ -827,6 +827,9 @@ class Test(TestCase):
             # Only update self
             root.save()
 
+        p1.refresh_from_db()
+        self.assertEqual(p1.path, "/root/p1/")
+
         with self.assertNumQueries(4):
             # Update self, fetch two descendants and save them
             root.save(save_descendants=True)
@@ -835,3 +838,6 @@ class Test(TestCase):
         with self.assertNumQueries(4):
             # Update self, fetch two descendants and save them
             root.save(save_descendants=True)
+
+        p1.refresh_from_db()
+        self.assertEqual(p1.path, "/blaaa/p1/")
