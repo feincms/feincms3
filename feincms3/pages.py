@@ -11,7 +11,7 @@ from tree_queries.models import TreeNode, TreeQuerySet
 from feincms3.utils import validation_error
 
 
-class AbstractPageManager(models.Manager):
+class AbstractPageManager(models.Manager.from_queryset(TreeQuerySet)):
     """
     Defines a single method, ``active``, which only returns pages with
     ``is_active=True``.
@@ -77,7 +77,7 @@ class AbstractPage(TreeNode):
     )
     static_path = models.BooleanField(_("static path"), default=False)
 
-    objects = AbstractPageManager.from_queryset(TreeQuerySet)()
+    objects = AbstractPageManager()
 
     class Meta:
         abstract = True
