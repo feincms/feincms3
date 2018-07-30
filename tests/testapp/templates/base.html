@@ -10,12 +10,12 @@
   <nav class="nav-main">
   {% for main, children in menus.main|group_by_tree %}
 
-    <a {% if page and main.id in page.cte_path %}class="active"{% endif %} href="{{ main.get_absolute_url }}">{{ main.title }}</a>
+    <a {% if page and main.id in page.tree_path %}class="active"{% endif %} href="{{ main.get_absolute_url }}">{{ main.title }}</a>
 
       {% if children %}
       <nav>
         {% for child in children %}
-          <a {% if page and child.id in page.cte_path %}class="active"{% endif %} href="{{ child.get_absolute_url }}">{{ child.title }}</a>
+          <a {% if page and child.id in page.tree_path %}class="active"{% endif %} href="{{ child.get_absolute_url }}">{{ child.title }}</a>
         {% endfor %}
       </nav>
     {% endif %}
