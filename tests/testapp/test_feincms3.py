@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, models, transaction
 from django.forms.models import modelform_factory
@@ -541,70 +540,6 @@ class Test(TestCase):
             " arguments '\[\]' and keyword arguments '{}' not found.",
         ):
             reverse_any(("not-exists-1", "not-exists-2"))
-
-    def test_move_clean_and_save(self):
-        """Test that a page move does the right thing (model state should be
-        restored after clean() so that save() updates the MPTT attributes
-        for real, without a ROLLBACK"""
-
-        client = self.login()
-
-        r1 = Page.objects.create(title="root 1", slug="root-1")
-        r2 = Page.objects.create(title="root 2", slug="root-2")
-        child = Page.objects.create(parent_id=r1.id, title="child", slug="child")
-
-        ContentType.objects.clear_cache()  # because of 13. below
-
-        with self.assertNumQueries(15):
-            # NOTE NOTE NOTE!
-            # The exact count is not actually important. What IS important is
-            # that the query count does not change without us having a chance
-            # to inspect.
-            #
-            #  1. session
-            #  2. apps_middleware / apps_urlconf
-            #  3. request.user
-            #  4. SAVEPOINT
-            #  5. fetch child
-            #  6. fetch root-2
-            #  7. exists() new parent (root-2)
-            #  8. fetch descendants (why?)
-            #  9. path uniqueness check of descendants with (/root-2/child/)
-            # 10. path uniqueness of self
-            # 11. page.save()
-            # 12. fetch descendants for looping
-            # 13. get page Django content type
-            # 14. insert into admin log
-            # 15. RELEASE SAVEPOINT
-            response = client.post(
-                reverse("admin:testapp_page_change", args=(child.id,)),
-                merge_dicts(
-                    {
-                        "title": "child",
-                        "slug": "child",
-                        "path": "/root-1/child/",
-                        "static_path": "",
-                        "language_code": "en",
-                        "application": "",
-                        "is_active": 1,
-                        "menu": "main",
-                        "template_key": "standard",
-                        "parent": r2.id,
-                    },
-                    zero_management_form_data("testapp_richtext_set"),
-                    zero_management_form_data("testapp_image_set"),
-                    zero_management_form_data("testapp_snippet_set"),
-                    zero_management_form_data("testapp_external_set"),
-                    zero_management_form_data("testapp_html_set"),
-                ),
-            )
-
-        self.assertEqual(response.status_code, 302)
-
-        self.assertEqual(
-            [(page.pk, page.parent_id, page.position) for page in Page.objects.all()],
-            [(r1.pk, None, 10), (r2.pk, None, 20), (child.pk, r2.pk, 10)],
-        )
 
     def prepare_for_move(self):
         root = Page.objects.create(title="root", slug="root")
