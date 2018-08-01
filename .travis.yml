@@ -10,7 +10,7 @@ addons:
 env:
 - REQ="Django>=1.11,<2.0"
 - REQ="Django>=2.0,<2.1"
-- REQ="Django>=2.1,<2.2
+- REQ="Django>=2.1,<2.2"
 - REQ="https://github.com/django/django/archive/master.zip#egg=Django"
 matrix:
   allow_failures:
