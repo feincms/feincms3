@@ -6,6 +6,8 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed one use of removed API.
+
 
 `0.23`_ (2018-07-30)
 ~~~~~~~~~~~~~~~~~~~~

@@ -431,7 +431,7 @@ class AppsMixin(models.Model):
                 _("Invalid parent: %s") % (error,), field="parent", exclude=exclude
             )
 
-        if self.application and not self.is_leaf():
+        if self.application and self.children.exists():
             raise validation_error(
                 _("Apps may not have any descendants in the tree."),
                 field="application",

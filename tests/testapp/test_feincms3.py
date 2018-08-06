@@ -363,6 +363,66 @@ class Test(TestCase):
         # value does not change all the time.
         self.assertEqual(apps_urlconf(), "urlconf_fe9552a8363ece1f7fcf4970bf575a47")
 
+    def _apps_validation_models(self, home_path=None):
+        home = Page.objects.create(
+            title="home",
+            slug="home",
+            path=home_path or "/en/",
+            static_path=True,
+            language_code="en",
+            is_active=True,
+            menu="main",
+        )
+        blog = Page.objects.create(
+            title="blog",
+            slug="blog",
+            language_code="en",
+            is_active=True,
+            menu="main",
+            application="blog",
+            parent=home,
+        )
+        return home, blog
+
+    def test_apps_leaf(self):
+        """Test that applications are leaf nodes"""
+
+        home, blog = self._apps_validation_models()
+        home.application = "blog"
+        with self.assertRaises(ValidationError) as cm:
+            home.full_clean()
+
+        self.assertEqual(
+            cm.exception.error_dict["application"][0].message,
+            "Apps may not have any descendants in the tree.",
+        )
+
+    def test_apps_no_descendants(self):
+        """Test that apps have no descendants"""
+
+        home, blog = self._apps_validation_models()
+        third = Page(title="third", slug="third", language_code="en", parent=blog)
+        with self.assertRaises(ValidationError) as cm:
+            third.full_clean()
+
+        self.assertEqual(
+            cm.exception.error_dict["parent"][0].message,
+            "Invalid parent: Apps may not have any descendants.",
+        )
+
+    def test_apps_duplicate(self):
+        """Test that apps cannot be added twice with the exact same configuration"""
+        home, blog = self._apps_validation_models()
+        _, blog2 = self._apps_validation_models("/en2/")
+
+        with self.assertRaises(ValidationError) as cm:
+            blog2.full_clean()
+
+        self.assertEqual(
+            cm.exception.error_dict["application"][0].message,
+            "This exact app already exists.",
+        )
+
     def test_snippet(self):
         """Check that snippets have access to the main rendering context
         when using TemplatePluginRenderer"""
