@@ -3,5 +3,6 @@ django-ckeditor
 django-content-editor
 django-tree-queries
 django-imagefield
+django-versatileimagefield
 html-sanitizer>=1.1.1
 requests
