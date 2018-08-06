@@ -40,7 +40,13 @@ class PageAdmin(ContentEditor, TreeAdmin):
         (
             capfirst(_("settings")),
             {
-                "fields": ("menu", "language_code", "template_key", "application"),
+                "fields": (
+                    "menu",
+                    "language_code",
+                    "template_key",
+                    "application",
+                    "optional",
+                ),
                 "classes": ("tabbed",),
             },
         ),

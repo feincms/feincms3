@@ -423,6 +423,29 @@ class Test(TestCase):
             "This exact app already exists.",
         )
 
+    def test_apps_required_fields(self):
+        home = Page(
+            title="home",
+            slug="home",
+            path="/en/",
+            static_path=True,
+            language_code="en",
+            is_active=True,
+            menu="main",
+            application="stuff-with-required",
+        )
+        with self.assertRaises(ValidationError) as cm:
+            home.full_clean(exclude=["not_editable"])
+
+        self.assertEqual(
+            cm.exception.error_dict["optional"][0].message,
+            "This field is required for the application stuff-with-required.",
+        )
+
+        home.optional = 1
+        home.not_editable = 2
+        home.full_clean(exclude=["not_editable"])
+
     def test_snippet(self):
         """Check that snippets have access to the main rendering context
         when using TemplatePluginRenderer"""

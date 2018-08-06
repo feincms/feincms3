@@ -52,7 +52,18 @@ class Page(
     APPLICATIONS = [
         ("publications", _("publications"), {"urlconf": "testapp.articles_urls"}),
         ("blog", _("blog"), {"urlconf": "testapp.articles_urls"}),
+        (
+            "stuff-with-required",
+            "stuff-with-required",
+            {
+                "urlconf": "stuff-with-required",
+                "required_fields": ("optional", "not_editable"),
+            },
+        ),
     ]
+
+    optional = models.IntegerField(blank=True, null=True)
+    not_editable = models.IntegerField(blank=True, null=True, editable=False)
 
 
 PagePlugin = create_plugin_base(Page)
