@@ -173,7 +173,7 @@ class TreeAdmin(ModelAdmin):
             )
 
             response = self.render_change_form(
-                request, context, add=False, change=False, obj=obj
+                request, context, add=False, change=True, obj=obj
             )
 
             # Suppress the rendering of the "save and add another" button.

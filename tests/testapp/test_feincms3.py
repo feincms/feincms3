@@ -643,6 +643,7 @@ class Test(TestCase):
         response = client.get(reverse("admin:testapp_page_move", args=(p1.pk,)))
         self.assertContains(response, "*** p1", 1)
         self.assertContains(response, "--- p2", 1)
+        self.assertContains(response, 'name="_save"', 1)
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p1.pk,)),
