@@ -781,7 +781,7 @@ class Test(TestCase):
         )
 
         # Everything fine in clean-land
-        self.assertIs(page2.clean(), None)
+        self.assertIs(page2.full_clean(), None)
 
         # Both redirects cannot be set at the same time
         self.assertRaises(
