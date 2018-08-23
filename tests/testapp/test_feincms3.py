@@ -953,6 +953,9 @@ class Test(TestCase):
         self.prepare_for_move()
         root, p1, p2 = list(Page.objects.all())
 
+        p2.static_path = True
+        p2.save()
+
         with self.assertNumQueries(1):
             # Only update self
             root.save()
@@ -971,3 +974,6 @@ class Test(TestCase):
 
         p1.refresh_from_db()
         self.assertEqual(p1.path, "/blaaa/p1/")
+
+        p2.refresh_from_db()
+        self.assertEqual(p2.path, "/root/p2/")
