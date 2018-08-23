@@ -17,7 +17,7 @@ from feincms3.apps import (
     reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
-from feincms3.renderer import Regions, TemplatePluginRenderer
+from feincms3.renderer import Regions, TemplatePluginRenderer, cached_render
 from feincms3.utils import concrete_model, iterate_subclasses, positional
 
 from .models import HTML, Article, External, Page, RichText
@@ -870,9 +870,12 @@ class Test(TestCase):
             "<b>Hello</b>Test2\n",
         )
 
+        self.assertEqual(regions.cache_key("main"), "testapp.page-%s-main" % page.pk)
+
     def test_custom_regions(self):
         class CustomRegions(Regions):
-            def _render(self, region, context=None):
+            @cached_render  # Not necessary for this test, but good style.
+            def render(self, region, context=None):
                 html = []
                 for plugin in self._contents[region]:
                     out = self._renderer.render_plugin_in_context(plugin, context)

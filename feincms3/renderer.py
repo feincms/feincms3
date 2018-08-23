@@ -1,3 +1,5 @@
+from functools import wraps
+
 from django.core.cache import cache
 from django.template import Context, Engine
 from django.utils.functional import SimpleLazyObject
@@ -7,7 +9,7 @@ from content_editor.contents import contents_for_item
 from feincms3.utils import positional
 
 
-__all__ = ("TemplatePluginRenderer", "Regions", "default_context")
+__all__ = ("TemplatePluginRenderer", "Regions", "cached_render", "default_context")
 
 
 def default_context(plugin, context):
@@ -17,6 +19,27 @@ def default_context(plugin, context):
     instance.
     """
     return {"plugin": plugin}
+
+
+def cached_render(fn):
+    """
+    Decorator for ``Regions.render`` methods implementing caching behavior
+    """
+    @positional(3)
+    @wraps(fn)
+    def render(self, region, context=None, timeout=None, **kwargs):
+        if timeout is None:
+            return fn(self, region, context=context, **kwargs)
+
+        key = self.cache_key(region)
+        html = cache.get(key)
+        if html is not None:
+            return html
+        html = fn(self, region, context=context, **kwargs)
+        cache.set(key, html, timeout=timeout)
+        return html
+
+    return render
 
 
 class Regions(object):
@@ -78,8 +101,8 @@ class Regions(object):
         """
         return "%s-%s-%s" % (self._item._meta.label_lower, self._item.pk, region)
 
-    @positional(3)
-    def render(self, region, context=None, timeout=None):
+    @cached_render
+    def render(self, region, context=None):
         """render(self, region, context=None, *, timeout=None)
         Render a single region using the context passed
 
@@ -89,19 +112,6 @@ class Regions(object):
            You should treat anything except for the ``region`` and ``context``
            argument as keyword-only.
         """
-        if timeout is not None:
-            key = self.cache_key(region)
-            html = cache.get(key)
-            if html is not None:
-                return html
-
-        html = self._render(region, context)
-
-        if timeout is not None:
-            cache.set(key, html, timeout=timeout)
-        return html
-
-    def _render(self, region, context=None):
         return mark_safe(
             "".join(
                 self._renderer.render_plugin_in_context(plugin, context)
