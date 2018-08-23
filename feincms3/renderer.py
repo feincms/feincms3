@@ -25,6 +25,7 @@ def cached_render(fn):
     """
     Decorator for ``Regions.render`` methods implementing caching behavior
     """
+
     @positional(3)
     @wraps(fn)
     def render(self, region, context=None, timeout=None, **kwargs):
