@@ -95,16 +95,19 @@ class Regions(object):
             if html is not None:
                 return html
 
-        html = mark_safe(
+        html = self._render(region, context)
+
+        if timeout is not None:
+            cache.set(key, html, timeout=timeout)
+        return html
+
+    def _render(self, region, context=None):
+        return mark_safe(
             "".join(
                 self._renderer.render_plugin_in_context(plugin, context)
                 for plugin in self._contents[region]
             )
         )
-
-        if timeout is not None:
-            cache.set(key, html, timeout=timeout)
-        return html
 
 
 class TemplatePluginRenderer(object):
@@ -121,8 +124,10 @@ class TemplatePluginRenderer(object):
 
     """
 
-    def __init__(self):
+    @positional(1)
+    def __init__(self, regions_class=Regions):
         self._renderers = {}
+        self._regions_class = regions_class
 
     def register_string_renderer(self, plugin, renderer):
         """
@@ -195,14 +200,19 @@ context=default_context)
         return list(self._renderers.keys())
 
     @positional(2)
-    def regions(self, item, inherit_from=None, regions=Regions):
-        """regions(self, item, *, inherit_from=None, regions=Regions)
+    def regions(self, item, inherit_from=None, regions=None):
+        """regions(self, item, *, inherit_from=None, regions=None)
         Return a ``Regions`` instance which lazily wraps the
         ``contents_for_item`` call. This is especially useful in conjunction
         with the ``render_region`` template tag. The ``inherit_from`` argument
         is directly forwarded to ``contents_for_item`` to allow regions with
         inherited content.
+
+        The ``Regions`` type may be overridden by passing a ``regions_class``
+        keyword argument when instantiating the ``TemplatePluginRenderer`` or
+        by setting the ``regions`` argument of this method.
         """
+        regions = self._regions_class if regions is None else regions
         return regions(
             item=item,
             contents=SimpleLazyObject(

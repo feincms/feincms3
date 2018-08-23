@@ -9,6 +9,8 @@ Change log
 - Fixed one use of removed API.
 - Fixed a bug where the "Save" button was disappeared on the move form
   with Django 2.1.
+- Made overriding the ``Regions`` type used in
+  ``TemplatePluginRenderer`` less verbose.
 
 
 `0.23`_ (2018-07-30)
