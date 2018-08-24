@@ -111,10 +111,6 @@ class Regions(object):
         Render a single region using the context passed
 
         If ``timeout`` is ``None`` caching is disabled.
-
-        .. note::
-           You should treat anything except for the ``region`` and ``context``
-           argument as keyword-only.
         """
         return mark_safe(
             "".join(
