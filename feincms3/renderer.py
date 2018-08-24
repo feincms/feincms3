@@ -45,8 +45,9 @@ def cached_render(fn):
 
 class Regions(object):
     """Regions(item, *, contents, renderer)
-    Wrapper for a ``Contents`` attribute with support for caching the
-    potentially somewhat expensive plugin loading and rendering step.
+    Wrapper for a ``content_editor.contents.Contents`` instance with support
+    for caching the potentially somewhat expensive plugin loading and rendering
+    step.
 
     A view using this facility would look as follows::
 
