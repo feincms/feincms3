@@ -8,35 +8,29 @@ feincms3 provides additional building blocks on top of
 django-content-editor_ and django-tree-queries_ which make building a page
 CMS (and also other types of CMS) simpler.
 
-This documentation consists of the following parts:
+.. note::
 
-- A short high-level overview explaining the various parts of feincms3
-  and the general rationale for yet another content management
-  framework.
-- A reference documentation which aims to explain the provided tools and
-  modules in depth.
-- Next steps.
-
-Now is also a good time to point out the example project
-feincms3-example_. You should be able to setup a fully working
-multilingual CMS including a hierarchical pages app and a blog app in
-only a few easy steps (as long as you have the necessary build tools and
-development libraries to setup the Python virtualenv_ and all its
-dependencies).
-
-The :ref:`changelog` should also be mentioned here because, while feincms3
-is used in production on several sites and backwards incompatibility
-isn't broken lightly, it still is a moving target.
+   Despite its version number feincms3 is already used in production on
+   many sites and backwards compatibility isn't broken lightly.
 
 
-Table of Contents
-=================
+User guide
+==========
 
 .. toctree::
    :maxdepth: 2
 
    introduction
    installation
+   build-your-cms
+
+
+Reference
+=========
+
+.. toctree::
+   :maxdepth: 2
+
    pages
    mixins
    plugins
@@ -45,7 +39,6 @@ Table of Contents
    renderer
    shortcuts
    admin
-   next-steps
    changelog
 
 .. _Django: https://www.djangoproject.com/

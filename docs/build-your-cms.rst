@@ -1,11 +1,12 @@
-Next steps
-==========
+Build your CMS
+==============
 
-To build a CMS you still need to write your URLconf and views, and add
-settings to your Django project. As I already wrote at the beginning of
-this guide, the `feincms3-example
-<https://github.com/matthiask/feincms3-example>`_ project shows how
-everything works together. Still, a few pointers follow:
+To build a CMS you need to write your URLconf and views, and add
+settings to your Django project.
+
+The `feincms3-example <https://github.com/matthiask/feincms3-example>`_
+project shows how everything works together. An explanation of the
+necessary parts follows here.
 
 
 Settings
@@ -22,8 +23,86 @@ You'll have to add at least the following apps to ``INSTALLED_APPS``:
 - ... and of course also the app where you put your concrete models such
   as the page model, named ``app.pages`` in this guide.
 
-If you're using the rich text plugin it is very much recommended to add
-a ``CKEDITOR_CONFIGS`` setting as documented in :mod:`feincms3.cleanse`.
+If you're using the rich text plugin it is strongly recommended to add a
+``CKEDITOR_CONFIGS`` setting as documented in :mod:`feincms3.cleanse`.
+
+
+Models
+~~~~~~
+
+The page model and a few plugins could be defined as follows::
+
+    from __future__ import unicode_literals
+
+    from django.db import models
+    from django.utils.translation import ugettext_lazy as _
+
+    from content_editor.models import Region, Template, create_plugin_base
+
+    from feincms3 import plugins
+    from feincms3.apps import AppsMixin
+    from feincms3.mixins import TemplateMixin, MenuMixin, LanguageMixin
+    from feincms3.pages import AbstractPage
+
+
+    class Page(
+        AbstractPage,
+        AppsMixin,      # For adding the articles app to pages through the CMS.
+        TemplateMixin,  # Two page templates, one with only a main
+                        # region and another with a sidebar as well.
+        MenuMixin,      # We have a main and a footer navigation (meta).
+        LanguageMixin,  # We're building a multilingual CMS. (Also,
+                        # feincms3.apps depends on LanguageMixin
+                        # currently.)
+    ):
+
+        # TemplateMixin
+        TEMPLATES = [
+            Template(
+                key='standard',
+                title=_('standard'),
+                template_name='pages/standard.html',
+                regions=(
+                    Region(key='main', title=_('Main')),
+                ),
+            ),
+        ]
+
+        # MenuMixin
+        MENUS = [
+            ('main', _('main')),
+            ('footer', _('footer')),
+        ]
+
+        # AppsMixin. We have two apps, one is for company PR, the other
+        # for a more informal blog.
+        #
+        # NOTE! The app names (first element in the tuple) have to match the
+        # article categories exactly for URL reversing and filtering articles by
+        # app to work! (See app.articles.models.Article.CATEGORIES)
+        APPLICATIONS = [
+            ('publications', _('publications'), {
+                'urlconf': 'app.articles.urls',
+            }),
+            ('blog', _('blog'), {
+                'urlconf': 'app.articles.urls',
+            }),
+        ]
+
+
+    PagePlugin = create_plugin_base(Page)
+
+
+    class RichText(plugins.RichText, PagePlugin):
+        pass
+
+
+    class Image(plugins.Image, PagePlugin):
+        caption = models.CharField(
+            _('caption'),
+            max_length=200,
+            blank=True,
+        )
 
 
 Views and URLs
@@ -44,7 +123,11 @@ implementation which expects something like this::
         url(r'^$', views.page_detail, name='root'),
     ]
 
-Where ``app.pages.views`` contains the following view::
+If you don't like this, you're completely free to write your own views,
+URLs and ``get_absolute_url`` method.
+
+With the URLconf above the view in the ``app.pages.views`` module would
+look as follows::
 
     from django.shortcuts import get_object_or_404, render
 
@@ -65,6 +148,13 @@ Where ``app.pages.views`` contains the following view::
                 inherit_from=page.ancestors().reverse(),
             ),
         })
+
+.. note::
+   `FeinCMS <https://github.com/feincms/feincms>`_ provided request and
+   response processors and several ways how plugins (in FeinCMS: content
+   types) could hook into the request-response processing. This isn't
+   necessary with feincms3 -- simply put the functionality into your own
+   views code.
 
 Here's an example how plugins could be rendered,
 ``app.pages.renderer``::
@@ -105,16 +195,6 @@ The default image field also offers built-in support for thumbnailing
 and cropping with a PPOI (primary point of interest); have a look at the
 `django-imagefield <https://django-imagefield.readthedocs.io>`_ docs to
 find out how.
-
-If you don't like this, you're completely free to write your own views,
-URLs and ``get_absolute_url`` method.
-
-.. note::
-   `FeinCMS <https://github.com/feincms/feincms>`_ provided request and
-   response processors and several ways how plugins (content types)
-   could hook into the request-response processing. This isn't necessary
-   with feincms3 -- simply put the functionality into your own views
-   code.
 
 And a ``pages/standard.html`` template::
 
