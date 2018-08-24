@@ -59,6 +59,8 @@ class Regions(object):
                     page,
                     # Optional:
                     inherit_from=page.ancestors().reverse(),
+                    # Optional too:
+                    timeout=15,
                 ),
                 # Note! No 'contents' and no 'renderer' necessary in the
                 # template.
