@@ -24,6 +24,9 @@ def default_context(plugin, context):
 def cached_render(fn):
     """
     Decorator for ``Regions.render`` methods implementing caching behavior
+
+    This decorator consumes the ``timeout`` keyword argument to the ``render``
+    method.
     """
 
     @positional(3)
