@@ -22,8 +22,9 @@ def cleanse_html(html):
 
 class CleansedRichTextField(RichTextField):
     """
-    This is a subclass of django-ckeditor_'s ``RichTextField``. The recommended
-    configuration is as follows::
+    This is a subclass of `django-ckeditor
+    <https://github.com/django-ckeditor/django-ckeditor>`_'s ``RichTextField``.
+    The recommended configuration is as follows::
 
         CKEDITOR_CONFIGS = {
             'default': {
@@ -43,8 +44,8 @@ class CleansedRichTextField(RichTextField):
         # Settings for feincms3.plugins.richtext.RichText
         CKEDITOR_CONFIGS['richtext-plugin'] = CKEDITOR_CONFIGS['default']
 
-    The corresponding ``HTML_SANITIZERS`` configuration for html-sanitizer_
-    would look as follows::
+    The corresponding ``HTML_SANITIZERS`` configuration for `html-sanitizer
+    <https://pypi.org/project/html-sanitizer>`_ would look as follows::
 
         HTML_SANITIZERS = {
             'default': {
@@ -64,7 +65,7 @@ class CleansedRichTextField(RichTextField):
             },
         }
 
-    At the time of writing those are the defaults of html-sanitizer_, so you
+    At the time of writing those are the defaults of html-sanitizer, so you
     don't have to do anything.
 
     If you want or require a different cleansing function, simply override

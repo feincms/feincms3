@@ -125,7 +125,8 @@ class Regions(object):
 
 class TemplatePluginRenderer(object):
     """
-    More capable replacement for django-content-editor_'s ``PluginRenderer``
+    More capable replacement for `django-content-editor
+    <https://django-content-editor.readthedocs.io>`_'s ``PluginRenderer``
 
     Allows passing the full template rendering context to plugins, but does
     not have any autodetection of rendering methods. The exact model classes
@@ -203,7 +204,7 @@ context=default_context)
     def plugins(self):
         """
         Return a list of all registered plugins, and is most useful when passed
-        directly to one of django-content-editor_'s contents utilities::
+        directly to one of django-content-editor's contents utilities::
 
             page = get_object_or_404(Page, ...)
             contents = contents_for_item(page, renderer.plugins())

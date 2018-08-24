@@ -2,7 +2,7 @@
 Provides an image plugin with support for setting the primary point of
 interest. This is very useful especially when cropping images.
 
-Depends on django-imagefield_.
+Depends on `django-imagefield <https://django-imagefield.readthedocs.io>`_.
 """
 
 from django.db import models

@@ -8,8 +8,8 @@ or a news app with archives, detail pages etc.
 Apps are defined by a list of URL patterns specific to this app. A simple
 contact form would probably only have a single URLconf entry (``r'^$'``), the
 news app would at least have two entries (the archive and the detail URL).
-You'll find an example app for integrating form_designer_ with feincms3_ at
-the end of this documentation.
+You'll find an example app for integrating `form_designer
+<https://pypi.org/project/form_designer/>`_ at the end of this documentation.
 
 The activation of apps happens through a dynamically created URLconf module
 (probably the trickiest code in all of feincms3,

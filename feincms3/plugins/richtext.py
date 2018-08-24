@@ -2,7 +2,7 @@
 Provides a rich text area whose content is automatically cleaned using a
 very restrictive white list of tags and attributes.
 
-Depends on html-sanitizer_.
+Depends on `html-sanitizer <https://pypi.org/project/html-sanitizer>`_.
 """
 from django.db import models
 from django.utils.html import mark_safe, strip_tags
@@ -30,9 +30,10 @@ class RichText(models.Model):
         class RichText(plugins.RichText, PagePlugin):
             pass
 
-    To use this, a django-ckeditor_ configuration named ``richtext-plugin`` is
-    required. See the section :mod:`HTML cleansing <feincms3.cleanse>` for the
-    recommended configuration.
+    To use this, a `django-ckeditor
+    <https://github.com/django-ckeditor/django-ckeditor>`_ configuration named
+    ``richtext-plugin`` is required. See the section :mod:`HTML cleansing
+    <feincms3.cleanse>` for the recommended configuration.
     """
 
     text = CleansedRichTextField(_("text"), config_name="richtext-plugin")

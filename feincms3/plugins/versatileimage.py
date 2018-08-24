@@ -2,7 +2,8 @@
 Provides an image plugin with support for setting the primary point of
 interest. This is very useful especially when cropping images.
 
-Depends on django-versatileimagefield_.
+Depends on `django-versatileimagefield
+<https://django-versatileimagefield.readthedocs.io/>`_.
 """
 
 from django import forms
@@ -51,7 +52,7 @@ class AlwaysChangedModelForm(forms.ModelForm):
     This ``ModelForm``'s ``has_changed`` method always returns ``True``. This
     is a workaround for the problem where Django's inlines do not detect
     changes in ``MultiValueField`` (which is used to set the PPOI --
-    primary point of interest -- in django-versatileimagefield_).
+    primary point of interest -- in django-versatileimagefield).
 
     https://github.com/respondcreate/django-versatileimagefield/issues/44
     """

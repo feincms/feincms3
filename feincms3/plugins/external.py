@@ -1,7 +1,8 @@
 """
-Uses the Noembed_ oEmbed service to embed (almost) arbitrary URLs.
+Uses the `Noembed <https://noembed.com/>`_ oEmbed service to embed (almost)
+arbitrary URLs.
 
-Depends on requests_.
+Depends on `requests <https://docs.python-requests.org>`_.
 """
 
 from hashlib import md5
@@ -29,8 +30,9 @@ __all__ = (
 @positional(1)
 def oembed_json(url, cache_failures=True):
     """oembed_json(url, *, cache_failures=True)
-    Asks Noembed_ for the embedding HTML code for arbitrary URLs. Sites
-    supported include Youtube, Vimeo, Twitter and many others.
+    Asks `Noembed <https://noembed.com/>`_ for the embedding HTML code for
+    arbitrary URLs. Sites supported include Youtube, Vimeo, Twitter and many
+    others.
 
     Successful embeds are always cached for 30 days.
 
