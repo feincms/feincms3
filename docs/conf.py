@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from datetime import date
 import os
 import re
 import subprocess
@@ -12,7 +13,7 @@ sys.path.append(os.path.abspath('..'))
 
 project = 'feincms3'
 author = 'Feinheit AG'
-copyright = '2016-2017,' + author
+copyright = '2016-%s, %s' % (date.today().year, author)
 version = __import__('feincms3').__version__
 release = subprocess.check_output(
     'git fetch --tags; git describe',
