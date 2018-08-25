@@ -11,7 +11,9 @@ Change log
   with Django 2.1.
 - Made overriding the ``Regions`` type used in
   ``TemplatePluginRenderer`` less verbose.
-- Modified the documentation to produce several pages.
+- Modified the documentation to produce several pages. Completed the
+  guide for building your own CMS and added a section about customizing
+  rendering using ``Regions`` subclasses.
 
 
 `0.23`_ (2018-07-30)
