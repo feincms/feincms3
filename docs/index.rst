@@ -26,6 +26,7 @@ User guide
    installation
    build-your-cms
    rendering
+   navigation
 
 
 Reference
