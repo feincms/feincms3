@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.24`_ (2018-08-25)
+~~~~~~~~~~~~~~~~~~~~
+
 - Fixed one use of removed API.
 - Fixed a bug where the "Save" button was disappeared on the move form
   with Django 2.1.
@@ -398,4 +401,5 @@ functionality.
 .. _0.21: https://github.com/matthiask/feincms3/compare/0.20...0.21
 .. _0.22: https://github.com/matthiask/feincms3/compare/0.21...0.22
 .. _0.23: https://github.com/matthiask/feincms3/compare/0.22...0.23
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.23...master
+.. _0.24: https://github.com/matthiask/feincms4/compare/0.23...0.24
+.. _Next version: https://github.com/matthiask/feincms4/compare/0.24...master
