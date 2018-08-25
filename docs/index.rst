@@ -25,6 +25,7 @@ User guide
    introduction
    installation
    build-your-cms
+   rendering
 
 
 Reference
