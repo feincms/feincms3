@@ -64,7 +64,7 @@ Related projects
   media library for Django which works well with feincms3 and follows
   the same software design guidelines.
 * `django-content-editor
-  <https://github.com/matthiask/django-content-editor>`_: The admin
+  <https://django-content-editor.readthedocs.io>`_: The admin
   interface for editing structured heterogenous content.
 * `django-imagefield <https://github.com/matthiask/django-imagefield>`_:
   An image field with in-depth image file validation and thumbnailing
