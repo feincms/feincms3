@@ -156,13 +156,3 @@ Now, a possible use of those two tags in the template looks as follows::
     </nav>
 
     {# ... and an analogous block for the meta menu, maybe without the children loop #}
-
-
-Recommendations for websites with a page tree per language
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-I most often add a root page per language, which means that the main
-navigation ``tree_depth`` would be ``1``, not ``0``. The menu template
-tags would require an additional
-``.filter(language_code=django.utils.translation.get_language())``
-statement to only return pages in the current language.

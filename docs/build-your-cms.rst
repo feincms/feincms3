@@ -30,63 +30,22 @@ If you're using the rich text plugin it is strongly recommended to add a
 Models
 ~~~~~~
 
-The page model and a few plugins could be defined as follows::
+The page model and a few plugins could be defined as follows:
 
-    from __future__ import unicode_literals
+.. code-block:: python
 
     from django.db import models
     from django.utils.translation import ugettext_lazy as _
 
-    from content_editor.models import Region, Template, create_plugin_base
+    from content_editor.models import Region, create_plugin_base
 
     from feincms3 import plugins
-    from feincms3.apps import AppsMixin
-    from feincms3.mixins import TemplateMixin, MenuMixin, LanguageMixin
     from feincms3.pages import AbstractPage
 
 
-    class Page(
-        AbstractPage,
-        AppsMixin,      # For adding the articles app to pages through the CMS.
-        TemplateMixin,  # Two page templates, one with only a main
-                        # region and another with a sidebar as well.
-        MenuMixin,      # We have a main and a footer navigation (meta).
-        LanguageMixin,  # We're building a multilingual CMS. (Also,
-                        # feincms3.apps depends on LanguageMixin
-                        # currently.)
-    ):
-
-        # TemplateMixin
-        TEMPLATES = [
-            Template(
-                key='standard',
-                title=_('standard'),
-                template_name='pages/standard.html',
-                regions=(
-                    Region(key='main', title=_('Main')),
-                ),
-            ),
-        ]
-
-        # MenuMixin
-        MENUS = [
-            ('main', _('main')),
-            ('footer', _('footer')),
-        ]
-
-        # AppsMixin. We have two apps, one is for company PR, the other
-        # for a more informal blog.
-        #
-        # NOTE! The app names (first element in the tuple) have to match the
-        # article categories exactly for URL reversing and filtering articles by
-        # app to work! (See app.articles.models.Article.CATEGORIES)
-        APPLICATIONS = [
-            ('publications', _('publications'), {
-                'urlconf': 'app.articles.urls',
-            }),
-            ('blog', _('blog'), {
-                'urlconf': 'app.articles.urls',
-            }),
+    class Page(AbstractPage):
+        regions = [
+            Region(key="main", title=_("Main")),
         ]
 
 
@@ -98,11 +57,7 @@ The page model and a few plugins could be defined as follows::
 
 
     class Image(plugins.Image, PagePlugin):
-        caption = models.CharField(
-            _('caption'),
-            max_length=200,
-            blank=True,
-        )
+        caption = models.CharField(_('caption'), max_length=200, blank=True)
 
 
 Views and URLs
@@ -110,7 +65,9 @@ Views and URLs
 
 You're completely free to define your own views and URLs. That being
 said, the ``AbstractPage`` class already has a ``get_absolute_url``
-implementation which expects something like this::
+implementation which expects something like this:
+
+.. code-block:: python
 
     from django.conf.urls import url
 
@@ -127,7 +84,9 @@ If you don't like this, you're completely free to write your own views,
 URLs and ``get_absolute_url`` method.
 
 With the URLconf above the view in the ``app.pages.views`` module would
-look as follows::
+look as follows:
+
+.. code-block:: python
 
     from django.shortcuts import get_object_or_404, render
 
@@ -138,15 +97,11 @@ look as follows::
     def page_detail(request, path=None):
         page = get_object_or_404(
             Page.objects.active(),
-            path=('/%s/' % path) if path else '/',
+            path='/{}/'.format(path) if path else '/',
         )
-        page.activate_language(request)
-        return render(request, page.template.template_name, {
-            'page': page,
-            'regions': renderer.regions(
-                page,
-                inherit_from=page.ancestors().reverse(),
-            ),
+        return render(request, "pages/standard.html", {
+            "page": page,
+            "regions": renderer.regions(page),
         })
 
 .. note::
@@ -157,7 +112,9 @@ look as follows::
    views code.
 
 Here's an example how plugins could be rendered,
-``app.pages.renderer``::
+``app.pages.renderer``:
+
+.. code-block:: python
 
     from django.utils.html import format_html, mark_safe
 
@@ -180,7 +137,9 @@ Here's an example how plugins could be rendered,
         ),
     )
 
-Of course if you'd rather let plugins use templates, do this::
+Of course if you'd rather let plugins use templates, do this:
+
+.. code-block:: python
 
     renderer.register_template_renderer(
         Image,
@@ -189,7 +148,10 @@ Of course if you'd rather let plugins use templates, do this::
 
 And the associated template::
 
-    <figure><img src="{{ plugin.image.url }}" alt=""/></figure>
+    <figure>
+      <img src="{{ plugin.image.url }}" alt="{{ plugin.caption }}"/>
+      {% if plugin.caption %}<figcaption>{{ plugin.caption }}</figcaption>{% endif %}
+    </figure>
 
 The default image field also offers built-in support for thumbnailing
 and cropping with a PPOI (primary point of interest); have a look at the
@@ -217,7 +179,9 @@ Admin classes
 ~~~~~~~~~~~~~
 
 For completeness, here's an example how the ``app.pages.admin`` module
-might look like::
+might look like:
+
+.. code-block:: python
 
     from django.contrib import admin
 
@@ -229,9 +193,7 @@ might look like::
 
 
     class PageAdmin(ContentEditor, TreeAdmin):
-        list_display = (
-            'indented_title', 'move_column', 'is_active',
-            'menu', 'template_key', 'language_code', 'application')
+        list_display = ('indented_title', 'move_column', 'is_active')
         list_per_page = 250
         prepopulated_fields = {'slug': ('title',)}
         raw_id_fields = ('parent',)
@@ -257,109 +219,3 @@ might look like::
 
 
     admin.site.register(models.Page, PageAdmin)
-
-
-An example forms builder app
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The following example app uses `form_designer
-<https://pypi.org/project/form_designer>` to provide a forms builder
-integrated with the pages app described above. Apart from installing
-form_designer itself the following steps are necessary.
-
-Add an entry to ``Page.APPLICATIONS`` for the forms app. The
-``app_instance_namespace`` bit is not strictly necessary, but it might
-be helpful to reverse URLs where a specific form is integrated using
-``reverse_app(('forms-%s' % form.pk,), 'form')``::
-
-    # ...
-    class Page(...):
-        # ...
-        APPLICATIONS = [
-            ('forms', _('forms'), {
-                'urlconf': 'app.forms',
-                'app_instance_namespace': lambda page: '%s-%s' % (
-                    page.application,
-                    page.form_id,
-                ),
-                'required_fields': ('form',),
-            }),
-            # ...
-        ]
-        form = models.ForeignKey(
-            'form_designer.Form',
-            on_delete=models.SET_NULL,
-            blank=True, null=True,
-            verbose_name=_('form'),
-        )
-
-Add the ``app/forms.py`` module itself::
-
-    from django.conf.urls import url
-    from django.http import HttpResponseRedirect
-    from django.shortcuts import render
-
-    from feincms3.apps import page_for_app_request
-
-    from app.pages.renderer import renderer
-
-
-    def form(request):
-        page = page_for_app_request(request)
-        page.activate_language(request)
-        context = {}
-
-        if 'ok' not in request.GET:
-            form_class = page.form.form()
-
-            if request.method == 'POST':
-                form = form_class(request.POST)
-
-                if form.is_valid():
-                    # Discard return values from form processing.
-                    page.form.process(form, request)
-                    return HttpResponseRedirect('?ok')
-
-            else:
-                form = form_class()
-
-            context['form'] = form
-
-        context.update({
-            'page': page,
-            'regions': renderer.regions(
-                page, inherit_from=page.ancestors().reverse()),
-        })
-
-        return render(request, 'form.html', context)
-
-
-    app_name = 'forms'
-    urlpatterns = [
-        url(r'^$', form, name='form'),
-    ]
-
-Add the required template::
-
-    {% extends "base.html" %}
-
-    {% load feincms3_renderer %}
-
-    {% block content %}
-
-    {% render_region regions 'main' timeout=15 %}
-
-    {% if form %}
-      <form method="post" action=".#form" id="form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-      </form>
-    {% else %}
-      <h1>Thank you!</h1>
-    {% endif %}
-    {% endblock %}
-
-Of course if you'd rather add another URL for the "thank you" page
-you're free to add a second entry to the ``urlpatterns`` list and
-redirect to this URL instead.

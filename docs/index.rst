@@ -16,8 +16,8 @@ a page CMS (and also other types of CMS) simpler.
    many sites and backwards compatibility isn't broken lightly.
 
 
-User guide
-==========
+First steps
+===========
 
 .. toctree::
    :maxdepth: 2
@@ -25,24 +25,54 @@ User guide
    introduction
    installation
    build-your-cms
-   rendering
-   navigation
+
+
+Topic guides
+============
+
+.. toctree::
+   :maxdepth: 2
+
+   topics/templates-and-regions
+   topics/meta-opengraph-tags
+   topics/multilingual-sites
+
+
+How-to guides
+=============
+
+.. toctree::
+   :maxdepth: 2
+
+   howto/navigation
+   howto/form-builder-app
+   howto/rendering
+   howto/apps-and-instances
+   howto/multisite
 
 
 Reference
 =========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   pages
-   mixins
-   plugins
-   cleansing
-   apps
-   renderer
-   shortcuts
-   admin
+   ref/pages
+   ref/mixins
+   ref/plugins
+   ref/cleansing
+   ref/apps
+   ref/renderer
+   ref/shortcuts
+   ref/admin
+
+
+Project
+=======
+
+.. toctree::
+   :maxdepth: 1
+
    changelog
 
 
