@@ -24,7 +24,9 @@ library somewhere where it may be used by Django.
 A simple main menu
 ~~~~~~~~~~~~~~~~~~
 
-Add the following template tag to the ``menus.py`` file::
+Add the following template tag to the ``menus.py`` file:
+
+.. code-block:: python
 
     from django import template
     from app.pages.models import Page
@@ -76,15 +78,19 @@ Main menu with two levels and meta navigation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For this example, the page class should also inherit the
-:class:`feincms3.mixins.MenuMixin` with a ``MENUS`` value as follows::
+:class:`feincms3.mixins.MenuMixin` with a ``MENUS`` value as follows:
 
-    class Page(..., MenuMixin):
+.. code-block:: python
+
+    class Page(MenuMixin, ..., AbstractPage):
         MENUS = (
             ('main', _('main navigation')),
             ('meta', _('meta navigation')),
         )
 
-Let's write a template tag which returns all required nodes at once::
+Let's write a template tag which returns all required nodes at once:
+
+.. code-block:: python
 
     from collections import defaultdict
     from django import template
@@ -110,7 +116,9 @@ available as an ``.extra()`` field, so you cannot use ``.filter()`` to
 do this.
 
 Next, let's add a template filter which returns parents bundled together
-with their children::
+with their children:
+
+.. code-block:: python
 
     @register.filter
     def group_by_tree(iterable):

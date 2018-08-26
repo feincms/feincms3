@@ -17,7 +17,9 @@ inside a container. One way to solve this problem would be to make each
 plugin open and close its own container. That may work well. A different
 possibility would be to make the renderer smarter. Let's build a custom
 ``Regions`` subclass which knows how to make some plugins escape the
-container::
+container:
+
+.. code-block:: python
 
     from django.utils.html import mark_safe
 
@@ -67,7 +69,9 @@ Generating JSON
 ~~~~~~~~~~~~~~~
 
 A different real-world example is generating JSON instead of HTML. This
-is possible with a custom ``Regions`` class too::
+is possible with a custom ``Regions`` class too:
+
+.. code-block:: python
 
     from feincms3 import renderer
 

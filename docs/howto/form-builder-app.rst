@@ -13,25 +13,28 @@ be helpful to reverse URLs where a specific form is integrated using
 
 .. code-block:: python
 
-    # ...
-    class Page(...):
+    from feincms3.apps import AppsMixin
+    from feincms3.mixins inmport LanguageMixin
+    from feincms3.pages import AbstractPage
+
+    class Page(AppsMixin, LanguageMixin, ..., AbstractPage):
         # ...
         APPLICATIONS = [
-            ('forms', _('forms'), {
-                'urlconf': 'app.forms',
-                'app_instance_namespace': lambda page: '%s-%s' % (
+            ("forms", _("forms"), {
+                "urlconf": "app.forms",
+                "app_instance_namespace": lambda page: "%s-%s" % (
                     page.application,
                     page.form_id,
                 ),
-                'required_fields': ('form',),
+                "required_fields": ("form",),
             }),
             # ...
         ]
         form = models.ForeignKey(
-            'form_designer.Form',
+            "form_designer.Form",
             on_delete=models.SET_NULL,
             blank=True, null=True,
-            verbose_name=_('form'),
+            verbose_name=_("form"),
         )
 
 Add the ``app/forms.py`` module itself:
@@ -52,34 +55,34 @@ Add the ``app/forms.py`` module itself:
         page.activate_language(request)
         context = {}
 
-        if 'ok' not in request.GET:
+        if "ok" not in request.GET:
             form_class = page.form.form()
 
-            if request.method == 'POST':
+            if request.method == "POST":
                 form = form_class(request.POST)
 
                 if form.is_valid():
                     # Discard return values from form processing.
                     page.form.process(form, request)
-                    return HttpResponseRedirect('?ok')
+                    return HttpResponseRedirect("?ok")
 
             else:
                 form = form_class()
 
-            context['form'] = form
+            context["form"] = form
 
         context.update({
-            'page': page,
-            'regions': renderer.regions(
+            "page": page,
+            "regions": renderer.regions(
                 page, inherit_from=page.ancestors().reverse()),
         })
 
-        return render(request, 'form.html', context)
+        return render(request, "form.html", context)
 
 
-    app_name = 'forms'
+    app_name = "forms"
     urlpatterns = [
-        url(r'^$', form, name='form'),
+        url(r"^$", form, name="form"),
     ]
 
 Add the required template:

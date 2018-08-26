@@ -44,9 +44,9 @@ to ``renderer.regions``:
             ),
         })
 
-Ancestors are returned starting from the root node by ``page.ancestors()``.
-We want pages to inherit content from their closest possible ancestors
-however, because of this we ``.reverse()`` the queryset.
+``page.ancestors().reverse()`` returns ancestors ordered from the page's
+parent to the root of the tree. We want pages to inherit content from
+their closest possible ancestors.
 
 
 Making templates selectable
@@ -88,7 +88,7 @@ be removed from the ``Page`` definition. Additionally, the
 ``TemplateMixin`` provides a ``template`` property returning the
 currently selected template. Instead of hard-coding the template value
 we should now change the ``page_detail`` view to render the selected
-template:
+template, ``page.template.template_name``:
 
 .. code-block:: python
 
