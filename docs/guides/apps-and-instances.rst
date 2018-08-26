@@ -1,5 +1,10 @@
+.. _apps-and-instances:
+
 Apps and instances
 ==================
+
+.. note::
+   This guide builds on :ref:`form-builder-app`.
 
 Applications can be added to the tree several times. Django itself
 supports this through the differentiation between `application

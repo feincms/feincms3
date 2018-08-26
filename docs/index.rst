@@ -24,6 +24,9 @@ a page CMS (and also other types of CMS) simpler.
 First steps
 ===========
 
+Start here if you want to know what feincms3 is and build your first CMS
+based on feincms3.
+
 .. toctree::
    :maxdepth: 2
 
@@ -32,28 +35,24 @@ First steps
    build-your-cms
 
 
-Topic guides
-============
+Guides
+======
+
+These guides discuss key concepts and show how to solve common problems.
+They do not have to be read in order and in general only build on the
+knowledge imparted in :ref:`build-your-cms`.
 
 .. toctree::
    :maxdepth: 2
 
-   topics/templates-and-regions
-   topics/meta-opengraph-tags
-   topics/multilingual-sites
-
-
-How-to guides
-=============
-
-.. toctree::
-   :maxdepth: 2
-
-   howto/navigation
-   howto/form-builder-app
-   howto/rendering
-   howto/apps-and-instances
-   howto/multisite
+   guides/templates-and-regions
+   guides/meta-opengraph-tags
+   guides/multilingual-sites
+   guides/navigation
+   guides/form-builder-app
+   guides/apps-and-instances
+   guides/rendering
+   guides/multisite
 
 
 Reference
@@ -72,13 +71,11 @@ Reference
    ref/admin
 
 
-Project
-=======
+Project links
+=============
 
-.. toctree::
-   :maxdepth: 1
-
-   changelog
+* `CHANGELOG
+  <https://github.com/matthiask/feincms3/blob/master/CHANGELOG.rst>`__
 
 
 Related projects
