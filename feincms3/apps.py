@@ -120,15 +120,20 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
 
     page_model = concrete_model(AppsMixin)
     current = get_language()
+    language_codes_namespaces = []
+    if current is not None:
+        language_codes_namespaces.append(
+            "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, current)
+        )
+    language_codes_namespaces.extend(
+        "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, language[0])
+        for language in settings.LANGUAGES
+        if language[0] != current
+    )
     viewnames = [
         ":".join(r)
         for r in itertools.product(
-            ["%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, current)]
-            + [
-                "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, language[0])
-                for language in settings.LANGUAGES
-                if language[0] != current
-            ],
+            language_codes_namespaces,
             (namespaces if isinstance(namespaces, (list, tuple)) else (namespaces,)),
             (viewname,),
         )
