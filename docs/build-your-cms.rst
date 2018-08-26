@@ -1,3 +1,5 @@
+.. _build-your-cms:
+
 Build your CMS
 ==============
 
@@ -9,19 +11,27 @@ project shows how everything works together. An explanation of the
 necessary parts follows here.
 
 
-Settings
-~~~~~~~~
+Getting started
+~~~~~~~~~~~~~~~
 
-There are quite a few settings involved:
+Install feincms3 and all recommended dependencies:
 
-You'll have to add at least the following apps to ``INSTALLED_APPS``:
+.. code-block:: shell
 
-- ``feincms3``
-- ``content_editor``
-- ``ckeditor`` if you want to use :mod:`feincms3.plugins.richtext`
-- ``imagefield`` for :mod:`feincms3.plugins.image`
-- ... and of course also the app where you put your concrete models such
-  as the page model, named ``app.pages`` in this guide.
+    pip install feincms3[all]
+
+Add the following apps to ``INSTALLED_APPS``:
+
+.. code-block:: python
+
+    INSTALLED_APPS = [
+        ...
+        "feincms3",
+        "content_editor",
+         # Optional, but not for this guide:
+        "ckeditor",
+        "imagefield",
+    ]
 
 If you're using the rich text plugin it is strongly recommended to add a
 ``CKEDITOR_CONFIGS`` setting as documented in :mod:`feincms3.cleanse`.
@@ -167,19 +177,18 @@ And a ``pages/standard.html`` template::
     {% block title %}{{ page.title }} - {{ block.super }}{% endblock %}
 
     {% block content %}
-        <main>
-            <h1>{{ page.title }}</h1>
-            {% render_region regions "main" %}
-            {# or maybe {% render_region regions "main" timeout=30 %} #}
-        </main>
+      <main>
+        <h1>{{ page.title }}</h1>
+        {% render_region regions "main" %}
+        {# or maybe {% render_region regions "main" timeout=30 %} #}
+      </main>
     {% endblock %}
 
 
 Admin classes
 ~~~~~~~~~~~~~
 
-For completeness, here's an example how the ``app.pages.admin`` module
-might look like:
+Here's an example how the ``app.pages.admin`` module might look like:
 
 .. code-block:: python
 
@@ -198,19 +207,15 @@ might look like:
         prepopulated_fields = {'slug': ('title',)}
         raw_id_fields = ('parent',)
 
+        inlines = [
+            plugins.RichTextInline.create(models.RichText),
+            plugins.ImageInline.create(models.Image),
+        ]
+
         # fieldsets = ... (Recommended! No example here though. Note
         # that the content editor not only allows collapsed, but also
         # tabbed fieldsets -- simply add 'tabbed' to the 'classes' key
         # the same way you'd add 'collapse'.
-
-        inlines = [
-            plugins.RichTextInline.create(
-                models.RichText,
-            ),
-            plugins.ImageInline.create(
-                models.Image,
-            ),
-        ]
 
         # class Media: ... (Add font-awesome from a CDN and nicely
         # looking buttons for plugins as is described in

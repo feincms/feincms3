@@ -15,6 +15,11 @@ a page CMS (and also other types of CMS) simpler.
    Despite its version number feincms3 is already used in production on
    many sites and backwards compatibility isn't broken lightly.
 
+.. note::
+   This documentation uses Python 3's keyword-only syntax in a few
+   places. Python 2 does not support keyword-only arguments, but keyword
+   usage is still enforced in feincms3.
+
 
 First steps
 ===========

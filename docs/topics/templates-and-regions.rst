@@ -7,11 +7,97 @@ and maybe a sidebar region; many sites at least have a different layout
 on the home page and so on.
 
 
+More regions
+~~~~~~~~~~~~
+
+The :ref:`build-your-cms` guide presented a page model with only a
+single region, ``"main"``. It is of course possible to specify more regions:
+
+.. code-block:: python
+
+    class Page(AbstractPage):
+        regions = [
+            Region(key="main", title=_("Main")),
+            Region(key="sidebar", title=_("Sidebar"), inherited=True),
+        ]
+
+Regions may also be marked as ``inherited``. This means that pages
+deeper down in the tree may inherit content from some other page
+(normally the page's ancestors) in case the page region itself does not
+define any content.
+
+The ``page_detail`` view presented in the guide also works with more
+than one region. However, for region inheritance to work you have to
+provide the pages whose content should be inherited yourself. There
+isn't much to do though, just add the ``inherit_from`` keyword argument
+to ``renderer.regions``:
+
+.. code-block:: python
+
+    def page_detail(request, path=None):
+        page = ...
+        return render(request, "pages/standard.html", {
+            "page": page,
+            "regions": renderer.regions(
+                page,
+                inherit_from=page.ancestors().reverse(),
+            ),
+        })
+
+Ancestors are returned starting from the root node by ``page.ancestors()``.
+We want pages to inherit content from their closest possible ancestors
+however, because of this we ``.reverse()`` the queryset.
+
+
 Making templates selectable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+As written in the introduction above, sometimes a single template or
+layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
 
-Inherited regions
-~~~~~~~~~~~~~~~~~
+.. code-block:: python
 
-``renderer.regions(page, inherit_from=page.ancestors().reverse())``
+    from django.utils.translation import ugettext_lazy as _
+    from content_editor.models import Template, Region
+    from feincms3.mixins import TemplateMixin
+    from feincms3.pages import AbstractPage
+
+    class Page(TemplateMixin, AbstractPage):
+        TEMPLATES = [
+            Template(
+                key="standard",
+                title=_("standard"),
+                template_name="pages/standard.html",
+                regions=(
+                    Region(key="main", title=_("Main")),
+                ),
+            ),
+            Template(
+                key="with-sidebar",
+                title=_("with sidebar"),
+                template_name="pages/with-sidebar.html",
+                regions=(
+                    Region(key="main", title=_("Main")),
+                    Region(key="sidebar", title=_("Sidebar"), inherited=True),
+                ),
+            ),
+        ]
+
+The ``regions`` attribute is provided by the ``TemplateMixin`` and must
+be removed from the ``Page`` definition. Additionally, the
+``TemplateMixin`` provides a ``template`` property returning the
+currently selected template. Instead of hard-coding the template value
+we should now change the ``page_detail`` view to render the selected
+template:
+
+.. code-block:: python
+
+    def page_detail(request, path=None):
+        page = ...
+        return render(request, page.template.template_name, {
+            "page": page,
+            "regions": renderer.regions(
+                page,
+                inherit_from=page.ancestors().reverse(),
+            ),
+        })

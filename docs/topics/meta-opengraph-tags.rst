@@ -7,9 +7,6 @@ Meta and OpenGraph tags
 Helpers and mixins for making meta and `open graph <http://ogp.me>`__
 tags less annoying.
 
-Usage
-=====
-
 0. ``pip install feincms3-meta``
 1. Inherit ``feincms3_meta.models.MetaMixin``
 2. Optional, but recommended: Add a setting for default tags::

@@ -18,7 +18,7 @@ anyway).
 
 
 Parts and responsibilities
-==========================
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To understand feincms3 you'll first have to know about
 django-content-editor_ and django-tree-queries_.
