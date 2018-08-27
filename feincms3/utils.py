@@ -1,12 +1,3 @@
-""""
-NOTE! Please do not depend upon any utilities in this file. Utilities are
-added, modified and dropped without prior notice. This file is only for
-feincms3's internal use.
-
-Of course you may always copy the code somewhere else if you like it
-(according to the very permissive license of course).
-"""
-
 from functools import wraps
 
 from django.core.exceptions import ValidationError
@@ -27,6 +18,10 @@ def iterate_subclasses(cls):
 
 @lru_cache(maxsize=None)
 def concrete_model(abstract):
+    """
+    Returns the first concrete model found when iterating subclasses in a
+    depth-first fashion.
+    """
     for cls in iterate_subclasses(abstract):
         if not cls._meta.abstract:
             return cls
@@ -37,6 +32,9 @@ def positional(count):
     Only allows ``count`` positional arguments to the decorated callable
 
     Will be removed as soon as we drop support for Python 2.
+
+    Can also be used for methods; in this case ``self`` also counts as a
+    positional argument.
     """
 
     def _dec(fn):
