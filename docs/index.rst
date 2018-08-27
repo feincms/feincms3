@@ -60,15 +60,9 @@ Reference
 
 .. toctree::
    :maxdepth: 1
+   :glob:
 
-   ref/pages
-   ref/mixins
-   ref/plugins
-   ref/cleansing
-   ref/apps
-   ref/renderer
-   ref/shortcuts
-   ref/admin
+   ref/*
 
 
 Project links
