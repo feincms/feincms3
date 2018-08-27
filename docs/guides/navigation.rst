@@ -82,6 +82,10 @@ For this example, the page class should also inherit the
 
 .. code-block:: python
 
+    from django.utils.translation import ugettext_lazy as _
+    from feincms3.mixins import MenuMixin
+    from feincms3.pages import AbstractPage
+
     class Page(MenuMixin, ..., AbstractPage):
         MENUS = (
             ('main', _('main navigation')),

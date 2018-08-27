@@ -1,7 +1,34 @@
 Multilingual sites
 ==================
 
-``LanguageMixin``, ``page.activate_language(request)``, ...
+Pages may come in varying languages. ``LanguageMixin`` helps with that.
+It uses ``settings.LANGUAGES`` for the language selection, and sets the
+first language as default:
+
+.. code-block:: python
+
+    from django.utils.translation import ugettext_lazy as _
+    from feincms3.mixins import LanguageMixin
+    from feincms3.pages import AbstractPage
+
+    class Page(LanguageMixin, AbstractPage):
+        pass
+
+The language itself is saved as ``language_code`` on the model. Also
+provided is a method ``activate_language`` which activates the selected
+language using ``django.utils.translation.activate`` and sets
+``LANGUAGE_CODE`` on the request, the same things Django's
+``LocaleMiddleware`` does:
+
+.. code-block:: python
+
+    def page_detail(request, path):
+        page = ...  # MAGIC! (or maybe get_object_or_404...)
+        page.activate_language(request)
+
+Note that this does not persist the language across requests as Django´s
+``django.views.i18n.set_language`` does. (``set_language`` modifies the
+session and sets cookies.)
 
 
 Page tree tips

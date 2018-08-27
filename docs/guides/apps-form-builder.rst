@@ -1,4 +1,4 @@
-.. _form-builder-app:
+.. _apps-form-builder:
 
 Adding a form builder app
 =========================

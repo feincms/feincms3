@@ -1,36 +1,3 @@
-"""
-Embed apps into a pages hierarchy
-
-This module allows content managers to freely place pre-defined applications at
-(almost) arbitrary locations in the page tree. Examples for apps include forms
-or a news app with archives, detail pages etc.
-
-Apps are defined by a list of URL patterns specific to this app. A simple
-contact form would probably only have a single URLconf entry (``r'^$'``), the
-news app would at least have two entries (the archive and the detail URL).
-You'll find an example app for integrating `form_designer
-<https://pypi.org/project/form_designer/>`_ at the end of this documentation.
-
-The activation of apps happens through a dynamically created URLconf module
-(probably the trickiest code in all of feincms3,
-:func:`~feincms3.apps.apps_urlconf`). The
-:class:`~feincms3.apps.apps_middleware` assigns the module to
-``request.urlconf`` which ensures that apps are available. No page code runs at
-all, control is directly passed to the app views. Apps are contained in nested
-URLconf namespaces which allows for URL reversing using Django's ``reverse()``
-mechanism. The inner namespace is the app itself, the outer namespace the
-language. (Currently the apps code depends on
-:class:`~feincms3.mixins.LanguageMixin` and cannot be used without it.)
-:func:`~feincms3.apps.reverse_app` hides a good part of the complexity of
-finding the best match for a given view name since apps will often be added
-several times in different parts of the tree, especially on sites with more
-than one language.
-
-Please note that apps do not have to take over the page where the app itself is
-attached. If the app does not have a URLconf entry for ``r'^$'`` the standard
-page rendering still happens.
-"""
-
 import hashlib
 import itertools
 import re

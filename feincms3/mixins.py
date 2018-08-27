@@ -13,45 +13,6 @@ class MenuMixin(models.Model):
     The ``MenuMixin`` is most useful on pages where there are menus with
     differing content on a single page, for example the main navigation
     and a meta navigation (containing contact, imprint etc.)
-
-    The page class should extend the menu mixin, and define a ``MENUS``
-    variable describing the available menus::
-
-        from django.utils.translation import ugettext_lazy as _
-        from feincms3.mixins import MenuMixin
-        from feincms3.pages import AbstractPage
-
-        class Page(MenuMixin, AbstractPage):
-            MENUS = (
-                ('main', _('main navigation')),
-                ('meta', _('meta navigation')),
-            )
-
-    An example for a template tag which fetches menu entries follows, but note
-    that needs differ so much between different sites that none is bundled with
-    feincms3::
-
-        from collections import defaultdict
-        from django import template
-        from django.db.models import Q
-        from django.utils.translation import get_language
-        from app.pages.models import Page
-
-        register = template.Library()
-
-        @register.simple_tag
-        def menus():
-            menus = defaultdict(list)
-            pages = Page.objects.with_tree_fields().filter(
-                Q(is_active=True),
-                Q(language_code=get_language()),
-                ~Q(menu=''),
-            ).extra(
-                where=['tree_depth BETWEEN 1 AND 2'],
-            )
-            for page in pages:
-                menus[page.menu].append(page)
-            return menus
     """
 
     menu = models.CharField(
@@ -84,52 +45,7 @@ class TemplateMixin(models.Model):
     It is sometimes useful to have different templates for CMS models such
     as pages, articles or anything comparable. The ``TemplateMixin``
     provides a ready-made solution for selecting django-content-editor
-    ``Template`` instances through Django's administration interface::
-
-        from django.utils.translation import ugettext_lazy as _
-        from content_editor.models import Template, Region
-        from feincms3.mixins import TemplateMixin
-        from feincms3.pages import AbstractPage
-
-        class Page(TemplateMixin, AbstractPage):
-            TEMPLATES = [
-                Template(
-                    key='standard',
-                    title=_('standard'),
-                    template_name='pages/standard.html',
-                    regions=(
-                        Region(key='main', title=_('Main')),
-                    ),
-                ),
-                Template(
-                    key='with-sidebar',
-                    title=_('with sidebar'),
-                    template_name='pages/with-sidebar.html',
-                    regions=(
-                        Region(key='main', title=_('Main')),
-                        Region(key='sidebar', title=_('Sidebar')),
-                    ),
-                ),
-            ]
-
-    The selected ``Template`` instance is available using the ``template``
-    property. If the value in ``template_key`` does not match any template,
-    ``None`` is returned instead. django-content-editor also requires a
-    ``regions`` property for its editing interface; the
-    ``TemplateMixin.regions`` property returns the regions list from the
-    selected template.
-
-    If you do not need multiple templates you can also add a ``regions``
-    attribute to your model::
-
-        from content_editor.models import Region
-
-        class SingleTemplateThing(models.Model):
-            title = models.CharField(...)
-
-            regions = [Region(key='main', title='main region')]
-
-            # ...
+    ``Template`` instances through Django's administration interface.
     """
 
     template_key = models.CharField(
@@ -143,10 +59,18 @@ class TemplateMixin(models.Model):
 
     @property
     def template(self):
+        """
+        Return the selected template instance if the ``template_key`` field
+        matches, or ``None``.
+        """
         return self.TEMPLATES_DICT.get(self.template_key)
 
     @property
     def regions(self):
+        """
+        Return the selected template instances' ``regions`` attribute, falling
+        back to an empty list if no template instance could be found.
+        """
         return self.template.regions if self.template else []
 
     @staticmethod
@@ -168,29 +92,6 @@ signals.class_prepared.connect(TemplateMixin.fill_template_key_choices)
 class LanguageMixin(models.Model):
     """
     Pages may come in varying languages. ``LanguageMixin`` helps with that.
-    It uses ``settings.LANGUAGES`` for the language selection, and sets the
-    first language as default::
-
-        from django.utils.translation import ugettext_lazy as _
-        from feincms3.mixins import LanguageMixin
-        from feincms3.pages import AbstractPage
-
-        class Page(LanguageMixin, AbstractPage):
-            pass
-
-    The language itself is saved as ``language_code`` on the model. Also
-    provided is a method ``activate_language`` which activates the selected
-    language using ``django.utils.translation.activate`` and sets
-    ``LANGUAGE_CODE`` on the request, the same things Django's
-    ``LocaleMiddleware`` does::
-
-        def page_detail(request, path):
-            page = ...  # MAGIC! (or maybe get_object_or_404...)
-            page.activate_language(request)
-
-    Note that this does not persist the language across requests as Django´s
-    ``django.views.i18n.set_language`` does. (``set_language`` modifies the
-    session and sets cookies.)
     """
 
     language_code = models.CharField(
@@ -204,6 +105,9 @@ class LanguageMixin(models.Model):
         abstract = True
 
     def activate_language(self, request):
+        """
+        ``activate()`` the page's language and set ``request.LANGUAGE_CODE``
+        """
         # Do what LocaleMiddleware does.
         activate(self.language_code)
         request.LANGUAGE_CODE = get_language()
@@ -211,24 +115,7 @@ class LanguageMixin(models.Model):
 
 class RedirectMixin(models.Model):
     """
-    The ``RedirectMixin`` allows redirecting pages to other pages or arbitrary
-    URLs::
-
-        from feincms3.mixins import RedirectMixin
-        from feincms3.pages import AbstractPage
-
-        class Page(RedirectMixin, AbstractPage):
-            pass
-
-    At most one of ``redirect_to_url`` or ``redirect_to_page`` may be set,
-    never both at the same time. The actual redirecting is not provided. This
-    has to be implemented in the page view::
-
-        def page_detail(request, path):
-            page = ...
-            if page.redirect_to_url or page.redirect_to_page:
-                return redirect(page.redirect_to_url or page.redirect_to_page)
-            # Default rendering continues here.
+    The ``RedirectMixin`` allows adding redirects in the page tree.
     """
 
     redirect_to_url = models.CharField(_("Redirect to URL"), max_length=200, blank=True)
@@ -245,6 +132,9 @@ class RedirectMixin(models.Model):
         abstract = True
 
     def clean_fields(self, exclude=None):
+        """
+        Ensure that redirects are configured properly.
+        """
         super(RedirectMixin, self).clean_fields(exclude)
 
         if self.redirect_to_url and self.redirect_to_page_id:

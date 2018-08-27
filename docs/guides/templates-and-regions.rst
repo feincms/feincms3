@@ -10,8 +10,10 @@ on the home page and so on.
 More regions
 ~~~~~~~~~~~~
 
-The :ref:`build-your-cms` guide presented a page model with only a
-single region, ``"main"``. It is of course possible to specify more regions:
+django-content-editor requires a ``regions`` attribute or property on
+the model containing a list of ``Region`` instances.  The
+:ref:`build-your-cms` guide presented a page model with only a single
+region, ``"main"``. It is of course possible to specify more regions:
 
 .. code-block:: python
 

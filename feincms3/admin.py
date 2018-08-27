@@ -31,10 +31,10 @@ class TreeAdmin(ModelAdmin):
     this class the two columns ``indented_title`` and ``move_column`` should be
     added to subclasses ``list_display``::
 
-        class PageAdmin(TreeAdmin):  # Maybe also ContentEditor for pages.
+        class NodeAdmin(TreeAdmin):
             list_display = ('indented_title', 'move_column', ...)
 
-        admin.site.register(Page, PageAdmin)
+        admin.site.register(Node, NodeAdmin)
     """
 
     list_display = ("indented_title", "move_column")
@@ -286,13 +286,11 @@ class AncestorFilter(SimpleListFilter):
 
     Usage::
 
-        class PageAdmin(TreeAdmin):
-            # TreeAdmin is not a strict requirement, but you'll probably want
-            # to use them both.
+        class NodeAdmin(TreeAdmin):
             list_display = ('indented_title', 'move_column', ...)
             list_filter = ('is_active', AncestorFilter, ...)
 
-        admin.site.register(Page, PageAdmin)
+        admin.site.register(Node, NodeAdmin)
     """
 
     title = _("ancestor")

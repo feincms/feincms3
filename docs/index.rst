@@ -47,12 +47,26 @@ knowledge imparted in :ref:`build-your-cms`.
 
    guides/templates-and-regions
    guides/meta-opengraph-tags
+   guides/redirects
    guides/multilingual-sites
    guides/navigation
-   guides/form-builder-app
-   guides/apps-and-instances
    guides/rendering
    guides/multisite
+
+
+Embedding apps
+==============
+
+feincms3 allows content managers to freely place pre-defined
+applications in the page tree. Examples for apps include forms, or a
+news app with archives, detail pages etc.
+
+.. toctree::
+   :maxdepth: 2
+
+   guides/apps-introduction
+   guides/apps-form-builder
+   guides/apps-and-instances
 
 
 Reference
