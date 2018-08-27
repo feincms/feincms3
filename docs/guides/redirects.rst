@@ -3,8 +3,10 @@
 Redirects
 =========
 
-The ``RedirectMixin`` allows redirecting pages to other pages or arbitrary
-URLs:
+The :class:`feincms3.mixins.RedirectMixin` allows redirecting pages to
+other pages or arbitrary URLs. Inheriting the mixin adds two fields,
+the char field ``redirect_to_url`` and the self-referencing foreign key
+``redirect_to_page``:
 
 .. code-block:: python
 

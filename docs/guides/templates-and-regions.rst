@@ -1,11 +1,15 @@
+.. _templates-and-regions:
+
 Templates and regions
 =====================
 
 The build-your-CMS guide only used one region and one template. However,
-this isn't sufficient for many sites. Many sites have a moodboard region
-and maybe a sidebar region; many sites at least have a different layout
+this isn't sufficient for many sites. Some sites have a moodboard region
+and maybe a sidebar region; some sites at least have a different layout
 on the home page and so on.
 
+
+.. _more-regions:
 
 More regions
 ~~~~~~~~~~~~

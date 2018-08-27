@@ -20,9 +20,6 @@ anyway).
 Parts and responsibilities
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To understand feincms3 you'll first have to know about
-django-content-editor_ and django-tree-queries_.
-
 Django's builtin admin application provides a really good and usable
 administration interface for managing structured content.
 django-content-editor_ extends Django's inlines mechanism with tools and
@@ -45,18 +42,17 @@ feincms3 has the following main parts:
 - A few ready-made **plugins** for rich text, images, oEmbed_ and template
   snippets.
 - A HTML sanitization and **cleansing** function and a rich text widget
-  building on django-ckeditor_ which always cleanses the HTML entered.
+  building on html-sanitizer_ and django-ckeditor_ which always cleanses
+  the HTML entered.
 - Facilities for embedding **apps** (i.e. a weblog, a contact form, ...)
   through the CMS.
+- A **renderer** and associated template tags.
+- **admin** classes for visualizing and modifying the tree hierarchy.
 - Various utilities (**shortcuts** and **template tags**).
-- A **renderer** and associated template tags if you don't want to use
-  django-content-editor_'s ``PluginRenderer``.
-- A **admin** class for show the tree hierarchy with helpers for moving
-  nodes to other places in the forest.
 
 Please note that there exist only abstract model classes in feincms3 and
 its dependencies. The concrete class (for example, the page model and
-its plugins) **have** to be added by you.
+its plugins) **have** to be added by you. This is by design.
 
 .. [#] FeinCMS_ used to call those content types, a name which
    unfortunately was often confused with
@@ -67,9 +63,10 @@ its plugins) **have** to be added by you.
    projects for years.
 
 
-.. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor/
-.. _django-content-editor: https://django-content-editor.readthedocs.io/
-.. _django-mptt: https://django-mptt.readthedocs.io/
-.. _django-tree-queries: https://github.com/matthiask/django-tree-queries/
-.. _FeinCMS: https://github.com/feincms/feincms/
-.. _oEmbed: http://oembed.com/
+.. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor
+.. _django-content-editor: https://django-content-editor.readthedocs.io
+.. _django-mptt: https://django-mptt.readthedocs.io
+.. _django-tree-queries: https://github.com/matthiask/django-tree-queries
+.. _FeinCMS: https://github.com/feincms/feincms
+.. _html-sanitizer: https://github.com/matthiask/html-sanitizer
+.. _oEmbed: http://oembed.com

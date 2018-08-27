@@ -1,19 +1,20 @@
+.. _navigation:
+
 Navigation generation recipes
 =============================
 
 This guide provides a few examples and snippets for generating the
 navigation for a site dynamically.
 
-feincms3's ``AbstractPage`` model inherits the methods of
-``tree_queries.models.TreeNode``, notably ``page.ancestors()`` and
-``page.descendants()``. These methods and the attributes added by
-django-tree-queries, ``tree_path`` and ``tree_depth`` will prove useful
-for generating navigations.
+feincms3's :class:`~feincms3.pages.AbstractPage` model inherits the
+methods of ``tree_queries.models.TreeNode``, notably
+``page.ancestors()`` and ``page.descendants()``. These methods and the
+attributes added by django-tree-queries, ``tree_path`` and
+``tree_depth`` will prove useful for generating navigations.
 
 feincms3 does not have a concrete page model and does not provide any
 tags to fetch page instances from the template. You'll have to provide
-the data yourself to the template. The recommended way to add the
-required data to the rendering context is by writing your own template
+the context variables yourself, preferrably by writing your own template
 tags.
 
 This guide assumes that the concrete page model is available at

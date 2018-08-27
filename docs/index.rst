@@ -4,14 +4,21 @@ feincms3
 
 Version |release|
 
-feincms3 provides additional building blocks on top of
-`django-content-editor <https://django-content-editor.readthedocs.io>`_
-and `django-tree-queries
-<https://github.com/matthiask/django-tree-queries>`_ which make building
-a page CMS (and also other types of CMS) simpler.
+feincms3 offers tools and building blocks which make building a
+versatile and customized CMS for each project not just a dream but a
+reachable reality.
+
+It builds on other powerful tools such as Django itself,
+`django-content-editor <https://django-content-editor.readthedocs.io>`__
+to allow creating and editing structured content and
+`django-tree-queries
+<https://github.com/matthiask/django-tree-queries>`__ for querying
+hierarchical data such as page trees.
+
+The tools can be used for a page CMS, but are also suitable for other
+types of CMS systems.
 
 .. note::
-
    Despite its version number feincms3 is already used in production on
    many sites and backwards compatibility isn't broken lightly.
 
@@ -46,11 +53,11 @@ knowledge imparted in :ref:`build-your-cms`.
    :maxdepth: 2
 
    guides/templates-and-regions
-   guides/meta-opengraph-tags
    guides/redirects
-   guides/multilingual-sites
    guides/navigation
    guides/rendering
+   guides/multilingual-sites
+   guides/meta-opengraph-tags
    guides/multisite
 
 
@@ -82,8 +89,11 @@ Reference
 Project links
 =============
 
-* `CHANGELOG
-  <https://github.com/matthiask/feincms3/blob/master/CHANGELOG.rst>`__
+.. toctree::
+   :maxdepth: 1
+
+   project/changelog
+   project/contributing
 
 
 Related projects

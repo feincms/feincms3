@@ -4,8 +4,8 @@ Multisite setup
 `feincms3-sites
 <https://github.com/matthiask/feincms3-sites>`__'s documentation:
 
-The feincms3-sites allows running a feincms3 site on several domains,
-with separate page trees etc. on each (if so desired).
+feincms3-sites allows running a feincms3 site on several domains, with
+separate page trees etc. on each (if so desired).
 
 The default behavior allows to match a single host. The advanced options
 fieldset in the administration panel allows specifying your own regex,

@@ -4,7 +4,7 @@ Adding a form builder app
 =========================
 
 The following example app uses `form_designer
-<https://pypi.org/project/form_designer>` to provide a forms builder
+<https://pypi.org/project/form_designer>`__ to provide a forms builder
 integrated with the pages app described above. Apart from installing
 form_designer itself the following steps are necessary.
 

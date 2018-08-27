@@ -26,16 +26,19 @@ language using ``django.utils.translation.activate`` and sets
         page = ...  # MAGIC! (or maybe get_object_or_404...)
         page.activate_language(request)
 
-Note that this does not persist the language across requests as Django´s
-``django.views.i18n.set_language`` does. (``set_language`` modifies the
-session and sets cookies.)
+.. note::
+   ``page.activate_language`` does not persist the language across
+   requests as Django's ``django.views.i18n.set_language`` does.
+   (``set_language`` modifies the session and sets cookies.) That is
+   mostly what you want though since the page's language is tied to its
+   URL.
 
 
 Page tree tips
 ~~~~~~~~~~~~~~
 
 I most often add a root page per language, which means that the main
-navigation ``tree_depth`` would be ``1``, not ``0``. The menu template
-tags would require an additional
+navigation's ``tree_depth`` would be ``1``, not ``0``. The menu template
+tags described in :ref:`navigation` would also require an additional
 ``.filter(language_code=django.utils.translation.get_language())``
 statement to only return pages in the current language.

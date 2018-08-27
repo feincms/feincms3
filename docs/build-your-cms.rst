@@ -3,12 +3,16 @@
 Build your CMS
 ==============
 
-To build a CMS you need to write your URLconf and views, and add
-settings to your Django project.
+This guide shows step by step how to use the tools provided by feincms3
+to build your own CMS.
 
-The `feincms3-example <https://github.com/matthiask/feincms3-example>`_
-project shows how everything works together. An explanation of the
-necessary parts follows here.
+.. note::
+  If you just want to quickly check out what feincms3 is capable of,
+  have a look at the `feincms3-example
+  <https://github.com/matthiask/feincms3-example>`__ project. It shows
+  how everything works together, but also uses advanced functionality
+  which might be confusing to newcomers and is not necessary for smaller
+  CMS projects.
 
 
 Getting started

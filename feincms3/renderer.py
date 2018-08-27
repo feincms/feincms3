@@ -239,37 +239,6 @@ context=default_context)
         """
         Render a plugin, passing on the template context into the plugin's
         template (if the plugin uses a template renderer).
-
-        The template tags in ``feincms3_renderer`` assume that the renderer
-        instance is available as ``renderer`` inside the context. A suitable
-        view would look as follows::
-
-            def page_detail(request, slug):
-                page = get_object_or_404(Page, slug=slug)
-                return render(request, 'page.html', {
-                    'page': page,
-                    'contents': contents_for_item(page, renderer.plugins()),
-                    'renderer': renderer,
-                })
-
-        The template itself should contain the following snippet::
-
-            {% load feincms3_renderer %}
-
-            {% block content %}
-
-            <h1>{{ page.title }}</h1>
-            <main>
-              {% for plugin in contents.main %}
-                {% render_plugin plugin %}
-              {% endfor %}
-            </main>
-            <aside>
-              {# or simply #}
-              {% render_plugins contents.sidebar %}
-            </aside>
-
-            {% endblock %}
         """
         plugin_template, plugin_context = self._renderers[plugin.__class__]
 

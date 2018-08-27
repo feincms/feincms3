@@ -153,6 +153,7 @@ class RedirectMixin(models.Model):
                 )
 
             if self.redirect_to_page.redirect_to_page_id:
+                # TODO Also check that no other page is redirecting to this one?
                 raise validation_error(
                     _(
                         "Do not chain redirects. The selected page redirects"
