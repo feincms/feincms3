@@ -128,3 +128,4 @@ Related projects
   feincms3's pages use for querying tree-shaped data.
 * `html-sanitizer <https://github.com/matthiask/html-sanitizer>`_:
   Allowlist-based HTML sanitizer used for feincms3' rich text plugin.
+* `FeinCMS <https://github.com/feincms/feincms>`__: First version.
