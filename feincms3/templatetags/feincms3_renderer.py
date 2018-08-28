@@ -24,7 +24,8 @@ def render_plugin(context, plugin):
 @register.simple_tag(takes_context=True)
 def render_plugins(context, plugins):
     """
-    Render a list of plugins. Requires the :class:`feincms3.renderer.TemplatePluginRenderer` instance in the context
+    Render a list of plugins. Requires the
+    :class:`feincms3.renderer.TemplatePluginRenderer` instance in the context
     as ``renderer``::
 
         {% render_plugins plugins %}
