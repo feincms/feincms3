@@ -9,9 +9,6 @@ feincms3
     :target: https://feincms3.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://codeclimate.com/github/matthiask/feincms3.png
-    :target: https://codeclimate.com/github/matthiask/feincms3
-
 
 feincms3 provides additional building blocks on top of
 django-content-editor_ and django-tree-queries_ which make building a page
