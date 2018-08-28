@@ -8,10 +8,7 @@ The following example app uses `form_designer
 integrated with the pages app described above. Apart from installing
 form_designer itself the following steps are necessary.
 
-Add an entry to ``Page.APPLICATIONS`` for the forms app. The
-``app_instance_namespace`` bit is not strictly necessary, but it might
-be helpful to reverse URLs where a specific form is integrated using
-``reverse_app(('forms-%s' % form.pk,), 'form')``:
+Add an entry to ``Page.APPLICATIONS`` for the forms app:
 
 .. code-block:: python
 
@@ -23,12 +20,17 @@ be helpful to reverse URLs where a specific form is integrated using
         # ...
         APPLICATIONS = [
             ("forms", _("forms"), {
+                # Required: A module containing urlpatterns
                 "urlconf": "app.forms",
-                "app_instance_namespace": lambda page: "%s-%s" % (
+                # The "form" field on the page is required when
+                # selecting the forms app
+                "required_fields": ("form",),
+                # Not necessary, but helpful for finding a form's URL using
+                # reverse_app("forms-{}".format(form.pk), "form")
+                "app_instance_namespace": lambda page: "{}-{}".format(
                     page.application,
                     page.form_id,
                 ),
-                "required_fields": ("form",),
             }),
             # ...
         ]
@@ -39,7 +41,12 @@ be helpful to reverse URLs where a specific form is integrated using
             verbose_name=_("form"),
         )
 
-Add the ``app/forms.py`` module itself:
+Add the ``app/forms.py`` module itself. Note that since control is
+directly handed to the application view and no page view code runs
+you'll have to load the page instance yourself and do the necessary
+language setup and provide the page etc. to the rendering context. The
+best way to load the page instance responsible for the current app is by
+calling :func:`feincms3.apps.page_for_app_request`:
 
 .. code-block:: python
 
@@ -55,6 +62,7 @@ Add the ``app/forms.py`` module itself:
     def form(request):
         page = page_for_app_request(request)
         page.activate_language(request)
+
         context = {}
 
         if "ok" not in request.GET:
