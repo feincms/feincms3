@@ -251,7 +251,9 @@ context=default_context)
         plugin_template, plugin_context = self._renderers[plugin.__class__]
 
         if plugin_template is None:
-            return plugin_context(plugin)  # Simple string renderer
+            return (
+                plugin_context(plugin) if callable(plugin_context) else plugin_context
+            )  # Simple string renderer
 
         if context is None:
             context = Context()

@@ -9,6 +9,8 @@ Change log
 - Changed ``TemplatePluginRenderer.render_plugin_in_context`` to raise a
   specific ``PluginNotRegistered`` exception upon encountering
   unregistered plugins instead of a generic ``KeyError``.
+- Made it possible to pass fixed strings (not callables) to
+  ``TemplatePluginRenderer.register_string_renderer``.
 
 
 `0.24`_ (2018-08-25)
