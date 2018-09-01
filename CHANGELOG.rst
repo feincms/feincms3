@@ -6,6 +6,11 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed ``TemplatePluginRenderer.render_plugin_in_context`` to raise a
+  specific ``PluginNotRegistered`` exception upon encountering
+  unregistered plugins instead of a generic ``KeyError``.
+
+
 `0.24`_ (2018-08-25)
 ~~~~~~~~~~~~~~~~~~~~
 

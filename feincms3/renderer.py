@@ -12,6 +12,10 @@ from feincms3.utils import positional
 __all__ = ("TemplatePluginRenderer", "Regions", "cached_render", "default_context")
 
 
+class PluginNotRegistered(Exception):
+    pass
+
+
 def default_context(plugin, context):
     """
     Return the default context for plugins rendered with a template, which
@@ -240,6 +244,10 @@ context=default_context)
         Render a plugin, passing on the template context into the plugin's
         template (if the plugin uses a template renderer).
         """
+        if plugin.__class__ not in self._renderers:
+            raise PluginNotRegistered(
+                "Plugin %s is not registered" % plugin._meta.label_lower
+            )
         plugin_template, plugin_context = self._renderers[plugin.__class__]
 
         if plugin_template is None:
