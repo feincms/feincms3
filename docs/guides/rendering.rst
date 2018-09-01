@@ -19,7 +19,7 @@ String renderers
 
 You may register a rendering function which returns a HTML string:
 
-.. code-block::
+.. code-block:: python
 
     from django.utils.html import mark_safe
     from app.pages.models import RichText
@@ -35,7 +35,7 @@ Template renderers
 
 Or you may choose to render plugins using a template:
 
-.. code-block::
+.. code-block:: python
 
     renderer.register_template_renderer(
         Image,
@@ -48,7 +48,7 @@ The configured template receives the plugin instance as ``"plugin"``
 If you need more flexibility, also accepts a callable as
 ``template_name``:
 
-.. code-block::
+.. code-block:: python
 
     def external_template_name(plugin):
         if "youtube" in plugin.url:
