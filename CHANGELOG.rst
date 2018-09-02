@@ -6,11 +6,14 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Moved the documentation from autodoc to a more guide-oriented format.
 - Changed ``TemplatePluginRenderer.render_plugin_in_context`` to raise a
   specific ``PluginNotRegistered`` exception upon encountering
   unregistered plugins instead of a generic ``KeyError``.
 - Made it possible to pass fixed strings (not callables) to
   ``TemplatePluginRenderer.register_string_renderer``.
+- Added an incubator in ``feincms3.incubator`` for experimental modules
+  with absolutely no compatibility guarantees.
 
 
 `0.24`_ (2018-08-25)
