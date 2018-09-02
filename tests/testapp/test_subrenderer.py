@@ -17,8 +17,12 @@ class FAQ(SimpleNamespace):
     subrenderer = "faq"
 
 
-class Exit(SimpleNamespace):
+class Command(SimpleNamespace):
     subrenderer = ""
+
+
+class File(SimpleNamespace):
+    pass
 
 
 class TeaserRenderer(Subrenderer):
@@ -39,9 +43,12 @@ class FAQRenderer(Subrenderer):
 
 teaser_renderer = TeaserRenderer()
 teaser_renderer.register_string_renderer(Teaser, lambda plugin: plugin.text)
+teaser_renderer.register_string_renderer(Command, "")
 
 faq_renderer = FAQRenderer()
 faq_renderer.register_string_renderer(FAQ, lambda plugin: plugin.text)
+faq_renderer.register_string_renderer(Command, "")
+faq_renderer.register_string_renderer(File, lambda plugin: plugin.text)
 
 
 class Regions(SubrendererRegions):
@@ -52,7 +59,8 @@ renderer = TemplatePluginRenderer(regions_class=Regions)
 renderer.register_string_renderer(Text, lambda plugin: plugin.text)
 renderer.register_string_renderer(Teaser, "")
 renderer.register_string_renderer(FAQ, "")
-renderer.register_string_renderer(Exit, "")
+renderer.register_string_renderer(Command, "")
+renderer.register_string_renderer(File, lambda plugin: plugin.text)
 
 
 class Test(TestCase):
@@ -120,8 +128,8 @@ class Test(TestCase):
                     Text(text="Text 1"),
                     Teaser(text="Teaser 1"),
                     Teaser(text="Teaser 2"),
-                    Exit(),
-                    Exit(),  # Second exit shouldn't change anything
+                    Command(),
+                    Command(),  # Second exit shouldn't change anything
                 ]
             },
             renderer=renderer,
@@ -129,4 +137,25 @@ class Test(TestCase):
 
         self.assertEqual(
             regions.render("main"), 'Text 1<div class="teasers">Teaser 1Teaser 2</div>'
+        )
+
+    def test_both_allowed(self):
+        regions = Regions(
+            item=None,
+            contents={
+                "main": [
+                    Text(text="Text 1"),
+                    File(text="download1.pdf"),  # Allowed outside...
+                    Command(subrenderer="faq"),
+                    FAQ(text="Question"),
+                    File(text="download2.pdf"),  # ...and inside the FAQ renderer
+                    Text(text="Text 2"),  # Main renderer again.
+                ]
+            },
+            renderer=renderer,
+        )
+
+        self.assertEqual(
+            regions.render("main"),
+            'Text 1download1.pdf<div class="faq">Questiondownload2.pdf</div>Text 2',
         )
