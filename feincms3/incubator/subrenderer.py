@@ -1,18 +1,15 @@
 from django.utils.html import mark_safe
 
 from feincms3.renderer import Regions, TemplatePluginRenderer, cached_render
-from feincms3.utils import positional
 
 
 class Subrenderer(TemplatePluginRenderer):
     def accepts(self, plugin, context=None):
         return plugin.__class__ in self._renderers
 
-    @positional(1)
     def enter(self, **kwargs):
         return ""
 
-    @positional(1)
     def exit(self, **kwargs):
         return ""
 
