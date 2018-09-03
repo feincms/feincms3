@@ -68,6 +68,8 @@ feincms3 allows content managers to freely place pre-defined
 applications in the page tree. Examples for apps include forms, or a
 news app with archives, detail pages etc.
 
+The apps documentation is meant to be read in order.
+
 .. toctree::
    :maxdepth: 2
 
