@@ -14,6 +14,9 @@ Change log
   ``TemplatePluginRenderer.register_string_renderer``.
 - Added an incubator in ``feincms3.incubator`` for experimental modules
   with absolutely no compatibility guarantees.
+- Changed the ``TreeAdmin.move_view`` to return a redirect to the admin
+  index page instead of a 404 for missing nodes (as the Django admin's
+  views also do since Django 1.11).
 
 
 `0.24`_ (2018-08-25)

@@ -7,7 +7,6 @@ from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
 from django.db import router, transaction
-from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -114,7 +113,7 @@ class TreeAdmin(ModelAdmin):
                 raise PermissionDenied
 
             if obj is None:
-                raise Http404()
+                return self._get_obj_does_not_exist_redirect(request, opts, object_id)
 
             if request.method == "POST":
                 form = MoveForm(request.POST, obj=obj)

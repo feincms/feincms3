@@ -980,3 +980,10 @@ class Test(TestCase):
 
         p2.refresh_from_db()
         self.assertEqual(p2.path, "/root/p2/")
+
+    def test_move_view_redirect(self):
+        client = self.login()
+        # move_view also redirects to index page when encountering invalid
+        # object IDs
+        response = client.get("/admin/testapp/page/asdf/move/")
+        self.assertRedirects(response, "/admin/")
