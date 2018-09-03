@@ -688,14 +688,24 @@ class Test(TestCase):
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
+        response = client.post(reverse("admin:testapp_page_move", args=(root.pk,)), {})
+        self.assertContains(response, "This field is required.", 1)
+
         response = client.post(
             reverse("admin:testapp_page_move", args=(root.pk,)),
             {"move_to": "first", "of": p1.pk},
         )
-
         self.assertContains(
             response,
             "Select a valid choice. That choice is not one of the available choices.",  # noqa
+        )
+
+        response = client.post(
+            reverse("admin:testapp_page_move", args=(root.pk,)),
+            {"move_to": "first", "of": root.pk},
+        )
+        self.assertContains(
+            response, "Cannot move node to a position relative to itself."
         )
 
     def test_reorder_siblings(self):
@@ -715,6 +725,21 @@ class Test(TestCase):
                 (root.pk, None, 10),
                 (p1.pk, root.pk, 10),
                 (p3.pk, root.pk, 20),
+                (p2.pk, root.pk, 30),
+            ],
+        )
+
+        client.post(
+            reverse("admin:testapp_page_move", args=(p3.pk,)),
+            {"move_to": "left", "of": p1.pk},
+        )
+
+        self.assertEqual(
+            [(p.pk, p.parent_id, p.position) for p in Page.objects.all()],
+            [
+                (root.pk, None, 10),
+                (p3.pk, root.pk, 10),
+                (p1.pk, root.pk, 20),
                 (p2.pk, root.pk, 30),
             ],
         )
