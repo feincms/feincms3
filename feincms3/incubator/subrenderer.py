@@ -5,7 +5,7 @@ Subrenderers
 Subrenderers allow rendering sections inside regions using different renderers.
 The same plugin may be rendered differently in different contexts. Sometimes
 just differentiating on the plugin itself or inserting additional elements as
-described in :ref:`rendering-plugins-different` is sufficient, but you might
+described in :ref:`rendering-plugins-differently` is sufficient, but you might
 want to try a more powerful tool.
 
 Let's make an example. Assume that we want to show a list of boxes, where a box
