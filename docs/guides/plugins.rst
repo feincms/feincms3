@@ -1,7 +1,7 @@
 .. _plugins:
 
-Plugins
-=======
+Writing plugins
+===============
 
 Plugins for a given model extend an abstract base class created by
 django-content-editor's ``create_plugin_base`` function. A minimal
