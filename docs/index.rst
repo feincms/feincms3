@@ -52,6 +52,7 @@ knowledge imparted in :ref:`build-your-cms`.
 .. toctree::
    :maxdepth: 2
 
+   guides/plugins
    guides/templates-and-regions
    guides/redirects
    guides/navigation
