@@ -411,5 +411,5 @@ functionality.
 .. _0.21: https://github.com/matthiask/feincms3/compare/0.20...0.21
 .. _0.22: https://github.com/matthiask/feincms3/compare/0.21...0.22
 .. _0.23: https://github.com/matthiask/feincms3/compare/0.22...0.23
-.. _0.24: https://github.com/matthiask/feincms4/compare/0.23...0.24
-.. _Next version: https://github.com/matthiask/feincms4/compare/0.24...master
+.. _0.24: https://github.com/matthiask/feincms3/compare/0.23...0.24
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.24...master
