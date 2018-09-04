@@ -107,6 +107,10 @@ The subrenderer is deactivated if any of the following conditions occurs:
 - The current subrenderer does not accept a plugin. By default this happens
   when the plugin has not been registered with the subrenderer.
 - Rendering finishes (no more contents).
+
+Code documentation
+------------------
+
 """
 
 from django.utils.html import mark_safe
