@@ -45,7 +45,7 @@ based on feincms3.
 Guides
 ======
 
-These guides discuss key concepts and show how to solve common problems.
+These guides discuss key concepts and show how to approach common tasks.
 They do not have to be read in order and in general only build on the
 knowledge imparted in :ref:`build-your-cms`.
 
