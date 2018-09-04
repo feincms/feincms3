@@ -153,7 +153,6 @@ class RedirectMixin(models.Model):
                 )
 
             if self.redirect_to_page.redirect_to_page_id:
-                # TODO Also check that no other page is redirecting to this one?
                 raise validation_error(
                     _(
                         "Do not chain redirects. The selected page redirects"
@@ -163,6 +162,20 @@ class RedirectMixin(models.Model):
                         "title": self.redirect_to_page,
                         "path": self.redirect_to_page.get_absolute_url(),
                     },
+                    field="redirect_to_page",
+                    exclude=exclude,
+                )
+
+        if self.redirect_to_url or self.redirect_to_page_id:
+            # Any page redirects to this page?
+            other = self.__class__._default_manager.filter(redirect_to_page=self)
+            if other:
+                raise validation_error(
+                    _(
+                        "Do not chain redirects. The page %(page)s already"
+                        " redirects to this page."
+                    )
+                    % {"page": ", ".join("%s" % page for page in other)},
                     field="redirect_to_page",
                     exclude=exclude,
                 )

@@ -832,6 +832,10 @@ class Test(TestCase):
         page2.redirect_to_page = page2
         self.assertRaises(ValidationError, page2.full_clean)
 
+        # page1 is already the target of a redirect
+        page1.redirect_to_url = "http://example.com/"
+        self.assertRaises(ValidationError, page1.full_clean)
+
     def test_positional(self):
         @positional(2)
         def test(a, b, c):
