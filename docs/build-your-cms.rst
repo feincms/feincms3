@@ -125,6 +125,9 @@ look as follows:
    necessary with feincms3 -- simply put the functionality into your own
    views code.
 
+Rendering and templates
+~~~~~~~~~~~~~~~~~~~~~~~
+
 Here's an example how plugins could be rendered,
 ``app.pages.renderer``:
 
