@@ -24,7 +24,7 @@ Install feincms3 and all recommended dependencies:
 
     pip install feincms3[all]
 
-Add the following apps to ``INSTALLED_APPS``:
+Add the following settings:
 
 .. code-block:: python
 
@@ -37,8 +37,55 @@ Add the following apps to ``INSTALLED_APPS``:
         "imagefield",
     ]
 
-If you're using the rich text plugin it is strongly recommended to add a
-``CKEDITOR_CONFIGS`` setting as documented in :mod:`feincms3.cleanse`.
+
+Configure the rich text editor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The bundled rich text plugin (which we're going to integrate) uses
+:class:`feincms3.cleanse.CleansedRichTextField` which always sends HTML
+through `html-sanitizer
+<https://pypi.org/project/html-sanitizer>`_. The default
+configuration of HTML sanitizer is really restrictive and removes images
+(besides other things such as normalizing the HTML and removing script
+tags etc.)
+
+The corresponding django-ckeditor configuration follows. It should also
+be added to your settings:
+
+.. code-block:: python
+
+    # Configure django-ckeditor
+    CKEDITOR_CONFIGS = {
+        "default": {
+            "toolbar": "Custom",
+            "format_tags": "h1;h2;h3;p;pre",
+            "toolbar_Custom": [[
+                "Format", "RemoveFormat", "-",
+                "Bold", "Italic", "Subscript", "Superscript", "-",
+                "NumberedList", "BulletedList", "-",
+                "Anchor", "Link", "Unlink", "-",
+                "HorizontalRule", "SpecialChar", "-",
+                "Source",
+            ]],
+        },
+    }
+    CKEDITOR_CONFIGS["richtext-plugin"] = CKEDITOR_CONFIGS["default"]
+
+.. note::
+   HTML copy-pasted from other sources (e.g. Word) is often messy. It is
+   generally a good idea to sanitize HTML on the server side to prevent
+   XSS attacks or even just the general uglyness that results from
+   giving website editors too much freedom.
+
+   We almost never allow embedding images, tables etc. into rich text
+   elements on our sites. It is just too easy to add a 10MB JPEG or even
+   a BMP file and scale it down to 50x50. Adding images as a separate
+   plugin has other benefits too: No parsing of rich texts to replace
+   images, it's much easier to e.g. create a lightbox, use the first
+   image on the site as teaser image or whatever comes to your mind.
+
+   That being said, adding your own rich text plugin which allows
+   whatever you want is quite straightforward and completely supported.
 
 
 Models

@@ -27,41 +27,41 @@ class CleansedRichTextField(RichTextField):
     The recommended configuration is as follows::
 
         CKEDITOR_CONFIGS = {
-            'default': {
-                'toolbar': 'Custom',
-                'format_tags': 'h1;h2;h3;p;pre',
-                'toolbar_Custom': [[
-                    'Format', 'RemoveFormat', '-',
-                    'Bold', 'Italic', 'Subscript', 'Superscript', '-',
-                    'NumberedList', 'BulletedList', '-',
-                    'Anchor', 'Link', 'Unlink', '-',
-                    'HorizontalRule', 'SpecialChar', '-',
-                    'Source',
+            "default": {
+                "toolbar": "Custom",
+                "format_tags": "h1;h2;h3;p;pre",
+                "toolbar_Custom": [[
+                    "Format", "RemoveFormat", "-",
+                    "Bold", "Italic", "Subscript", "Superscript", "-",
+                    "NumberedList", "BulletedList", "-",
+                    "Anchor", "Link", "Unlink", "-",
+                    "HorizontalRule", "SpecialChar", "-",
+                    "Source",
                 ]],
             },
         }
 
         # Settings for feincms3.plugins.richtext.RichText
-        CKEDITOR_CONFIGS['richtext-plugin'] = CKEDITOR_CONFIGS['default']
+        CKEDITOR_CONFIGS["richtext-plugin"] = CKEDITOR_CONFIGS["default"]
 
     The corresponding ``HTML_SANITIZERS`` configuration for `html-sanitizer
     <https://pypi.org/project/html-sanitizer>`_ would look as follows::
 
         HTML_SANITIZERS = {
-            'default': {
-                'tags': {
-                    'a', 'h1', 'h2', 'h3', 'strong', 'em', 'p',
-                    'ul', 'ol', 'li', 'br', 'sub', 'sup', 'hr',
+            "default": {
+                "tags": {
+                    "a", "h1", "h2", "h3", "strong", "em", "p",
+                    "ul", "ol", "li", "br", "sub", "sup", "hr",
                 },
-                'attributes': {
-                    'a': ('href', 'name', 'target', 'title', 'id'),
+                "attributes": {
+                    "a": ("href", "name", "target", "title", "id", "rel"),
                 },
-                'empty': {'hr', 'a', 'br'},
-                'separate': {'a', 'p', 'li'},
-                # 'add_nofollow': False,
-                # 'autolink': False,
-                # 'element_filters': [],
-                # 'sanitize_href': sanitize_href,
+                "empty": {"hr", "a", "br"},
+                "separate": {"a", "p", "li"},
+                # "add_nofollow": False,
+                # "autolink": False,
+                # "element_filters": [],
+                # "sanitize_href": sanitize_href,
             },
         }
 
