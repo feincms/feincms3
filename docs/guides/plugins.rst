@@ -24,15 +24,6 @@ example follows here:
         download = models.FileField(upload_to="downloads/")
         caption = models.CharField(blank=True, max_length=200)
 
-.. note::
-   FeinCMS 1's ``create_content_type`` method could not be avoided
-   because it added the dynamically created (concrete!) model to a few
-   lists for bookkeeping.
-
-   By contrast using ``create_plugin_base`` is not strictly necessary.
-   However, django-content-editor and by extension feincms3 assume a few
-   properties which you'd have to replicate by hand.
-
 The ``create_plugin_base`` creates an abstract model with the following
 fields and methods in the example above:
 
@@ -48,3 +39,13 @@ fields and methods in the example above:
   foreign key (not to ``parent`` but to other instances) it would
   probably be a really good idea to override this classmethod with one
   that adds a ``select_related()`` call.
+
+.. note::
+   FeinCMS 1's ``create_content_type`` method could not be avoided
+   because it added the dynamically created (concrete!) model to a few
+   lists for bookkeeping.
+
+   By contrast using ``create_plugin_base`` is not strictly necessary.
+   However, django-content-editor and by extension feincms3 assume a few
+   properties which you'd have to replicate by hand such as
+   the model fields, the ``related_name`` pattern etc.

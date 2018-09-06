@@ -4,19 +4,19 @@ feincms3
 
 Version |release|
 
-feincms3 offers tools and building blocks which make building a
-versatile and customized CMS for each project not just a dream but a
-reachable reality.
+feincms3 offers tools and building blocks which make building a CMS that
+is versatile, powerful and tailor-made at the same time for each project
+a reachable reality.
 
-It builds on other powerful tools such as Django itself,
-`django-content-editor <https://django-content-editor.readthedocs.io>`__
-to allow creating and editing structured content and
-`django-tree-queries
+It builds on other powerful tools such as Django itself and its admin
+interface, `django-content-editor
+<https://django-content-editor.readthedocs.io>`__ to allow creating and
+editing structured content and `django-tree-queries
 <https://github.com/matthiask/django-tree-queries>`__ for querying
 hierarchical data such as page trees.
 
-The tools can be used for a page CMS, but are also suitable for other
-types of CMS systems.
+The tools can be used for a page CMS, but also work well for other types
+of content such as news magazines or API backends for mobile apps.
 
 .. note::
    Despite its version number feincms3 is already used in production on
@@ -24,8 +24,10 @@ types of CMS systems.
 
 .. note::
    This documentation uses Python 3's keyword-only syntax in a few
-   places. Python 2 does not support keyword-only arguments, but keyword
-   usage is still enforced in feincms3.
+   places.
+
+   While Python 3 is strongly recommended feincms3 still supports Python
+   2. Keyword-only usage is enforced by function wrappers for now.
 
 
 First steps

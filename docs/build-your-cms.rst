@@ -256,10 +256,9 @@ Here's an example how the ``app.pages.admin`` module might look like:
 
 
     class PageAdmin(ContentEditor, TreeAdmin):
-        list_display = ('indented_title', 'move_column', 'is_active')
-        list_per_page = 250
-        prepopulated_fields = {'slug': ('title',)}
-        raw_id_fields = ('parent',)
+        list_display = ["indented_title", "move_column", "is_active"]
+        prepopulated_fields = {"slug": ("title",)}
+        raw_id_fields = ["parent"]
 
         inlines = [
             plugins.RichTextInline.create(models.RichText),

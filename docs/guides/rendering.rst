@@ -203,6 +203,10 @@ container:
     # When instantiating the TemplatePluginRenderer, use:
     renderer = TemplatePluginRenderer(regions_class=ContainerAwareRegions)
 
+.. note::
+   The :mod:`incubator <feincms3.incubator>` offers an experimental but
+   more flexible and powerful system for rendering sections differently.
+
 
 Generating JSON
 ~~~~~~~~~~~~~~~

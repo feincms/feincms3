@@ -1,5 +1,9 @@
+.. _ref-incubator:
+
 Incubator (``feincms3.incubator``)
 ==================================
+
+.. automodule:: feincms3.incubator
 
 .. warning::
    The feincms3.incubator module contains code which is subject to change
