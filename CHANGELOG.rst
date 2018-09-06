@@ -17,6 +17,8 @@ Change log
 - Changed the ``TreeAdmin.move_view`` to return a redirect to the admin
   index page instead of a 404 for missing nodes (as the Django admin's
   views also do since Django 1.11).
+- Removed the possible shadowing of plugins based on django-imagefield
+  and django-versatileimagefield, respectively.
 
 
 `0.24`_ (2018-08-25)
