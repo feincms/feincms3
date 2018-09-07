@@ -1,9 +1,13 @@
 Multilingual sites
 ==================
 
+Making the page language selectable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Pages may come in varying languages. ``LanguageMixin`` helps with that.
-It uses ``settings.LANGUAGES`` for the language selection, and sets the
-first language as default:
+It adds a ``language_code`` field to the model which allows selecting
+the language based on ``settings.LANGUAGES``. The first language is set
+as default:
 
 .. code-block:: python
 
@@ -14,17 +18,25 @@ first language as default:
     class Page(LanguageMixin, AbstractPage):
         pass
 
-The language itself is saved as ``language_code`` on the model. Also
-provided is a method ``activate_language`` which activates the selected
-language using ``django.utils.translation.activate`` and sets
-``LANGUAGE_CODE`` on the request, the same things Django's
-``LocaleMiddleware`` does:
+
+Activating the language
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``activate_language`` method is the preferred way to activate the
+page's language for the current request. It runs
+``django.utils.translation.activate`` and sets ``request.LANGUAGE_CODE``
+to the value of ``django.utils.translation.get_language``, the same
+things Django's ``LocaleMiddleware`` does.
+
+Note that ``activate`` may fail and ``get_language`` might return a
+different language, however that's not specific to feincms3.
 
 .. code-block:: python
 
     def page_detail(request, path):
         page = ...  # MAGIC! (or maybe get_object_or_404...)
         page.activate_language(request)
+        ...
 
 .. note::
    ``page.activate_language`` does not persist the language across
@@ -42,3 +54,17 @@ navigation's ``tree_depth`` would be ``1``, not ``0``. The menu template
 tags described in :ref:`navigation` would also require an additional
 ``.filter(language_code=django.utils.translation.get_language())``
 statement to only return pages in the current language.
+
+A page tree might look as follows then::
+
+    Home (EN)
+    - About us
+    - News
+
+    Startseite (DE)
+    - Über uns
+    - Neuigkeiten
+
+    Page d'acceuil (FR)
+    - A propos de nous
+    - Actualité

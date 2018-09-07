@@ -8,12 +8,17 @@ The following example app uses `form_designer
 integrated with the pages app described above. Apart from installing
 form_designer itself the following steps are necessary.
 
-Add an entry to ``Page.APPLICATIONS`` for the forms app:
+
+Extending the page model
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Make the page model inherit ``AppsMixin`` and ``LanguageMixin`` and add
+an ``APPLICATIONS`` attribute to the class:
 
 .. code-block:: python
 
     from feincms3.apps import AppsMixin
-    from feincms3.mixins inmport LanguageMixin
+    from feincms3.mixins import LanguageMixin
     from feincms3.pages import AbstractPage
 
     class Page(AppsMixin, LanguageMixin, ..., AbstractPage):
@@ -22,9 +27,11 @@ Add an entry to ``Page.APPLICATIONS`` for the forms app:
             ("forms", _("forms"), {
                 # Required: A module containing urlpatterns
                 "urlconf": "app.forms",
+
                 # The "form" field on the page is required when
                 # selecting the forms app
                 "required_fields": ("form",),
+
                 # Not necessary, but helpful for finding a form's URL using
                 # reverse_app("forms-{}".format(form.pk), "form")
                 "app_instance_namespace": lambda page: "{}-{}".format(
@@ -40,6 +47,17 @@ Add an entry to ``Page.APPLICATIONS`` for the forms app:
             blank=True, null=True,
             verbose_name=_("form"),
         )
+
+.. note::
+   The ``LanguageMixin`` is required, but if you have a site where
+   there's only one language, you don't even have to show the
+   ``language_code`` field in your administration panel (since it
+   defaults to the first, and in this case only language) and also don't
+   have to do anything else.
+
+
+The application
+~~~~~~~~~~~~~~~
 
 Add the ``app/forms.py`` module itself. Note that since control is
 directly handed to the application view and no page view code runs
@@ -95,6 +113,7 @@ calling :func:`feincms3.apps.page_for_app_request`:
         url(r"^$", form, name="form"),
     ]
 
+
 Add the required template:
 
 .. code-block:: html
@@ -120,3 +139,67 @@ Add the required template:
 Of course if you'd rather add another URL for the "thank you" page
 you're free to add a second entry to the ``urlpatterns`` list and
 redirect to this URL instead.
+
+
+Outlook
+~~~~~~~
+
+The example above shows how to add a contact form at the end of the rest
+of the content. However, it would be quite easy to e.g. add a
+placeholder plugin which content managers can use to place the form
+somewhere in-between. An outline how this might be done follows:
+
+The plugin model definition:
+
+.. code-block:: python
+
+    class Placeholder(PagePlugin):
+        identifier = models.CharField(choices=[("form", "form")], ...)
+
+
+The app:
+
+.. code-block:: python
+
+    def form(request):
+        page = ...
+
+        context = {}
+
+        if "ok" not in request.GET:
+            context.setdefault("placeholders", {})["form"] = form
+
+        context.update({
+            "page": page,
+            "regions": renderer.regions(
+                page, inherit_from=page.ancestors().reverse()),
+        })
+
+        return render(request, "form.html", context)
+
+The rendering of the placeholder:
+
+.. code-block:: python
+
+    renderer.register_template_renderer(
+        models.Placeholder,
+        lambda plugin: "placeholder/{}.html".format(plugin.identifier),
+        lambda plugin, context: {
+            "plugin": plugin,
+            "placeholder": context["placeholders"].get(plugin.identifier),
+        },
+    )
+
+The ``placeholder/form.html`` template:
+
+.. code-block:: html
+
+    <form method="post" action=".#form" id="form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+
+The rest of the steps is left as an exercise to the reader. The
+success message is missing, and missing is also what happens if the
+placeholder plugin hasn't been added to the page.

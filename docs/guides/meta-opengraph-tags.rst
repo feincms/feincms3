@@ -1,17 +1,33 @@
 Meta and OpenGraph tags
 =======================
 
-`feincms3-meta
-<https://github.com/matthiask/feincms3-meta>`__'s documentation:
+The recommended way to add meta and `open graph <http://ogp.me>`__ tags
+information to pages and other CMS objects is using `feincms3-meta
+<https://github.com/matthiask/feincms3-meta>`__.
 
-Helpers and mixins for making meta and `open graph <http://ogp.me>`__
-tags less annoying.
+Installation and configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``pip install feincms3-meta``
+Install the package:
 
-Inherit ``feincms3_meta.models.MetaMixin``
+.. code-block:: shell
 
-Optional, but recommended: Add a setting for default tags:
+    pip install feincms3-meta
+
+Make the page model inherit the mixin:
+
+.. code-block:: python
+
+    from feincms3.pages import AbstractPage
+    from feincms3_meta.models import MetaMixin
+
+    class Page(MetaMixin, ..., AbstractPage):
+        pass
+
+If you define ``fieldsets`` on a ``ModelAdmin`` subclass, you may
+want to use the helper ``MetaMixin.admin_fieldset()``, or maybe not.
+
+Add settings (optional, but recommended):
 
 .. code-block:: python
 
@@ -25,12 +41,16 @@ Optional, but recommended: Add a setting for default tags:
         "image": "/static/app/logo.png",
     }
 
-If you define ``fieldsets`` on a ``ModelAdmin`` subclass, you may
-want to use the helper ``MetaMixin.admin_fieldset()``, or maybe not.
+    # Only for translations
+    INSTALLED_APPS.append("feincms3_meta")
 
-Use the dictionary returned by ``feincms3_meta.utils.meta_tags``
-either directly (its ``__str__`` method renders as a HTML fragment)
-or access individual properties using standard dictionary access:
+
+Rendering
+~~~~~~~~~
+
+The dictionary subclass returned by ``feincms3_meta.utils.meta_tags``
+can either be used as a dictionary, or rendered directly (its
+``__str__`` method returns a HTML fragment):
 
 .. code-block:: python
 
@@ -49,5 +69,10 @@ or access individual properties using standard dictionary access:
 using keyword arguments. Falsy values are discarded, ``None`` causes
 the complete removal of the tag from the dictionary.
 
-The rendering of a meta tags dictionary is also usable standalone
-with ``feincms3_meta.utils.format_meta_tags``.
+If you want to inherit meta tags from ancestors (or from other objects)
+provide more than one object to the ``meta_tags`` function:
+
+.. code-block::
+
+    ancestors = list(page.ancestors().reverse())
+    tags = meta_tags([page] + ancestors, request=request)

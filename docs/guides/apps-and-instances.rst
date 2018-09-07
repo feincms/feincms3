@@ -3,9 +3,6 @@
 Apps and instances
 ==================
 
-.. note::
-   This guide builds on :ref:`apps-form-builder`.
-
 Applications can be added to the tree several times. Django itself
 supports this through the differentiation between `application
 namespaces and instance namespaces

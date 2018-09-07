@@ -254,7 +254,7 @@ returns the return value of the individual renderer as-is.
 .. note::
    A different method would have been to use lower-level methods from
    django-content-editor. A short example follows, however there's more
-   left to do to reach the state of the example above, e.g. caching:
+   left to do to reach the state of the example above such as caching:
 
    .. code-block:: python
 
@@ -277,13 +277,3 @@ returns the return value of the individual renderer as-is.
            for plugin in contents.main
        ]
        # etc...
-
-
-Outlook
-~~~~~~~
-
-Of course this was just a short demonstration of the possibilities. It
-would also be possible to insert e.g. a ``RenderingCommandPlugin`` which
-has no output of its own but only changes state in the renderer, or use
-a finite state machine for rendering. (I'd love to hear examples of
-things you did using this facility!)
