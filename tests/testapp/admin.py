@@ -3,7 +3,7 @@ from django.utils.text import capfirst
 from django.utils.translation import ugettext_lazy as _
 
 from content_editor.admin import ContentEditor
-from feincms3 import plugins
+from feincms3.plugins import external, html, image, richtext, snippet
 from feincms3.admin import AncestorFilter, TreeAdmin
 
 from . import models
@@ -53,11 +53,11 @@ class PageAdmin(ContentEditor, TreeAdmin):
     ]
 
     inlines = [
-        plugins.RichTextInline.create(model=models.RichText),
-        plugins.ImageInline.create(model=models.Image),
-        plugins.SnippetInline.create(model=models.Snippet),
-        plugins.ExternalInline.create(model=models.External),
-        plugins.HTMLInline.create(model=models.HTML),
+        richtext.RichTextInline.create(model=models.RichText),
+        image.ImageInline.create(model=models.Image),
+        snippet.SnippetInline.create(model=models.Snippet),
+        external.ExternalInline.create(model=models.External),
+        html.HTMLInline.create(model=models.HTML),
     ]
 
     class Media:

@@ -1,9 +1,6 @@
 Plugins (``feincms3.plugins``)
 ==============================
 
-All documented plugin classes and functions can be imported from
-``feincms3.plugins`` as well.
-
 .. note::
    The content types in `FeinCMS <https://github.com/feincms/feincms>`__
    had ways to process requests and responses themselves, the
