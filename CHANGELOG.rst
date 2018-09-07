@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.25`_ (2018-09-07)
+~~~~~~~~~~~~~~~~~~~~
+
 - **BACKWARDS INCOMPATIBLE** Removed the imports of plugins into
   ``feincms3.plugins``. Especially with the image plugins is could be
   non-obvious whether the plugin uses django-imagefield or
@@ -425,4 +428,5 @@ functionality.
 .. _0.22: https://github.com/matthiask/feincms3/compare/0.21...0.22
 .. _0.23: https://github.com/matthiask/feincms3/compare/0.22...0.23
 .. _0.24: https://github.com/matthiask/feincms3/compare/0.23...0.24
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.24...master
+.. _0.25: https://github.com/matthiask/feincms3/compare/0.24...0.25
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.25...master
