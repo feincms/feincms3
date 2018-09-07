@@ -10,10 +10,11 @@ Change log
 ~~~~~~~~~~~~~~~~~~~~
 
 - **BACKWARDS INCOMPATIBLE** Removed the imports of plugins into
-  ``feincms3.plugins``. Especially with the image plugins is could be
+  ``feincms3.plugins``. Especially with the image plugins it could be
   non-obvious whether the plugin uses django-imagefield or
-  django-versatileimagefield. For example instead of ``plugins.Image``
-  use ``plugins.image.Image`` now.
+  django-versatileimagefield. Instead, the modules are imported so that
+  classes and functions can be referenced using e.g.
+  ``plugins.image.Image`` instead of ``plugins.Image`` as before.
 - Moved the documentation from autodoc to a more guide-oriented format.
 - Changed ``TemplatePluginRenderer.render_plugin_in_context`` to raise a
   specific ``PluginNotRegistered`` exception upon encountering
