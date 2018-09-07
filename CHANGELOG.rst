@@ -21,6 +21,11 @@ Change log
 - Changed the ``TreeAdmin.move_view`` to return a redirect to the admin
   index page instead of a 404 for missing nodes (as the Django admin's
   views also do since Django 1.11).
+- Fixed an edge case in ``apps_urlconf`` which would generate a few
+  nonsensical URLs if no language is activated currently.
+- Made it an error to add redirects to a page which is already the
+  target of a different redirect. Adding redirects to a page which
+  itself already redirects was already an error.
 
 
 `0.24`_ (2018-08-25)

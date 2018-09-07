@@ -100,8 +100,8 @@ The page model and a few plugins could be defined as follows:
 
     from content_editor.models import Region, create_plugin_base
 
-    from feincms3 import plugins
     from feincms3.pages import AbstractPage
+    from feincms3.plugins import image, richtext
 
 
     class Page(AbstractPage):
@@ -113,11 +113,11 @@ The page model and a few plugins could be defined as follows:
     PagePlugin = create_plugin_base(Page)
 
 
-    class RichText(plugins.RichText, PagePlugin):
+    class RichText(richtext.RichText, PagePlugin):
         pass
 
 
-    class Image(plugins.Image, PagePlugin):
+    class Image(image.Image, PagePlugin):
         caption = models.CharField(_('caption'), max_length=200, blank=True)
 
 
@@ -250,7 +250,7 @@ Here's an example how the ``app.pages.admin`` module might look like:
 
     from content_editor.admin import ContentEditor
     from feincms3.admin import TreeAdmin
-    from feincms3 import plugins
+    from feincms3.plugins import image, richtext
 
     from app.pages import models
 
@@ -261,8 +261,8 @@ Here's an example how the ``app.pages.admin`` module might look like:
         raw_id_fields = ["parent"]
 
         inlines = [
-            plugins.RichTextInline.create(models.RichText),
-            plugins.ImageInline.create(models.Image),
+            richtext.RichTextInline.create(models.RichText),
+            image.ImageInline.create(models.Image),
         ]
 
         # fieldsets = ... (Recommended! No example here though. Note
