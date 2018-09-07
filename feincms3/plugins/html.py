@@ -1,3 +1,10 @@
+"""
+Plugin providing a simple textarea where raw HTML, CSS and JS code can be
+entered.
+
+Most useful for people wanting to shoot themselves in the foot.
+"""
+
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -10,10 +17,7 @@ __all__ = ("HTML", "HTMLInline", "render_html")
 
 class HTML(models.Model):
     """
-    Plugin providing a simple textarea where raw HTML, CSS and JS code can be
-    entered.
-
-    Most useful for people wanting to shoot themselves in the foot.
+    Raw HTML plugin
     """
 
     html = models.TextField(

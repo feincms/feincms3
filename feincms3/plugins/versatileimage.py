@@ -1,9 +1,12 @@
 """
 Provides an image plugin with support for setting the primary point of
-interest. This is very useful especially when cropping images.
+interest. This is very useful especially when cropping images. Depends on
+`django-versatileimagefield
+<https://django-versatileimagefield.readthedocs.io/>`__.
 
-Depends on `django-versatileimagefield
-<https://django-versatileimagefield.readthedocs.io/>`_.
+.. note::
+    While this plugin works well too the recommended image plugin is
+    :mod:`feincms3.plugins.image`.
 """
 
 from django import forms

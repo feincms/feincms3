@@ -1,8 +1,6 @@
 """
 Uses the `Noembed <https://noembed.com/>`_ oEmbed service to embed (almost)
-arbitrary URLs.
-
-Depends on `requests <https://docs.python-requests.org>`_.
+arbitrary URLs. Depends on `requests <https://docs.python-requests.org>`_.
 """
 
 from hashlib import md5

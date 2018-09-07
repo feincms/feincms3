@@ -1,3 +1,7 @@
+"""
+Plugin for including template snippets through the CMS
+"""
+
 from django.db import models
 from django.db.models import signals
 from django.template.loader import render_to_string

@@ -1,9 +1,7 @@
 """
 Provides an image plugin with support for setting the primary point of
-interest. This is very useful especially when cropping images.
-
-Depends on `django-imagefield <https://django-imagefield.readthedocs.io>`_.
-"""
+interest. This is very useful especially when cropping images. Depends on
+`django-imagefield <https://django-imagefield.readthedocs.io>`__.  """
 
 from django.db import models
 from django.utils.html import format_html
