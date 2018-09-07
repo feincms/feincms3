@@ -72,7 +72,7 @@ the complete removal of the tag from the dictionary.
 If you want to inherit meta tags from ancestors (or from other objects)
 provide more than one object to the ``meta_tags`` function:
 
-.. code-block::
+.. code-block:: python
 
     ancestors = list(page.ancestors().reverse())
     tags = meta_tags([page] + ancestors, request=request)
