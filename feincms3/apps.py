@@ -18,7 +18,6 @@ from feincms3.utils import concrete_model, positional, validation_error
 
 
 __all__ = (
-    "AppsMiddleware",
     "AppsMixin",
     "apps_middleware",
     "apps_urlconf",
@@ -79,9 +78,9 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
     Example::
 
         url = reverse_app(
-            ('category-1', 'blog'),
-            'post-detail',
-            kwargs={'year': 2016, 'slug': 'my-cat'},
+            ("category-1", "blog"),
+            "post-detail",
+            kwargs={"year": 2016, "slug": "my-cat"},
         )
     """
 
@@ -117,18 +116,18 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
 
     The following two examples are equivalent, choose whichever you like best::
 
-        reverse_fallback('/', lambda: reverse_app(
-            ('articles',),
-            'article-detail',
-            kwargs={'slug': self.slug},
+        reverse_fallback("/", lambda: reverse_app(
+            ("articles",),
+            "article-detail",
+            kwargs={"slug": self.slug},
         ))
 
         reverse_fallback(
-            '/',
+            "/",
             reverse_app
-            ('articles',),
-            'article-detail',
-            kwargs={'slug': self.slug},
+            ("articles",),
+            "article-detail",
+            kwargs={"slug": self.slug},
         )
     """
     try:
@@ -241,9 +240,9 @@ def page_for_app_request(request, queryset=None):
             page = page_for_app_request(request)
             page.activate_language(request)
             instance = get_object_or_404(Article, slug=slug)
-            return render(request, 'articles/article_detail.html', {
-                'article': article,
-                'page': page,
+            return render(request, "articles/article_detail.html", {
+                "article": article,
+                "page": page,
             })
 
     It is possible to override the queryset used to fetch a page instance. The
@@ -306,7 +305,7 @@ class AppsMixin(models.Model):
       ``app_name``.
     - ``required_fields``: A list of page class fields which must be non-empty
       for the application to work. The values are checked in
-      ``AppsMixin.clean``.
+      ``AppsMixin.clean_fields``.
     - ``app_instance_namespace``: A callable which receives the page instance
       as its only argument and returns a string suitable for use as an
       instance namespace.
@@ -320,22 +319,22 @@ class AppsMixin(models.Model):
 
         class Page(AppsMixin, LanguageMixin, AbstractPage):
             APPLICATIONS = [
-                ('publications', _('publications'), {
-                    'urlconf': 'app.articles.urls',
+                ("publications", _("publications"), {
+                    "urlconf": "app.articles.urls",
                 }),
-                ('blog', _('blog'), {
-                    'urlconf': 'app.articles.urls',
+                ("blog", _("blog"), {
+                    "urlconf": "app.articles.urls",
                 }),
-                ('contact', _('contact form'), {
-                    'urlconf': 'app.forms.contact_urls',
+                ("contact", _("contact form"), {
+                    "urlconf": "app.forms.contact_urls",
                 }),
-                ('teams', _('teams'), {
-                    'urlconf': 'app.teams.urls',
-                    'app_instance_namespace': lambda page: '%s-%s' % (
+                ("teams", _("teams"), {
+                    "urlconf": "app.teams.urls",
+                    "app_instance_namespace": lambda page: "%s-%s" % (
                         page.application,
                         page.team_id,
                     ),
-                    'required_fields': ('team',),
+                    "required_fields": ("team",),
                 }),
             ]
     """
