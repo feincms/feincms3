@@ -2,7 +2,7 @@
 HTML cleansing is by no means only useful for user generated content.
 Managers also copy-paste content from word processing programs, the rich
 text editor's output isn't always (almost never) in the shape we want it
-to be, and a strict white-list based HTML sanitizer is the best answer
+to be, and a strict allowlist based HTML sanitizer is the best answer
 I have.
 """
 
@@ -58,10 +58,8 @@ class CleansedRichTextField(RichTextField):
                 },
                 "empty": {"hr", "a", "br"},
                 "separate": {"a", "p", "li"},
-                # "add_nofollow": False,
-                # "autolink": False,
-                # "element_filters": [],
-                # "sanitize_href": sanitize_href,
+
+                # Additional default settings not listed here.
             },
         }
 

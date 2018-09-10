@@ -1,8 +1,9 @@
 """
 Provides a rich text area whose content is automatically cleaned using a
-very restrictive white list of tags and attributes.
+very restrictive allowlist of tags and attributes.
 
-Depends on `html-sanitizer <https://pypi.org/project/html-sanitizer>`_.
+Depends on django-ckeditor and `html-sanitizer
+<https://pypi.org/project/html-sanitizer>`__.
 """
 from django.db import models
 from django.utils.html import mark_safe, strip_tags
@@ -19,16 +20,6 @@ __all__ = ("RichText", "RichTextInline", "render_richtext")
 class RichText(models.Model):
     """
     Rich text plugin
-
-    Usage::
-
-        class Page(...):
-            # ...
-
-        PagePlugin = create_plugin_base(Page)
-
-        class RichText(plugins.RichText, PagePlugin):
-            pass
 
     To use this, a `django-ckeditor
     <https://github.com/django-ckeditor/django-ckeditor>`_ configuration named
