@@ -37,8 +37,8 @@ Change log
 ~~~~~~~~~~~~~~~~~~~~
 
 - Fixed one use of removed API.
-- Fixed a bug where the "Save" button was disappeared on the move form
-  with Django 2.1.
+- Fixed a bug where the move form "Save" button wasn't shown with Django
+  2.1.
 - Made overriding the ``Regions`` type used in
   ``TemplatePluginRenderer`` less verbose.
 - Modified the documentation to produce several pages. Completed the
@@ -269,7 +269,7 @@ functionality.
   PostgreSQL_-only. By switching we completely avoid the MPTT attribute
   corruption which plagued projects for years. The `lft` attribute is
   directly reusable as `position`, and should be renamed in a migration
-  insteaf of created from scratch to avoid losing the ordering of nodes
+  instead of created from scratch to avoid losing the ordering of nodes
   within a branch.
 - Added a ``feincms3.admin.TreeAdmin`` which shows the tree hierarchy
   and has facilities for moving nodes around.
