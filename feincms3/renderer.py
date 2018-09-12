@@ -129,17 +129,10 @@ class Regions(object):
 
 class TemplatePluginRenderer(object):
     """
-    More capable replacement for `django-content-editor
-    <https://django-content-editor.readthedocs.io>`_'s ``PluginRenderer``
-
-    Allows passing the full template rendering context to plugins, but does
-    not have any autodetection of rendering methods. The exact model classes
-    have to be registered with this renderer.
-
-    Usage example::
-
-        renderer = TemplatePluginRenderer()
-
+    This renderer allows registering functions, templates and context providers
+    for plugins. It also supports rendering plugins' templates using the
+    rendering context of the surrounding template without explicitly copying
+    required values into the local rendering context.
     """
 
     @positional(1)
@@ -150,7 +143,9 @@ class TemplatePluginRenderer(object):
     def register_string_renderer(self, plugin, renderer):
         """
         Register a rendering function which is passed the plugin instance and
-        returns a HTML string::
+        returns a HTML string:
+
+        .. code-block:: python
 
             renderer.register_string_renderer(
                 RichText,
@@ -181,7 +176,7 @@ context=default_context)
         simply returns a dictionary containing a single key named ``plugin``
         containing the plugin instance.
 
-        Usage::
+        .. code-block:: python
 
             # Template snippets have access to everything in the template
             # context, including for example ``page``, ``request``, etc.
@@ -201,18 +196,18 @@ context=default_context)
                     ),
                 },
             )
-
         """
         self._renderers[plugin] = (template_name, context)
 
     def plugins(self):
         """
         Return a list of all registered plugins, and is most useful when passed
-        directly to one of django-content-editor's contents utilities::
+        directly to one of django-content-editor's contents utilities:
+
+        .. code-block:: python
 
             page = get_object_or_404(Page, ...)
             contents = contents_for_item(page, renderer.plugins())
-
         """
 
         return list(self._renderers.keys())
