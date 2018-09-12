@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Removed tree fields when loading applications.
+
+
 `0.25`_ (2018-09-07)
 ~~~~~~~~~~~~~~~~~~~~
 

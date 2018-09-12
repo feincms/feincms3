@@ -173,7 +173,7 @@ def apps_urlconf(apps=None):
         fields = ("path", "application", "app_instance_namespace", "language_code")
         apps = (
             page_model.objects.active()
-            # TODO .with_tree_fields(False)
+            .with_tree_fields(False)
             .exclude(app_instance_namespace="")
             .values_list(*fields)
             .order_by(*fields)
