@@ -7,6 +7,11 @@ Change log
 ~~~~~~~~~~~~~~~
 
 - Removed tree fields when loading applications.
+- Stopped mentioning the ``AppsMixin`` in the reference documentation.
+- Fixed a few typos and converted more string quotes in the docs.
+- Changed the docs to use allow/deny instead of black/white.
+- Changed ``feincms3.plugins`` do not hide import errors from our own
+  modules anymore (again).
 
 
 `0.25`_ (2018-09-07)
