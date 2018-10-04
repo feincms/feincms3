@@ -10,6 +10,7 @@ from django.db import router, transaction
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.html import format_html, mark_safe
+from django.utils.text import capfirst
 from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 
@@ -118,7 +119,12 @@ class TreeAdmin(ModelAdmin):
                 r"^(.+)/move/$",
                 action_form_view_decorator(self)(self.move_view),
                 name="%s_%s_move" % info,
-            )
+            ),
+            url(
+                r"^(.+)/clone/$",
+                action_form_view_decorator(self)(self.clone_view),
+                name="%s_%s_clone" % info,
+            ),
         ] + super(TreeAdmin, self).get_urls()
 
     def move_view(self, request, obj):
@@ -151,6 +157,30 @@ class TreeAdmin(ModelAdmin):
             form = MoveForm(obj=obj)
 
         return self.render_action_form(request, form, title=_("Move %s") % obj, obj=obj)
+
+    def clone_view(self, request, obj):
+        if request.method == "POST":
+            form = CloneForm(request.POST, obj=obj, modeladmin=self)
+
+            if form.is_valid():
+                form.save()
+                self.message_user(
+                    request,
+                    _("Updated %(node)s.") % {"node": form.cleaned_data["target"]},
+                )
+
+                opts = self.model._meta
+                return redirect(
+                    "admin:%s_%s_change" % (opts.app_label, opts.model_name),
+                    args=(obj.pk,),
+                )
+
+        else:
+            form = CloneForm(obj=obj, modeladmin=self)
+
+        return self.render_action_form(
+            request, form, title=_("Clone %s") % obj, obj=obj
+        )
 
     @positional(3)
     def render_action_form(self, request, form, title, obj):
@@ -227,9 +257,7 @@ class MoveForm(forms.Form):
                 obj,
             ),
         )
-        self.fields["of"].widget.attrs.update(
-            {"size": 30, "style": "height:auto"}
-        )
+        self.fields["of"].widget.attrs.update({"size": 30, "style": "height:auto"})
 
     def clean(self):
         data = super(MoveForm, self).clean()
@@ -281,6 +309,88 @@ class MoveForm(forms.Form):
                 self.model.objects.filter(pk=instance.pk).update(
                     position=(index + 1) * 10
                 )
+
+
+class CloneForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop("obj")
+        self.modeladmin = kwargs.pop("modeladmin")
+
+        super().__init__(*args, **kwargs)
+
+        self.fields["target"] = self.instance._meta.get_field("parent").formfield(
+            form_class=TreeNodeChoiceField,
+            label=capfirst(_("target")),
+            required=True,
+            label_from_instance=lambda obj: "{}{}".format(
+                "".join(["*** " if obj == self.instance else "--- "] * obj.tree_depth),
+                obj,
+            ),
+        )
+        self.fields["target"].widget.attrs.update({"size": 30, "style": "height:auto"})
+
+        self.fields["_set_content"] = forms.BooleanField(
+            label=_("Replace target's content"),
+            required=False,
+            help_text=_("Affects the following models: %s.")
+            % (
+                ", ".join(
+                    "%s" % inline.model._meta.verbose_name_plural
+                    for inline in self.modeladmin.inlines
+                ),
+            ),
+        )
+
+        for field in sorted(
+            self.instance._meta.get_fields(), key=lambda field: field.name
+        ):
+            if field.auto_created or not field.editable:
+                continue
+
+            self.fields["set_{}".format(field.name)] = forms.BooleanField(
+                label=(
+                    "{} ({})".format(capfirst(field.verbose_name), field.name)
+                    if hasattr(field, "verbose_name")
+                    else field.name
+                ),
+                required=False,
+                help_text=_('Current: "%s"') % (getattr(self.instance, field.name),),
+            )
+
+    def clean(self):
+        data = super().clean()
+
+        if data.get("target") == self.instance:
+            raise forms.ValidationError({"target": _("Cannot clone node to itself.")})
+
+        return data
+
+    def save(self):
+        target = self.cleaned_data["target"]
+
+        for field in self.instance._meta.get_fields():
+            if self.cleaned_data.get("set_{}".format(field.name)):
+                setattr(target, field.name, getattr(self.instance, field.name))
+
+        if self.cleaned_data.get("_set_content"):
+            from django.forms.models import _get_foreign_key  # Since 2009.
+
+            for inline in self.modeladmin.inlines:
+                fk = _get_foreign_key(
+                    self.modeladmin.model, inline.model, inline.fk_name, False
+                )
+
+                # Remove all existing instances
+                inline.model._default_manager.filter(**{fk.name: target}).delete()
+
+                for obj in inline.model._default_manager.filter(
+                    **{fk.name: self.instance}
+                ):
+                    obj.pk = None
+                    setattr(obj, fk.name, target)
+                    obj.save(force_insert=True)
+
+        target.save()
 
 
 class AncestorFilter(SimpleListFilter):
