@@ -305,7 +305,7 @@ class CloneForm(forms.Form):
         self.modeladmin = kwargs.pop("modeladmin")
         self.request = kwargs.pop("request")
 
-        super().__init__(*args, **kwargs)
+        super(CloneForm, self).__init__(*args, **kwargs)
 
         self.fields["target"] = self.instance._meta.get_field("parent").formfield(
             form_class=TreeNodeChoiceField,
@@ -347,7 +347,7 @@ class CloneForm(forms.Form):
             )
 
     def clean(self):
-        data = super().clean()
+        data = super(CloneForm, self).clean()
 
         if data.get("target") == self.instance:
             raise forms.ValidationError({"target": _("Cannot clone node to itself.")})
