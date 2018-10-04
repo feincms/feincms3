@@ -171,8 +171,7 @@ class TreeAdmin(ModelAdmin):
 
                 opts = self.model._meta
                 return redirect(
-                    "admin:%s_%s_change" % (opts.app_label, opts.model_name),
-                    obj.pk,
+                    "admin:%s_%s_change" % (opts.app_label, opts.model_name), obj.pk
                 )
 
         else:
@@ -370,9 +369,7 @@ class CloneForm(forms.Form):
                 setattr(target, field.name, getattr(self.instance, field.name))
 
         # All fields of model are not in this form
-        target.full_clean(
-            exclude=[f.name for f in target._meta.get_fields()]
-        )
+        target.full_clean(exclude=[f.name for f in target._meta.get_fields()])
 
         return data
 
