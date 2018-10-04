@@ -452,15 +452,29 @@ class Test(TestCase):
         home.full_clean(exclude=["not_editable"])
 
     def test_apps_cloning_validation(self):
+        """Checks that the target is properly validated when cloning"""
         home, blog = self._apps_validation_models()
         client = self.login()
+
         clone_url = reverse("admin:testapp_page_clone", args=(blog.pk,))
+
         response = client.get(clone_url)
         self.assertContains(response, "_set_content")
         self.assertContains(response, "set_application")
 
         response = client.post(clone_url, {"target": home.pk, "set_application": True})
         self.assertContains(response, "Apps may not have any descendants in the tree.")
+
+        # The other way round works
+        clone_url = reverse("admin:testapp_page_clone", args=(home.pk,))
+
+        response = client.post(clone_url, {"target": blog.pk, "set_application": True})
+        self.assertRedirects(
+            response, reverse("admin:testapp_page_change", args=(blog.pk,))
+        )
+
+        # No apps in tree anymore
+        self.assertEqual(Page.objects.exclude(application="").count(), 0)
 
     def test_snippet(self):
         """Check that snippets have access to the main rendering context
