@@ -363,6 +363,17 @@ class CloneForm(forms.Form):
         if data.get("target") == self.instance:
             raise forms.ValidationError({"target": _("Cannot clone node to itself.")})
 
+        target = self.cleaned_data["target"]
+
+        for field in self.instance._meta.get_fields():
+            if self.cleaned_data.get("set_{}".format(field.name)):
+                setattr(target, field.name, getattr(self.instance, field.name))
+
+        # All fields of model are not in this form
+        target.full_clean(
+            exclude=[f.name for f in target._meta.get_fields()]
+        )
+
         return data
 
     def save(self):
