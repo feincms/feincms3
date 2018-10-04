@@ -9,7 +9,6 @@ from django.core.exceptions import PermissionDenied
 from django.db import router, transaction
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.utils.decorators import method_decorator
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
@@ -18,7 +17,29 @@ from django.views.decorators.csrf import csrf_protect
 __all__ = ("TreeAdmin", "MoveForm", "AncestorFilter")
 
 
-csrf_protect_m = method_decorator(csrf_protect)
+def action_form_view_decorator(modeladmin):
+    def wrap(view):
+        def wrapper(request, object_id):
+            with transaction.atomic(using=router.db_for_write(modeladmin.model)):
+                model = modeladmin.model
+                opts = model._meta
+
+                obj = modeladmin.get_object(request, unquote(object_id))
+
+                if not modeladmin.has_change_permission(request, obj):
+                    raise PermissionDenied
+
+                if obj is None:
+                    return modeladmin._get_obj_does_not_exist_redirect(
+                        request, opts, object_id
+                    )
+
+                return modeladmin.admin_site.admin_view(view)(request, obj)
+
+        wrapper.model_admin = modeladmin
+        return csrf_protect(update_wrapper(wrapper, view))
+
+    return wrap
 
 
 class TreeAdmin(ModelAdmin):
@@ -88,96 +109,82 @@ class TreeAdmin(ModelAdmin):
         Add our own ``move`` view.
         """
 
-        def wrap(view):
-            def wrapper(*args, **kwargs):
-                return self.admin_site.admin_view(view)(*args, **kwargs)
-
-            wrapper.model_admin = self
-            return update_wrapper(wrapper, view)
-
         info = self.model._meta.app_label, self.model._meta.model_name
-
         return [
-            url(r"^(.+)/move/$", wrap(self.move_view), name="%s_%s_move" % info)
+            url(
+                r"^(.+)/move/$",
+                action_form_view_decorator(self)(self.move_view),
+                name="%s_%s_move" % info,
+            )
         ] + super(TreeAdmin, self).get_urls()
 
-    @csrf_protect_m
-    def move_view(self, request, object_id):
-        with transaction.atomic(using=router.db_for_write(self.model)):
-            model = self.model
-            opts = model._meta
+    def move_view(self, request, obj):
+        if request.method == "POST":
+            form = MoveForm(request.POST, obj=obj)
 
-            obj = self.get_object(request, unquote(object_id))
-
-            if not self.has_change_permission(request, obj):
-                raise PermissionDenied
-
-            if obj is None:
-                return self._get_obj_does_not_exist_redirect(request, opts, object_id)
-
-            if request.method == "POST":
-                form = MoveForm(request.POST, obj=obj)
-
-                if form.is_valid():
-                    form.save()
-                    self.message_user(
-                        request,
-                        _(
-                            "The node %(node)s has been made the"
-                            " %(move_to)s of node %(to)s."
-                        )
-                        % {
-                            "node": obj,
-                            "move_to": dict(MoveForm.MOVE_CHOICES).get(
-                                form.cleaned_data["move_to"],
-                                form.cleaned_data["move_to"],
-                            ),
-                            "to": form.cleaned_data["of"] or _("root node"),
-                        },
+            if form.is_valid():
+                form.save()
+                self.message_user(
+                    request,
+                    _(
+                        "The node %(node)s has been made the"
+                        " %(move_to)s of node %(to)s."
                     )
+                    % {
+                        "node": obj,
+                        "move_to": dict(MoveForm.MOVE_CHOICES).get(
+                            form.cleaned_data["move_to"], form.cleaned_data["move_to"]
+                        ),
+                        "to": form.cleaned_data["of"] or _("root node"),
+                    },
+                )
 
-                    return redirect(
-                        "admin:%s_%s_changelist" % (opts.app_label, opts.model_name)
-                    )
+                opts = self.model._meta
+                return redirect(
+                    "admin:%s_%s_changelist" % (opts.app_label, opts.model_name)
+                )
 
-            else:
-                form = MoveForm(obj=obj)
+        else:
+            form = MoveForm(obj=obj)
 
-            adminForm = helpers.AdminForm(
-                form,
-                [
-                    (None, {"fields": ("move_to", "of")})
-                ],  # list(self.get_fieldsets(request, obj)),
-                {},  # self.get_prepopulated_fields(request, obj),
-                (),  # self.get_readonly_fields(request, obj),
-                model_admin=self,
-            )
-            media = self.media + adminForm.media
+        return self.render_action_form(request, form, _("Move %s") % obj, obj)
 
-            context = dict(
-                self.admin_site.each_context(request),
-                title=_("Move %s") % obj,
-                object_id=object_id,
-                original=obj,
-                adminform=adminForm,
-                errors=helpers.AdminErrorList(form, ()),
-                preserved_filters=self.get_preserved_filters(request),
-                media=media,
-                is_popup=False,
-                inline_admin_formsets=[],
-                save_as_new=False,
-                show_save_and_add_another=False,
-                show_save_and_continue=False,
-                show_delete=False,
-            )
+    def render_action_form(self, request, form, title, obj):
+        adminForm = helpers.AdminForm(
+            form,
+            [
+                (None, {"fields": form.fields.keys()})
+            ],  # list(self.get_fieldsets(request, obj)),
+            {},  # self.get_prepopulated_fields(request, obj),
+            (),  # self.get_readonly_fields(request, obj),
+            model_admin=self,
+        )
+        media = self.media + adminForm.media
 
-            response = self.render_change_form(
-                request, context, add=False, change=True, obj=obj
-            )
+        context = dict(
+            self.admin_site.each_context(request),
+            title=title,
+            object_id=obj.pk,
+            original=obj,
+            adminform=adminForm,
+            errors=helpers.AdminErrorList(form, ()),
+            preserved_filters=self.get_preserved_filters(request),
+            media=media,
+            is_popup=False,
+            inline_admin_formsets=[],
+            save_as_new=False,
+            show_save_and_add_another=False,
+            show_save_and_continue=False,
+            show_delete=False,
+        )
 
-            # Suppress the rendering of the "save and add another" button.
-            response.context_data["has_add_permission"] = False
-            return response
+        response = self.render_change_form(
+            request, context, add=False, change=True, obj=obj
+        )
+
+        # Suppress the rendering of the "save and add another" button.
+        response.context_data["has_add_permission"] = False
+        return response
 
 
 class MoveForm(forms.Form):
