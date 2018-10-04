@@ -14,6 +14,8 @@ Change log
   modules anymore (again).
 - Added a cloning functionality to copy the values of individual fields
   and also of the pages' content onto other pages.
+- Fixed a problem where ``Snippet.__str__`` would unexpectedly (for
+  Django) return lazy strings.
 
 
 `0.25`_ (2018-09-07)

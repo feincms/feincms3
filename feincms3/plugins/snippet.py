@@ -2,6 +2,8 @@
 Plugin for including template snippets through the CMS
 """
 
+from __future__ import unicode_literals
+
 from django.db import models
 from django.db.models import signals
 from django.template.loader import render_to_string
@@ -37,7 +39,7 @@ class Snippet(models.Model):
         verbose_name_plural = _("snippets")
 
     def __str__(self):
-        return self.get_template_name_display()
+        return "{}".format(self.get_template_name_display())
 
     @staticmethod
     def fill_template_name_choices(sender, **kwargs):
