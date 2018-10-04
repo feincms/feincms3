@@ -172,7 +172,7 @@ class TreeAdmin(ModelAdmin):
                 opts = self.model._meta
                 return redirect(
                     "admin:%s_%s_change" % (opts.app_label, opts.model_name),
-                    args=(obj.pk,),
+                    obj.pk,
                 )
 
         else:
