@@ -376,7 +376,7 @@ class CloneForm(forms.Form):
         if fields:
             self.modeladmin.message_user(
                 self.request,
-                _("Updated %(node)s fields: %(fields)s")
+                _("Updated fields of %(node)s: %(fields)s")
                 % {"node": target, "fields": ", ".join(fields)},
             )
 

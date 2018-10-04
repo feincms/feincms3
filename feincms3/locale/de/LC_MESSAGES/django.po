@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 12:12+0200\n"
+"POT-Creation-Date: 2018-10-04 13:08+0200\n"
 "PO-Revision-Date: 2013-10-25 09:15+0000\n"
 "Last-Translator: Matthias Kestenholz <mk@feinheit.ch>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/feincms/language/"
@@ -20,90 +20,95 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:92 pages.py:60
+#: admin.py:100 pages.py:60
 msgid "title"
 msgstr "Titel"
 
-#: admin.py:106
+#: admin.py:114
 msgid "move"
 msgstr "verschieben"
 
-#: admin.py:139
-#, python-format
-msgid "The node %(node)s has been made the %(move_to)s of node %(to)s."
-msgstr "%(node)s wurde %(move_to)s von %(to)s."
-
-#: admin.py:147
-msgid "root node"
-msgstr "Wurzel"
-
-#: admin.py:159
+#: admin.py:140
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:169
-#, python-format
-msgid "Updated %(node)s."
-msgstr "%(node)s aktualisiert."
-
-#: admin.py:181
+#: admin.py:145
 #, python-format
 msgid "Clone %s"
 msgstr "%s klonen"
 
-#: admin.py:232
+#: admin.py:204
 msgid "left sibling"
 msgstr "linkes Geschwister"
 
-#: admin.py:233
+#: admin.py:205
 msgid "right sibling"
 msgstr "rechtes Geschwister"
 
-#: admin.py:234
+#: admin.py:206
 msgid "first child"
 msgstr "erstes Kind"
 
-#: admin.py:235
+#: admin.py:207
 msgid "last child"
 msgstr "letztes Kind"
 
-#: admin.py:239
+#: admin.py:211
 msgid "Make node"
 msgstr "Mach Knoten"
 
-#: admin.py:249
+#: admin.py:223
 msgctxt "MoveForm"
 msgid "Of"
 msgstr "Von"
 
-#: admin.py:268
+#: admin.py:242
 msgid "Cannot move node to a position relative to itself."
 msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
 
-#: admin.py:322
+#: admin.py:288
+#, python-format
+msgid "The node %(node)s has been made the %(move_to)s of node %(to)s."
+msgstr "%(node)s wurde %(move_to)s von %(to)s."
+
+#: admin.py:294
+msgid "root node"
+msgstr "Wurzel"
+
+#: admin.py:312
 msgid "target"
 msgstr "Ziel"
 
-#: admin.py:332
+#: admin.py:322
 msgid "Replace target's content"
 msgstr "Inhalt des Ziels ersetzen"
 
-#: admin.py:334
+#: admin.py:324
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Betrifft die folgenden Inhalte: %s."
 
-#: admin.py:356
+#: admin.py:346
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Aktuell: \"%s\""
 
-#: admin.py:363
+#: admin.py:356
 msgid "Cannot clone node to itself."
 msgstr "Kann Knoten nicht zu sich selbst klonen."
 
-#: admin.py:421
+#: admin.py:379
+#, python-format
+msgid "Updated fields of %(node)s: %(fields)s"
+msgstr "Aktualisierte Felder von %(node)s: %(fields)s"
+
+#: admin.py:403
+#, python-format
+msgid "Replaced the content of %(target)s with the contents of %(source)s."
+msgstr "Ersetzte den Inhalt von %(target)s mit dem Inhalt von %(source)s."
+
+#: admin.py:432
 msgid "ancestor"
 msgstr "übergeordnet"
 
@@ -286,6 +291,3 @@ msgstr "Schnipsel"
 #: plugins/snippet.py:37
 msgid "snippets"
 msgstr "Schnipsel"
-
-#~ msgid "Invalid parent: Apps may not have any descendants."
-#~ msgstr "Ungültig: Apps dürfen keine Unterlemente haben."
