@@ -18,7 +18,13 @@ from tree_queries.forms import TreeNodeChoiceField
 from feincms3.utils import positional
 
 
-__all__ = ("TreeAdmin", "MoveForm", "AncestorFilter")
+__all__ = (
+    "TreeAdmin",
+    "MoveForm",
+    "CloneForm",
+    "AncestorFilter",
+    "action_form_view_decorator",
+)
 
 
 def action_form_view_decorator(modeladmin):
@@ -128,58 +134,22 @@ class TreeAdmin(ModelAdmin):
         ] + super(TreeAdmin, self).get_urls()
 
     def move_view(self, request, obj):
-        if request.method == "POST":
-            form = MoveForm(request.POST, obj=obj)
-
-            if form.is_valid():
-                form.save()
-                self.message_user(
-                    request,
-                    _(
-                        "The node %(node)s has been made the"
-                        " %(move_to)s of node %(to)s."
-                    )
-                    % {
-                        "node": obj,
-                        "move_to": dict(MoveForm.MOVE_CHOICES).get(
-                            form.cleaned_data["move_to"], form.cleaned_data["move_to"]
-                        ),
-                        "to": form.cleaned_data["of"] or _("root node"),
-                    },
-                )
-
-                opts = self.model._meta
-                return redirect(
-                    "admin:%s_%s_changelist" % (opts.app_label, opts.model_name)
-                )
-
-        else:
-            form = MoveForm(obj=obj)
-
-        return self.render_action_form(request, form, title=_("Move %s") % obj, obj=obj)
+        return self.action_form_view(
+            request, obj, form_class=MoveForm, title=_("Move %s") % obj
+        )
 
     def clone_view(self, request, obj):
-        if request.method == "POST":
-            form = CloneForm(request.POST, obj=obj, modeladmin=self)
-
-            if form.is_valid():
-                form.save()
-                self.message_user(
-                    request,
-                    _("Updated %(node)s.") % {"node": form.cleaned_data["target"]},
-                )
-
-                opts = self.model._meta
-                return redirect(
-                    "admin:%s_%s_change" % (opts.app_label, opts.model_name), obj.pk
-                )
-
-        else:
-            form = CloneForm(obj=obj, modeladmin=self)
-
-        return self.render_action_form(
-            request, form, title=_("Clone %s") % obj, obj=obj
+        return self.action_form_view(
+            request, obj, form_class=CloneForm, title=_("Clone %s") % obj
         )
+
+    @positional(3)
+    def action_form_view(self, request, obj, form_class, title):
+        kw = {"request": request, "obj": obj, "modeladmin": self}
+        form = form_class(request.POST if request.method == "POST" else None, **kw)
+        if form.is_valid():
+            return form.process()
+        return self.render_action_form(request, form, title=title, obj=obj)
 
     @positional(3)
     def render_action_form(self, request, form, title, obj):
@@ -241,6 +211,8 @@ class MoveForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("obj")
+        self.modeladmin = kwargs.pop("modeladmin")
+        self.request = kwargs.pop("request")
         self.model = self.instance.__class__
 
         super(MoveForm, self).__init__(*args, **kwargs)
@@ -248,7 +220,7 @@ class MoveForm(forms.Form):
         self.fields["of"] = TreeNodeChoiceField(
             label=pgettext("MoveForm", "Of"),
             required=False,
-            queryset=self.model.objects.with_tree_fields().exclude(
+            queryset=self.model._default_manager.with_tree_fields().exclude(
                 pk__in=self.instance.descendants()
             ),
             label_from_instance=lambda obj: "{}{}".format(
@@ -282,9 +254,9 @@ class MoveForm(forms.Form):
 
         return data
 
-    def save(self):
+    def process(self):
         siblings = list(
-            self.model.objects.filter(parent=self.instance.parent).exclude(
+            self.model._default_manager.filter(parent=self.instance.parent).exclude(
                 pk=self.instance.pk
             )
         )
@@ -305,15 +277,31 @@ class MoveForm(forms.Form):
                 instance.position = (index + 1) * 10
                 instance.save()
             else:
-                self.model.objects.filter(pk=instance.pk).update(
+                self.model._default_manager.filter(pk=instance.pk).update(
                     position=(index + 1) * 10
                 )
+
+        self.modeladmin.message_user(
+            self.request,
+            _("The node %(node)s has been made the" " %(move_to)s of node %(to)s.")
+            % {
+                "node": self.instance,
+                "move_to": dict(self.MOVE_CHOICES).get(
+                    self.cleaned_data["move_to"], self.cleaned_data["move_to"]
+                ),
+                "to": self.cleaned_data["of"] or _("root node"),
+            },
+        )
+
+        opts = self.modeladmin.model._meta
+        return redirect("admin:%s_%s_changelist" % (opts.app_label, opts.model_name))
 
 
 class CloneForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("obj")
         self.modeladmin = kwargs.pop("modeladmin")
+        self.request = kwargs.pop("request")
 
         super().__init__(*args, **kwargs)
 
@@ -373,12 +361,21 @@ class CloneForm(forms.Form):
 
         return data
 
-    def save(self):
+    def process(self):
         target = self.cleaned_data["target"]
+        fields = []
 
         for field in self.instance._meta.get_fields():
             if self.cleaned_data.get("set_{}".format(field.name)):
                 setattr(target, field.name, getattr(self.instance, field.name))
+                fields.append(getattr(field, "verbose_name", field.name))
+
+        if fields:
+            self.modeladmin.message_user(
+                self.request,
+                _("Updated %(node)s fields: %(fields)s")
+                % {"node": target, "fields": ", ".join(fields)},
+            )
 
         if self.cleaned_data.get("_set_content"):
             from django.forms.models import _get_foreign_key  # Since 2009.
@@ -398,7 +395,18 @@ class CloneForm(forms.Form):
                     setattr(obj, fk.name, target)
                     obj.save(force_insert=True)
 
+            self.modeladmin.message_user(
+                self.request,
+                _("Replaced the content of %(target)s with the contents of %(source)s.")
+                % {"target": target, "source": self.instance},
+            )
+
         target.save()
+
+        opts = self.modeladmin.model._meta
+        return redirect(
+            "admin:%s_%s_change" % (opts.app_label, opts.model_name), obj.pk
+        )
 
 
 class AncestorFilter(SimpleListFilter):

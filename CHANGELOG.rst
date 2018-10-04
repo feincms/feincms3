@@ -12,6 +12,8 @@ Change log
 - Changed the docs to use allow/deny instead of black/white.
 - Changed ``feincms3.plugins`` do not hide import errors from our own
   modules anymore (again).
+- Added a cloning functionality to copy the values of individual fields
+  and also of the pages' content onto other pages.
 
 
 `0.25`_ (2018-09-07)
