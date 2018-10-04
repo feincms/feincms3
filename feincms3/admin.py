@@ -348,11 +348,12 @@ class CloneForm(forms.Form):
 
     def clean(self):
         data = super(CloneForm, self).clean()
+        target = data.get("target")
+        if target is None:
+            return data
 
-        if data.get("target") == self.instance:
+        if target == self.instance:
             raise forms.ValidationError({"target": _("Cannot clone node to itself.")})
-
-        target = self.cleaned_data["target"]
 
         for field in self.instance._meta.get_fields():
             if self.cleaned_data.get("set_{}".format(field.name)):

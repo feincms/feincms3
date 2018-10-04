@@ -1045,3 +1045,49 @@ class Test(TestCase):
         # object IDs
         response = client.get("/admin/testapp/page/asdf/move/")
         self.assertRedirects(response, "/admin/")
+
+    def test_content_cloning(self):
+        """Test that cloning the content works and replaces everything"""
+
+        home_en = Page.objects.create(
+            title="home",
+            slug="home",
+            path="/en/",
+            static_path=True,
+            language_code="en",
+            is_active=True,
+            menu="main",
+        )
+
+        home_en.testapp_snippet_set.create(
+            template_name="snippet.html", ordering=10, region="main"
+        )
+
+        home_de = Page.objects.create(
+            title="home",
+            slug="home",
+            path="/de/",
+            static_path=True,
+            language_code="de",
+            is_active=True,
+            menu="main",
+        )
+
+        home_de.testapp_snippet_set.create(
+            template_name="snippet-33.html", ordering=10, region="main"
+        )
+
+        client = self.login()
+        response = client.post(
+            reverse("admin:testapp_page_clone", args=(home_en.pk,)),
+            {"target": home_de.pk, "_set_content": True},
+        )
+        print(response.content.decode("utf-8"))
+        self.assertRedirects(
+            response, reverse("admin:testapp_page_change", args=(home_de.pk,))
+        )
+
+        self.assertEqual(
+            list(home_de.testapp_snippet_set.values_list("template_name", flat=True)),
+            ["snippet.html"],
+        )
