@@ -28,7 +28,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-content-editor',
-        'django-tree-queries',
+        'django-tree-queries>0.2',
     ],
     extras_require={
         'all': [

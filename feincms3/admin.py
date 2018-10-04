@@ -13,6 +13,9 @@ from django.utils.html import format_html, mark_safe
 from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 
+from tree_queries.forms import TreeNodeChoiceField
+from feincms3.utils import positional
+
 
 __all__ = ("TreeAdmin", "MoveForm", "AncestorFilter")
 
@@ -147,8 +150,9 @@ class TreeAdmin(ModelAdmin):
         else:
             form = MoveForm(obj=obj)
 
-        return self.render_action_form(request, form, _("Move %s") % obj, obj)
+        return self.render_action_form(request, form, title=_("Move %s") % obj, obj=obj)
 
+    @positional(3)
     def render_action_form(self, request, form, title, obj):
         adminForm = helpers.AdminForm(
             form,
@@ -212,23 +216,20 @@ class MoveForm(forms.Form):
 
         super(MoveForm, self).__init__(*args, **kwargs)
 
-        self.fields["of"] = forms.ModelChoiceField(
+        self.fields["of"] = TreeNodeChoiceField(
             label=pgettext("MoveForm", "Of"),
             required=False,
             queryset=self.model.objects.with_tree_fields().exclude(
                 pk__in=self.instance.descendants()
             ),
-            widget=forms.Select(attrs={"size": 30, "style": "height:auto"}),
+            label_from_instance=lambda obj: "{}{}".format(
+                "".join(["*** " if obj == self.instance else "--- "] * obj.tree_depth),
+                obj,
+            ),
         )
-
-        self.fields["of"].choices = [(None, "----------")] + [
-            (
-                obj.pk,
-                "%s%s"
-                % (obj.tree_depth * ("*** " if obj == self.instance else "--- "), obj),
-            )
-            for obj in self.fields["of"].queryset
-        ]
+        self.fields["of"].widget.attrs.update(
+            {"size": 30, "style": "height:auto"}
+        )
 
     def clean(self):
         data = super(MoveForm, self).clean()
