@@ -451,6 +451,17 @@ class Test(TestCase):
         home.not_editable = 2
         home.full_clean(exclude=["not_editable"])
 
+    def test_apps_cloning_validation(self):
+        home, blog = self._apps_validation_models()
+        client = self.login()
+        clone_url = reverse("admin:testapp_page_clone", args=(blog.pk,))
+        response = client.get(clone_url)
+        self.assertContains(response, "_set_content")
+        self.assertContains(response, "set_application")
+
+        response = client.post(clone_url, {"target": home.pk, "set_application": True})
+        self.assertContains(response, "Apps may not have any descendants in the tree.")
+
     def test_snippet(self):
         """Check that snippets have access to the main rendering context
         when using TemplatePluginRenderer"""

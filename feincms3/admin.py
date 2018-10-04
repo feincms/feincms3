@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from functools import update_wrapper
 
 from django import forms
@@ -368,7 +370,7 @@ class CloneForm(forms.Form):
         for field in self.instance._meta.get_fields():
             if self.cleaned_data.get("set_{}".format(field.name)):
                 setattr(target, field.name, getattr(self.instance, field.name))
-                fields.append(getattr(field, "verbose_name", field.name))
+                fields.append("{}".format(getattr(field, "verbose_name", field.name)))
 
         if fields:
             self.modeladmin.message_user(
@@ -405,7 +407,7 @@ class CloneForm(forms.Form):
 
         opts = self.modeladmin.model._meta
         return redirect(
-            "admin:%s_%s_change" % (opts.app_label, opts.model_name), obj.pk
+            "admin:%s_%s_change" % (opts.app_label, opts.model_name), target.pk
         )
 
 
