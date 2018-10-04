@@ -441,10 +441,14 @@ class AppsMixin(models.Model):
                 Q(language_code=self.language_code),
                 ~Q(pk=self.pk),
             ).exists():
-                fields = ["application"]
+                fields = ["__all__", "application"]
                 fields.extend(app_config.get("required_fields", ()))
                 raise ValidationError(
-                    {field: _(_("This exact app already exists.")) for field in fields}
+                    {
+                        field: _("This exact app already exists.")
+                        for field in fields
+                        if field not in exclude
+                    }
                 )
 
     @staticmethod
