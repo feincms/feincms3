@@ -51,9 +51,9 @@ an ``APPLICATIONS`` attribute to the class:
 .. note::
    The ``LanguageMixin`` is required, but if you have a site where
    there's only one language, you don't even have to show the
-   ``language_code`` field in your administration panel (since it
-   defaults to the first, and in this case only language) and also don't
-   have to do anything else.
+   ``language_code`` field in your administration panel. Simply make
+   sure that the ``LANGUAGES`` setting contains only the one language
+   and nothing else.
 
 
 The application
