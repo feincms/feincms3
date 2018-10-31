@@ -5,6 +5,8 @@ from django.db import models
 from django.db.models import signals
 from django.utils.translation import activate, get_language, ugettext_lazy as _
 
+from tree_queries.fields import TreeNodeForeignKey
+
 from feincms3.utils import validation_error
 
 
@@ -119,7 +121,7 @@ class RedirectMixin(models.Model):
     """
 
     redirect_to_url = models.CharField(_("Redirect to URL"), max_length=200, blank=True)
-    redirect_to_page = models.ForeignKey(
+    redirect_to_page = TreeNodeForeignKey(
         "self",
         on_delete=models.SET_NULL,
         blank=True,

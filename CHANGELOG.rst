@@ -16,6 +16,8 @@ Change log
   and also of the pages' content onto other pages.
 - Fixed a problem where ``Snippet.__str__`` would unexpectedly (for
   Django) return lazy strings.
+- Changed the type of ``RedirectMixin.redirect_to_page`` to
+  ``TreeNodeForeignKey`` so that the hierarchy is shown in the dropdown.
 
 
 `0.25`_ (2018-09-07)
