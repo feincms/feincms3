@@ -650,7 +650,7 @@ class Test(TestCase):
             self,
             NoReverseMatch,
             "Reverse for any of 'not-exists-1', 'not-exists-2' with"
-            " arguments '\[\]' and keyword arguments '{}' not found.",
+            " arguments '[]' and keyword arguments '{}' not found.",
         ):
             reverse_any(("not-exists-1", "not-exists-2"))
 
