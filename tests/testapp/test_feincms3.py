@@ -649,8 +649,8 @@ class Test(TestCase):
         with six.assertRaisesRegex(
             self,
             NoReverseMatch,
-            "Reverse for any of 'not-exists-1', 'not-exists-2' with"
-            " arguments '[]' and keyword arguments '{}' not found.",
+            r"Reverse for any of 'not-exists-1', 'not-exists-2' with"
+            r" arguments '\[\]' and keyword arguments '{}' not found.",
         ):
             reverse_any(("not-exists-1", "not-exists-2"))
 
