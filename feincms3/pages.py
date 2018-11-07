@@ -38,7 +38,10 @@ class AbstractPage(TreeNode):
     It comes with the following fields:
 
     - ``parent``: (a nullable tree foreign key) and a ``position`` field for
-      relatively ordering pages.
+      relatively ordering pages. While it is technically possible for
+      ``position`` to be 0, e.g., data bulk imported from another CMS, it is not
+      recommended, as the ``save()`` method will override values of 0 if you
+      manipulate pages using the ORM.
     - ``is_active``: Boolean field. The ``save()`` method ensures that inactive
       pages never have any active descendants.
     - ``title`` and ``slug``
@@ -59,7 +62,7 @@ class AbstractPage(TreeNode):
     is_active = models.BooleanField(_("is active"), default=True)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"))
-    position = models.PositiveIntegerField(db_index=True, editable=False, default=0)
+    position = models.PositiveIntegerField(db_index=True, editable=False)
 
     # Who even cares about MySQL
     path = models.CharField(
