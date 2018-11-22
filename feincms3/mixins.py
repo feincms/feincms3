@@ -154,15 +154,22 @@ class RedirectMixin(models.Model):
                     exclude=exclude,
                 )
 
-            if self.redirect_to_page.redirect_to_page_id:
+            if (
+                self.redirect_to_page.redirect_to_page_id
+                or self.redirect_to_page.redirect_to_url
+            ):
                 raise validation_error(
                     _(
-                        "Do not chain redirects. The selected page redirects"
-                        " to %(title)s (%(path)s)."
+                        'Do not chain redirects. The selected page "%(title)s"'
+                        ' redirects to "%(path)s".'
                     )
                     % {
                         "title": self.redirect_to_page,
-                        "path": self.redirect_to_page.get_absolute_url(),
+                        "path": (
+                            self.redirect_to_page.redirect_to_page.get_absolute_url()
+                            if self.redirect_to_page.redirect_to_page
+                            else self.redirect_to_page.redirect_to_url
+                        ),
                     },
                     field="redirect_to_page",
                     exclude=exclude,
@@ -174,10 +181,15 @@ class RedirectMixin(models.Model):
             if other:
                 raise validation_error(
                     _(
-                        "Do not chain redirects. The page %(page)s already"
-                        " redirects to this page."
+                        "Do not chain redirects. The following pages already"
+                        " redirect to this page: %(pages)s"
                     )
-                    % {"page": ", ".join("%s" % page for page in other)},
+                    % {
+                        "pages": ", ".join(
+                            "%s (%s)" % (page, page.get_absolute_url())
+                            for page in other
+                        )
+                    },
                     field="redirect_to_page",
                     exclude=exclude,
                 )

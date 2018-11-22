@@ -18,6 +18,8 @@ Change log
   Django) return lazy strings.
 - Changed the type of ``RedirectMixin.redirect_to_page`` to
   ``TreeNodeForeignKey`` so that the hierarchy is shown in the dropdown.
+- Added more careful detection of chain redirects and improved the error
+  messages a bit.
 
 
 `0.25`_ (2018-09-07)
