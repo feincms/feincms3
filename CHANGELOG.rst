@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.26`_ (2018-11-22)
+~~~~~~~~~~~~~~~~~~~~
+
 - Removed tree fields when loading applications.
 - Stopped mentioning the ``AppsMixin`` in the reference documentation.
 - Fixed a few typos and converted more string quotes in the docs.
@@ -20,6 +23,8 @@ Change log
   ``TreeNodeForeignKey`` so that the hierarchy is shown in the dropdown.
 - Added more careful detection of chain redirects and improved the error
   messages a bit.
+- Made it clearer that ``AbstractPage.position``'s value should probably
+  be greater than zero. Thanks to Hannah Cushman for the contribution!
 
 
 `0.25`_ (2018-09-07)
@@ -446,4 +451,5 @@ functionality.
 .. _0.23: https://github.com/matthiask/feincms3/compare/0.22...0.23
 .. _0.24: https://github.com/matthiask/feincms3/compare/0.23...0.24
 .. _0.25: https://github.com/matthiask/feincms3/compare/0.24...0.25
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.25...master
+.. _0.26: https://github.com/matthiask/feincms3/compare/0.25...0.26
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.26...master
