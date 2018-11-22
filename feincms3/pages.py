@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-from django.core.validators import RegexValidator
+from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.db.models import Max, Q
 from django.urls import reverse
@@ -62,7 +62,16 @@ class AbstractPage(TreeNode):
     is_active = models.BooleanField(_("is active"), default=True)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"))
-    position = models.PositiveIntegerField(db_index=True, editable=False)
+    position = models.PositiveIntegerField(
+        db_index=True,
+        editable=False,
+        validators=[
+            MinValueValidator(
+                limit_value=1,
+                message=_("Position is expected to be greater than zero."),
+            )
+        ],
+    )
 
     # Who even cares about MySQL
     path = models.CharField(
