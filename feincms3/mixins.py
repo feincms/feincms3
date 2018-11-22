@@ -175,7 +175,7 @@ class RedirectMixin(models.Model):
                     exclude=exclude,
                 )
 
-        if self.redirect_to_url or self.redirect_to_page_id:
+        if self.pk and (self.redirect_to_url or self.redirect_to_page_id):
             # Any page redirects to this page?
             other = self.__class__._default_manager.filter(redirect_to_page=self)
             if other:
