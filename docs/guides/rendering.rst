@@ -12,7 +12,10 @@ Rendering plugins
 ~~~~~~~~~~~~~~~~~
 
 The :class:`feincms3.renderer.TemplatePluginRenderer`` offers two
-fundamental ways of rendering content.
+fundamental ways of rendering content, string renderers and template
+renderers. The former simply return a string, the latter work similar to
+``{% include %}``.
+
 
 String renderers
 ----------------
@@ -45,8 +48,9 @@ Or you may choose to render plugins using a template:
 The configured template receives the plugin instance as ``"plugin"``
 (fittingly).
 
-If you need more flexibility, also accepts a callable as
-``template_name``:
+If you need more flexibility you may also pass a callable instead of a
+template path as ``template_name``. The callable receives the plugin
+instance as its only argument:
 
 .. code-block:: python
 
@@ -62,10 +66,25 @@ If you need more flexibility, also accepts a callable as
         external_template_name
     )
 
-The third argument, ``context`` may be used to provide a different
-context for plugins. If ``context`` is a callable it receives the plugin
-instance and, if provided to the renderer itself, the rendering context
-of the outer template.
+Often, having the surrounding template context and the plugin instance
+available inside the template is enough. However, you might want to
+provide additional context variables. This can be achieved by specifying
+the ``context`` function. The function receives the plugin instance and
+the surrounding template context:
+
+.. code-block:: python
+
+    def plugin_context(plugin, context):
+        return {
+            "plugin": plugin,
+            "additional": ....
+        }
+
+    renderer.register_template_renderer(
+        Plugin,
+        "plugin/plugin.html",
+        plugin_context,
+    )
 
 
 Rendering individual plugins
