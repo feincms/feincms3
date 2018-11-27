@@ -76,7 +76,7 @@ the surrounding template context:
 
     def plugin_context(plugin, context):
         return {
-            "plugin": plugin,
+            "plugin": plugin,  # Recommended, but not required.
             "additional": ....
         }
 
