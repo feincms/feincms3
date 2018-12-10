@@ -12,7 +12,9 @@
           $($(this).data("external-plugin-resources")).each(function() {
             CKEDITOR.plugins.addExternal(this[0], this[1], this[2]);
           });
-          CKEDITOR.replace(this.id, $(this).data("config"));
+          var config = $(this).data("config");
+          config.width = "100%";
+          CKEDITOR.replace(this.id, config);
         }
       });
     })
@@ -30,7 +32,7 @@
   // Make the CKEditor widget occupy the whole width of the fieldset (but not more)
   var style = document.createElement("style");
   style.textContent =
-    ".order-machine .django-ckeditor-widget { width: calc(100% - 170px); }";
+    ".order-machine .django-ckeditor-widget { width: calc(100% - 170px); max-width: 1000px; }";
   style.textContent +=
     "@media (max-width: 767px) { .order-machine .django-ckeditor-widget { width: calc(100%); }";
   document.head.appendChild(style);
