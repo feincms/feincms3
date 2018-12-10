@@ -8,6 +8,8 @@ Change log
 
 - Fixed the CKEditor plugin script to resize the widget to fit the width
   of the content editor area.
+- Added configuration for easily running prettier and ESLint on the
+  frontend code.
 
 
 `0.26`_ (2018-11-22)

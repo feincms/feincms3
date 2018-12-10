@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "prettier": "^1.15.3"
+  },
+  "scripts": {
+    "prettier": "prettier --write .*js feincms3/static/feincms3/*",
+    "eslint": "eslint feincms3/static/feincms3/"
+  }
+}
