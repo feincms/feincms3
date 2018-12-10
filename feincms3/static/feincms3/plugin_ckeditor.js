@@ -29,7 +29,7 @@
         }
     );
 
-    // Move CKEditor up a bit to hide the text label.
+    // Make the CKEditor widget occupy the whole width of the fieldset (but not more)
     var style = document.createElement('style');
     style.textContent = '.order-machine .django-ckeditor-widget { width: calc(100% - 170px); }';
     style.textContent += '@media (max-width: 767px) { .order-machine .django-ckeditor-widget { width: calc(100%); }';
