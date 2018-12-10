@@ -7,11 +7,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018
   },
+  plugins: ["prettier"],
   rules: {
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
-    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
+    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "prettier/prettier": "error",
+    quotes: 0
   }
 };
