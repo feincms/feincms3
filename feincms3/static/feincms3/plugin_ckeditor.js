@@ -30,7 +30,8 @@
     );
 
     // Move CKEditor up a bit to hide the text label.
-    // var style = document.createElement('style');
-    // style.textContent = '.order-machine .django-ckeditor-widget { margin: -30px 0 0 -1px; }';
-    // document.head.appendChild(style);
+    var style = document.createElement('style');
+    style.textContent = '.order-machine .django-ckeditor-widget { width: calc(100% - 170px); }';
+    style.textContent += '@media (max-width: 767px) { .order-machine .django-ckeditor-widget { width: calc(100%); }';
+    document.head.appendChild(style);
 })(django.jQuery);
