@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed the CKEditor plugin script to resize the widget to fit the width
+  of the content editor area.
+
+
 `0.26`_ (2018-11-22)
 ~~~~~~~~~~~~~~~~~~~~
 
