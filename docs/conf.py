@@ -71,7 +71,7 @@ settings.configure(
 setup()
 
 #######################################
-project_slug = re.sub(r'[^a-z]+', '', project)
+project_slug = re.sub(r'[^a-z0-9]+', '', project.lower())
 
 extensions = [
     'sphinx.ext.autodoc',
