@@ -39,6 +39,8 @@ Add settings (optional, but recommended):
             " maybe long."
         ),
         "image": "/static/app/logo.png",
+        # "author": "...",
+        "robots": "index,follow,noodp",
     }
 
     # Only for translations
