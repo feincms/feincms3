@@ -6,10 +6,17 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.27`_ (2019-01-15)
+~~~~~~~~~~~~~~~~~~~~
+
 - Fixed the CKEditor plugin script to resize the widget to fit the width
   of the content editor area.
 - Added configuration for easily running prettier and ESLint on the
   frontend code.
+- Dropped Python 2 compatibility, again. The first attempt was made
+  almost 30 months ago.
+- Changed the subrenderer to use yielding instead of returning
+  fragments.
 
 
 `0.26`_ (2018-11-22)
@@ -458,4 +465,5 @@ functionality.
 .. _0.24: https://github.com/matthiask/feincms3/compare/0.23...0.24
 .. _0.25: https://github.com/matthiask/feincms3/compare/0.24...0.25
 .. _0.26: https://github.com/matthiask/feincms3/compare/0.25...0.26
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.26...master
+.. _0.27: https://github.com/matthiask/feincms3/compare/0.26...0.27
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.27...master
