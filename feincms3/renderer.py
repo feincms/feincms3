@@ -6,7 +6,6 @@ from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
 
 from content_editor.contents import contents_for_item
-from feincms3.utils import positional
 
 
 __all__ = ("TemplatePluginRenderer", "Regions", "cached_render", "default_context")
@@ -33,9 +32,8 @@ def cached_render(fn):
     method.
     """
 
-    @positional(3)
     @wraps(fn)
-    def render(self, region, context=None, timeout=None, **kwargs):
+    def render(self, region, context=None, *, timeout=None, **kwargs):
         if timeout is None:
             return fn(self, region, context=context, **kwargs)
 
@@ -51,7 +49,7 @@ def cached_render(fn):
 
 
 class Regions(object):
-    """Regions(item, *, contents, renderer)
+    """Regions(*, item, contents, renderer)
     Wrapper for a ``content_editor.contents.Contents`` instance with support
     for caching the potentially somewhat expensive plugin loading and rendering
     step.
@@ -100,8 +98,7 @@ class Regions(object):
        renderer, not in the ``Regions`` instance.
     """
 
-    @positional(1)
-    def __init__(self, item, contents, renderer):
+    def __init__(self, item, *, contents, renderer):
         self._item = item
         self._contents = contents
         self._renderer = renderer
@@ -135,8 +132,7 @@ class TemplatePluginRenderer(object):
     required values into the local rendering context.
     """
 
-    @positional(1)
-    def __init__(self, regions_class=Regions):
+    def __init__(self, *, regions_class=Regions):
         self._renderers = {}
         self._regions_class = regions_class
 
@@ -212,9 +208,8 @@ context=default_context)
 
         return list(self._renderers.keys())
 
-    @positional(2)
-    def regions(self, item, inherit_from=None, regions=None):
-        """regions(self, item, *, inherit_from=None, regions=None)
+    def regions(self, item, *, inherit_from=None, regions=None):
+        """
         Return a ``Regions`` instance which lazily wraps the
         ``contents_for_item`` call. This is especially useful in conjunction
         with the ``render_region`` template tag. The ``inherit_from`` argument

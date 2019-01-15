@@ -17,7 +17,6 @@ from django.utils.translation import pgettext, ugettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 
 from tree_queries.forms import TreeNodeChoiceField
-from feincms3.utils import positional
 
 
 __all__ = (
@@ -145,16 +144,14 @@ class TreeAdmin(ModelAdmin):
             request, obj, form_class=CloneForm, title=_("Clone %s") % obj
         )
 
-    @positional(3)
-    def action_form_view(self, request, obj, form_class, title):
+    def action_form_view(self, request, obj, *, form_class, title):
         kw = {"request": request, "obj": obj, "modeladmin": self}
         form = form_class(request.POST if request.method == "POST" else None, **kw)
         if form.is_valid():
             return form.process()
         return self.render_action_form(request, form, title=title, obj=obj)
 
-    @positional(3)
-    def render_action_form(self, request, form, title, obj):
+    def render_action_form(self, request, form, *, title, obj):
         adminForm = helpers.AdminForm(
             form,
             [

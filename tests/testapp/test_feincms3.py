@@ -18,7 +18,7 @@ from feincms3.apps import (
 )
 from feincms3.plugins.external import ExternalForm
 from feincms3.renderer import Regions, TemplatePluginRenderer, cached_render
-from feincms3.utils import concrete_model, iterate_subclasses, positional
+from feincms3.utils import concrete_model, iterate_subclasses
 
 from .models import HTML, Article, External, Page, RichText
 
@@ -864,16 +864,6 @@ class Test(TestCase):
         # page1 is already the target of a redirect
         page1.redirect_to_url = "http://example.com/"
         self.assertRaises(ValidationError, page1.full_clean)
-
-    def test_positional(self):
-        @positional(2)
-        def test(a, b, c):
-            pass
-
-        with self.assertRaises(TypeError):
-            test(1, 2, 3)
-
-        test(1, 2, c=3)
 
     def test_subclasses(self):
         class A(object):

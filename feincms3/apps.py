@@ -14,7 +14,7 @@ from django.db.models import Q, signals
 from django.urls import NoReverseMatch, reverse
 from django.utils.translation import get_language, ugettext_lazy as _
 
-from feincms3.utils import concrete_model, positional, validation_error
+from feincms3.utils import concrete_model, validation_error
 
 
 __all__ = (
@@ -136,9 +136,8 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
         return fallback
 
 
-@positional(0)
-def apps_urlconf(apps=None):
-    """apps_urlconf(*, apps=None)
+def apps_urlconf(*, apps=None):
+    """
     Generates a dynamic URLconf Python module including all applications in
     their assigned place and adding the ``urlpatterns`` from ``ROOT_URLCONF``
     at the end. Returns the value of ``ROOT_URLCONF`` directly if there are
@@ -189,7 +188,7 @@ def apps_urlconf(apps=None):
     if module_name not in sys.modules:
         app_config = {app[0]: app[2] for app in page_model.APPLICATIONS if app[0]}
 
-        m = types.ModuleType(str(module_name))  # Correct for Python 2 and 3
+        m = types.ModuleType(module_name)
 
         mapping = defaultdict(list)
         for path, application, app_instance_namespace, language_code in apps:
@@ -225,9 +224,8 @@ def apps_urlconf(apps=None):
     return module_name
 
 
-@positional(1)
-def page_for_app_request(request, queryset=None):
-    """page_for_app_request(request, *, queryset=None)
+def page_for_app_request(request, *, queryset=None):
+    """
     Returns the current page if we're inside an app. Should only be called
     while processing app views. Will pass along exceptions caused by
     non-existing or duplicated apps (this should never happen inside an app
