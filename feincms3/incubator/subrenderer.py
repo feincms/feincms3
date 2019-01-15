@@ -29,10 +29,10 @@ A boxes renderer definition and instantiation follows:
         # .enter() and .exit() are not required, but are very useful to add
         # wrapping elements to sections rendered by the subrenderer
         def enter(self, **kwargs):
-            return '<div class="boxes">'
+            yield '<div class="boxes">'
 
         def exit(self, **kwargs):
-            return "</div>"
+            yield "</div>"
 
     box_renderer = BoxRenderer()
     box_renderer.register_template_renderer(
@@ -139,13 +139,16 @@ class Subrenderer(TemplatePluginRenderer):
         """
         Hook for opening a wrapping element
         """
-        return ""
+        yield ""  # pragma: no cover
+
+    def reenter(self, **kwargs):
+        yield ""
 
     def exit(self, **kwargs):
         """
         Hook for closing a wrapping element
         """
-        return ""
+        yield ""  # pragma: no cover
 
 
 class SubrendererRegions(Regions):
@@ -168,40 +171,40 @@ class SubrendererRegions(Regions):
         Handles eventually required subrenderer enter and exit hooks calls.
         """
         if self.current:
-            yield self.current.exit(**kwargs)
+            yield from self.current.exit(**kwargs)
         self.current = subrenderer
         if self.current:
-            yield self.current.enter(**kwargs)
+            yield from self.current.enter(**kwargs)
 
     @cached_render
     def render(self, region, context=None):
-        output = []
-
-        for plugin in self._contents[region]:
-            if hasattr(plugin, "subrenderer"):
-                new = (
-                    self.subrenderers[plugin.subrenderer]
-                    if plugin.subrenderer
-                    else None
-                )
-                if new != self.current:  # Move to different subrenderer?
-                    output.extend(
-                        self.activate(
+        def _generator():
+            for plugin in self._contents[region]:
+                if hasattr(plugin, "subrenderer"):
+                    new = (
+                        self.subrenderers[plugin.subrenderer]
+                        if plugin.subrenderer
+                        else None
+                    )
+                    if new != self.current:  # Move to different subrenderer?
+                        yield from self.activate(
                             new, plugin=plugin, context=context, region=region
                         )
-                    )
+                    elif self.current:  # Re-enter
+                        yield from self.current.reenter(
+                            plugin=plugin, context=context, region=region
+                        )
 
-            if self.current:
-                if self.current.accepts(plugin, context):
-                    output.append(
-                        self.current.render_plugin_in_context(plugin, context)
-                    )
-                    continue  # Subrenderer success! Process next plugin.
-                else:
-                    output.extend(self.activate(None, context=context, region=region))
+                if self.current:
+                    if self.current.accepts(plugin, context):
+                        yield self.current.render_plugin_in_context(plugin, context)
+                        continue  # Subrenderer success! Process next plugin.
+                    else:
+                        yield from self.activate(None, context=context, region=region)
 
-            # No current subrenderer. Use main renderer.
-            output.append(self._renderer.render_plugin_in_context(plugin, context))
+                # No current subrenderer. Use main renderer.
+                yield self._renderer.render_plugin_in_context(plugin, context)
 
-        output.extend(self.activate(None, context=context, region=region))
-        return mark_safe("".join(output))
+            yield from self.activate(None, context=context, region=region)
+
+        return mark_safe("".join(_generator()))

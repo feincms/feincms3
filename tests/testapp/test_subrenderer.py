@@ -27,18 +27,18 @@ class File(SimpleNamespace):
 
 class TeaserRenderer(Subrenderer):
     def enter(self, **kwargs):
-        return '<div class="teasers">'
+        yield '<div class="teasers">'
 
     def exit(self, **kwargs):
-        return "</div>"
+        yield "</div>"
 
 
 class FAQRenderer(Subrenderer):
     def enter(self, **kwargs):
-        return '<div class="faq">'
+        yield '<div class="faq">'
 
     def exit(self, **kwargs):
-        return "</div>"
+        yield "</div>"
 
 
 teaser_renderer = TeaserRenderer()
@@ -158,4 +158,48 @@ class Test(TestCase):
         self.assertEqual(
             regions.render("main"),
             'Text 1download1.pdf<div class="faq">Questiondownload2.pdf</div>Text 2',
+        )
+
+    def test_continue_subrenderer(self):
+        class ContinueSubrenderer(Subrenderer):
+            def enter(self, **kwargs):
+                yield '<div class="stuff">'
+
+            def exit(self, **kwargs):
+                yield "</div>"
+
+            def reenter(self, **kwargs):
+                yield from self.exit(**kwargs)
+                yield from self.enter(**kwargs)
+
+        continue_subrenderer = ContinueSubrenderer()
+        continue_subrenderer.register_string_renderer(Text, lambda plugin: plugin.text)
+        continue_subrenderer.register_string_renderer(Command, "")
+
+        class RegionsWithContinue(SubrendererRegions):
+            subrenderers = {"continue": continue_subrenderer}
+
+        continue_renderer = TemplatePluginRenderer()
+        continue_renderer.register_string_renderer(Text, lambda plugin: plugin.text)
+        continue_renderer.register_string_renderer(Command, "")
+
+        regions = RegionsWithContinue(
+            item=None,
+            contents={
+                "main": [
+                    Text(text="before"),
+                    Command(subrenderer="continue"),
+                    Text(text="first"),
+                    Command(subrenderer="continue"),
+                    Text(text="second"),
+                    Command(subrenderer=""),
+                    Text(text="after"),
+                ]
+            },
+            renderer=continue_renderer,
+        )
+
+        self.assertEqual(
+            regions.render("main"),
+            'before<div class="stuff">first</div><div class="stuff">second</div>after',
         )
