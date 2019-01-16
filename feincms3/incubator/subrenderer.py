@@ -141,14 +141,22 @@ class Subrenderer(TemplatePluginRenderer):
         """
         yield ""  # pragma: no cover
 
-    def reenter(self, **kwargs):
-        yield ""
-
     def exit(self, **kwargs):
         """
         Hook for closing a wrapping element
         """
         yield ""  # pragma: no cover
+
+    def reenter(self, **kwargs):
+        """
+        If a plugin has a ``subrenderer`` attribute corresponding to the
+        current subrenderer the subrenderer does not change by design. However,
+        under some circumstances it may be useful to exit the subrenderer and
+        enter it again right away. This is made possible by this hook. Most
+        implementations will probably simply ``yield from self.exit(**kwargs)``
+        and ``yield from self.enter(**kwargs)``.
+        """
+        yield ""
 
 
 class SubrendererRegions(Regions):
