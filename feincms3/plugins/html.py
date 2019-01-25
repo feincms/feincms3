@@ -5,6 +5,7 @@ entered.
 Most useful for people wanting to shoot themselves in the foot.
 """
 
+from django import forms
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -43,7 +44,13 @@ class HTMLInline(ContentEditorInline):
     ``ContentEditorInline``.
     """
 
-    pass
+    formfield_overrides = {
+        models.TextField: {
+            "widget": forms.Textarea(
+                attrs={"rows": 3, "cols": 40, "class": "vLargeTextField"}
+            )
+        }
+    }
 
 
 def render_html(plugin, **kwargs):
