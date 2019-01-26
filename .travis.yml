@@ -32,11 +32,11 @@ matrix:
       env: REQ="Django>=1.11,<2.0"
     - python: 3.4
       env: REQ="Django>=1.11,<2.0"
-    - python: 3.7
-      env: REQ=none
-      install: skip
-      script:
+    - name: style
+      python: 3.7
+      install:
         - pip install black flake8
+      script:
         - flake8 .
         - black --check feincms3 tests
   allow_failures:
