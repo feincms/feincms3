@@ -51,6 +51,8 @@ def render_list(
     context = context or {}
     if paginate_by:
         p = paginator.Paginator(queryset, paginate_by)
+        # Note! Django>=2.0 allows us to simply
+        # object_list = p.get_page(request.GET.get("page"))
         try:
             object_list = p.page(request.GET.get("page"))
         except paginator.PageNotAnInteger:
