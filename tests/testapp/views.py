@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import format_html
 
+from feincms3.incubator.newregions import Regions
 from feincms3.plugins import external, html, richtext
 from feincms3.renderer import TemplatePluginRenderer
 
@@ -30,11 +31,14 @@ def page_detail(request, path=None):
 
     if page.redirect_to_url or page.redirect_to_page:
         return redirect(page.redirect_to_url or page.redirect_to_page)
+
     return render(
         request,
         page.template.template_name,
         {
             "page": page,
-            "regions": renderer.regions(page, inherit_from=page.ancestors().reverse()),
+            "regions": Regions.from_item(
+                item=page, renderer=renderer, inherit_from=page.ancestors().reverse()
+            ),
         },
     )
