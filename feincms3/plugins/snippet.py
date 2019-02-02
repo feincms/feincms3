@@ -4,6 +4,8 @@ Plugin for including template snippets through the CMS
 
 from __future__ import unicode_literals
 
+from collections import defaultdict
+
 from django.db import models
 from django.db.models import signals
 from django.template.loader import render_to_string
@@ -49,7 +51,31 @@ class Snippet(models.Model):
         signal.
         """
         if issubclass(sender, Snippet) and not sender._meta.abstract:
-            sender._meta.get_field("template_name").choices = sender.TEMPLATES
+            sender._meta.get_field("template_name").choices = [
+                choice[:2] for choice in sender.TEMPLATES
+            ]
+
+    @classmethod
+    def register_with(cls, renderer):
+        """
+        This helper registers the snippet plugin with a
+        ``TemplatePluginRenderer`` while adding support for template-specific
+        context functions. The templates specified using the ``TEMPLATES``
+        class variable may contain a callable which receives the plugin
+        instance and the template context and returns a context dictionary.
+        """
+        from feincms3.renderer import default_context
+
+        context_fns = defaultdict(
+            lambda: default_context,
+            [(row[0], row[2]) for row in cls.TEMPLATES if len(row) > 2],
+        )
+
+        renderer.register_template_renderer(
+            cls,
+            lambda plugin: plugin.template_name,
+            lambda plugin, context: context_fns[plugin.template_name](plugin, context),
+        )
 
 
 signals.class_prepared.connect(Snippet.fill_template_name_choices)

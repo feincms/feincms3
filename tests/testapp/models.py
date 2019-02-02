@@ -78,7 +78,13 @@ class Image(image.Image, PagePlugin):
 
 
 class Snippet(snippet.Snippet, PagePlugin):
-    TEMPLATES = [("snippet.html", _("snippet"))]
+    TEMPLATES = [
+        (
+            "snippet.html",
+            _("snippet"),
+            lambda plugin, context: {"plugin": plugin, "additional": "context"},
+        )
+    ]
 
 
 class External(external.External, PagePlugin):

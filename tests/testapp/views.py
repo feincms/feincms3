@@ -17,11 +17,7 @@ renderer.register_string_renderer(
         plugin.caption,
     ),
 )
-renderer.register_template_renderer(
-    Snippet,
-    lambda plugin: plugin.template_name,
-    lambda plugin, context: {"additional": "context"},
-)
+Snippet.register_with(renderer)
 renderer.register_string_renderer(External, external.render_external)
 renderer.register_string_renderer(HTML, html.render_html)
 

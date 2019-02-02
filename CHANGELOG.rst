@@ -6,6 +6,14 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Updated the Travis CI matrix to cover more versions of Django and
+  Python while reducing the total job count to speed up builds.
+- Made the default textarea used for editing the HTML plugin smaller.
+- Added documentation for the new ``reenter`` subrenderer hook.
+- Augmented the snippet plugin with a way to specify a template-specific
+  plugin context callable.
+
+
 `0.27`_ (2019-01-15)
 ~~~~~~~~~~~~~~~~~~~~
 
