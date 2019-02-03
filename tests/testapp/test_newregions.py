@@ -233,3 +233,12 @@ class Test(TestCase):
             decorator=cached_render(cache_key=lambda region: region, timeout=15),
         )
         self.assertEqual(output, regions.render("main"))
+
+    def test_unknown_subregion(self):
+        regions = MyRegions.from_contents(
+            contents={"main": [Text(text="Stuff"), Command(subregion="unknown")]},
+            renderer=renderer,
+        )
+
+        with self.assertRaises(KeyError):
+            regions.render("main")
