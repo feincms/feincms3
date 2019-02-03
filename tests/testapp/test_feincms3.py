@@ -866,7 +866,7 @@ class Test(TestCase):
         self.assertRaises(ValidationError, page1.full_clean)
 
     def test_subclasses(self):
-        class A(object):
+        class A:
             pass
 
         class B(A):

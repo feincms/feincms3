@@ -48,7 +48,7 @@ def cached_render(fn):
     return render
 
 
-class Regions(object):
+class Regions:
     """Regions(*, item, contents, renderer)
     Wrapper for a ``content_editor.contents.Contents`` instance with support
     for caching the potentially somewhat expensive plugin loading and rendering
@@ -124,7 +124,7 @@ class Regions(object):
         )
 
 
-class TemplatePluginRenderer(object):
+class TemplatePluginRenderer:
     """
     This renderer allows registering functions, templates and context providers
     for plugins. It also supports rendering plugins' templates using the
