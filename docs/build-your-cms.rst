@@ -118,7 +118,7 @@ The page model and a few plugins could be defined as follows:
 
 
     class Image(plugins.image.Image, PagePlugin):
-        caption = models.CharField(_('caption'), max_length=200, blank=True)
+        caption = models.CharField(_("caption"), max_length=200, blank=True)
 
 
 Views and URLs
@@ -135,10 +135,10 @@ implementation which expects something like this:
     from app.pages import views
 
 
-    app_name = 'pages'
+    app_name = "pages"
     urlpatterns = [
-        url(r'^(?P<path>[-\w/]+)/$', views.page_detail, name='page'),
-        url(r'^$', views.page_detail, name='root'),
+        url(r"^(?P<path>[-\w/]+)/$", views.page_detail, name="page"),
+        url(r"^$", views.page_detail, name="root"),
     ]
 
 If you don't like this, you're completely free to write your own views,
@@ -151,6 +151,8 @@ look as follows:
 
     from django.shortcuts import get_object_or_404, render
 
+    from feincms3.regions import Regions
+
     from .models import Page
     from .renderer import renderer
 
@@ -158,11 +160,13 @@ look as follows:
     def page_detail(request, path=None):
         page = get_object_or_404(
             Page.objects.active(),
-            path='/{}/'.format(path) if path else '/',
+            path="/{}/".format(path) if path else "/",
         )
         return render(request, "pages/standard.html", {
             "page": page,
-            "regions": renderer.regions(page),
+            "regions": Regions.from_item(
+                page, renderer=renderer, timeout=60
+            ),
         })
 
 .. note::
@@ -207,7 +211,7 @@ Of course if you'd rather let plugins use templates, do this:
 
     renderer.register_template_renderer(
         Image,
-        'plugins/image.html',
+        "plugins/image.html",
     )
 
 And the associated template::
@@ -234,7 +238,6 @@ And a ``pages/standard.html`` template::
       <main>
         <h1>{{ page.title }}</h1>
         {% render_region regions "main" %}
-        {# or maybe {% render_region regions "main" timeout=30 %} #}
       </main>
     {% endblock %}
 

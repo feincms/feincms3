@@ -73,6 +73,7 @@ calling :func:`feincms3.apps.page_for_app_request`:
     from django.shortcuts import render
 
     from feincms3.apps import page_for_app_request
+    from feincms3.regions import Regions
 
     from app.pages.renderer import renderer
 
@@ -101,8 +102,12 @@ calling :func:`feincms3.apps.page_for_app_request`:
 
         context.update({
             "page": page,
-            "regions": renderer.regions(
-                page, inherit_from=page.ancestors().reverse()),
+            "regions": Regions.from_item(
+                page,
+                renderer=renderer,
+                inherit_from=page.ancestors().reverse(),
+                timeout=60,
+            )
         })
 
         return render(request, "form.html", context)
@@ -123,7 +128,7 @@ Add the required template:
     {% load feincms3_renderer %}
 
     {% block content %}
-      {% render_region regions 'main' timeout=15 %}
+      {% render_region regions 'main' %}
 
       {% if form %}
         <form method="post" action=".#form" id="form">

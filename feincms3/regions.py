@@ -1,4 +1,5 @@
 from collections import deque
+from functools import wraps
 
 from django.core.cache import cache
 from django.utils.functional import SimpleLazyObject
@@ -7,11 +8,28 @@ from django.utils.html import mark_safe
 from content_editor.contents import contents_for_item
 
 
-__all__ = ("Regions", "matches")
+__all__ = ("Regions", "matches", "cached_render")
 
 
 def item_cache_key(item):
     return lambda region: "%s-%s-%s" % (item._meta.label_lower, item.pk, region)
+
+
+def cached_render(fn):
+    @wraps(fn)
+    def render(self, region, context=None):
+        if self.cache_key:
+            key = self.cache_key(region)
+            result = cache.get(key)
+            if result is not None:
+                return result
+        result = fn(self, region, context)
+        # result = mark_safe("".join(self.generate(self.contents[region], context)))
+        if self.cache_key:
+            cache.set(key, result, timeout=self.timeout)
+        return result
+
+    return render
 
 
 class Regions:
@@ -44,16 +62,9 @@ class Regions:
             if key.startswith("handle_")
         }
 
+    @cached_render
     def render(self, region, context=None):
-        if self.cache_key:
-            key = self.cache_key(region)
-            result = cache.get(key)
-            if result is not None:
-                return result
-        result = mark_safe("".join(self.generate(self.contents[region], context)))
-        if self.cache_key:
-            cache.set(key, result, timeout=self.timeout)
-        return result
+        return mark_safe("".join(self.generate(self.contents[region], context)))
 
     def generate(self, items, context):
         items = deque(items)

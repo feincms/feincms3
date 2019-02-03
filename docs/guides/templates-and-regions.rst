@@ -36,16 +36,19 @@ The ``page_detail`` view presented in the guide also works with more
 than one region. However, for region inheritance to work you have to
 provide the pages whose content should be inherited yourself. There
 isn't much to do though, just add the ``inherit_from`` keyword argument
-to ``renderer.regions``:
+to the ``Regions.from_item`` factory method:
 
 .. code-block:: python
+
+    from feincms3.regions import Regions
 
     def page_detail(request, path=None):
         page = ...
         return render(request, "pages/standard.html", {
             "page": page,
-            "regions": renderer.regions(
+            "regions": Regions.from_item(
                 page,
+                renderer=renderer,
                 inherit_from=page.ancestors().reverse(),
             ),
         })
@@ -102,8 +105,9 @@ template, ``page.template.template_name``:
         page = ...
         return render(request, page.template.template_name, {
             "page": page,
-            "regions": renderer.regions(
+            "regions": Regions.from_item(
                 page,
+                renderer=renderer,
                 inherit_from=page.ancestors().reverse(),
             ),
         })

@@ -6,6 +6,15 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- **BACKWARDS INCOMPATIBLE** Deprecated ``TemplatePluginRenderer``'s
+  ``regions`` method, the ``regions_class`` attribute and
+  ``feincms3.renderer.Regions``. Introduce the more versatile
+  ``feincms3.regions.Regions`` class instead which also replaces the
+  ``feincms3.incubator.subrenderer`` functionality and does not suffer
+  from a software design problem where the regions and the renderer
+  classes knew too much about each other. This has been bothering me for
+  a long time already but became impossible to overlook in the
+  subrenderer implementation.
 - Updated the Travis CI matrix to cover more versions of Django and
   Python while reducing the total job count to speed up builds.
 - Made the default textarea used for editing the HTML plugin smaller.

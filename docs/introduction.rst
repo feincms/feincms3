@@ -68,7 +68,7 @@ feincms3 has the following main parts:
 - Facilities for embedding **apps** through the admin interface, such as
   any interactive content (forms) or apps with subpages (e.g. an
   articles app).
-- A **renderer** and associated template tags.
+- A **renderer** and associated helpers and template tags.
 - **admin** classes for visualizing and modifying the tree hierarchy.
 - Various utilities (**shortcuts** and **template tags**).
 

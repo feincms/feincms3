@@ -87,26 +87,28 @@ the surrounding template context:
     )
 
 
-Rendering individual plugins
-----------------------------
+Rendering individual plugins ----------------------------
 
 Rendering individual plugin instances is possible using the
-``render_plugin_in_context`` method. Except if you're overriding the
-``Regions`` instance used to encapsulate the fetching of plugins and
-rendering of regions you won't have to know about this method, but see
-below under :ref:`rendering-plugins-differently`.
+``render_plugin_in_context`` method. Except if you're using a
+non-standard ``Regions`` class used to encapsulate the fetching of
+plugins and rendering of regions you won't have to know about this
+method, but see below under :ref:`rendering-plugins-differently`.
 
 
 Regions instances
 -----------------
 
 Because fetching plugins may be expensive (at least one database query
-per plugin type) it makes sense to avoid fetching plugins if they are
-not required. The ``TemplatePluginRenderer.regions(item)`` method returns a
-:class:`feincms3.renderer.Regions` instance containing a lazily
-evaluated :class:`content_editor.contents.Contents` instance with all
-plugins of the item and optionally also of related items when using the
-``inherit_from`` argument introduced in the :ref:`more-regions` section
+per plugin type) it makes sense to avoid fetching plugins if there is a
+valid cached version. The :class:`feincms3.regions.Regions` which
+handles the specifics of rendering plugins belonging to specific regions
+has a factory method, ``Regions.from_item``, which automatically creates
+a lazily evaluated :class:`content_editor.contents.Contents` instance.
+
+By inspecting the plugins registered with the renderer the regions
+instance automatically knows which plugins to load. It also supports
+inherited regions introduced in the :ref:`more-regions` section
 of the :ref:`templates-and-regions` guide.
 
 .. note::
@@ -117,11 +119,11 @@ of the :ref:`templates-and-regions` guide.
    rendering (per region of course), the latter describes the region
    itself.
 
-The Regions instance mainly has one interesting method,
-``Regions.render(region)``, used to render one single region. The
-default implementation is wrapped by
-:func:`~feincms3.renderer.cached_render`, which means that when passing
-a ``timeout`` argument you'll get the benefits of caching for free.
+The Regions instance has one method which we'll concern ourselves with
+right now, ``Regions.render(region)``. This method is used to render one
+single region. When passing a ``timeout`` argument to the
+``Regions.from_item`` factory method all return values of
+``Regions.render(region)`` are automatically cached.
 
 
 Rendering regions in the template
@@ -132,12 +134,14 @@ To render regions in the template, the template first requires the
 
 .. code-block:: python
 
+    from feincms3.regions import Regions
+
     def page_detail(request, path=None):
         page = ...
         ...
         return render(request, ..., {
             "page": page,
-            "regions": renderer.regions(page),
+            "regions": Regions.from_item(page, renderer, timeout=60),
         })
 
 In the template you can now use the template tag:
@@ -148,10 +152,6 @@ In the template you can now use the template tag:
 
     {% render_region regions "main" %}
 
-    {# Or better yet: #}
-
-    {% render_region regions "main" timeout=30 %}
-
 Using the template tag is advantageous because it automatically provides
 the surrounding template context to individual plugins' templates,
 meaning that they could for example access the ``request`` instance if
@@ -159,9 +159,7 @@ e.g. an API key would be different for different URLs.
 
 .. note::
    Caching either works for all regions in a ``Regions`` instance or for
-   none at all. Either use ``timeout`` everywhere, or nowhere -- except
-   if the rendering itself would be expensive, and not the database
-   roundtrips.
+   none at all.
 
 
 .. _rendering-plugins-differently:
@@ -181,50 +179,79 @@ container:
 
     from django.utils.html import mark_safe
 
-    from feincms3 import renderer
+    from feincms3.regions import Regions, matches
 
 
-    class ContainerAwareRegions(renderer.Regions):
-        def is_full_width(self, plugin):
-            # Add your own logic here, e.g.:
-            return getattr(plugin, "is_full_width", False)
+    class ContainerAwareRegions(Regions):
+        def handle_fullwidth(self, items, context):
+            yield "</div>"  # Close the surrounding container
+            while True:
+                yield self.renderer.render_plugin_in_context(
+                    items.popleft(), context
+                )
+                if not items or not matches(items[0], subregions={"full_width"}):
+                    break
+            yield '<div class="container">'  # Reopen a new container
 
-        # @cached_render is not strictly necessary, but you might want
-        # to use the ``timeout`` argument to ``render_region``...
-        @renderer.cached_render
-        def render(self, region, context=None):
-            html = []
-            outside = True
+    class FullWidthPlugin(models.Model):
+        subregion = "full_width"
 
-            for plugin in self._contents[region]:
-                output = self._renderer.render_plugin_in_context(plugin, context)
-                if self.is_full_width(plugin) and not outside:
-                    html.extend([
-                        "</div>",  # Close the surrounding container
-                        output,
-                    ])
-                    outside = True
-                elif not self.is_full_width(plugin) and outside:
-                    html.extend([
-                        '<div class="container">',  # Open a new container
-                        output,
-                    ])
-                    outside = False
-                else:
-                    html.append(output)
+        class Meta:
+            abstract = True
 
-            if not outside:
-                # If still inside, close the container again.
-                html.append("</div>")
+    # Instantiate renderer and register plugins
+    renderer = TemplatePluginRenderer()
 
-            return mark_safe("".join(html))
+    # Use our new regions class, not the default
+    regions = ContainerAwareRegions.from_item(page, renderer=renderer)
 
-    # When instantiating the TemplatePluginRenderer, use:
-    renderer = TemplatePluginRenderer(regions_class=ContainerAwareRegions)
 
-.. note::
-   The :mod:`incubator <feincms3.incubator>` offers an experimental but
-   more flexible and powerful system for rendering sections differently.
+Grouping plugins into subregions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``Regions`` class supports rendering subregions differently. Plugins
+may be grouped automatically by their type or by some attribute they
+share.
+
+Let's make an example. Assume that we want to group adjacent teaser
+elements. We have several teaser plugins but they all share the same
+``subregion`` attribute value:
+
+.. code-block:: python
+
+    class ArticleTeaser(PagePlugin):
+        subregion = "teaser"
+        article = models.ForeignKey(...)
+
+    class ProjectTeaser(PagePlugin):
+        subregion = "teaser"
+        project = models.ForeignKey(...)
+
+Next, we have to define a regions class which knows how to handle those
+teasers. The name of the handler has to match the subregion attribute
+exactly:
+
+.. code-block:: python
+
+    from feincms3.regions import Regions, matches
+
+    class SmartRegions(Regions):
+        def handle_teaser(self, items, context):
+            # Start the teasers element:
+            yield '<div class="teasers">'
+            while True:
+                # items is a deque, render the leftmost item:
+                yield self.renderer.render_plugin_in_context(
+                    items.popleft(), context
+                )
+                if not items:
+                    break
+                if not matches(items[0], plugins=(ArticleTeaser, ProjectTeaser)):
+                    break
+            yield "</div>"
+
+Now you'll have to use ``SmartRegions.from_item()`` instead of
+``Regions.from_item()``, and that's all there is to it.
 
 
 Generating JSON
@@ -235,11 +262,11 @@ is possible with a custom ``Regions`` class too:
 
 .. code-block:: python
 
-    from feincms3 import renderer
+    from feincms3.regions import Region, cached_render
 
     class JSONRegions(Regions):
-        @renderer.cached_render
-        def render(self, region):  # No context in this example -- possible as well
+        @cached_render
+        def render(self, region, context=None):
             return [
                 dict(
                     self._renderer.render_plugin_in_context(plugin),
@@ -251,7 +278,7 @@ is possible with a custom ``Regions`` class too:
     def page_content(request, pk):
         page = get_object_or_404(Page, pk=pk)
 
-        renderer = TemplatePluginRenderer(regions=JSONRegions)
+        renderer = TemplatePluginRenderer()
         renderer.register_string_renderer(
             RichText,
             lambda plugin: {"text": plugin.text},
@@ -263,7 +290,7 @@ is possible with a custom ``Regions`` class too:
 
         return JsonResponse({
             "title": page.title,
-            "content": regions.render("content", timeout=60),
+            "content": Regions.from_item(page, renderer=renderer, timeout=60),
         })
 
 In this particular example ``register_string_renderer`` is a bit of a
