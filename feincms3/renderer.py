@@ -1,3 +1,4 @@
+import warnings
 from functools import wraps
 
 from django.core.cache import cache
@@ -220,6 +221,12 @@ context=default_context)
         keyword argument when instantiating the ``TemplatePluginRenderer`` or
         by setting the ``regions`` argument of this method.
         """
+        warnings.warn(
+            "TemplatePluginRenderer.regions() will be removed. Please"
+            " start using feincms3.regions.Regions.from_item() instead.",
+            Warning,
+            stacklevel=2,
+        )
         regions = self._regions_class if regions is None else regions
         return regions(
             item=item,

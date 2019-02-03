@@ -113,12 +113,22 @@ Code documentation
 
 """
 
+import warnings
+
 from django.utils.html import mark_safe
 
 from feincms3.renderer import Regions, TemplatePluginRenderer, cached_render
 
 
 __all__ = ("Subrenderer", "SubrendererRegions")
+
+
+warnings.warn(
+    "The subrenderer module will be removed. Please start using"
+    " the subregions feature of feincms3.regions.Regions instead.",
+    Warning,
+    stacklevel=2,
+)
 
 
 class Subrenderer(TemplatePluginRenderer):
