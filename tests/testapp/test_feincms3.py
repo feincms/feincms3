@@ -5,7 +5,6 @@ from django.forms.models import modelform_factory
 from django.template import Context, Template
 from django.test import Client, TestCase
 from django.urls import set_urlconf
-from django.utils.html import mark_safe
 from django.utils.translation import deactivate_all, override
 
 from feincms3.apps import (
@@ -17,9 +16,10 @@ from feincms3.apps import (
     reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
-from feincms3.renderer import Regions, TemplatePluginRenderer, cached_render
+from feincms3.regions import Regions
+from feincms3.renderer import TemplatePluginRenderer
 
-from .models import HTML, Article, External, Page, RichText
+from .models import HTML, Article, External, Page
 
 
 def zero_management_form_data(prefix):
@@ -886,61 +886,25 @@ class Test(TestCase):
             parent=page, ordering=10, region="main", html="<b>Hello</b>"
         )
 
-        regions = renderer.regions(page)
+        regions = Regions.from_item(page, renderer=renderer)
         self.assertEqual(regions.render("main", Context()), "<b>Hello</b>\n")
 
-        regions = renderer.regions(page)
+        regions = Regions.from_item(page, renderer=renderer)
         self.assertEqual(
             regions.render("main", Context({"outer": "Test"})), "<b>Hello</b>Test\n"
         )
 
-        regions = renderer.regions(page)
+        regions = Regions.from_item(page, renderer=renderer, timeout=3)
         self.assertEqual(
-            regions.render("main", Context({"outer": "Test2"}), timeout=3),
-            "<b>Hello</b>Test2\n",
+            regions.render("main", Context({"outer": "Test2"})), "<b>Hello</b>Test2\n"
         )
-        regions = renderer.regions(page)
+        regions = Regions.from_item(page, renderer=renderer, timeout=3)
         # Output stays the same.
         self.assertEqual(
-            regions.render("main", Context({"outer": "Test3"}), timeout=3),
-            "<b>Hello</b>Test2\n",
+            regions.render("main", Context({"outer": "Test3"})), "<b>Hello</b>Test2\n"
         )
 
         self.assertEqual(regions.cache_key("main"), "testapp.page-%s-main" % page.pk)
-
-    def test_custom_regions(self):
-        class CustomRegions(Regions):
-            @cached_render  # Not necessary for this test, but good style.
-            def render(self, region, context=None):
-                html = []
-                for plugin in self._contents[region]:
-                    out = self._renderer.render_plugin_in_context(plugin, context)
-                    if isinstance(plugin, HTML):
-                        html.extend(['<div class="raw">', out, "</div>"])
-                    else:
-                        html.append(out)
-                return mark_safe("".join(html))
-
-        renderer = TemplatePluginRenderer(regions_class=CustomRegions)
-        # List of templates works too:
-        renderer.register_template_renderer(HTML, ["renderer/html.html"])
-        renderer.register_string_renderer(
-            RichText, lambda plugin: mark_safe(plugin.text)
-        )
-
-        page = Page.objects.create(template_key="standard")
-        HTML.objects.create(
-            parent=page, ordering=10, region="main", html="<b>Hello</b>"
-        )
-        RichText.objects.create(
-            parent=page, ordering=20, region="main", text="<strong>yes</strong>"
-        )
-
-        regions = renderer.regions(page)
-        self.assertEqual(
-            regions.render("main"),
-            '<div class="raw"><b>Hello</b>\n</div><strong>yes</strong>',
-        )
 
     def test_reverse_app_tag(self):
         Page.objects.create(

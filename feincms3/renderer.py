@@ -1,15 +1,7 @@
-import warnings
-from functools import wraps
-
-from django.core.cache import cache
 from django.template import Context, Engine
-from django.utils.functional import SimpleLazyObject
-from django.utils.html import mark_safe
-
-from content_editor.contents import contents_for_item
 
 
-__all__ = ("TemplatePluginRenderer", "Regions", "cached_render", "default_context")
+__all__ = ("TemplatePluginRenderer", "default_context")
 
 
 class PluginNotRegistered(Exception):
@@ -25,111 +17,6 @@ def default_context(plugin, context):
     return {"plugin": plugin}
 
 
-def cached_render(fn):
-    """
-    Decorator for ``Regions.render`` methods implementing caching behavior
-
-    This decorator consumes the ``timeout`` keyword argument to the ``render``
-    method.
-    """
-
-    @wraps(fn)
-    def render(self, region, context=None, *, timeout=None, **kwargs):
-        if timeout is None:
-            return fn(self, region, context=context, **kwargs)
-
-        key = self.cache_key(region)
-        html = cache.get(key)
-        if html is not None:
-            return html
-        html = fn(self, region, context=context, **kwargs)
-        cache.set(key, html, timeout=timeout)
-        return html
-
-    return render
-
-
-class Regions:
-    """Regions(*, item, contents, renderer)
-
-    .. note::
-       ``feincms3.renderer.Regions`` has been deprecated in favor of
-       :class:`feincms3.regions.Regions`.
-
-    Wrapper for a ``content_editor.contents.Contents`` instance with support
-    for caching the potentially somewhat expensive plugin loading and rendering
-    step.
-
-    A view using this facility would look as follows::
-
-        def page_detail(request, slug):
-            page = get_object_or_404(Page, slug=slug)
-            return render(request, 'page.html', {
-                'page': page,
-                'regions': renderer.regions(
-                    page,
-                    # Optional:
-                    inherit_from=page.ancestors().reverse(),
-                    # Optional too:
-                    timeout=15,
-                ),
-                # Note! No 'contents' and no 'renderer' necessary in the
-                # template.
-            })
-
-    The template itself should contain the following snippet::
-
-        {% load feincms3 %}
-
-        {% block content %}
-
-        <h1>{{ page.title }}</h1>
-        <main>
-          {% render_region regions "main" timeout=60 %}
-        </main>
-        <aside>
-          {% render_region regions "sidebar" timeout=60 %}
-        </aside>
-
-        {% endblock %}
-
-    Caching is, of course, completely optional. When you're caching regions
-    though you should probably cache them all, because accessing the content of
-    a single region loads the content of all regions. (It might still make
-    sense if the rendering is the expensive part, not the database access.)
-
-    .. note::
-       You should probably always let the renderer instantiate this class and
-       not depend on the API, especially since the lazyness happens in the
-       renderer, not in the ``Regions`` instance.
-    """
-
-    def __init__(self, item, *, contents, renderer):
-        self._item = item
-        self._contents = contents
-        self._renderer = renderer
-
-    def cache_key(self, region):
-        """
-        Return a cache key suitable for the given ``region`` passed
-        """
-        return "%s-%s-%s" % (self._item._meta.label_lower, self._item.pk, region)
-
-    @cached_render
-    def render(self, region, context=None):
-        """render(self, region, context=None, *, timeout=None)
-        Render a single region using the context passed
-
-        If ``timeout`` is ``None`` caching is disabled.
-        """
-        return mark_safe(
-            "".join(
-                self._renderer.render_plugin_in_context(plugin, context)
-                for plugin in self._contents[region]
-            )
-        )
-
-
 class TemplatePluginRenderer:
     """
     This renderer allows registering functions, templates and context providers
@@ -138,9 +25,8 @@ class TemplatePluginRenderer:
     required values into the local rendering context.
     """
 
-    def __init__(self, *, regions_class=Regions):
+    def __init__(self):
         self._renderers = {}
-        self._regions_class = regions_class
 
     def register_string_renderer(self, plugin, renderer):
         """
@@ -213,33 +99,6 @@ context=default_context)
         """
 
         return list(self._renderers.keys())
-
-    def regions(self, item, *, inherit_from=None, regions=None):
-        """
-        Return a ``Regions`` instance which lazily wraps the
-        ``contents_for_item`` call. This is especially useful in conjunction
-        with the ``render_region`` template tag. The ``inherit_from`` argument
-        is directly forwarded to ``contents_for_item`` to allow regions with
-        inherited content.
-
-        The ``Regions`` type may be overridden by passing a ``regions_class``
-        keyword argument when instantiating the ``TemplatePluginRenderer`` or
-        by setting the ``regions`` argument of this method.
-        """
-        warnings.warn(
-            "TemplatePluginRenderer.regions() will be removed. Please"
-            " start using feincms3.regions.Regions.from_item() instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        regions = self._regions_class if regions is None else regions
-        return regions(
-            item=item,
-            contents=SimpleLazyObject(
-                lambda: contents_for_item(item, self.plugins(), inherit_from)
-            ),
-            renderer=self,
-        )
 
     def render_plugin_in_context(self, plugin, context=None):
         """

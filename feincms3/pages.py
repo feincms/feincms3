@@ -1,4 +1,3 @@
-import warnings
 from collections import OrderedDict
 
 from django.core.validators import MinValueValidator, RegexValidator
@@ -208,24 +207,3 @@ class AbstractPage(TreeNode):
         if self.path == "/":
             return reverse("pages:root")
         return reverse("pages:page", kwargs={"path": self.path.strip("/")})
-
-    # Backwards compatibility
-    @property
-    def depth(self):
-        warnings.warn(
-            "Use self.tree_depth instead of self.depth. Note that"
-            " the self.depth for root nodes was 1, but self.tree_depth"
-            " uses the more correct value of 0.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.tree_depth + 1
-
-    @property
-    def cte_path(self):
-        warnings.warn(
-            "Use self.tree_path instead of self.cte_path.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.tree_path
