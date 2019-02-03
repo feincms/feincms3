@@ -6,15 +6,18 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-- **BACKWARDS INCOMPATIBLE** Deprecated ``TemplatePluginRenderer``'s
-  ``regions`` method, the ``regions_class`` attribute and
-  ``feincms3.renderer.Regions``. Introduce the more versatile
-  ``feincms3.regions.Regions`` class instead which also replaces the
-  ``feincms3.incubator.subrenderer`` functionality and does not suffer
-  from a software design problem where the regions and the renderer
-  classes knew too much about each other. This has been bothering me for
-  a long time already but became impossible to overlook in the
-  subrenderer implementation.
+`0.28`_ (2019-02-03)
+~~~~~~~~~~~~~~~~~~~~
+
+- **(not yet) BACKWARDS INCOMPATIBLE** Deprecated
+  ``TemplatePluginRenderer``'s ``regions`` method, the ``regions_class``
+  attribute and ``feincms3.renderer.Regions``. Introduce the more
+  versatile ``feincms3.regions.Regions`` class instead which also
+  replaces the ``feincms3.incubator.subrenderer`` functionality and does
+  not suffer from a software design problem where the regions and the
+  renderer classes knew too much about each other. This has been
+  bothering me for a long time already but became impossible to overlook
+  in the subrenderer implementation.
 - Updated the Travis CI matrix to cover more versions of Django and
   Python while reducing the total job count to speed up builds.
 - Made the default textarea used for editing the HTML plugin smaller.
@@ -483,4 +486,5 @@ functionality.
 .. _0.25: https://github.com/matthiask/feincms3/compare/0.24...0.25
 .. _0.26: https://github.com/matthiask/feincms3/compare/0.25...0.26
 .. _0.27: https://github.com/matthiask/feincms3/compare/0.26...0.27
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.27...master
+.. _0.28: https://github.com/matthiask/feincms3/compare/0.27...0.28
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.28...master
