@@ -6,6 +6,9 @@ from django.utils.html import mark_safe
 from content_editor.contents import contents_for_item
 
 
+__all__ = ("Regions", "matches")
+
+
 class Regions:
     @classmethod
     def from_contents(cls, contents, *, renderer):
