@@ -75,7 +75,7 @@ class Regions:
     def handle_default(self, items, context):
         while True:
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
-            if not items or not matches(items[0], subregions={None}):
+            if not items or not matches(items[0], subregions={None, ""}):
                 break
 
 

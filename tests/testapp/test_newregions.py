@@ -218,6 +218,21 @@ class Test(TestCase):
             '<div class="default">Text 2Text 3</div>',
         )
 
+        regions = CustomDefaultRegions.from_contents(
+            contents={
+                "main": [
+                    Text(text="Text 1"),
+                    Text(text="Text 2", subregion=""),
+                    Text(text="Text 3", subregion=None),
+                ]
+            },
+            renderer=renderer,
+        )
+
+        self.assertEqual(
+            regions.render("main"), '<div class="default">Text 1Text 2Text 3</div>'
+        )
+
     def test_cache(self):
         regions = MyRegions.from_contents(
             contents={"main": [Text(text="Stuff")]},
