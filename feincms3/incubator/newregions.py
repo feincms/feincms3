@@ -25,12 +25,11 @@ class Regions:
     def __init__(self, *, contents, renderer):
         self.contents = contents
         self.renderer = renderer
-        if not hasattr(self.__class__, "handlers"):
-            self.__class__.handlers = {
-                key[7:]: getattr(self, key)
-                for key in dir(self.__class__)
-                if key.startswith("handle_")
-            }
+        self.handlers = {
+            key[7:]: getattr(self, key)
+            for key in dir(self)
+            if key.startswith("handle_")
+        }
 
     def render(self, region, context=None, **kwargs):
         return mark_safe("".join(self.generate(self.contents[region], context)))
@@ -39,7 +38,7 @@ class Regions:
         items = deque(items)
         while items:
             section = getattr(items[0], "section", None) or "default"
-            yield from getattr(self, "handle_{}".format(section))(items, context)
+            yield from self.handlers[section](items, context)
 
     def handle_default(self, items, context):
         while True:
