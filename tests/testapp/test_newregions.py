@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from content_editor.models import SimpleNamespace  # types.SimpleNamespace
 from feincms3.renderer import TemplatePluginRenderer
-from feincms3.incubator.newregions import SectionRegions, matches, wrap_section
+from feincms3.incubator.newregions import Regions, matches
 
 
 class Text(SimpleNamespace):
@@ -33,20 +33,22 @@ renderer.register_string_renderer(File, lambda plugin: plugin.text)
 renderer.register_string_renderer(Command, "")
 
 
-class MyRegions(SectionRegions):
-    @wrap_section('<div class="teasers">', "</div>")
+class MyRegions(Regions):
     def handle_teasers(self, items, context):
+        yield '<div class="teasers">'
         while items:
             if not matches(items[0], plugins=(Command, Teaser), sections={"teasers"}):
-                return
+                break
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
+        yield "</div>"
 
-    @wrap_section('<div class="faq">', "</div>")
     def handle_faq(self, items, context):
+        yield '<div class="faq">'
         while items:
             if not matches(items[0], plugins=(Command, FAQ, File), sections={"faq"}):
-                return
+                break
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
+        yield "</div>"
 
 
 class Test(TestCase):
@@ -142,22 +144,25 @@ class Test(TestCase):
         )
 
     def test_restart_section(self):
-        class RestartRegions(SectionRegions):
-            @wrap_section('<div class="stuff">', "</div>")
+        class RestartRegions(Regions):
             def handle_restart(self, items, context):
                 first = True
+                yield '<div class="stuff">'
                 while items:
                     # Only match explicit section="restart" or no section
                     if not matches(items[0], sections={"restart"}):
-                        return
+                        break
                     yield self.renderer.render_plugin_in_context(
                         items.popleft(), context
                     )
                     # Item isn't the first and explicitly specifies
                     # section="restart", restart section
                     if not first and items and matches(items[0], sections={"restart"}):
-                        return
+                        break
+
                     first = False
+
+                yield "</div>"
 
         restart_renderer = TemplatePluginRenderer()
         restart_renderer.register_string_renderer(Text, lambda plugin: plugin.text)
@@ -181,4 +186,31 @@ class Test(TestCase):
         self.assertEqual(
             regions.render("main"),
             'before<div class="stuff">first</div><div class="stuff">second</div>after',
+        )
+
+    def test_enter_exit_with_custom_default(self):
+        class CustomDefaultRegions(MyRegions):
+            def handle_default(self, items, context):
+                yield '<div class="default">'
+                yield from super().handle_default(items, context)
+                yield "</div>"
+
+        regions = CustomDefaultRegions.from_contents(
+            contents={
+                "main": [
+                    Text(text="Text 1"),
+                    Teaser(text="Teaser 1"),
+                    Teaser(text="Teaser 2"),
+                    Text(text="Text 2"),
+                    Text(text="Text 3"),
+                ]
+            },
+            renderer=renderer,
+        )
+
+        self.assertEqual(
+            regions.render("main"),
+            '<div class="default">Text 1</div>'
+            '<div class="teasers">Teaser 1Teaser 2</div>'
+            '<div class="default">Text 2Text 3</div>',
         )
