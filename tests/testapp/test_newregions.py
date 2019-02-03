@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from content_editor.models import SimpleNamespace  # types.SimpleNamespace
+from feincms3.regions import Regions, matches
 from feincms3.renderer import TemplatePluginRenderer
-from feincms3.incubator.newregions import Regions, matches
 
 
 class Text(SimpleNamespace):
@@ -223,13 +223,12 @@ class Test(TestCase):
             contents={"main": [Text(text="Stuff")]},
             renderer=renderer,
             cache_key=lambda region: region,
-            timeout=15,
         )
 
         output = regions.render("main")
 
         regions = MyRegions.from_contents(
-            contents={}, renderer=renderer, cache_key=lambda region: region, timeout=15
+            contents={}, renderer=renderer, cache_key=lambda region: region
         )
         self.assertEqual(output, regions.render("main"))
 

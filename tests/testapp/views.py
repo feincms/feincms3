@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import format_html
 
-from feincms3.incubator.newregions import Regions
 from feincms3.plugins import external, html, richtext
+from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 
 from .models import HTML, External, Image, Page, RichText, Snippet
