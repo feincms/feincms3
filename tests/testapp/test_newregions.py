@@ -47,7 +47,7 @@ class MyRegions(Regions):
         while True:
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
             if not items or not matches(
-                items[0], plugins=(FAQ, File), subregions={"faq"}
+                items[0], plugins=(FAQ, File), subregions={None, "faq"}
             ):
                 break
         yield "</div>"
@@ -159,7 +159,7 @@ class Test(TestCase):
                     if (
                         not first
                         and items
-                        and matches(items[0], subregions={"restart"})
+                        and matches(items[0], subregions={None, "restart"})
                     ):
                         break
 
