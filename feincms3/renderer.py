@@ -51,6 +51,10 @@ def cached_render(fn):
 
 class Regions:
     """Regions(*, item, contents, renderer)
+
+    .. note::
+       ``feincms3.renderer.Regions`` has been deprecated in favor of
+       :class:`feincms3.regions.Regions`.
     Wrapper for a ``content_editor.contents.Contents`` instance with support
     for caching the potentially somewhat expensive plugin loading and rendering
     step.
@@ -74,7 +78,7 @@ class Regions:
 
     The template itself should contain the following snippet::
 
-        {% load feincms3_renderer %}
+        {% load feincms3 %}
 
         {% block content %}
 

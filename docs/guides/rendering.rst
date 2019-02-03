@@ -148,7 +148,7 @@ In the template you can now use the template tag:
 
 .. code-block:: html
 
-    {% load feincms3_renderer %}
+    {% load feincms3 %}
 
     {% render_region regions "main" %}
 

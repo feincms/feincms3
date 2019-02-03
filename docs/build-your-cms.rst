@@ -230,7 +230,7 @@ And a ``pages/standard.html`` template::
 
     {% extends "base.html" %}
 
-    {% load feincms3_renderer %}
+    {% load feincms3 %}
 
     {% block title %}{{ page.title }} - {{ block.super }}{% endblock %}
 

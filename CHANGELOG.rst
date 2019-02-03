@@ -6,6 +6,15 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Deprecated the ``feincms3_apps`` and ``feincms3_renderer`` template
+  tag library. ``render_region`` and ``reverse_app`` have been made
+  available as ``feincms3``. The ``render_plugin`` and
+  ``render_plugins`` tags will be removed completely.
+- Changed ``feincms3.regions.matches`` to the effect that ``None`` has
+  to be provided explicitly as an allowed subregion if items with no
+  ``subregion`` attribute should be matched too.
+
+
 `0.28`_ (2019-02-03)
 ~~~~~~~~~~~~~~~~~~~~
 

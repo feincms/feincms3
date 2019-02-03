@@ -125,7 +125,7 @@ Add the required template:
 
     {% extends "base.html" %}
 
-    {% load feincms3_renderer %}
+    {% load feincms3 %}
 
     {% block content %}
       {% render_region regions 'main' %}

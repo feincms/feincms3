@@ -13,5 +13,4 @@ Renderer (``feincms3.renderer``)
 .. autoclass:: Regions
    :members:
 
-.. automodule:: feincms3.templatetags.feincms3_renderer
-   :members:
+.. autofunction:: feincms3.templatetags.feincms3.render_region

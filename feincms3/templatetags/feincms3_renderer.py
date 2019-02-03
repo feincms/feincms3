@@ -1,8 +1,21 @@
+import warnings
+
 from django import template
 from django.utils.html import mark_safe
 
+from feincms3.templatetags.feincms3 import render_region
+
+
+warnings.warn(
+    "Load render_region using {% load feincms3 %} instead."
+    " The feincms3_renderer template tag library and the render_plugin and"
+    " render_plugins tags have been deprecated and will be removed soon.",
+    Warning,
+)
+
 
 register = template.Library()
+register.simple_tag(takes_context=True)(render_region)
 
 
 @register.simple_tag(takes_context=True)
@@ -15,7 +28,7 @@ def render_plugin(context, plugin):
         {% render_plugin plugin %}
 
     In general you should prefer
-    :func:`~feincms3.templatetags.feincms3_renderer.render_region` over this
+    :func:`~feincms3.templatetags.feincms3.render_region` over this
     tag.
     """
     return context["renderer"].render_plugin_in_context(plugin, context)
@@ -35,7 +48,7 @@ def render_plugins(context, plugins):
         {% for plugin in plugins %}{% render_plugin plugin %}{% endfor %}
 
     In general you should prefer
-    :func:`~feincms3.templatetags.feincms3_renderer.render_region` over this
+    :func:`~feincms3.templatetags.feincms3.render_region` over this
     tag.
     """
     renderer = context["renderer"]
@@ -44,25 +57,3 @@ def render_plugins(context, plugins):
             renderer.render_plugin_in_context(plugin, context) for plugin in plugins
         )
     )
-
-
-@register.simple_tag(takes_context=True)
-def render_region(context, regions, region, **kwargs):
-    """
-    Render a single region. See :class:`~feincms3.renderer.Regions` for
-    additional details. Any and all keyword arguments are forwarded to the
-    ``render`` method of the ``Regions`` instance.
-
-    Usage::
-
-        {% render_region regions "main" %}
-
-    and::
-
-        {% render_region regions "main" timeout=15 %}
-
-    The main advantage of :class:`~feincms3.renderer.Regions` and
-    ``render_region`` is that regions only lazily load plugins when needed,
-    which means that caching also avoids the related database queries.
-    """
-    return regions.render(region, context, **kwargs)
