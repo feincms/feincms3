@@ -25,6 +25,14 @@ class File(SimpleNamespace):
     pass
 
 
+renderer = TemplatePluginRenderer()
+renderer.register_string_renderer(Text, lambda plugin: plugin.text)
+renderer.register_string_renderer(Teaser, lambda plugin: plugin.text)
+renderer.register_string_renderer(FAQ, lambda plugin: plugin.text)
+renderer.register_string_renderer(File, lambda plugin: plugin.text)
+renderer.register_string_renderer(Command, "")
+
+
 class MyRegions(SectionRegions):
     @wrap_section('<div class="teasers">', "</div>")
     def handle_teasers(self, items, context):
@@ -39,14 +47,6 @@ class MyRegions(SectionRegions):
             if not matches(items[0], plugins=(Command, FAQ, File), sections={"faq"}):
                 return
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
-
-
-renderer = TemplatePluginRenderer(regions_class=MyRegions)
-renderer.register_string_renderer(Text, lambda plugin: plugin.text)
-renderer.register_string_renderer(Teaser, lambda plugin: plugin.text)
-renderer.register_string_renderer(FAQ, lambda plugin: plugin.text)
-renderer.register_string_renderer(File, lambda plugin: plugin.text)
-renderer.register_string_renderer(Command, "")
 
 
 class Test(TestCase):
