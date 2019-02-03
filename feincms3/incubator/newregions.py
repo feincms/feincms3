@@ -1,5 +1,7 @@
 from collections import deque
+from functools import wraps
 
+from django.core.cache import cache
 from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
 
@@ -9,13 +11,38 @@ from content_editor.contents import contents_for_item
 __all__ = ("Regions", "matches")
 
 
+def cached_render(cache_key, timeout):
+    def decorator(fn):
+        @wraps(fn)
+        def render(self, region, context=None):
+            key = cache_key(region)
+            result = cache.get(key)
+            if result is not None:
+                return result
+            result = fn(region, context)
+            cache.set(key, result, timeout=timeout)
+            return result
+
+        return render
+
+    return decorator
+
+
 class Regions:
     @classmethod
-    def from_contents(cls, contents, *, renderer):
-        return cls(contents=contents, renderer=renderer)
+    def from_contents(cls, contents, *, renderer, decorator=None):
+        return cls(contents=contents, renderer=renderer, decorator=decorator)
 
     @classmethod
-    def from_item(cls, item, *, renderer, inherit_from=None):
+    def from_item(cls, item, *, renderer, inherit_from=None, timeout=None):
+        decorator = (
+            None
+            if timeout is None
+            else cached_render(
+                lambda region: "%s-%s-%s" % (item._meta.label_lower, item.pk, region),
+                timeout,
+            )
+        )
         return cls.from_contents(
             contents=SimpleLazyObject(
                 lambda: contents_for_item(
@@ -23,9 +50,10 @@ class Regions:
                 )
             ),
             renderer=renderer,
+            decorator=decorator,
         )
 
-    def __init__(self, *, contents, renderer):
+    def __init__(self, *, contents, renderer, decorator=None):
         self.contents = contents
         self.renderer = renderer
         self.handlers = {
@@ -33,8 +61,10 @@ class Regions:
             for key in dir(self)
             if key.startswith("handle_")
         }
+        if decorator:
+            self.render = decorator(self.render).__get__(self)
 
-    def render(self, region, context=None, **kwargs):
+    def render(self, region, context=None):
         return mark_safe("".join(self.generate(self.contents[region], context)))
 
     def generate(self, items, context):

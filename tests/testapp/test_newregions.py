@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from content_editor.models import SimpleNamespace  # types.SimpleNamespace
 from feincms3.renderer import TemplatePluginRenderer
-from feincms3.incubator.newregions import Regions, matches
+from feincms3.incubator.newregions import Regions, cached_render, matches
 
 
 class Text(SimpleNamespace):
@@ -214,3 +214,19 @@ class Test(TestCase):
             '<div class="teasers">Teaser 1Teaser 2</div>'
             '<div class="default">Text 2Text 3</div>',
         )
+
+    def test_cache(self):
+        regions = MyRegions.from_contents(
+            contents={"main": [Text(text="Stuff")]},
+            renderer=renderer,
+            decorator=cached_render(cache_key=lambda region: region, timeout=15),
+        )
+
+        output = regions.render("main")
+
+        regions = MyRegions.from_contents(
+            contents={},
+            renderer=renderer,
+            decorator=cached_render(cache_key=lambda region: region, timeout=15),
+        )
+        self.assertEqual(output, regions.render("main"))
