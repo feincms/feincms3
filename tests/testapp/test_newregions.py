@@ -10,15 +10,15 @@ class Text(SimpleNamespace):
 
 
 class Teaser(SimpleNamespace):
-    section = "teasers"
+    subregion = "teasers"
 
 
 class FAQ(SimpleNamespace):
-    section = "faq"
+    subregion = "faq"
 
 
 class Command(SimpleNamespace):
-    section = ""
+    subregion = ""
 
 
 class File(SimpleNamespace):
@@ -36,18 +36,20 @@ renderer.register_string_renderer(Command, "")
 class MyRegions(Regions):
     def handle_teasers(self, items, context):
         yield '<div class="teasers">'
-        while items:
-            if not matches(items[0], plugins=(Command, Teaser), sections={"teasers"}):
-                break
+        while True:
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
+            if not items or not matches(items[0], plugins=(Teaser,)):
+                break
         yield "</div>"
 
     def handle_faq(self, items, context):
         yield '<div class="faq">'
-        while items:
-            if not matches(items[0], plugins=(Command, FAQ, File), sections={"faq"}):
-                break
+        while True:
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
+            if not items or not matches(
+                items[0], plugins=(FAQ, File), subregions={"faq"}
+            ):
+                break
         yield "</div>"
 
 
@@ -70,7 +72,7 @@ class Test(TestCase):
             'Text 1<div class="teasers">Teaser 1Teaser 2</div>Text 2',
         )
 
-    def test_section_at_end(self):
+    def test_subregion_at_end(self):
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -86,7 +88,7 @@ class Test(TestCase):
             regions.render("main"), 'Text 1<div class="teasers">Teaser 1Teaser 2</div>'
         )
 
-    def test_other_section(self):
+    def test_other_subregion(self):
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -129,7 +131,7 @@ class Test(TestCase):
                 "main": [
                     Text(text="Text 1"),
                     File(text="download1.pdf"),  # Allowed outside...
-                    Command(section="faq"),
+                    Command(subregion="faq"),
                     FAQ(text="Question"),
                     File(text="download2.pdf"),  # ...and inside the FAQ renderer
                     Text(text="Text 2"),  # Main renderer again.
@@ -143,21 +145,22 @@ class Test(TestCase):
             'Text 1download1.pdf<div class="faq">Questiondownload2.pdf</div>Text 2',
         )
 
-    def test_restart_section(self):
+    def test_restart_subregion(self):
         class RestartRegions(Regions):
             def handle_restart(self, items, context):
                 first = True
                 yield '<div class="stuff">'
-                while items:
-                    # Only match explicit section="restart" or no section
-                    if not matches(items[0], sections={"restart"}):
-                        break
+                while True:
                     yield self.renderer.render_plugin_in_context(
                         items.popleft(), context
                     )
                     # Item isn't the first and explicitly specifies
-                    # section="restart", restart section
-                    if not first and items and matches(items[0], sections={"restart"}):
+                    # subregion="restart", restart subregion
+                    if (
+                        not first
+                        and items
+                        and matches(items[0], subregions={"restart"})
+                    ):
                         break
 
                     first = False
@@ -172,11 +175,11 @@ class Test(TestCase):
             contents={
                 "main": [
                     Text(text="before"),
-                    Command(section="restart"),
+                    Command(subregion="restart"),
                     Text(text="first"),
-                    Command(section="restart"),
+                    Command(subregion="restart"),
                     Text(text="second"),
-                    Command(section=""),
+                    Command(subregion=""),
                     Text(text="after"),
                 ]
             },

@@ -70,23 +70,23 @@ class Regions:
     def generate(self, items, context):
         items = deque(items)
         while items:
-            section = getattr(items[0], "section", None) or "default"
-            yield from self.handlers[section](items, context)
+            subregion = getattr(items[0], "subregion", None) or "default"
+            yield from self.handlers[subregion](items, context)
 
     def handle_default(self, items, context):
         while True:
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
-            if not items or not matches(items[0], sections={}):
+            if not items or not matches(items[0], subregions={}):
                 break
 
 
-def matches(item, *, plugins=None, sections=None):
+def matches(item, *, plugins=None, subregions=None):
     if plugins is not None and not isinstance(item, plugins):
         return False
     if (
-        sections is not None
-        and hasattr(item, "section")
-        and getattr(item, "section") not in sections
+        subregions is not None
+        and hasattr(item, "subregion")
+        and getattr(item, "subregion") not in subregions
     ):
         return False
     return True
