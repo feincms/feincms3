@@ -186,9 +186,18 @@ container:
         def handle_fullwidth(self, items, context):
             yield "</div>"  # Close the surrounding container
             while True:
+                # The first item in the items deque has caused this
+                # handler to be started so it can always safely be
+                # consumed ...
                 yield self.renderer.render_plugin_in_context(
                     items.popleft(), context
                 )
+                # ... the test whether this handler should continue
+                # should come after processing the leftmost item to
+                # avoid infinite looping.
+                #
+                # items may be empty now or the next item might not
+                # be a "full_width" plugin:
                 if not items or not matches(items[0], subregions={"full_width"}):
                     break
             yield '<div class="container">'  # Reopen a new container
@@ -272,8 +281,12 @@ is possible with a custom ``Regions`` class too:
                     self._renderer.render_plugin_in_context(plugin),
                     type=plugin.__class__.__name__,
                 )
-                for plugin in self._contents[region]
+                for plugin in self.contents[region]
             ]
+
+            # Alternatively (In this case the ``type`` key above would have to be
+            # provided by the renderers themselves):
+            # return list(self.generate(self.contents[region], context))
 
     def page_content(request, pk):
         page = get_object_or_404(Page, pk=pk)

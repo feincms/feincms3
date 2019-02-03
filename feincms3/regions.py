@@ -11,11 +11,11 @@ from content_editor.contents import contents_for_item
 __all__ = ("Regions", "matches", "cached_render")
 
 
-def item_cache_key(item):
-    return lambda region: "%s-%s-%s" % (item._meta.label_lower, item.pk, region)
-
-
 def cached_render(fn):
+    """
+    Decorator for ``Regions.render`` methods implementing caching behavior
+    """
+
     @wraps(fn)
     def render(self, region, context=None):
         if self.cache_key:
@@ -24,7 +24,6 @@ def cached_render(fn):
             if result is not None:
                 return result
         result = fn(self, region, context)
-        # result = mark_safe("".join(self.generate(self.contents[region], context)))
         if self.cache_key:
             cache.set(key, result, timeout=self.timeout)
         return result
@@ -33,12 +32,38 @@ def cached_render(fn):
 
 
 class Regions:
+    """
+    ``Regions`` uses ``content_editor.contents.Contents`` and the
+    ``feincms3.renderer.TemplatePluginRenderer`` to convert a list of plugins
+    into a rendered representation, most often a HTML fragment.
+
+    This class may also be instantiated directly but using the factory methods
+    (starting with ``from_``) below is probably more comfortable.
+    """
+
     @classmethod
-    def from_contents(cls, contents, **kwargs):
-        return cls(contents=contents, **kwargs)
+    def from_contents(cls, contents, *, renderer, **kwargs):
+        """
+        Create and return a regions instance using the bare minimum of a
+        contents instance and a renderer. Additional keyword arguments are
+        forwarded to the regions constructor.
+        """
+        return cls(contents=contents, renderer=renderer, **kwargs)
 
     @classmethod
     def from_item(cls, item, *, renderer, inherit_from=None, timeout=None, **kwargs):
+        """
+        Create and return a regions instance for an item (for example a page,
+        an article or anything else managed by django-content-editor).
+
+        The item's plugins are determined by what is registered with the
+        renderer. The plugin instances themselves are loaded lazily, and
+        loading every time can be avoided completely by specifying a
+        ``timeout``.
+        """
+        if timeout is not None and "cache_key" not in kwargs:
+            key = "%s-%s" % (item._meta.label_lower, item.pk)
+            kwargs["cache_key"] = lambda region: "%s-%s" % (key, region)
         return cls.from_contents(
             SimpleLazyObject(
                 lambda: contents_for_item(
@@ -46,7 +71,6 @@ class Regions:
                 )
             ),
             renderer=renderer,
-            cache_key=None if timeout is None else item_cache_key(item),
             timeout=timeout,
             **kwargs
         )
@@ -64,15 +88,33 @@ class Regions:
 
     @cached_render
     def render(self, region, context=None):
+        """
+        Main function for rendering.
+
+        Starts the generator and assembles all fragments into a safe HTML
+        string.
+        """
         return mark_safe("".join(self.generate(self.contents[region], context)))
 
     def generate(self, items, context):
+        """
+        Inspects all items in the region for a  ``subregion`` attribute and
+        passes control to the subregions' respective rendering handler, falling
+        back to the default handler which is aptly named ``handle_default``.
+
+        You probably want to call this method when overriding ``render``.
+        """
         items = deque(items)
         while items:
             subregion = getattr(items[0], "subregion", None) or "default"
             yield from self.handlers[subregion](items, context)
 
     def handle_default(self, items, context):
+        """
+        Renders items from the queue using the renderer instance as long as the
+        items either have no ``subregion`` attribute or whose ``subregion``
+        attribute is an empty string.
+        """
         while True:
             yield self.renderer.render_plugin_in_context(items.popleft(), context)
             if not items or not matches(items[0], subregions={None, ""}):
@@ -80,6 +122,17 @@ class Regions:
 
 
 def matches(item, *, plugins=None, subregions=None):
+    """
+    Checks whether the item matches zero or more constraints.
+
+    ``plugins`` should be a tuple of plugin classes or ``None`` if the type
+    shouldn't be checked.
+
+    ``subregions`` should be set of allowed ``subregion`` attribute values or
+    ``None`` if the ``subregion`` attribute shouldn't be checked at all.
+    Include ``None`` in the set if you want ``matches`` to succeed also when
+    encountering an item without a ``subregion`` attribute.
+    """
     if plugins is not None and not isinstance(item, plugins):
         return False
     if subregions is not None and getattr(item, "subregion", None) not in subregions:
