@@ -1,5 +1,4 @@
 from collections import deque
-from functools import wraps
 
 from django.core.cache import cache
 from django.utils.functional import SimpleLazyObject
@@ -11,61 +10,50 @@ from content_editor.contents import contents_for_item
 __all__ = ("Regions", "matches")
 
 
-def cached_render(cache_key, timeout):
-    def decorator(fn):
-        @wraps(fn)
-        def render(self, region, context=None):
-            key = cache_key(region)
-            result = cache.get(key)
-            if result is not None:
-                return result
-            result = fn(region, context)
-            cache.set(key, result, timeout=timeout)
-            return result
-
-        return render
-
-    return decorator
+def item_cache_key(item):
+    return lambda region: "%s-%s-%s" % (item._meta.label_lower, item.pk, region)
 
 
 class Regions:
     @classmethod
-    def from_contents(cls, contents, *, renderer, decorator=None):
-        return cls(contents=contents, renderer=renderer, decorator=decorator)
+    def from_contents(cls, contents, **kwargs):
+        return cls(contents=contents, **kwargs)
 
     @classmethod
-    def from_item(cls, item, *, renderer, inherit_from=None, timeout=None):
-        decorator = (
-            None
-            if timeout is None
-            else cached_render(
-                lambda region: "%s-%s-%s" % (item._meta.label_lower, item.pk, region),
-                timeout,
-            )
-        )
+    def from_item(cls, item, *, renderer, inherit_from=None, timeout=None, **kwargs):
         return cls.from_contents(
-            contents=SimpleLazyObject(
+            SimpleLazyObject(
                 lambda: contents_for_item(
                     item, renderer.plugins(), inherit_from=inherit_from
                 )
             ),
             renderer=renderer,
-            decorator=decorator,
+            cache_key=None if timeout is None else item_cache_key(item),
+            timeout=timeout,
+            **kwargs
         )
 
-    def __init__(self, *, contents, renderer, decorator=None):
+    def __init__(self, *, contents, renderer, cache_key=None, timeout=None):
         self.contents = contents
         self.renderer = renderer
+        self.cache_key = cache_key
+        self.timeout = timeout
         self.handlers = {
             key[7:]: getattr(self, key)
             for key in dir(self)
             if key.startswith("handle_")
         }
-        if decorator:
-            self.render = decorator(self.render).__get__(self)
 
     def render(self, region, context=None):
-        return mark_safe("".join(self.generate(self.contents[region], context)))
+        if self.cache_key:
+            key = self.cache_key(region)
+            result = cache.get(key)
+            if result is not None:
+                return result
+        result = mark_safe("".join(self.generate(self.contents[region], context)))
+        if self.cache_key:
+            cache.set(key, result, timeout=self.timeout)
+        return result
 
     def generate(self, items, context):
         items = deque(items)
