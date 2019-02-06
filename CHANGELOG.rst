@@ -21,6 +21,10 @@ Change log
   ``class_prepared`` signal handler.
 - Removed the now unused ``concrete_model`` and ``iterate_subclasses``
   utilities.
+- Replaced two more occurrences of ``.objects`` with
+  ``._default_manager``.
+- Added warnings when accessing the backwards compatibility properties
+  ``AbstractPage.depth`` and ``AbstractPage.cte_path``.
 
 
 `0.28`_ (2019-02-03)
