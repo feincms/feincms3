@@ -3,6 +3,7 @@ import itertools
 import re
 import sys
 import types
+import warnings
 from collections import defaultdict
 from importlib import import_module
 
@@ -275,8 +276,13 @@ def apps_middleware(get_response):
     return middleware
 
 
-# Alias, for old times
-AppsMiddleware = apps_middleware
+def AppsMiddleware(get_response):
+    warnings.warn(
+        "Use feincms3.apps.apps_middleware instead of" " feincms3.apps.AppsMiddleware.",
+        Warning,
+        stacklevel=2,
+    )
+    return apps_middleware(get_response)
 
 
 class AppsMixin(models.Model):

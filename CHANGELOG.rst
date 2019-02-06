@@ -23,8 +23,10 @@ Change log
   utilities.
 - Replaced two more occurrences of ``.objects`` with
   ``._default_manager``.
-- Added warnings when accessing the backwards compatibility properties
+- Deprecated accessing the backwards compatibility properties
   ``AbstractPage.depth`` and ``AbstractPage.cte_path``.
+- Deprecated ``feincms3.apps.AppsMiddleware`` in favor of
+  ``feincms3.apps.apps_middleware``.
 
 
 `0.28`_ (2019-02-03)
