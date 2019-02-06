@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError, models, transaction
+from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.template import Context, Template
 from django.test import Client, TestCase
@@ -17,7 +17,6 @@ from feincms3.apps import (
 )
 from feincms3.plugins.external import ExternalForm
 from feincms3.renderer import Regions, TemplatePluginRenderer, cached_render
-from feincms3.utils import concrete_model, iterate_subclasses
 
 from .models import HTML, Article, External, Page, RichText
 
@@ -862,28 +861,6 @@ class Test(TestCase):
         # page1 is already the target of a redirect
         page1.redirect_to_url = "http://example.com/"
         self.assertRaises(ValidationError, page1.full_clean)
-
-    def test_subclasses(self):
-        class A:
-            pass
-
-        class B(A):
-            pass
-
-        class C(B):
-            pass
-
-        self.assertEqual(set(iterate_subclasses(A)), {B, C})
-
-        class Test(models.Model):
-            class Meta:
-                abstract = True
-
-        class Test2(Test):
-            class Meta:
-                abstract = True
-
-        self.assertEqual(concrete_model(Test), None)
 
     def test_standalone_renderer(self):
         """The renderer also works when used without a wrapping template"""

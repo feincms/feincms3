@@ -16,6 +16,10 @@ Change log
 - Removed an use of six which is unnecessary now that we only support
   Python 3.
 - Imported ``lru_cache`` from the Python library.
+- Replaced ``concrete_model`` calls to determine the concrete subclass
+  of ``AppsMixin`` with capturing the model instance locally in the
+  ``class_prepared`` signal handler.
+- Removed the ``concrete_model`` and ``iterate_subclasses`` utilities.
 
 
 `0.28`_ (2019-02-03)

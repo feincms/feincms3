@@ -14,7 +14,7 @@ from django.db.models import Q, signals
 from django.urls import NoReverseMatch, reverse
 from django.utils.translation import get_language, ugettext_lazy as _
 
-from feincms3.utils import concrete_model, validation_error
+from feincms3.utils import validation_error
 
 
 __all__ = (
@@ -26,6 +26,9 @@ __all__ = (
     "reverse_app",
     "reverse_fallback",
 )
+
+
+_APPS_MODEL = None
 
 
 def reverse_any(viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwargs):
@@ -84,15 +87,14 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
         )
     """
 
-    page_model = concrete_model(AppsMixin)
     current = get_language()
     language_codes_namespaces = []
     if current is not None:
         language_codes_namespaces.append(
-            "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, current)
+            "%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, current)
         )
     language_codes_namespaces.extend(
-        "%s-%s" % (page_model.LANGUAGE_CODES_NAMESPACE, language[0])
+        "%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, language[0])
         for language in settings.LANGUAGES
         if language[0] != current
     )
@@ -167,11 +169,10 @@ def apps_urlconf(*, apps=None):
     ``(path, application, app_instance_namespace, language_code)`` tuples.
     """
 
-    page_model = concrete_model(AppsMixin)
     if apps is None:
         fields = ("path", "application", "app_instance_namespace", "language_code")
         apps = (
-            page_model.objects.active()
+            _APPS_MODEL.objects.active()
             .with_tree_fields(False)
             .exclude(app_instance_namespace="")
             .values_list(*fields)
@@ -186,7 +187,7 @@ def apps_urlconf(*, apps=None):
     module_name = "urlconf_%s" % hashlib.md5(key.encode("utf-8")).hexdigest()
 
     if module_name not in sys.modules:
-        app_config = {app[0]: app[2] for app in page_model.APPLICATIONS if app[0]}
+        app_config = {app[0]: app[2] for app in _APPS_MODEL.APPLICATIONS if app[0]}
 
         m = types.ModuleType(module_name)
 
@@ -208,9 +209,9 @@ def apps_urlconf(*, apps=None):
             url(
                 r"",
                 include(
-                    (instances, page_model.LANGUAGE_CODES_NAMESPACE),
+                    (instances, _APPS_MODEL.LANGUAGE_CODES_NAMESPACE),
                     namespace="%s-%s"
-                    % (page_model.LANGUAGE_CODES_NAMESPACE, language_code),
+                    % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, language_code),
                 ),
             )
             for language_code, instances in mapping.items()
@@ -248,13 +249,12 @@ def page_for_app_request(request, *, queryset=None):
     :class:`~feincms3.apps.AppsMixin`.
     """
 
-    page_model = concrete_model(AppsMixin)
     if queryset is None:
-        queryset = page_model.objects.with_tree_fields()
+        queryset = _APPS_MODEL.objects.with_tree_fields()
     # Unguarded - if this fails, we shouldn't even be here.
     return queryset.get(
         language_code=request.resolver_match.namespaces[0][
-            len(page_model.LANGUAGE_CODES_NAMESPACE) + 1 :
+            len(_APPS_MODEL.LANGUAGE_CODES_NAMESPACE) + 1 :
         ],
         app_instance_namespace=request.resolver_match.namespaces[1],
     )
@@ -460,6 +460,8 @@ class AppsMixin(models.Model):
             sender._meta.get_field("application").choices = [
                 app[:2] for app in sender.APPLICATIONS
             ]
+            global _APPS_MODEL
+            _APPS_MODEL = sender
 
 
 signals.class_prepared.connect(AppsMixin.fill_application_choices)
