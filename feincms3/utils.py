@@ -1,5 +1,6 @@
+from functools import lru_cache
+
 from django.core.exceptions import ValidationError
-from django.utils.lru_cache import lru_cache
 
 
 def iterate_subclasses(cls):

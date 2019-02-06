@@ -13,6 +13,9 @@ Change log
 - Changed ``feincms3.regions.matches`` to the effect that ``None`` has
   to be provided explicitly as an allowed subregion if items with no
   ``subregion`` attribute should be matched too.
+- Removed an use of six which is unnecessary now that we only support
+  Python 3.
+- Imported ``lru_cache`` from the Python library.
 
 
 `0.28`_ (2019-02-03)

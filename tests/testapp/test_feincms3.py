@@ -5,7 +5,6 @@ from django.forms.models import modelform_factory
 from django.template import Context, Template
 from django.test import Client, TestCase
 from django.urls import set_urlconf
-from django.utils import six
 from django.utils.html import mark_safe
 from django.utils.translation import deactivate_all, override
 
@@ -646,8 +645,7 @@ class Test(TestCase):
         self.assertEqual(reverse_fallback("test", reverse, "not-exists"), "test")
         self.assertEqual(reverse_fallback("test", reverse, "admin:index"), "/admin/")
         self.assertEqual(reverse_any(("not-exists", "admin:index")), "/admin/")
-        with six.assertRaisesRegex(
-            self,
+        with self.assertRaisesRegex(
             NoReverseMatch,
             r"Reverse for any of 'not-exists-1', 'not-exists-2' with"
             r" arguments '\[\]' and keyword arguments '{}' not found.",
