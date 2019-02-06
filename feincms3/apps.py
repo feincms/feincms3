@@ -172,7 +172,7 @@ def apps_urlconf(*, apps=None):
     if apps is None:
         fields = ("path", "application", "app_instance_namespace", "language_code")
         apps = (
-            _APPS_MODEL.objects.active()
+            _APPS_MODEL._default_manager.active()
             .with_tree_fields(False)
             .exclude(app_instance_namespace="")
             .values_list(*fields)
@@ -250,7 +250,7 @@ def page_for_app_request(request, *, queryset=None):
     """
 
     if queryset is None:
-        queryset = _APPS_MODEL.objects.with_tree_fields()
+        queryset = _APPS_MODEL._default_manager.with_tree_fields()
     # Unguarded - if this fails, we shouldn't even be here.
     return queryset.get(
         language_code=request.resolver_match.namespaces[0][
