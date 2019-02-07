@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.29`_ (2019-02-07)
+~~~~~~~~~~~~~~~~~~~~
+
 - Deprecated the ``feincms3_apps`` and ``feincms3_renderer`` template
   tag library. ``render_region`` and ``reverse_app`` have been made
   available as ``feincms3``. The ``render_plugin`` and
@@ -510,4 +513,5 @@ functionality.
 .. _0.26: https://github.com/matthiask/feincms3/compare/0.25...0.26
 .. _0.27: https://github.com/matthiask/feincms3/compare/0.26...0.27
 .. _0.28: https://github.com/matthiask/feincms3/compare/0.27...0.28
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.28...master
+.. _0.29: https://github.com/matthiask/feincms3/compare/0.28...0.29
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.29...master
