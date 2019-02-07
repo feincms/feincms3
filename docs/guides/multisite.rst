@@ -56,21 +56,23 @@ middleware mentioned above. If you're also using the
 to add the ``redirect_to_site_middleware`` *before*
 ``SecurityMiddleware``.
 
-It is also possible to specify a default site. At most one site is
-allowed to be the default site. In this case, when no site's regex
-matches, the default site is selected instead as a fallback.
+It is also possible to specify a default site.  In this case, when no
+site's regex matches, the default site is selected instead as a
+fallback. The code does not prevent you from setting more than one site
+as the default, but sites are ordered by primary keys as well so the
+first site wins.
 
 
 Multisite support throughout your code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The most visible change is that calls to ``Page.objects.active()`` have
-to be replaced by ``Page.objects.active(request.site)``. This creates a
-bit of churn in your code but also ensures that filtering by the current
-site isn't forgotten.
-
-Uses of ``apps_urlconf()`` in your own code (improbable!) have to be
-replaced by ``feincms3_sites.middleware.apps_urlconf_for_site(site)``.
+Since feincms3-sites 0.6 a contextvar automatically provides the current
+site when inside either ``site_middleware`` or ``apps_middleware``. The
+default implementation of ``Page.objects.active()`` filters by the
+current site. When you're running queries on pages outside of a
+middleware you'll have to use the contextvar facility yourself by
+running your code inside a ``with
+feincms3_sites.middleware.set_current_site(site)`` block.
 
 
 Default languages for sites
@@ -82,40 +84,3 @@ per site. In this case you should replace
 ``feincms3_sites.middleware.default_language_middleware``. This
 middleware has to be placed after the ``site_middleware`` or
 ``apps_middleware``.
-
-
-Accessing the site without a request
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It might be useful under some circumstances to access a *current site*
-instance without passing the request everywhere, similar to
-``django.utils.translation.get_language``. This can be easily achieved
-by writing your own middleware module. I do not want to encourage such
-usage (I find the explicitness of passing the request or the site
-desirable, even though it is sometimes annoying), but since there is no
-question that it might be useful it still is documented here:
-
-.. code-block:: python
-
-    from contextlib import contextmanager
-    from threading import local
-
-    _local = local()
-
-    @contextmanager
-    def set_current_site(site):
-        outer = current_site()
-        _local.site = site
-        yield
-        _local.site = outer
-
-    def current_site():
-        # Return the default site if _local.site is None?
-        return getattr(_local, 'site', None)
-
-    # Add this middleware after site_middleware or apps_middleware
-    def current_site_middleware(get_response):
-        def middleware(request):
-            with set_current_site(request.site):
-                return get_response(request)
-        return middleware
