@@ -59,8 +59,8 @@ to add the ``redirect_to_site_middleware`` *before*
 It is also possible to specify a default site.  In this case, when no
 site's regex matches, the default site is selected instead as a
 fallback. The code does not prevent you from setting more than one site
-as the default, but sites are ordered by primary keys as well so the
-first site wins.
+as the default but sites are deterministically ordered so the same site
+will always be selected.
 
 
 Multisite support throughout your code
