@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed overflowing tree structure boxes in the ``TreeAdmin``.
+
+
 `0.29`_ (2019-02-07)
 ~~~~~~~~~~~~~~~~~~~~
 

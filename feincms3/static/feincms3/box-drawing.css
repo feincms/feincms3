@@ -2,6 +2,7 @@
   white-space: nowrap;
   position: relative;
   margin: -8px;
+  overflow: hidden;
 }
 
 .box-drawing {
