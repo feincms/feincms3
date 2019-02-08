@@ -279,7 +279,7 @@ def apps_middleware(get_response):
 def AppsMiddleware(get_response):
     warnings.warn(
         "Use feincms3.apps.apps_middleware instead of" " feincms3.apps.AppsMiddleware.",
-        Warning,
+        DeprecationWarning,
         stacklevel=2,
     )
     return apps_middleware(get_response)

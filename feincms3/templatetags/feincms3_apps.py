@@ -9,7 +9,7 @@ warnings.warn(
     "Load reverse_app using {% load feincms3 %} instead."
     " The feincms3_apps template tag library has been deprecated and"
     " will be removed soon.",
-    Warning,
+    DeprecationWarning,
 )
 
 

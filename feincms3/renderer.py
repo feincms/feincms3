@@ -228,7 +228,7 @@ context=default_context)
         warnings.warn(
             "TemplatePluginRenderer.regions() will be removed. Please"
             " start using feincms3.regions.Regions.from_item() instead.",
-            Warning,
+            DeprecationWarning,
             stacklevel=2,
         )
         regions = self._regions_class if regions is None else regions

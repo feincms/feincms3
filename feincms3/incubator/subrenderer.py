@@ -126,7 +126,7 @@ __all__ = ("Subrenderer", "SubrendererRegions")
 warnings.warn(
     "The subrenderer module will be removed. Please start using"
     " the subregions feature of feincms3.regions.Regions instead.",
-    Warning,
+    DeprecationWarning,
     stacklevel=2,
 )
 

@@ -10,7 +10,7 @@ warnings.warn(
     "Load render_region using {% load feincms3 %} instead."
     " The feincms3_renderer template tag library and the render_plugin and"
     " render_plugins tags have been deprecated and will be removed soon.",
-    Warning,
+    DeprecationWarning,
 )
 
 
@@ -31,6 +31,12 @@ def render_plugin(context, plugin):
     :func:`~feincms3.templatetags.feincms3.render_region` over this
     tag.
     """
+    warnings.warn(
+        "{% render_plugin %} is deprecated. You're encouraged to switch to"
+        " using render_region instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     return context["renderer"].render_plugin_in_context(plugin, context)
 
 
@@ -51,6 +57,12 @@ def render_plugins(context, plugins):
     :func:`~feincms3.templatetags.feincms3.render_region` over this
     tag.
     """
+    warnings.warn(
+        "{% render_plugins %} is deprecated. You're encouraged to switch to"
+        " using render_region instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     renderer = context["renderer"]
     return mark_safe(
         "".join(

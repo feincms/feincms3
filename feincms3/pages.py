@@ -216,7 +216,7 @@ class AbstractPage(TreeNode):
             "Use self.tree_depth instead of self.depth. Note that"
             " the self.depth for root nodes was 1, but self.tree_depth"
             " uses the more correct value of 0.",
-            Warning,
+            DeprecationWarning,
             stacklevel=2,
         )
         return self.tree_depth + 1
@@ -224,6 +224,8 @@ class AbstractPage(TreeNode):
     @property
     def cte_path(self):
         warnings.warn(
-            "Use self.tree_path instead of self.cte_path.", Warning, stacklevel=2
+            "Use self.tree_path instead of self.cte_path.",
+            DeprecationWarning,
+            stacklevel=2,
         )
         return self.tree_path
