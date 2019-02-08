@@ -3,19 +3,22 @@ import warnings
 from django import template
 from django.utils.html import mark_safe
 
-from feincms3.templatetags.feincms3 import render_region
-
-
-warnings.warn(
-    "Load render_region using {% load feincms3 %} instead."
-    " The feincms3_renderer template tag library and the render_plugin and"
-    " render_plugins tags have been deprecated and will be removed soon.",
-    DeprecationWarning,
-)
+from feincms3.templatetags.feincms3 import render_region as _render_region
 
 
 register = template.Library()
-register.simple_tag(takes_context=True)(render_region)
+
+
+@register.simple_tag(takes_context=True)
+def render_region(context, *args, **kwargs):
+    warnings.warn(
+        "Load render_region using {% load feincms3 %} instead."
+        " The feincms3_renderer template tag library and the render_plugin and"
+        " render_plugins tags have been deprecated and will be removed soon.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return _render_region(context, *args, **kwargs)
 
 
 @register.simple_tag(takes_context=True)
