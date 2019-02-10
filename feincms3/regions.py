@@ -99,8 +99,10 @@ class Regions:
     def generate(self, items, context):
         """
         Inspects all items in the region for a  ``subregion`` attribute and
-        passes control to the subregions' respective rendering handler, falling
-        back to the default handler which is aptly named ``handle_default``.
+        passes control to the subregions' respective rendering handler, named
+        ``handle_<subregion>``. If ``subregion`` is not set or is falsy
+        ``handle_default`` is invoked instead. This method raises a
+        ``KeyError`` exception if no matching handler exists.
 
         You probably want to call this method when overriding ``render``.
         """
