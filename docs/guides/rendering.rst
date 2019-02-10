@@ -87,7 +87,8 @@ the surrounding template context:
     )
 
 
-Rendering individual plugins ----------------------------
+Rendering individual plugins
+----------------------------
 
 Rendering individual plugin instances is possible using the
 ``render_plugin_in_context`` method. Except if you're using a

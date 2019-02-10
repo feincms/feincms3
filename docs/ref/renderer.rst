@@ -14,3 +14,4 @@ Renderer (``feincms3.renderer``)
    :members:
 
 .. autofunction:: feincms3.templatetags.feincms3.render_region
+   :noindex:

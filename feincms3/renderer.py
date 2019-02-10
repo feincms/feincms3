@@ -55,6 +55,7 @@ class Regions:
     .. note::
        ``feincms3.renderer.Regions`` has been deprecated in favor of
        :class:`feincms3.regions.Regions`.
+
     Wrapper for a ``content_editor.contents.Contents`` instance with support
     for caching the potentially somewhat expensive plugin loading and rendering
     step.
