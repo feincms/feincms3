@@ -9,6 +9,8 @@ Change log
 - Fixed overflowing tree structure boxes in the ``TreeAdmin``.
 - Switched to emitting ``DeprecationWarning`` warnings not ``Warning``,
   even though  their visibility sucks.
+- Added a ``languages`` argument to ``reverse_app`` which allows
+  overriding languages and their order.
 
 
 `0.29`_ (2019-02-07)

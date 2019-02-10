@@ -57,7 +57,7 @@ def reverse_any(viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwar
     )
 
 
-def reverse_app(namespaces, viewname, *args, **kwargs):
+def reverse_app(namespaces, viewname, *args, languages=None, **kwargs):
     """
     Reverse app URLs, preferring the active language.
 
@@ -88,21 +88,15 @@ def reverse_app(namespaces, viewname, *args, **kwargs):
         )
     """
 
-    current = get_language()
-    language_codes_namespaces = []
-    if current is not None:
-        language_codes_namespaces.append(
-            "%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, current)
+    if languages is None:
+        current = get_language()
+        languages = sorted(
+            (row[0] for row in settings.LANGUAGES), key=lambda lang: lang != current
         )
-    language_codes_namespaces.extend(
-        "%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, language[0])
-        for language in settings.LANGUAGES
-        if language[0] != current
-    )
     viewnames = [
         ":".join(r)
         for r in itertools.product(
-            language_codes_namespaces,
+            ("%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, l) for l in languages),
             (namespaces if isinstance(namespaces, (list, tuple)) else (namespaces,)),
             (viewname,),
         )

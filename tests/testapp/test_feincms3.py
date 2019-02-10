@@ -13,6 +13,7 @@ from feincms3.apps import (
     apps_urlconf,
     reverse,
     reverse_any,
+    reverse_app,
     reverse_fallback,
 )
 from feincms3.plugins.external import ExternalForm
@@ -355,6 +356,18 @@ class Test(TestCase):
             with override("en"):
                 self.assertEqual(
                     article.get_absolute_url(), "/en/publications/%s/" % article.pk
+                )
+
+                # The german URL is returned when specifying the ``languages``
+                # list explicitly.
+                self.assertEqual(
+                    reverse_app(
+                        (article.category, "articles"),
+                        "article-detail",
+                        kwargs={"pk": article.pk},
+                        languages=["de", "en"],
+                    ),
+                    "/de/publications/%s/" % article.pk,
                 )
         finally:
             set_urlconf(None)
