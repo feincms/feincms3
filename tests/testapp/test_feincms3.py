@@ -976,12 +976,12 @@ class Test(TestCase):
 
         try:
             for tpl, out, ctx in tests:
-                t = Template("{% load feincms3_apps %}" + tpl)
+                t = Template("{% load feincms3 %}" + tpl)
                 self.assertEqual(t.render(Context(ctx)).strip(), out)
 
             self.assertRaises(
                 NoReverseMatch,
-                Template("{% load feincms3_apps %}{% reverse_app 'a' 'a' %}").render,
+                Template("{% load feincms3 %}{% reverse_app 'a' 'a' %}").render,
                 Context(),
             )
 

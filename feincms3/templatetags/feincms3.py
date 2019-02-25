@@ -81,7 +81,7 @@ def reverse_app(parser, token):
 
     Usage::
 
-        {% load feincms3_apps %}
+        {% load feincms3 %}
         {% reverse_app 'blog' 'detail' [args] [kw=args] [fallback='/'] %}
 
     ``namespaces`` can either be a list or a comma-separated list of
