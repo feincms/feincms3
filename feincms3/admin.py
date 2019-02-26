@@ -216,12 +216,11 @@ class MoveForm(forms.Form):
 
         super(MoveForm, self).__init__(*args, **kwargs)
 
+        queryset = self.model._default_manager.with_tree_fields()
         self.fields["of"] = TreeNodeChoiceField(
             label=pgettext("MoveForm", "Of"),
             required=False,
-            queryset=self.model._default_manager.with_tree_fields().exclude(
-                pk__in=self.instance.descendants()
-            ),
+            queryset=queryset.exclude(pk__in=queryset.descendants(self.instance)),
             label_from_instance=lambda obj: "{}{}".format(
                 "".join(["*** " if obj == self.instance else "--- "] * obj.tree_depth),
                 obj,

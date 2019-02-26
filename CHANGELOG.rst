@@ -11,6 +11,9 @@ Change log
   even though  their visibility sucks.
 - Added a ``languages`` argument to ``reverse_app`` which allows
   overriding languages and their order.
+- Made ``TreeAdmin`` and ``MoveForm`` only require that the default
+  manager is a ``TreeQuerySet`` and not that the model itself also
+  extends ``TreeNode``.
 
 
 `0.29`_ (2019-02-07)
