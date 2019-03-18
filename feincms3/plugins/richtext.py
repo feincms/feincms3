@@ -47,7 +47,7 @@ class RichTextInline(ContentEditorInline):
     """
 
     class Media:
-        js = ("feincms3/plugin_ckeditor.js",)
+        js = ["admin/js/jquery.init.js", "feincms3/plugin_ckeditor.js"]
 
 
 def render_richtext(plugin, **kwargs):

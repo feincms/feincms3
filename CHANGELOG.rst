@@ -14,6 +14,8 @@ Change log
 - Made ``TreeAdmin`` and ``MoveForm`` only require that the default
   manager is a ``TreeQuerySet`` and not that the model itself also
   extends ``TreeNode``.
+- Made ``plugin_ckeditor.js``\'s dependency on ``django.jQuery``
+  explicit.
 
 
 `0.29`_ (2019-02-07)
