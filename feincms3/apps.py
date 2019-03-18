@@ -214,7 +214,11 @@ def apps_urlconf(*, apps=None):
 
         # Append patterns from ROOT_URLCONF instead of including them because
         # i18n_patterns only work in the root URLconf.
-        m.urlpatterns += import_module(settings.ROOT_URLCONF).urlpatterns
+        urlconf = import_module(settings.ROOT_URLCONF)
+        m.urlpatterns += urlconf.urlpatterns
+        for attribute in ["handler400", "handler403", "handler404", "handler500"]:
+            if hasattr(urlconf, attribute):
+                setattr(m, attribute, getattr(urlconf, attribute))
         sys.modules[module_name] = m
 
     return module_name

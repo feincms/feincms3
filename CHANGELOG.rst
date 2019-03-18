@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Added copying of ``handler400``, ``handler403``, ``handler404`` and
+  ``handler500`` from ``ROOT_URLCONF`` to the URLconf module created by
+  ``apps_urlconf``.
+
 
 `0.30`_ (2019-03-18)
 ~~~~~~~~~~~~~~~~~~~~
