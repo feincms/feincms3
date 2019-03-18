@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.30`_ (2019-03-18)
+~~~~~~~~~~~~~~~~~~~~
+
 - Fixed overflowing tree structure boxes in the ``TreeAdmin``.
 - Switched to emitting ``DeprecationWarning`` warnings not ``Warning``,
   even though  their visibility sucks.
@@ -15,7 +19,8 @@ Change log
   manager is a ``TreeQuerySet`` and not that the model itself also
   extends ``TreeNode``.
 - Made ``plugin_ckeditor.js``\'s dependency on ``django.jQuery``
-  explicit.
+  explicit. This is necessary for Django 2.2's new ``Media.merge``
+  algorithm.
 
 
 `0.29`_ (2019-02-07)
@@ -526,4 +531,5 @@ functionality.
 .. _0.27: https://github.com/matthiask/feincms3/compare/0.26...0.27
 .. _0.28: https://github.com/matthiask/feincms3/compare/0.27...0.28
 .. _0.29: https://github.com/matthiask/feincms3/compare/0.28...0.29
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.29...master
+.. _0.30: https://github.com/matthiask/feincms3/compare/0.29...0.30
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.30...master
