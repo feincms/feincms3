@@ -92,11 +92,3 @@ CKEDITOR_CONFIGS["richtext-plugin"] = CKEDITOR_CONFIGS["default"]
 
 # Something about inspect.getargspec in beautifulsoup4.
 warnings.filterwarnings("ignore", module=r"bs4\.builder\._lxml")
-
-try:
-    # We do not yet care about those.
-    from django.utils.deprecation import RemovedInDjango21Warning
-
-    warnings.simplefilter("ignore", RemovedInDjango21Warning)
-except ImportError:  # pragma: no cover
-    pass
