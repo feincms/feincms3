@@ -11,6 +11,23 @@ Change log
   ``apps_urlconf``.
 
 
+Removed all deprecated features
+-------------------------------
+
+- The ``AppsMiddleware`` alias for ``apps_middleware`` has been removed.
+- The ``feincms3.incubator`` module has has been removed including
+  subrenderers.
+- The ``depth`` and ``cte_path`` attributes of ``AbstractPage`` have
+  been removed. Those helped with the transition from django-cte-forest
+  to django-tree-queries almost one year ago.
+- ``TemplatePluginRenderer.regions()`` and ``feincms3.renderer.Regions``
+  are replaced by ``feincms3.regions.Regions``. Region timeouts must be
+  specified when instantiating the ``feincms3.regions.Regions`` object
+  and cannot be specified when rendering individual regions anymore.
+- The ``feincms3_apps`` and ``feincms3_renderer`` template tag libraries
+  have been replaced by a single ``feincms3`` tag library.
+
+
 `0.30`_ (2019-03-18)
 ~~~~~~~~~~~~~~~~~~~~
 
