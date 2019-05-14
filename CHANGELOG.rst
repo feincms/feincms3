@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.31`_ (2019-05-14)
+~~~~~~~~~~~~~~~~~~~~
+
 - Added copying of ``handler400``, ``handler403``, ``handler404`` and
   ``handler500`` from ``ROOT_URLCONF`` to the URLconf module created by
   ``apps_urlconf``.
@@ -553,4 +556,5 @@ functionality.
 .. _0.28: https://github.com/matthiask/feincms3/compare/0.27...0.28
 .. _0.29: https://github.com/matthiask/feincms3/compare/0.28...0.29
 .. _0.30: https://github.com/matthiask/feincms3/compare/0.29...0.30
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.30...master
+.. _0.31: https://github.com/matthiask/feincms3/compare/0.30...0.31
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.31...master
