@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed ``app_instance_namespace`` to ``blank=True`` to make it clear
+  what the default value is.
+
+
 `0.31`_ (2019-05-14)
 ~~~~~~~~~~~~~~~~~~~~
 

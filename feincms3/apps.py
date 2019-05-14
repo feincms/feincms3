@@ -341,7 +341,7 @@ class AppsMixin(models.Model):
         choices=(("", ""),),  # Non-empty choices for get_*_display
     )
     app_instance_namespace = models.CharField(
-        _("app instance namespace"), max_length=100, editable=False
+        _("app instance namespace"), max_length=100, blank=True, editable=False
     )
 
     class Meta:
