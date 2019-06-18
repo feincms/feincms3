@@ -94,7 +94,7 @@ Rendering individual plugin instances is possible using the
 ``render_plugin_in_context`` method. Except if you're using a
 non-standard ``Regions`` class used to encapsulate the fetching of
 plugins and rendering of regions you won't have to know about this
-method, but see below under :ref:`rendering-plugins-differently`.
+method, but see below under :ref:`grouping-plugins-into-subregions`.
 
 
 Regions instances
@@ -163,58 +163,7 @@ e.g. an API key would be different for different URLs.
    none at all.
 
 
-.. _rendering-plugins-differently:
-
-Rendering some plugins differently
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Suppose you're building a site where some plugins should go over the
-full width of the browser window, but most plugins are constrained
-inside a container. One way to solve this problem would be to make each
-plugin open and close its own container. That may work well. A different
-possibility would be to make the renderer smarter. Let's build a custom
-``Regions`` subclass which knows how to make some plugins escape the
-container:
-
-.. code-block:: python
-
-    from django.utils.html import mark_safe
-
-    from feincms3.regions import Regions, matches
-
-
-    class ContainerAwareRegions(Regions):
-        def handle_fullwidth(self, items, context):
-            yield "</div>"  # Close the surrounding container
-            while True:
-                # The first item in the items deque has caused this
-                # handler to be started so it can always safely be
-                # consumed ...
-                yield self.renderer.render_plugin_in_context(
-                    items.popleft(), context
-                )
-                # ... the test whether this handler should continue
-                # should come after processing the leftmost item to
-                # avoid infinite looping.
-                #
-                # items may be empty now or the next item might not
-                # be a "full_width" plugin:
-                if not items or not matches(items[0], subregions={"full_width"}):
-                    break
-            yield '<div class="container">'  # Reopen a new container
-
-    class FullWidthPlugin(models.Model):
-        subregion = "full_width"
-
-        class Meta:
-            abstract = True
-
-    # Instantiate renderer and register plugins
-    renderer = TemplatePluginRenderer()
-
-    # Use our new regions class, not the default
-    regions = ContainerAwareRegions.from_item(page, renderer=renderer)
-
+.. _grouping-plugins-into-subregions:
 
 Grouping plugins into subregions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -262,6 +211,49 @@ exactly:
 
 Now you'll have to use ``SmartRegions.from_item()`` instead of
 ``Regions.from_item()``, and that's all there is to it.
+
+
+Grouping plugins into containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The previous example added an ``<div class="teasers">...</div>`` wrapper
+element to a group of teasers. However, sometimes you want to allow some
+plugins to escape the containing element. In this case it may be useful
+to override the default subregions handler instead:
+
+.. code-block:: python
+
+    from django.utils.html import mark_safe
+
+    from feincms3.regions import Regions, matches
+
+    class FullWidthPlugin(PagePlugin):
+        subregion = "fullwidth"
+
+    class ContainerAwareRegions(Regions):
+        def handle_default(self, items, context):
+            yield '<div class="container">'
+            while True:
+                yield self.renderer.render_plugin_in_context(
+                    items.popleft(), context
+                )
+                if not items or not matches(items[0], subregions={None, ""}):
+                    break
+
+        def handle_fullwidth(self, items, context):
+            while True:
+                yield self.renderer.render_plugin_in_context(
+                    items.popleft(), context
+                )
+                if not items or not matches(items[0], subregions={"fullwidth"}):
+                    break
+
+    # Instantiate renderer and register plugins
+    renderer = TemplatePluginRenderer()
+    renderer.register_template_renderer(FullWidthPlugin, ...)
+
+    # Use our new regions class, not the default
+    regions = ContainerAwareRegions.from_item(page, renderer=renderer)
 
 
 Generating JSON
