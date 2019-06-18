@@ -279,7 +279,7 @@ is possible with a custom ``Regions`` class too:
         def render(self, region, context=None):
             return [
                 dict(
-                    self._renderer.render_plugin_in_context(plugin),
+                    self.renderer.render_plugin_in_context(plugin),
                     type=plugin.__class__.__name__,
                 )
                 for plugin in self.contents[region]
