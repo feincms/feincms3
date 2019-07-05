@@ -11,7 +11,7 @@ alternative methods of rendering plugins that may or may not be useful.
 Rendering plugins
 ~~~~~~~~~~~~~~~~~
 
-The :class:`feincms3.renderer.TemplatePluginRenderer`` offers two
+The :class:`feincms3.renderer.TemplatePluginRenderer` offers two
 fundamental ways of rendering content, string renderers and template
 renderers. The former simply return a string, the latter work similar to
 ``{% include %}``.
@@ -45,8 +45,7 @@ Or you may choose to render plugins using a template:
         "plugins/image.html",
     )
 
-The configured template receives the plugin instance as ``"plugin"``
-(fittingly).
+The configured template receives the plugin instance as ``"plugin"``.
 
 If you need more flexibility you may also pass a callable instead of a
 template path as ``template_name``. The callable receives the plugin
