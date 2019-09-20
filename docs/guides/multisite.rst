@@ -37,13 +37,11 @@ afterwards:
 
     ./manage.py migrate
 
-If you're using feincms3 apps currently, replace
-``feincms3.apps.apps_middleware`` with
-``feincms3_sites.middleware.apps_middleware`` in your ``MIDDLEWARE``.
-Otherwise, you may want to add
-``feincms3_sites.middleware.site_middleware`` near the top. Both
-middleware functions either set ``request.site`` to the current
-``feincms3_sites.models.Site`` instance or raise a ``Http404``
+Add ``feincms3_sites.middleware.site_middleware`` near the top of your
+``MIDDLEWARE`` setting, in any case before
+``feincms3.apps.apps_middleware`` if you're using it. The middleware
+either sets ``request.site`` to the current
+``feincms3_sites.models.Site`` instance or raises a ``Http404``
 exception.
 
 The default behavior allows matching a single host. The advanced options
@@ -67,12 +65,11 @@ Multisite support throughout your code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Since feincms3-sites 0.6 a contextvar automatically provides the current
-site when inside either ``site_middleware`` or ``apps_middleware``. The
-default implementation of ``Page.objects.active()`` filters by the
-current site. When you're running queries on pages outside of a
-middleware you'll have to use the contextvar facility yourself by
-running your code inside a ``with
-feincms3_sites.middleware.set_current_site(site)`` block.
+site when inside ``site_middleware``. The default implementation of
+``Page.objects.active()`` filters by the current site. When you're
+running queries on pages outside of a middleware you'll have to use the
+contextvar facility yourself by running your code inside a ``with
+feincms3_sites.middleware.set_current_site(site):`` block.
 
 
 Default languages for sites
@@ -82,5 +79,4 @@ In some configurations it may be useful to specify a default language
 per site. In this case you should replace
 ``django.middleware.locale.LocaleMiddleware`` with
 ``feincms3_sites.middleware.default_language_middleware``. This
-middleware has to be placed after the ``site_middleware`` or
-``apps_middleware``.
+middleware has to be placed after the ``site_middleware``.
