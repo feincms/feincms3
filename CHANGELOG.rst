@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.32`_ (2019-09-20)
+~~~~~~~~~~~~~~~~~~~~
+
 - Changed ``app_instance_namespace`` to ``blank=True`` to make it clear
   what the default value is.
 - Fixed a possible path uniqueness problem with descendants with static
@@ -564,4 +567,5 @@ functionality.
 .. _0.29: https://github.com/matthiask/feincms3/compare/0.28...0.29
 .. _0.30: https://github.com/matthiask/feincms3/compare/0.29...0.30
 .. _0.31: https://github.com/matthiask/feincms3/compare/0.30...0.31
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.31...master
+.. _0.32: https://github.com/matthiask/feincms3/compare/0.31...0.32
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.32...master
