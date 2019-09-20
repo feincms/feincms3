@@ -1,7 +1,7 @@
 Prerequisites and installation
 ==============================
 
-feincms3 runs on Python 2.7 and Python 3.4 or better. The minimum
+feincms3 runs on Python 2.7 and Python 3.5 or better. The minimum
 required Django version is 1.11. Database engine support is constrained
 by `django-tree-queries
 <https://github.com/matthiask/django-tree-queries>`_ use of recursive

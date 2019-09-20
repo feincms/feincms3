@@ -10,6 +10,7 @@ Change log
   what the default value is.
 - Fixed a possible path uniqueness problem with descendants with static
   paths.
+- Dropped Python 3.4 compatibility.
 
 
 `0.31`_ (2019-05-14)
