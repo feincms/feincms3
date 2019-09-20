@@ -120,7 +120,7 @@ class AbstractPage(TreeNode):
 
     def _path_clash_candidates(self):
         return self.__class__._default_manager.exclude(
-            Q(pk__in=self.descendants()) | Q(pk=self.pk)
+            Q(pk__in=self.descendants(), static_path=False) | Q(pk=self.pk)
         )
 
     def clean_fields(self, exclude=None):
@@ -151,7 +151,7 @@ class AbstractPage(TreeNode):
         for pk, node in self._branch_for_update().items():
             if node.path in clash_candidates:
                 raise validation_error(
-                    _("The page %(page)s's new path %(path)s would" " not be unique.")
+                    _("The page %(page)s's new path %(path)s would not be unique.")
                     % {"page": node, "path": node.path},
                     field="path",
                     exclude=exclude,

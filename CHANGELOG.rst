@@ -8,6 +8,8 @@ Change log
 
 - Changed ``app_instance_namespace`` to ``blank=True`` to make it clear
   what the default value is.
+- Fixed a possible path uniqueness problem with descendants with static
+  paths.
 
 
 `0.31`_ (2019-05-14)

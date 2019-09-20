@@ -572,6 +572,45 @@ class Test(TestCase):
             1,
         )
 
+    def test_path_clash_with_static_subpage_path(self):
+        """Test that path clash checks also take some descendants into account"""
+        client = self.login()
+        root = Page.objects.create(title="root", slug="root", language_code="en")
+        Page.objects.create(parent=root, title="sub2", slug="sub2", language_code="en")
+
+        Page.objects.create(
+            parent=root,
+            title="sub",
+            slug="sub",
+            path="/sub2/",
+            static_path=True,
+            language_code="en",
+        )
+
+        response = client.post(
+            "/admin/testapp/page/%s/change/" % root.pk,
+            merge_dicts(
+                {
+                    "parent": "",
+                    "title": "root-sub",
+                    "slug": "root-sub",
+                    "path": "/",
+                    "static_path": True,
+                    "language_code": "en",
+                    "template_key": "standard",
+                },
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
+            ),
+        )
+
+        self.assertContains(
+            response, "The page sub2&#39;s new path /sub2/ would not be unique.", 1
+        )
+
     def test_i18n_patterns(self):
         """i18n_patterns in ROOT_URLCONF work even with apps_middleware"""
 
