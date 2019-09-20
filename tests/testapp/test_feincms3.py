@@ -566,10 +566,10 @@ class Test(TestCase):
             ),
         )
 
-        self.assertContains(
-            response,
-            "The page page&#39;s new path /en/sub/page/ would not be unique.",
-            1,
+        self.assertEqual(response.status_code, 200)
+        self.assertRegex(
+            response.content.decode("utf-8"),
+            "The page page&#(39|x27);s new path /en/sub/page/ would not be unique.",
         )
 
     def test_path_clash_with_static_subpage_path(self):
@@ -607,8 +607,12 @@ class Test(TestCase):
             ),
         )
 
-        self.assertContains(
-            response, "The page sub2&#39;s new path /sub2/ would not be unique.", 1
+        # print(response, response.content.decode("utf-8"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertRegex(
+            response.content.decode("utf-8"),
+            r"The page sub2&#(39|x27);s new path /sub2/ would not be unique.",
         )
 
     def test_i18n_patterns(self):
