@@ -13,7 +13,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.html import format_html, mark_safe
 from django.utils.text import capfirst
-from django.utils.translation import pgettext, ugettext_lazy as _
+from django.utils.translation import pgettext, gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 
 from tree_queries.forms import TreeNodeChoiceField

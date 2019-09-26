@@ -96,7 +96,7 @@ The page model and a few plugins could be defined as follows:
 .. code-block:: python
 
     from django.db import models
-    from django.utils.translation import ugettext_lazy as _
+    from django.utils.translation import gettext_lazy as _
 
     from content_editor.models import Region, create_plugin_base
 

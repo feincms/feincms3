@@ -11,7 +11,7 @@ as default:
 
 .. code-block:: python
 
-    from django.utils.translation import ugettext_lazy as _
+    from django.utils.translation import gettext_lazy as _
     from feincms3.mixins import LanguageMixin
     from feincms3.pages import AbstractPage
 

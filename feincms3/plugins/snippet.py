@@ -9,7 +9,7 @@ from collections import defaultdict
 from django.db import models
 from django.db.models import signals
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
 

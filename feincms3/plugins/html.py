@@ -8,7 +8,7 @@ Most useful for people wanting to shoot themselves in the foot.
 from django import forms
 from django.db import models
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
 

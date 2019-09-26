@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, signals
 from django.urls import NoReverseMatch, reverse
-from django.utils.translation import get_language, ugettext_lazy as _
+from django.utils.translation import get_language, gettext_lazy as _
 
 from feincms3.utils import validation_error
 
@@ -304,7 +304,7 @@ class AppsMixin(models.Model):
 
     Usage::
 
-        from django.utils.translation import ugettext_lazy as _
+        from django.utils.translation import gettext_lazy as _
         from feincms3.apps import AppsMixin
         from feincms3.mixins import LanguageMixin
         from feincms3.pages import AbstractPage

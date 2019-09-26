@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from content_editor.models import Region, Template, create_plugin_base
 from feincms3.apps import AppsMixin, reverse_app

@@ -9,7 +9,7 @@ from django import forms
 from django.core.cache import cache
 from django.db import models
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import gettext, gettext_lazy as _
 
 import requests
 from content_editor.admin import ContentEditorInline
@@ -121,7 +121,7 @@ class ExternalForm(forms.ModelForm):
         url = data.get("url")
         if url and not oembed_html(url, cache_failures=False):
             raise forms.ValidationError(
-                ugettext("Unable to fetch HTML for this URL, sorry!")
+                gettext("Unable to fetch HTML for this URL, sorry!")
             )
         return data
 

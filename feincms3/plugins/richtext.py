@@ -8,7 +8,7 @@ Depends on django-ckeditor and `html-sanitizer
 from django.db import models
 from django.utils.html import mark_safe, strip_tags
 from django.utils.text import Truncator
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
 from feincms3.cleanse import CleansedRichTextField

@@ -66,7 +66,7 @@ layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
 
 .. code-block:: python
 
-    from django.utils.translation import ugettext_lazy as _
+    from django.utils.translation import gettext_lazy as _
     from content_editor.models import Template, Region
     from feincms3.mixins import TemplateMixin
     from feincms3.pages import AbstractPage
