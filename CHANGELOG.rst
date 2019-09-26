@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed ``Regions``' ``cache_key`` argument handling to allow
+  disabling caching by returning a falsy value.
+
+
 `0.32`_ (2019-09-20)
 ~~~~~~~~~~~~~~~~~~~~
 

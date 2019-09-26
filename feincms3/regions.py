@@ -18,13 +18,13 @@ def cached_render(fn):
 
     @wraps(fn)
     def render(self, region, context=None):
-        if self.cache_key:
-            key = self.cache_key(region)
+        key = self.cache_key(region) if self.cache_key else None
+        if key:
             result = cache.get(key)
             if result is not None:
                 return result
         result = fn(self, region, context)
-        if self.cache_key:
+        if key:
             cache.set(key, result, timeout=self.timeout)
         return result
 
