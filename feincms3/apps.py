@@ -38,10 +38,10 @@ def reverse_any(viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwar
 
     Usage::
 
-        url = reverse_any((
-            'blog:article-detail',
-            'articles:article-detail',
-        ), kwargs={'slug': 'article-slug'})
+        url = reverse_any(
+            ("blog:article-detail", "articles:article-detail"),
+            kwargs={"slug": "article-slug"},
+        )
     """
 
     for viewname in viewnames:
@@ -112,11 +112,14 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
 
     The following two examples are equivalent, choose whichever you like best::
 
-        reverse_fallback("/", lambda: reverse_app(
-            ("articles",),
-            "article-detail",
-            kwargs={"slug": self.slug},
-        ))
+        reverse_fallback(
+            "/",
+            lambda: reverse_app(
+                ("articles",),
+                "article-detail",
+                kwargs={"slug": self.slug},
+            ),
+        )
 
         reverse_fallback(
             "/",
@@ -237,10 +240,11 @@ def page_for_app_request(request, *, queryset=None):
             page = page_for_app_request(request)
             page.activate_language(request)
             instance = get_object_or_404(Article, slug=slug)
-            return render(request, "articles/article_detail.html", {
-                "article": article,
-                "page": page,
-            })
+            return render(
+                request,
+                "articles/article_detail.html",
+                {"article": article, "page": page},
+            )
 
     It is possible to override the queryset used to fetch a page instance. The
     default implementation simply uses the first concrete subclass of
@@ -311,23 +315,33 @@ class AppsMixin(models.Model):
 
         class Page(AppsMixin, LanguageMixin, AbstractPage):
             APPLICATIONS = [
-                ("publications", _("publications"), {
-                    "urlconf": "app.articles.urls",
-                }),
-                ("blog", _("blog"), {
-                    "urlconf": "app.articles.urls",
-                }),
-                ("contact", _("contact form"), {
-                    "urlconf": "app.forms.contact_urls",
-                }),
-                ("teams", _("teams"), {
-                    "urlconf": "app.teams.urls",
-                    "app_instance_namespace": lambda page: "%s-%s" % (
-                        page.application,
-                        page.team_id,
-                    ),
-                    "required_fields": ("team",),
-                }),
+                (
+                    "publications",
+                    _("publications"),
+                    {"urlconf": "app.articles.urls"},
+                ),
+                (
+                    "blog",
+                    _("blog"),
+                    {"urlconf": "app.articles.urls"},
+                ),
+                (
+                    "contact",
+                    _("contact form"),
+                    {"urlconf": "app.forms.contact_urls"},
+                ),
+                (
+                    "teams",
+                    _("teams"),
+                    {
+                        "urlconf": "app.teams.urls",
+                        "app_instance_namespace": lambda page: "%s-%s" % (
+                            page.application,
+                            page.team_id,
+                        ),
+                        "required_fields": ("team",),
+                    },
+                ),
             ]
     """
 

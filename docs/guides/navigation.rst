@@ -89,8 +89,8 @@ For this example, the page class should also inherit the
 
     class Page(MenuMixin, ..., AbstractPage):
         MENUS = (
-            ('main', _('main navigation')),
-            ('meta', _('meta navigation')),
+            ("main", _("main navigation")),
+            ("meta", _("meta navigation")),
         )
 
 Let's write a template tag which returns all required nodes at once:

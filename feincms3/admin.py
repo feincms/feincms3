@@ -63,7 +63,7 @@ class TreeAdmin(ModelAdmin):
     added to subclasses ``list_display``::
 
         class NodeAdmin(TreeAdmin):
-            list_display = ('indented_title', 'move_column', ...)
+            list_display = ("indented_title", "move_column", ...)
 
         admin.site.register(Node, NodeAdmin)
     """
@@ -419,8 +419,8 @@ class AncestorFilter(SimpleListFilter):
     Usage::
 
         class NodeAdmin(TreeAdmin):
-            list_display = ('indented_title', 'move_column', ...)
-            list_filter = ('is_active', AncestorFilter, ...)
+            list_display = ("indented_title", "move_column", ...)
+            list_filter = ("is_active", AncestorFilter, ...)
 
         admin.site.register(Node, NodeAdmin)
     """

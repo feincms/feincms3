@@ -91,12 +91,16 @@ shown:
 
     class Page(AppsMixin, LanguageMixin, ..., AbstractPage):
         APPLICATIONS = [
-            ("articles", _("Articles"), {
-                "urlconf": "app.articles.urls",
-                "app_instance_namespace": lambda page: "{}-{}".format(
-                    page.application, page.category_id or "all"
-                ),
-            }),
+            (
+                "articles",
+                _("Articles"),
+                {
+                    "urlconf": "app.articles.urls",
+                    "app_instance_namespace": lambda page: "{}-{}".format(
+                        page.application, page.category_id or "all"
+                    ),
+                },
+            ),
             ...
         ]
 

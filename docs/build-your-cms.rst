@@ -162,12 +162,16 @@ look as follows:
             Page.objects.active(),
             path="/{}/".format(path) if path else "/",
         )
-        return render(request, "pages/standard.html", {
-            "page": page,
-            "regions": Regions.from_item(
-                page, renderer=renderer, timeout=60
-            ),
-        })
+        return render(
+            request,
+            "pages/standard.html",
+            {
+                "page": page,
+                "regions": Regions.from_item(
+                    page, renderer=renderer, timeout=60
+                ),
+            },
+        )
 
 .. note::
    `FeinCMS <https://github.com/feincms/feincms>`_ provided request and

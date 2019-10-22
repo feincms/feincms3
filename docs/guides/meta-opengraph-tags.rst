@@ -60,12 +60,16 @@ can either be used as a dictionary, or rendered directly (its
 
     def page_detail(request, path=None):
         page = ...
-        return render(request, ..., {
-            "page": page,
-            "regions": ...,
-            ...
-            "meta_tags": meta_tags([page], request=request),
-        })
+        return render(
+            request,
+            ...,
+            {
+                "page": page,
+                "regions": ...,
+                ...
+                "meta_tags": meta_tags([page], request=request),
+            },
+        )
 
 ``meta_tags`` also supports overriding or removing individual tags
 using keyword arguments. Falsy values are discarded, ``None`` causes

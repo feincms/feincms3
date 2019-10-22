@@ -139,10 +139,14 @@ To render regions in the template, the template first requires the
     def page_detail(request, path=None):
         page = ...
         ...
-        return render(request, ..., {
-            "page": page,
-            "regions": Regions.from_item(page, renderer, timeout=60),
-        })
+        return render(
+            request,
+            ...,
+            {
+                "page": page,
+                "regions": Regions.from_item(page, renderer, timeout=60),
+            },
+        )
 
 In the template you can now use the template tag:
 

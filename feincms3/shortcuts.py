@@ -10,10 +10,10 @@ def template_name(model, template_name_suffix):
     Given a model and a template name suffix, return the resulting template
     path::
 
-        >>> template_name(Article, '_detail')
-        'articles/article_detail.html'
-        >>> template_name(User, '_form')
-        'auth/user_form.html'
+        >>> template_name(Article, "_detail")
+        "articles/article_detail.html"
+        >>> template_name(User, "_form")
+        "auth/user_form.html"
     """
 
     return "%s/%s%s.html" % (

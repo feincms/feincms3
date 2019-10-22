@@ -76,9 +76,9 @@ context=default_context)
             # Additional context can be provided:
             renderer.register_template_renderer(
                 Team,
-                'pages/plugins/team.html',  # Can also be a callable
+                "pages/plugins/team.html",  # Can also be a callable
                 lambda plugin, context: {
-                    'persons': Person.objects.filter(
+                    "persons": Person.objects.filter(
                         # Assuming that the page has a team foreign key:
                         team=plugin.parent.team,
                     ),

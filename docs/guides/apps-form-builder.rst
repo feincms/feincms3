@@ -24,21 +24,25 @@ an ``APPLICATIONS`` attribute to the class:
     class Page(AppsMixin, LanguageMixin, ..., AbstractPage):
         # ...
         APPLICATIONS = [
-            ("forms", _("forms"), {
-                # Required: A module containing urlpatterns
-                "urlconf": "app.forms",
+            (
+                "forms",
+                _("forms"),
+                {
+                    # Required: A module containing urlpatterns
+                    "urlconf": "app.forms",
 
-                # The "form" field on the page is required when
-                # selecting the forms app
-                "required_fields": ("form",),
+                    # The "form" field on the page is required when
+                    # selecting the forms app
+                    "required_fields": ("form",),
 
-                # Not necessary, but helpful for finding a form's URL using
-                # reverse_app("forms-{}".format(form.pk), "form")
-                "app_instance_namespace": lambda page: "{}-{}".format(
-                    page.application,
-                    page.form_id,
-                ),
-            }),
+                    # Not necessary, but helpful for finding a form's URL using
+                    # reverse_app("forms-{}".format(form.pk), "form")
+                    "app_instance_namespace": lambda page: "{}-{}".format(
+                        page.application,
+                        page.form_id,
+                    ),
+                },
+            ),
             # ...
         ]
         form = models.ForeignKey(

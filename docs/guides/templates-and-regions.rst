@@ -44,14 +44,18 @@ to the ``Regions.from_item`` factory method:
 
     def page_detail(request, path=None):
         page = ...
-        return render(request, "pages/standard.html", {
-            "page": page,
-            "regions": Regions.from_item(
-                page,
-                renderer=renderer,
-                inherit_from=page.ancestors().reverse(),
-            ),
-        })
+        return render(
+            request,
+            "pages/standard.html",
+            {
+                "page": page,
+                "regions": Regions.from_item(
+                    page,
+                    renderer=renderer,
+                    inherit_from=page.ancestors().reverse(),
+                ),
+            },
+        )
 
 ``page.ancestors().reverse()`` returns ancestors ordered from the page's
 parent to the root of the tree. We want pages to inherit content from
@@ -103,11 +107,15 @@ template, ``page.template.template_name``:
 
     def page_detail(request, path=None):
         page = ...
-        return render(request, page.template.template_name, {
-            "page": page,
-            "regions": Regions.from_item(
-                page,
-                renderer=renderer,
-                inherit_from=page.ancestors().reverse(),
-            ),
-        })
+        return render(
+            request,
+            page.template.template_name,
+            {
+                "page": page,
+                "regions": Regions.from_item(
+                    page,
+                    renderer=renderer,
+                    inherit_from=page.ancestors().reverse(),
+                ),
+            },
+        )
