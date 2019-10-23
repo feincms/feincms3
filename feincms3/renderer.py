@@ -124,16 +124,26 @@ context=default_context)
         if callable(plugin_context):
             plugin_context = plugin_context(plugin, context)
 
-        if not hasattr(plugin_template, "render"):  # Quacks like a template?
-            try:
-                engine = context.template.engine
-            except AttributeError:
-                engine = Engine.get_default()
+        return render_in_context(context, plugin_template, plugin_context)
 
-            if isinstance(plugin_template, (list, tuple)):
-                plugin_template = engine.select_template(plugin_template)
-            else:
-                plugin_template = engine.get_template(plugin_template)
 
-        with context.push(plugin_context):
-            return plugin_template.render(context)
+def render_in_context(context, template, local_context):
+    """Render using a template rendering context
+
+    This utility avoids the problem of ``render_to_string`` requiring a
+    ``dict`` and not a full-blown ``Context`` instance which would needlessly
+    burn CPU cycles."""
+
+    if not hasattr(template, "render"):  # Quacks like a template?
+        try:
+            engine = context.template.engine
+        except AttributeError:
+            engine = Engine.get_default()
+
+        if isinstance(template, (list, tuple)):
+            template = engine.select_template(template)
+        else:
+            template = engine.get_template(template)
+
+    with context.push(local_context):
+        return template.render(context)
