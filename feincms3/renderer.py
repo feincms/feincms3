@@ -1,7 +1,7 @@
 from django.template import Context, Engine
 
 
-__all__ = ("TemplatePluginRenderer", "default_context")
+__all__ = ("TemplatePluginRenderer", "default_context", "render_in_context")
 
 
 class PluginNotRegistered(Exception):
@@ -127,7 +127,7 @@ context=default_context)
         return render_in_context(context, plugin_template, plugin_context)
 
 
-def render_in_context(context, template, local_context):
+def render_in_context(context, template, local_context=None):
     """Render using a template rendering context
 
     This utility avoids the problem of ``render_to_string`` requiring a
