@@ -922,7 +922,9 @@ class Test(TestCase):
         """The renderer also works when used without a wrapping template"""
 
         renderer = TemplatePluginRenderer()
-        renderer.register_template_renderer(HTML, "renderer/html.html")
+        renderer.register_template_renderer(
+            HTML, ["renderer/html.html", "renderer/html.html"]
+        )
 
         page = Page.objects.create(template_key="standard")
         HTML.objects.create(
@@ -948,6 +950,18 @@ class Test(TestCase):
         )
 
         self.assertEqual(regions.cache_key("main"), "testapp.page-%s-main" % page.pk)
+
+    def test_plugin_template_instance(self):
+        renderer = TemplatePluginRenderer()
+        renderer.register_template_renderer(HTML, Template("{{ plugin.html|safe }}"))
+        page = Page.objects.create(template_key="standard")
+        HTML.objects.create(
+            parent=page, ordering=10, region="main", html="<b>Hello</b>"
+        )
+
+        regions = Regions.from_item(page, renderer=renderer)
+        self.assertEqual(regions.render("main", Context()), "<b>Hello</b>")
+        self.assertEqual(regions.render("main", None), "<b>Hello</b>")
 
     def test_reverse_app_tag(self):
         Page.objects.create(

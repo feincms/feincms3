@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.html import format_html
 
 from feincms3.plugins import external, html, richtext
 from feincms3.regions import Regions
@@ -10,14 +9,7 @@ from .models import HTML, External, Image, Page, RichText, Snippet
 
 renderer = TemplatePluginRenderer()
 renderer.register_string_renderer(RichText, richtext.render_richtext)
-renderer.register_string_renderer(
-    Image,
-    lambda plugin: format_html(
-        '<figure><img src="{}" alt=""/><figcaption>{}</figcaption></figure>',
-        plugin.image.url,
-        plugin.caption,
-    ),
-)
+renderer.register_template_renderer(Image, "renderer/image.html")
 Snippet.register_with(renderer)
 renderer.register_string_renderer(External, external.render_external)
 renderer.register_string_renderer(HTML, html.render_html)
