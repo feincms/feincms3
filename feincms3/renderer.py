@@ -1,7 +1,12 @@
 from django.template import Context, Engine
 
 
-__all__ = ("TemplatePluginRenderer", "default_context", "render_in_context")
+__all__ = (
+    "PluginNotRegistered",
+    "TemplatePluginRenderer",
+    "default_context",
+    "render_in_context",
+)
 
 
 class PluginNotRegistered(Exception):
@@ -109,22 +114,21 @@ context=default_context)
             raise PluginNotRegistered(
                 "Plugin %s is not registered" % plugin._meta.label_lower
             )
-        plugin_template, plugin_context = self._renderers[plugin.__class__]
+        template, local_context = self._renderers[plugin.__class__]
 
-        if plugin_template is None:
-            return (
-                plugin_context(plugin) if callable(plugin_context) else plugin_context
-            )  # Simple string renderer
+        if template is None:
+            # Simple string renderer
+            return local_context(plugin) if callable(local_context) else local_context
 
         if context is None:
             context = Context()
 
-        if callable(plugin_template):
-            plugin_template = plugin_template(plugin)
-        if callable(plugin_context):
-            plugin_context = plugin_context(plugin, context)
+        if callable(template):
+            template = template(plugin)
+        if callable(local_context):
+            local_context = local_context(plugin, context)
 
-        return render_in_context(context, plugin_template, plugin_context)
+        return render_in_context(context, template, local_context)
 
 
 def render_in_context(context, template, local_context=None):
