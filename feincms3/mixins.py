@@ -65,7 +65,7 @@ class TemplateMixin(models.Model):
         Return the selected template instance if the ``template_key`` field
         matches, or ``None``.
         """
-        return self.TEMPLATES_DICT.get(self.template_key)
+        return self.TEMPLATES_DICT.get(self.template_key, self.TEMPLATES[0])
 
     @property
     def regions(self):

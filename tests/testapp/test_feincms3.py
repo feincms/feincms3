@@ -1081,7 +1081,7 @@ class Test(TestCase):
             reverse("admin:testapp_page_clone", args=(home_en.pk,)),
             {"target": home_de.pk, "_set_content": True},
         )
-        print(response.content.decode("utf-8"))
+        # print(response.content.decode("utf-8"))
         self.assertRedirects(
             response, reverse("admin:testapp_page_change", args=(home_de.pk,))
         )
@@ -1090,3 +1090,7 @@ class Test(TestCase):
             list(home_de.testapp_snippet_set.values_list("template_name", flat=True)),
             ["snippet.html"],
         )
+
+    def test_default_template_fallback(self):
+        template = Page(template_key="__notexists").template
+        self.assertEqual(template.key, "standard")

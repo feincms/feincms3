@@ -10,6 +10,9 @@ Change log
   disabling caching by returning a falsy value.
 - Added the ``feincms3.renderer.render_in_context`` utility.
 - Verified compatibility with Django 3.0.
+- Made the ``TemplateMixin.template`` property fall back to the first
+  template in ``TEMPLATES`` if the specific template could not be found
+  or does not exist.
 
 
 `0.32`_ (2019-09-20)
