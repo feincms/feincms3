@@ -146,11 +146,12 @@ class AbstractPage(TreeNode):
         if not self.pk:
             return
 
-        clash_candidates = set(
-            self._path_clash_candidates().values_list("path", flat=True)
-        )
+        clash_candidates = dict(self._path_clash_candidates().values_list("path", "id"))
         for pk, node in self._branch_for_update().items():
-            if node.path in clash_candidates:
+            if (
+                node.path in clash_candidates
+                and not clash_candidates[node.path] == node.pk
+            ):
                 raise validation_error(
                     _("The page %(page)s's new path %(path)s would not be unique.")
                     % {"page": node, "path": node.path},
