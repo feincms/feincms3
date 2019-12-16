@@ -615,6 +615,36 @@ class Test(TestCase):
             r"The page sub2&#(39|x27);s new path /sub2/ would not be unique.",
         )
 
+    def test_path_valid_with_static_subpage_path(self):
+        """Test that there are no path clashs when subpage has static path"""
+        client = self.login()
+        root = Page.objects.create(title="root", slug="root", language_code="en")
+        Page.objects.create(
+            parent=root,
+            title="sub",
+            slug="sub",
+            static_path=True,
+            path="/sub/",
+            language_code="en",
+        )
+
+        response = client.post(
+            "/admin/testapp/page/%s/change/" % root.pk,
+            merge_dicts(
+                zero_management_form_data("testapp_richtext_set"),
+                zero_management_form_data("testapp_image_set"),
+                zero_management_form_data("testapp_snippet_set"),
+                zero_management_form_data("testapp_external_set"),
+                zero_management_form_data("testapp_html_set"),
+            ),
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotRegex(
+            response.content.decode("utf-8"),
+            r"The page sub&#(39|x27);s new path /sub/ would not be unique.",
+        )
+
     def test_i18n_patterns(self):
         """i18n_patterns in ROOT_URLCONF work even with apps_middleware"""
 
