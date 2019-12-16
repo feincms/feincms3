@@ -63,7 +63,7 @@ class TemplateMixin(models.Model):
     def template(self):
         """
         Return the selected template instance if the ``template_key`` field
-        matches, or ``None``.
+        matches, or falls back to the first template in ``TEMPLATES``.
         """
         return self.TEMPLATES_DICT.get(self.template_key, self.TEMPLATES[0])
 

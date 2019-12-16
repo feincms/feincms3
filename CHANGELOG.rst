@@ -13,6 +13,8 @@ Change log
 - Made the ``TemplateMixin.template`` property fall back to the first
   template in ``TEMPLATES`` if the specific template could not be found
   or does not exist.
+- Fixed another path uniqueness validation problem where pages having
+  descendants with static paths could not be saved.
 
 
 `0.32`_ (2019-09-20)
@@ -577,4 +579,5 @@ functionality.
 .. _0.30: https://github.com/matthiask/feincms3/compare/0.29...0.30
 .. _0.31: https://github.com/matthiask/feincms3/compare/0.30...0.31
 .. _0.32: https://github.com/matthiask/feincms3/compare/0.31...0.32
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.32...master
+.. _0.33: https://github.com/matthiask/feincms3/compare/0.32...0.33
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.33...master
