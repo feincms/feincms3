@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.33`_ (2019-12-16)
+~~~~~~~~~~~~~~~~~~~~
+
 - Changed ``Regions``' ``cache_key`` argument handling to allow
   disabling caching by returning a falsy value.
 - Added the ``feincms3.renderer.render_in_context`` utility.
