@@ -6,6 +6,8 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Removed mentions of Python 2 compatibility in the docs.
+
 
 `0.33`_ (2019-12-16)
 ~~~~~~~~~~~~~~~~~~~~

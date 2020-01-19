@@ -22,13 +22,6 @@ of content such as news magazines or API backends for mobile apps.
    Despite its version number feincms3 is already used in production on
    many sites and backwards compatibility isn't broken lightly.
 
-.. note::
-   This documentation uses Python 3's keyword-only syntax in a few
-   places.
-
-   While Python 3 is strongly recommended feincms3 still supports Python
-   2. Keyword-only usage is enforced by function wrappers for now.
-
 
 First steps
 ===========
