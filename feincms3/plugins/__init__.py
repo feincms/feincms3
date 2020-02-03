@@ -1,7 +1,7 @@
 # flake8: noqa
 
-from . import html
-from . import snippet
+from . import html, snippet
+
 
 try:
     import requests

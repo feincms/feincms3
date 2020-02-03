@@ -3,6 +3,7 @@ import os
 import sys
 from os.path import abspath, dirname
 
+
 # Patch some stuff for Django 3.1 (because versatileimagefield isn't compatible yet)
 try:
     from django.utils import six  # noqa

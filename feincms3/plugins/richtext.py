@@ -11,6 +11,7 @@ from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
 
 from content_editor.admin import ContentEditorInline
+
 from feincms3.cleanse import CleansedRichTextField
 
 
