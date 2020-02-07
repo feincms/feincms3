@@ -242,6 +242,7 @@ to override the default subregions handler instead:
                 )
                 if not items or not matches(items[0], subregions={None, ""}):
                     break
+            yield '</div>
 
         def handle_fullwidth(self, items, context):
             while True:
