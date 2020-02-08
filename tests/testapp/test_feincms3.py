@@ -1127,3 +1127,7 @@ class Test(TestCase):
 
     def test_apps_urlconf_no_apps(self):
         self.assertEqual(apps_urlconf(apps=[]), "testapp.urls")
+
+    def test_get_absolute_url(self):
+        self.assertEqual(Page(path="/test/").get_absolute_url(), "/test/")
+        self.assertEqual(Page(path="/").get_absolute_url(), "/")
