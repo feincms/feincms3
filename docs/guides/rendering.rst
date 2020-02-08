@@ -299,7 +299,7 @@ is possible with a custom ``Regions`` class too:
 
         return JsonResponse({
             "title": page.title,
-            "content": Regions.from_item(page, renderer=renderer, timeout=60),
+            "content": JSONRegions.from_item(page, renderer=renderer, timeout=60),
         })
 
 In this particular example ``register_string_renderer`` is a bit of a
