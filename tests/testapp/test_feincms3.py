@@ -1124,3 +1124,6 @@ class Test(TestCase):
     def test_default_template_fallback(self):
         template = Page(template_key="__notexists").template
         self.assertEqual(template.key, "standard")
+
+    def test_apps_urlconf_no_apps(self):
+        self.assertEqual(apps_urlconf(apps=[]), "testapp.urls")
