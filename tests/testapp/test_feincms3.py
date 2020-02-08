@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
-from django.template import Context, Template
+from django.template import Context, Template, TemplateSyntaxError
 from django.test import Client, TestCase
 from django.urls import set_urlconf
 from django.utils.translation import deactivate_all, override
@@ -1038,6 +1038,14 @@ class Test(TestCase):
 
         finally:
             set_urlconf(None)
+
+    def test_reverse_app_failures(self):
+        with self.assertRaises(TemplateSyntaxError) as cm:
+            Template("{% load feincms3 %}{% reverse_app %}")
+        self.assertEqual(
+            str(cm.exception),
+            "'reverse_app' takes at least two arguments, a namespace and a URL pattern name.",  # noqa
+        )
 
     def test_descendant_update(self):
         self.prepare_for_move()
