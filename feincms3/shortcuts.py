@@ -30,7 +30,7 @@ def render_list(
     *,
     model=None,
     paginate_by=None,
-    template_name_suffix="_list",
+    template_name_suffix="_list"
 ):
     """
     Render a list of items
