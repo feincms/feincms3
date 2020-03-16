@@ -1,4 +1,4 @@
-from django.core import paginator
+from django.core.paginator import Paginator
 from django.template.response import TemplateResponse
 
 
@@ -56,15 +56,7 @@ def render_list(
 
     context = context or {}
     if paginate_by:
-        p = paginator.Paginator(queryset, paginate_by)
-        # Note! Django>=2.0 allows us to simply
-        # object_list = p.get_page(request.GET.get("page"))
-        try:
-            object_list = p.page(request.GET.get("page"))
-        except paginator.PageNotAnInteger:
-            object_list = p.page(1)
-        except paginator.EmptyPage:
-            object_list = p.page(p.num_pages)
+        object_list = Paginator(queryset, paginate_by).get_page(request.GET.get("page"))
     else:
         object_list = queryset
 
