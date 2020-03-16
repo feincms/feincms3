@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.template import Context, Template, TemplateSyntaxError
-from django.test import Client, TestCase
+from django.test import Client, RequestFactory, TestCase
 from django.urls import set_urlconf
 from django.utils.translation import deactivate_all, override
 
@@ -18,6 +18,7 @@ from feincms3.apps import (
 from feincms3.plugins.external import ExternalForm
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
+from feincms3.shortcuts import render_list
 
 from .models import HTML, Article, External, Page
 
@@ -1139,3 +1140,17 @@ class Test(TestCase):
     def test_get_absolute_url(self):
         self.assertEqual(Page(path="/test/").get_absolute_url(), "/test/")
         self.assertEqual(Page(path="/").get_absolute_url(), "/")
+
+    def test_render_list(self):
+        for i in range(7):
+            Article.objects.create(title="Article %s" % i, category="publications")
+
+        request = RequestFactory().get("/", data={"page": 2})
+        response = render_list(
+            request, list(Article.objects.all()), model=Article, paginate_by=2
+        )
+
+        self.assertEqual(response.template_name, "testapp/article_list.html")
+        self.assertEqual(len(response.context_data["object_list"]), 2)
+        self.assertEqual(response.context_data["object_list"].number, 2)
+        self.assertEqual(response.context_data["object_list"].paginator.num_pages, 4)

@@ -24,7 +24,13 @@ def template_name(model, template_name_suffix):
 
 
 def render_list(
-    request, queryset, context=None, *, template_name_suffix="_list", paginate_by=None
+    request,
+    queryset,
+    context=None,
+    *,
+    model=None,
+    paginate_by=None,
+    template_name_suffix="_list",
 ):
     """
     Render a list of items
@@ -62,14 +68,12 @@ def render_list(
     else:
         object_list = queryset
 
+    model = model or queryset.model
     context.update(
-        {
-            "object_list": object_list,
-            "%s_list" % queryset.model._meta.model_name: object_list,
-        }
+        {"object_list": object_list, "%s_list" % model._meta.model_name: object_list}
     )
     return TemplateResponse(
-        request, template_name(queryset.model, template_name_suffix), context
+        request, template_name(model, template_name_suffix), context
     )
 
 

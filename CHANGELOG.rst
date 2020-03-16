@@ -7,6 +7,7 @@ Change log
 ~~~~~~~~~~~~~~~
 
 - Removed mentions of Python 2 compatibility in the docs.
+- Allowed using ``render_list`` with lists, not querysets.
 
 
 `0.33`_ (2019-12-16)
