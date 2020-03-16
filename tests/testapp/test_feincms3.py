@@ -39,25 +39,10 @@ def merge_dicts(*dicts):
     return res
 
 
-def monkeypatches():
-    import django
-
-    if django.VERSION >= (2, 1):
-        from ckeditor.widgets import CKEditorWidget
-
-        _original_render = CKEditorWidget.render
-
-        def render(self, name, value, attrs=None, renderer=None):
-            return _original_render(self, name, value, attrs=attrs)
-
-        CKEditorWidget.render = render
-
-
 class Test(TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser("admin", "admin@test.ch", "blabla")
         deactivate_all()
-        monkeypatches()
 
     def login(self):
         client = Client()
