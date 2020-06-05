@@ -3,14 +3,13 @@ from __future__ import unicode_literals
 from functools import update_wrapper
 
 from django import forms
-from django.conf.urls import url
 from django.contrib.admin import ModelAdmin, SimpleListFilter, helpers
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
 from django.db import router, transaction
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import re_path, reverse
 from django.utils.html import format_html, mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _, pgettext
@@ -122,12 +121,12 @@ class TreeAdmin(ModelAdmin):
 
         info = self.model._meta.app_label, self.model._meta.model_name
         return [
-            url(
+            re_path(
                 r"^(.+)/move/$",
                 action_form_view_decorator(self)(self.move_view),
                 name="%s_%s_move" % info,
             ),
-            url(
+            re_path(
                 r"^(.+)/clone/$",
                 action_form_view_decorator(self)(self.clone_view),
                 name="%s_%s_clone" % info,
