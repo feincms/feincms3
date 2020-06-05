@@ -95,7 +95,10 @@ def reverse_app(namespaces, viewname, *args, languages=None, **kwargs):
     viewnames = [
         ":".join(r)
         for r in itertools.product(
-            ("%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, l) for l in languages),
+            (
+                "%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, language)
+                for language in languages
+            ),
             (namespaces if isinstance(namespaces, (list, tuple)) else (namespaces,)),
             (viewname,),
         )
