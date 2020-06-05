@@ -6,10 +6,16 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.34`_ (2020-06-05)
+~~~~~~~~~~~~~~~~~~~~
+
 - Removed mentions of Python 2 compatibility in the docs.
 - Allowed using ``render_list`` with lists, not querysets.
 - Dropped compatibility with Django<2.2 in accordance with the official
   Django releases support policy.
+- Replaced ``url()`` with ``re_path()`` which avoids a few deprecation
+  warnings.
 
 
 `0.33`_ (2019-12-16)
@@ -589,4 +595,5 @@ functionality.
 .. _0.31: https://github.com/matthiask/feincms3/compare/0.30...0.31
 .. _0.32: https://github.com/matthiask/feincms3/compare/0.31...0.32
 .. _0.33: https://github.com/matthiask/feincms3/compare/0.32...0.33
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.33...master
+.. _0.34: https://github.com/matthiask/feincms3/compare/0.33...0.34
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.34...master
