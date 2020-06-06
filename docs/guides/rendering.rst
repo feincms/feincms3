@@ -270,7 +270,7 @@ is possible with a custom ``Regions`` class too:
 
     from feincms3.regions import Regions, cached_render
 
-    class JSONRegions(Regions):
+    class JsonRegions(Regions):
         @cached_render
         def render(self, region, context=None):
             return [
@@ -300,7 +300,7 @@ is possible with a custom ``Regions`` class too:
 
         return JsonResponse({
             "title": page.title,
-            "content": JSONRegions.from_item(page, renderer=renderer, timeout=60),
+            "content": JsonRegions.from_item(page, renderer=renderer, timeout=60),
         })
 
 In this particular example ``register_string_renderer`` is a bit of a
