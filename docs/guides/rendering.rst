@@ -268,7 +268,7 @@ is possible with a custom ``Regions`` class too:
 
 .. code-block:: python
 
-    from feincms3.regions import Region, cached_render
+    from feincms3.regions import Regions, cached_render
 
     class JSONRegions(Regions):
         @cached_render
