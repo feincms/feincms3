@@ -596,4 +596,4 @@ functionality.
 .. _0.32: https://github.com/matthiask/feincms3/compare/0.31...0.32
 .. _0.33: https://github.com/matthiask/feincms3/compare/0.32...0.33
 .. _0.34: https://github.com/matthiask/feincms3/compare/0.33...0.34
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.34...master
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.34...main

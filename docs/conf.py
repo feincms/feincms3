@@ -79,7 +79,7 @@ extensions = [
 ]
 templates_path = ['_templates']
 source_suffix = '.rst'
-master_doc = 'index'
+index_doc = 'index'
 
 exclude_patterns = ['build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
@@ -93,21 +93,21 @@ latex_elements = {
     'papersize': 'a4',
 }
 latex_documents = [(
-    master_doc,
+    index_doc,
     project_slug + '.tex',
     project + ' Documentation',
     author,
     'manual',
 )]
 man_pages = [(
-    master_doc,
+    index_doc,
     project_slug,
     project + ' Documentation',
     [author],
     1,
 )]
 texinfo_documents = [(
-    master_doc,
+    index_doc,
     project_slug,
     project + ' Documentation',
     author,
