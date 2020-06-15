@@ -4,22 +4,30 @@ from django.utils.translation import gettext_lazy as _
 from content_editor.models import Region, Template, create_plugin_base
 
 from feincms3.apps import AppsMixin, reverse_app
-from feincms3.mixins import LanguageMixin, MenuMixin, RedirectMixin, TemplateMixin
+from feincms3.mixins import (
+    LanguageAndTranslationOfMixin,
+    MenuMixin,
+    RedirectMixin,
+    TemplateMixin,
+)
 from feincms3.pages import AbstractPage
 from feincms3.plugins import external, html, image, richtext, snippet
 
 
 class Page(
     AbstractPage,
-    AppsMixin,  # For adding the articles app to pages through the CMS.
-    TemplateMixin,  # Two page templates, one with only a main
-    # region and another with a sidebar as well.
-    MenuMixin,  # We have a main and a footer navigation (meta).
-    LanguageMixin,  # We're building a multilingual CMS. (Also,
-    # feincms3.apps depends on LanguageMixin
-    # currently.)
-    RedirectMixin,  # Allow redirecting pages to other pages and/or arbitrary
-    # URLs.
+    # For adding the articles app to pages through the CMS:
+    AppsMixin,
+    # Two page templates, one with only a main region and another with a
+    # sidebar as well:
+    TemplateMixin,
+    # We have a main and a footer navigation (meta):
+    MenuMixin,
+    # We're building a multilingual CMS. (Also, feincms3.apps depends on
+    # LanguageMixin currently):
+    LanguageAndTranslationOfMixin,
+    # Allow redirecting pages to other pages and/or arbitrary URLs:
+    RedirectMixin,
 ):
 
     # TemplateMixin

@@ -1139,3 +1139,37 @@ class Test(TestCase):
         self.assertEqual(len(response.context_data["object_list"]), 2)
         self.assertEqual(response.context_data["object_list"].number, 2)
         self.assertEqual(response.context_data["object_list"].paginator.num_pages, 4)
+
+    def test_language_and_translation_of_mixin(self):
+        original = Page.objects.create(
+            title="home-en",
+            slug="home-en",
+            path="/en/",
+            static_path=True,
+            language_code="en",
+            is_active=True,
+            menu="main",
+        )
+        translation = Page.objects.create(
+            title="home-de",
+            slug="home-de",
+            path="/de/",
+            static_path=True,
+            language_code="de",
+            is_active=True,
+            menu="main",
+            translation_of=original,
+        )
+
+        self.assertEqual(set(original.translations()), {original, translation})
+        self.assertEqual(set(translation.translations()), {original, translation})
+
+        self.assertEqual(
+            [language["object"] for language in translation.translations_list()],
+            [original, translation, None],
+        )
+
+        original.delete()
+        translation.refresh_from_db()
+
+        self.assertEqual(set(translation.translations()), set())

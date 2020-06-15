@@ -8,6 +8,9 @@ Change log
 
 - Fixed an infinite recursion crash when referencing pages using
   ``on_delete=SET_NULL``
+- Added a ``LanguageAndTranslationOfMixin`` which not only allows
+  defining the language of objects but also defining objects to be
+  translations of other objects.
 
 
 `0.34`_ (2020-06-05)
