@@ -12,6 +12,7 @@ Change log
   defining the language of objects but also defining objects to be
   translations of other objects.
 - Added Travis CI jobs for Django 3.1b1 and Python 3.8.
+- Renamed the main branch to ``main``.
 
 
 `0.34`_ (2020-06-05)
