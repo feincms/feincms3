@@ -135,6 +135,14 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
         abstract = True
 
     def translations(self):
+        """
+        Return a queryset containing all translations of this object
+
+        This method can be called on any object if translations have been
+        defined at all, you do not have to fetch the object in the primary
+        language first.
+        """
+
         primary = (
             self.pk
             if self.language_code == settings.LANGUAGES[0][0]
@@ -149,6 +157,16 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
 
     @staticmethod
     def translations_list(translations):
+        """
+        Return a list of dictionaries, one for each language in
+        ``settings.LANGUAGES``. An example follows::
+
+            [
+                {"code": "en", "name": "English", "object": <instance>},
+                {"code": "de", "name": "German", "object": None},
+                # ...
+            ]
+        """
         translations = {obj.language_code: obj for obj in translations}
         return [
             {"code": code, "name": name, "object": translations.get(code)}
