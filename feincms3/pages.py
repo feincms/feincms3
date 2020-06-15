@@ -102,7 +102,11 @@ class AbstractPage(TreeNode):
 
     def __init__(self, *args, **kwargs):
         super(AbstractPage, self).__init__(*args, **kwargs)
-        self._save_descendants_cache = (self.is_active, self.path)
+        # Go through self.__dict__ to avoid triggering deferred field loading
+        self._save_descendants_cache = (
+            self.__dict__.get("is_active"),
+            self.__dict__.get("path"),
+        )
 
     def _branch_for_update(self):
         nodes = OrderedDict({self.pk: self})

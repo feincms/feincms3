@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Fixed an infinite recursion crash when referencing pages using
+  ``on_delete=SET_NULL``
+
 
 `0.34`_ (2020-06-05)
 ~~~~~~~~~~~~~~~~~~~~
