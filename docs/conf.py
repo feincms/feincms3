@@ -79,7 +79,7 @@ extensions = [
 ]
 templates_path = ['_templates']
 source_suffix = '.rst'
-index_doc = 'index'
+master_doc = index_doc = 'index'
 
 exclude_patterns = ['build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
