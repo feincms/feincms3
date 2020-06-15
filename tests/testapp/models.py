@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, override
 
 from content_editor.models import Region, Template, create_plugin_base
 
@@ -69,6 +69,11 @@ class Page(
                 "required_fields": ("optional", "not_editable"),
             },
         ),
+        (
+            "translated-articles",
+            _("translated articles"),
+            {"urlconf": "testapp.translated_articles_urls"},
+        ),
     ]
 
     optional = models.IntegerField(blank=True, null=True)
@@ -122,3 +127,17 @@ class Article(models.Model):
         return reverse_app(
             (self.category, "articles"), "article-detail", kwargs={"pk": self.pk}
         )
+
+
+class TranslatedArticle(LanguageAndTranslationOfMixin):
+    title = models.CharField(_("title"), max_length=100)
+
+    class Meta:
+        ordering = ["-pk"]
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        with override(self.language_code):
+            return reverse_app("translated-articles", "detail", kwargs={"pk": self.pk})

@@ -140,15 +140,16 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
             if self.language_code == settings.LANGUAGES[0][0]
             else self.translation_of_id
         )
-        queryset = self.__class__._default_manager.active()
+        queryset = self.__class__._default_manager
         return (
             queryset.filter(Q(id=primary) | Q(translation_of=primary))
             if primary
             else queryset.none()
         )
 
-    def translations_list(self):
-        translations = {obj.language_code: obj for obj in self.translations()}
+    @staticmethod
+    def translations_list(translations):
+        translations = {obj.language_code: obj for obj in translations}
         return [
             {"code": code, "name": name, "object": translations.get(code)}
             for code, name in settings.LANGUAGES

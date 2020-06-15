@@ -20,7 +20,7 @@ from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
 
-from .models import HTML, Article, External, Page
+from .models import HTML, Article, External, Page, TranslatedArticle
 
 
 def zero_management_form_data(prefix):
@@ -1165,7 +1165,10 @@ class Test(TestCase):
         self.assertEqual(set(translation.translations()), {original, translation})
 
         self.assertEqual(
-            [language["object"] for language in translation.translations_list()],
+            [
+                language["object"]
+                for language in Page.translations_list(translation.translations())
+            ],
             [original, translation, None],
         )
 
@@ -1173,3 +1176,41 @@ class Test(TestCase):
         translation.refresh_from_db()
 
         self.assertEqual(set(translation.translations()), set())
+
+    def test_language_and_translation_of_mixin_in_app(self):
+        Page.objects.create(
+            title="home-en",
+            slug="home-en",
+            language_code="en",
+            is_active=True,
+            application="translated-articles",
+        )
+        Page.objects.create(
+            title="home-de",
+            slug="home-de",
+            language_code="de",
+            is_active=True,
+            application="translated-articles",
+        )
+
+        original = TranslatedArticle.objects.create(title="News", language_code="en")
+        translated = TranslatedArticle.objects.create(
+            title="Neues", language_code="de", translation_of=original
+        )
+
+        translations = TranslatedArticle.translations_list(original.translations())
+        self.assertEqual(
+            [language["object"] for language in translations],
+            [original, translated, None],
+        )
+
+        set_urlconf(apps_urlconf())
+        try:
+            self.assertEqual(
+                original.get_absolute_url(), "/home-en/{}/".format(original.pk)
+            )
+            self.assertEqual(
+                translated.get_absolute_url(), "/home-de/{}/".format(translated.pk)
+            )
+        finally:
+            set_urlconf(None)
