@@ -21,6 +21,7 @@ from feincms3.plugins.external import ExternalForm
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
+from feincms3.templatetags.feincms3 import translations
 
 from .models import HTML, Article, External, Page, TranslatedArticle
 
@@ -1171,7 +1172,7 @@ class Test(TestCase):
         self.assertEqual(
             [
                 language["object"]
-                for language in Page.translations_list(translation.translations())
+                for language in translations(translation.translations())
             ],
             [original, translation, None],
         )
@@ -1202,9 +1203,8 @@ class Test(TestCase):
             title="Neues", language_code="de", translation_of=original
         )
 
-        translations = TranslatedArticle.translations_list(original.translations())
         self.assertEqual(
-            [language["object"] for language in translations],
+            [language["object"] for language in translations(original.translations())],
             [original, translated, None],
         )
 

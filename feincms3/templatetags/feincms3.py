@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.template.base import Node, TemplateSyntaxError, kwarg_re
 from django.utils.html import conditional_escape
 
@@ -123,3 +124,22 @@ def reverse_app(parser, token):
                 args.append(parser.compile_filter(value))
 
     return ReverseAppNode(namespaces, viewname, args, kwargs, asvar)
+
+
+@register.filter
+def translations(iterable):
+    """
+    Return a list of dictionaries, one for each language in
+    ``settings.LANGUAGES``. An example follows::
+
+        [
+            {"code": "en", "name": "English", "object": <instance>},
+            {"code": "de", "name": "German", "object": None},
+            # ...
+        ]
+    """
+    translations = {obj.language_code: obj for obj in iterable}
+    return [
+        {"code": code, "name": name, "object": translations.get(code)}
+        for code, name in settings.LANGUAGES
+    ]

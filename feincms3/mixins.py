@@ -155,24 +155,6 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
             else queryset.none()
         )
 
-    @staticmethod
-    def translations_list(translations):
-        """
-        Return a list of dictionaries, one for each language in
-        ``settings.LANGUAGES``. An example follows::
-
-            [
-                {"code": "en", "name": "English", "object": <instance>},
-                {"code": "de", "name": "German", "object": None},
-                # ...
-            ]
-        """
-        translations = {obj.language_code: obj for obj in translations}
-        return [
-            {"code": code, "name": name, "object": translations.get(code)}
-            for code, name in settings.LANGUAGES
-        ]
-
     def clean_fields(self, exclude=None):
         """
         Implement the following validation rules:
