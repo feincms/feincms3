@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
@@ -21,6 +23,15 @@ from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
 
 from .models import HTML, Article, External, Page, TranslatedArticle
+
+
+@contextmanager
+def override_urlconf(urlconf):
+    set_urlconf(urlconf)
+    try:
+        yield
+    finally:
+        set_urlconf(None)
 
 
 def zero_management_form_data(prefix):
@@ -331,8 +342,7 @@ class Test(TestCase):
         response = self.client.get("/en/publications/")
         self.assertContains(response, 'class="article"', 5)
 
-        set_urlconf(apps_urlconf())
-        try:
+        with override_urlconf(apps_urlconf()):
             article = Article.objects.order_by("pk").first()
             with override("de"):
                 self.assertEqual(
@@ -355,8 +365,6 @@ class Test(TestCase):
                     ),
                     "/de/publications/%s/" % article.pk,
                 )
-        finally:
-            set_urlconf(None)
 
         response = self.client.get("/de/publications/%s/" % article.pk)
         self.assertContains(response, "<h1>publications 0</h1>", 1)
@@ -988,7 +996,6 @@ class Test(TestCase):
             is_active=True,
             application="blog",
         )
-        set_urlconf(apps_urlconf())
 
         tests = [
             ("{% reverse_app 'blog' 'article-detail' pk=42 %}", "/blog/42/", {}),
@@ -1011,7 +1018,7 @@ class Test(TestCase):
             ("{% reverse_app 'bla' 'bla' as t %}{{ t|default:'blub' }}", "blub", {}),
         ]
 
-        try:
+        with override_urlconf(apps_urlconf()):
             for tpl, out, ctx in tests:
                 t = Template("{% load feincms3 %}" + tpl)
                 self.assertEqual(t.render(Context(ctx)).strip(), out)
@@ -1021,9 +1028,6 @@ class Test(TestCase):
                 Template("{% load feincms3 %}{% reverse_app 'a' 'a' %}").render,
                 Context(),
             )
-
-        finally:
-            set_urlconf(None)
 
     def test_reverse_app_failures(self):
         with self.assertRaises(TemplateSyntaxError) as cm:
@@ -1204,13 +1208,10 @@ class Test(TestCase):
             [original, translated, None],
         )
 
-        set_urlconf(apps_urlconf())
-        try:
+        with override_urlconf(apps_urlconf()):
             self.assertEqual(
                 original.get_absolute_url(), "/home-en/{}/".format(original.pk)
             )
             self.assertEqual(
                 translated.get_absolute_url(), "/home-de/{}/".format(translated.pk)
             )
-        finally:
-            set_urlconf(None)
