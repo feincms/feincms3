@@ -1219,3 +1219,10 @@ class Test(TestCase):
     def test_translations_filter_edge_cases(self):
         self.assertEqual(len(translations(None)), 3)
         self.assertEqual(len(translations({})), 3)
+
+        t = Template(
+            "{% load feincms3 %}{% for l in c|translations %}{{ l.code }}{% endfor %}"
+        )
+        self.assertEqual(t.render(Context({"c": None})), "endefr")
+        self.assertEqual(t.render(Context({"c": []})), "endefr")
+        self.assertEqual(t.render(Context({"c": 0})), "endefr")
