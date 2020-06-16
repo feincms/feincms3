@@ -70,7 +70,8 @@ A page tree might look as follows then::
     - Actualité
 
 By manually setting the slug of all root pages to their respective
-language code you can generate a navigation pointing to all sites in
+language code (e.g. Home (EN) has a URL of ``/en/``, Startseite (DE) a
+URL of ``/de/``) you can generate a navigation pointing to all sites in
 their respective language (assuming that the built-in template context
 processor ``django.template.context_processors.i18n`` is active):
 
