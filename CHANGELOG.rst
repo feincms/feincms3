@@ -13,6 +13,7 @@ Change log
   translations of other objects.
 - Added Travis CI jobs for Django 3.1b1 and Python 3.8.
 - Renamed the main branch to ``main``.
+- Removed all arguments to ``super()`` since we're Python 3-only.
 
 
 `0.34`_ (2020-06-05)
