@@ -138,7 +138,7 @@ def translations(iterable):
             # ...
         ]
     """
-    translations = {obj.language_code: obj for obj in iterable}
+    translations = {obj.language_code: obj for obj in iterable} if iterable else {}
     return [
         {"code": code, "name": name, "object": translations.get(code)}
         for code, name in settings.LANGUAGES

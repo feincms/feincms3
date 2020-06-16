@@ -1215,3 +1215,7 @@ class Test(TestCase):
             self.assertEqual(
                 translated.get_absolute_url(), "/home-de/{}/".format(translated.pk)
             )
+
+    def test_translations_filter_edge_cases(self):
+        self.assertEqual(len(translations(None)), 3)
+        self.assertEqual(len(translations({})), 3)
