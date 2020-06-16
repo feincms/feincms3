@@ -163,7 +163,7 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
         - Objects in other languages can only reference objects in the primary language
         """
 
-        super(LanguageAndTranslationOfMixin, self).clean_fields(exclude)
+        super().clean_fields(exclude)
 
         if self.language_code == settings.LANGUAGES[0][0] and self.translation_of:
             raise validation_error(
@@ -211,7 +211,7 @@ class RedirectMixin(models.Model):
         """
         Ensure that redirects are configured properly.
         """
-        super(RedirectMixin, self).clean_fields(exclude)
+        super().clean_fields(exclude)
 
         if self.redirect_to_url and self.redirect_to_page_id:
             raise validation_error(

@@ -388,7 +388,7 @@ class AppsMixin(models.Model):
         )
         self.app_instance_namespace = setter(self)
 
-        super(AppsMixin, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     save.alters_data = True
 
@@ -400,7 +400,7 @@ class AppsMixin(models.Model):
         language only exist once on a site.
         """
         exclude = [] if exclude is None else exclude
-        super(AppsMixin, self).clean_fields(exclude)
+        super().clean_fields(exclude)
 
         if self.parent and (
             self.parent.application

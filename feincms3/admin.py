@@ -131,7 +131,7 @@ class TreeAdmin(ModelAdmin):
                 action_form_view_decorator(self)(self.clone_view),
                 name="%s_%s_clone" % info,
             ),
-        ] + super(TreeAdmin, self).get_urls()
+        ] + super().get_urls()
 
     def move_view(self, request, obj):
         return self.action_form_view(
@@ -213,7 +213,7 @@ class MoveForm(forms.Form):
         self.request = kwargs.pop("request")
         self.model = self.instance.__class__
 
-        super(MoveForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         queryset = self.model._default_manager.with_tree_fields()
         self.fields["of"] = TreeNodeChoiceField(
@@ -228,7 +228,7 @@ class MoveForm(forms.Form):
         self.fields["of"].widget.attrs.update({"size": 30, "style": "height:auto"})
 
     def clean(self):
-        data = super(MoveForm, self).clean()
+        data = super().clean()
         if not data.get("move_to"):
             return data
 
@@ -300,7 +300,7 @@ class CloneForm(forms.Form):
         self.modeladmin = kwargs.pop("modeladmin")
         self.request = kwargs.pop("request")
 
-        super(CloneForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields["target"] = self.instance._meta.get_field("parent").formfield(
             form_class=TreeNodeChoiceField,
@@ -342,7 +342,7 @@ class CloneForm(forms.Form):
             )
 
     def clean(self):
-        data = super(CloneForm, self).clean()
+        data = super().clean()
         target = data.get("target")
         if target is None:
             return data

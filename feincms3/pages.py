@@ -18,7 +18,7 @@ class AbstractPageManager(models.Manager.from_queryset(TreeQuerySet)):
     """
 
     def get_queryset(self):
-        return super(AbstractPageManager, self).get_queryset().with_tree_fields()
+        return super().get_queryset().with_tree_fields()
 
     def active(self):
         """
@@ -101,7 +101,7 @@ class AbstractPage(TreeNode):
         return self.title
 
     def __init__(self, *args, **kwargs):
-        super(AbstractPage, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # Go through self.__dict__ to avoid triggering deferred field loading
         self._save_descendants_cache = (
             self.__dict__.get("is_active"),
@@ -132,7 +132,7 @@ class AbstractPage(TreeNode):
         """
         Check for path uniqueness problems.
         """
-        super(AbstractPage, self).clean_fields(exclude)
+        super().clean_fields(exclude)
 
         if self.static_path:
             if not self.path:
@@ -144,7 +144,7 @@ class AbstractPage(TreeNode):
         else:
             self.path = "%s%s/" % (self.parent.path if self.parent else "/", self.slug)
 
-        super(AbstractPage, self).clean()
+        super().clean()
 
         # Skip if we don't exist yet.
         if not self.pk:
@@ -187,7 +187,7 @@ class AbstractPage(TreeNode):
                 or 0
             )
 
-        super(AbstractPage, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         if save_descendants is True or (
             save_descendants is None

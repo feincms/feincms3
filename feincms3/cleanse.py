@@ -74,7 +74,7 @@ class CleansedRichTextField(RichTextField):
 
     def __init__(self, *args, **kwargs):
         self.cleanse = kwargs.pop("cleanse", cleanse_html)
-        super(CleansedRichTextField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean(self, value, instance):
-        return self.cleanse(super(CleansedRichTextField, self).clean(value, instance))
+        return self.cleanse(super().clean(value, instance))

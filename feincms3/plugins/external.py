@@ -117,7 +117,7 @@ class ExternalForm(forms.ModelForm):
     """
 
     def clean(self):
-        data = super(ExternalForm, self).clean()
+        data = super().clean()
         url = data.get("url")
         if url and not oembed_html(url, cache_failures=False):
             raise forms.ValidationError(
