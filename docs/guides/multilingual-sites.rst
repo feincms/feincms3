@@ -122,14 +122,14 @@ the current page):
 .. admonition:: LanguageAndTranslationOfMixin within feincms3 apps
 
    The same should work for any CMS object inheriting
-   :class:`feincms3.mixins.LanguageAndTranslationOfMixin`, and should also
-   work when used within a feincms3 :ref:`app <apps-introduction>` which
-   will be introduced later.
+   :class:`feincms3.mixins.LanguageAndTranslationOfMixin`, and should
+   also work when used within a feincms3 app.
+   (:ref:`Apps will be introduced later <apps-introduction>`.)
 
    In this case it may be extra-important to wrap the object's call to
-   ``reverse_app`` in a block which overrides the active language so
-   that the article is preferrably shown in a website with the matching
-   language:
+   :func:`~feincms3.apps.reverse_app` in a block which overrides the
+   active language so that the article is preferrably shown in a website
+   with the matching language:
 
    .. code-block:: python
 
