@@ -119,13 +119,17 @@ the current page):
     </nav>
 
 
-.. note::
+.. admonition:: LanguageAndTranslationOfMixin within feincms3 apps
+
    The same should work for any CMS object inheriting
    :class:`feincms3.mixins.LanguageAndTranslationOfMixin`, and should also
-   work when used within a feincms3 :ref:`app <apps-introduction>`.
+   work when used within a feincms3 :ref:`app <apps-introduction>` which
+   will be introduced later.
 
    In this case it may be extra-important to wrap the object's call to
-   ``reverse_app`` in a block which overrides the active language:
+   ``reverse_app`` in a block which overrides the active language so
+   that the article is preferrably shown in a website with the matching
+   language:
 
    .. code-block:: python
 
@@ -136,3 +140,22 @@ the current page):
            def get_absolute_url(self):
                with override(self.language_code):
                    return reverse_app("articles", "detail", ...)
+
+   Generating the navigation menu for changing the language should
+   preferrably link to the trnslated article and only fall back to the
+   translated page's URL if no such article exists:
+
+   .. code-block:: python
+
+        def article_detail(request, ...):
+            page = page_for_app_request(request, Page.objects.active())
+            page.activate_language(request)
+            article = get_object_or_404(Article, ...)
+
+            translations = {obj.language_code: obj for obj in page.translations().active()}
+            translations.update(
+                {obj.language_code: obj for obj in article.translations().active()}
+            )
+
+            # Use {% for lang in available_translations|translations %} ... {% endfor %}
+            context = {"available_translations": translations}
