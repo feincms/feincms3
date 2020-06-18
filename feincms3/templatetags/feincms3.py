@@ -130,15 +130,27 @@ def reverse_app(parser, token):
 def translations(iterable):
     """
     Return a list of dictionaries, one for each language in
-    ``settings.LANGUAGES``. An example follows::
+    ``settings.LANGUAGES``. An example follows:
+
+    .. code-block:: python
 
         [
             {"code": "en", "name": "English", "object": <instance>},
             {"code": "de", "name": "German", "object": None},
             # ...
         ]
+
+    The filter accepts anything you throw at it. "It" should be an iterable of
+    objects having a ``language_code`` property however, or anything
+    non-iterable (such as ``None``). The filter always returns a list of all
+    languages in ``settings.LANGUAGES`` but the ``object`` key's value will
+    always be ``None`` if the data is unusable.
     """
-    translations = {obj.language_code: obj for obj in iterable} if iterable else {}
+    try:
+        translations = {obj.language_code: obj for obj in iterable} if iterable else {}
+    except TypeError:
+        translations = {}
+
     return [
         {"code": code, "name": name, "object": translations.get(code)}
         for code, name in settings.LANGUAGES

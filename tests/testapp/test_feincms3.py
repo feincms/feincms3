@@ -1225,4 +1225,4 @@ class Test(TestCase):
         )
         self.assertEqual(t.render(Context({"c": None})), "endefr")
         self.assertEqual(t.render(Context({"c": []})), "endefr")
-        self.assertEqual(t.render(Context({"c": 0})), "endefr")
+        self.assertEqual(t.render(Context({"c": 1})), "endefr")
