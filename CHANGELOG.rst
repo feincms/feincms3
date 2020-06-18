@@ -11,9 +11,15 @@ Change log
 - Added a ``LanguageAndTranslationOfMixin`` which not only allows
   defining the language of objects but also defining objects to be
   translations of other objects.
+- Added a ``|translations`` filter to the template tag library. Added a
+  section about generating a language selector containing deep links to
+  the :ref:`multilingual sites guide <multilingual-sites>` guide.
 - Added Travis CI jobs for Django 3.1b1 and Python 3.8.
 - Renamed the main branch to ``main``.
 - Removed all arguments to ``super()`` since we're Python 3-only.
+- Dropped workarounds for the removal of ``django.utils.six`` and
+  ``python_2_unicode_compatible`` from the testsuite. They were only
+  required for our dependencies, not for feincms3 itself.
 
 
 `0.34`_ (2020-06-05)

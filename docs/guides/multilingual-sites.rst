@@ -1,3 +1,5 @@
+.. _multilingual-sites:
+
 Multilingual sites
 ==================
 
