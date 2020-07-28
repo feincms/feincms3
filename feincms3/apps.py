@@ -16,4 +16,5 @@ if django.VERSION < (3, 2):
         " This compatibility shim will be removed at some point in the future."
         " Sorry for the inconvenience.",
         DeprecationWarning,
+        stacklevel=2,
     )
