@@ -234,7 +234,7 @@ def page_for_app_request(request, *, queryset=None):
     Returns the current page if we're inside an app. Should only be called
     while processing app views. Will pass along exceptions caused by
     non-existing or duplicated apps (this should never happen inside an app
-    because :func:`~feincms3.apps.apps_urlconf` wouldn't have added the app
+    because :func:`~feincms3.applications.apps_urlconf` wouldn't have added the app
     in the first place if a matching page wouldn't exist, but still.)
 
     Example::
@@ -251,7 +251,7 @@ def page_for_app_request(request, *, queryset=None):
 
     It is possible to override the queryset used to fetch a page instance. The
     default implementation simply uses the first concrete subclass of
-    :class:`~feincms3.apps.AppsMixin`.
+    :class:`~feincms3.applications.AppsMixin`.
     """
 
     if queryset is None:
@@ -268,7 +268,7 @@ def page_for_app_request(request, *, queryset=None):
 def apps_middleware(get_response):
     """
     This middleware must be put in ``MIDDLEWARE``; it simply assigns
-    the return value of :func:`~feincms3.apps.apps_urlconf` to
+    the return value of :func:`~feincms3.applications.apps_urlconf` to
     ``request.urlconf``. This middleware should probably be one of the first
     since it has to run before any resolving happens.
     """
@@ -288,7 +288,7 @@ class AppsMixin(models.Model):
     the time these two fields will have the same value. This mixin also ensures
     that applications can only be activated on leaf nodes in the page tree.
     Note that currently the :class:`~feincms3.mixins.LanguageMixin` is a
-    required dependency of :mod:`feincms3.apps`.
+    required dependency of :mod:`feincms3.applications`.
 
     ``APPLICATIONS`` contains a list of application configurations consisting
     of:
@@ -312,7 +312,7 @@ class AppsMixin(models.Model):
     Usage::
 
         from django.utils.translation import gettext_lazy as _
-        from feincms3.apps import AppsMixin
+        from feincms3.applications import AppsMixin
         from feincms3.mixins import LanguageMixin
         from feincms3.pages import AbstractPage
 

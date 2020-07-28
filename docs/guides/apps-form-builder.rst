@@ -17,7 +17,7 @@ an ``APPLICATIONS`` attribute to the class:
 
 .. code-block:: python
 
-    from feincms3.apps import AppsMixin
+    from feincms3.applications import AppsMixin
     from feincms3.mixins import LanguageMixin
     from feincms3.pages import AbstractPage
 
@@ -68,7 +68,7 @@ directly handed to the application view and no page view code runs
 you'll have to load the page instance yourself and do the necessary
 language setup and provide the page etc. to the rendering context. The
 best way to load the page instance responsible for the current app is by
-calling :func:`feincms3.apps.page_for_app_request`:
+calling :func:`feincms3.applications.page_for_app_request`:
 
 .. code-block:: python
 
@@ -76,7 +76,7 @@ calling :func:`feincms3.apps.page_for_app_request`:
     from django.http import HttpResponseRedirect
     from django.shortcuts import render
 
-    from feincms3.apps import page_for_app_request
+    from feincms3.applications import page_for_app_request
     from feincms3.regions import Regions
 
     from app.pages.renderer import renderer

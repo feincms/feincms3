@@ -4,7 +4,7 @@ from django.template.base import Node, TemplateSyntaxError, kwarg_re
 from django.urls import NoReverseMatch
 from django.utils.html import conditional_escape
 
-from feincms3 import apps
+from feincms3.applications import reverse_app as _reverse_app
 
 
 register = template.Library()
@@ -54,7 +54,7 @@ class ReverseAppNode(Node):
         # nothing.
         url = ""
         try:
-            url = apps.reverse_app(
+            url = _reverse_app(
                 namespaces,
                 view_name,
                 args=args,

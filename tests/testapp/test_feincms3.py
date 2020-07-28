@@ -9,7 +9,12 @@ from django.test import Client, RequestFactory, TestCase
 from django.urls import NoReverseMatch, reverse, set_urlconf
 from django.utils.translation import deactivate_all, override
 
-from feincms3.apps import apps_urlconf, reverse_any, reverse_app, reverse_fallback
+from feincms3.applications import (
+    apps_urlconf,
+    reverse_any,
+    reverse_app,
+    reverse_fallback,
+)
 from feincms3.plugins.external import ExternalForm
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer

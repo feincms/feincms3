@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _, override
 
 from content_editor.models import Region, Template, create_plugin_base
 
-from feincms3.apps import AppsMixin, reverse_app
+from feincms3.applications import AppsMixin, reverse_app
 from feincms3.mixins import (
     LanguageAndTranslationOfMixin,
     MenuMixin,
@@ -23,7 +23,7 @@ class Page(
     TemplateMixin,
     # We have a main and a footer navigation (meta):
     MenuMixin,
-    # We're building a multilingual CMS. (Also, feincms3.apps depends on
+    # We're building a multilingual CMS. (Also, feincms3.applications depends on
     # LanguageMixin currently):
     LanguageAndTranslationOfMixin,
     # Allow redirecting pages to other pages and/or arbitrary URLs:

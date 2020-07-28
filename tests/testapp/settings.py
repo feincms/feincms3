@@ -52,7 +52,7 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE = [
-    "feincms3.apps.apps_middleware",
+    "feincms3.applications.apps_middleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

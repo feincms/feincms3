@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.shortcuts import get_object_or_404
 
-from feincms3.apps import page_for_app_request
+from feincms3.applications import page_for_app_request
 from feincms3.shortcuts import render_detail
 
 from .models import TranslatedArticle

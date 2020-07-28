@@ -24,8 +24,8 @@ class AbstractPageManager(models.Manager.from_queryset(TreeQuerySet)):
         """
         Return only active pages
 
-        This function is used in :func:`~feincms3.apps.apps_urlconf` and is the
-        recommended way to fetch active pages in your code as well.
+        This function is used in :func:`~feincms3.applications.apps_urlconf`
+        and is the recommended way to fetch active pages in your code as well.
         """
         return self.filter(is_active=True)
 

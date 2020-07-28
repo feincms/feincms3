@@ -9,7 +9,7 @@ namespaces and instance namespaces
 <https://docs.djangoproject.com/en/2.1/topics/http/urls/#url-namespaces-and-included-urlconfs>`__.
 feincms3 builds on this functionality.
 
-The :func:`feincms3.apps.apps_urlconf` function generates a dynamic
+The :func:`feincms3.applications.apps_urlconf` function generates a dynamic
 URLconf Python module including all applications in their assigned place
 and adding the ``urlpatterns`` from ``ROOT_URLCONF`` at the end (or
 returns the value of ``ROOT_URLCONF`` directly if there are no active
@@ -37,7 +37,7 @@ allows for URL reversing using Django's ``reverse()`` mechanism. The
 inner namespace is the app itself, the outer namespace the language.
 (Currently the apps code depends on
 :class:`~feincms3.mixins.LanguageMixin` and cannot be used without it.)
-:func:`~feincms3.apps.reverse_app` hides a good part of the complexity
+:func:`~feincms3.applications.reverse_app` hides a good part of the complexity
 of finding the best match for a given view name since apps will often be
 added several times in different parts of the tree, especially on sites
 with more than one language.
@@ -47,13 +47,13 @@ Reversing application URLs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The best way for reversing app URLs is by using
-:func:`feincms3.apps.reverse_app`. The method expects at least two
+:func:`feincms3.applications.reverse_app`. The method expects at least two
 arguments, a namespace and a viewname. The namespace argument also
 supports passing a list of namespaces which is useful in conjunction
 with the ``app_instance_namespace`` option of applications.
 
-:func:`~feincms3.apps.reverse_app` first generates a list of viewnames
-and passes them on to :func:`feincms3.apps.reverse_any` (which returns
+:func:`~feincms3.applications.reverse_app` first generates a list of viewnames
+and passes them on to :func:`feincms3.applications.reverse_any` (which returns
 the first viewname that can be reversed to a URL).
 
 For the sake of an example let's assume that our site is configured with
@@ -63,7 +63,7 @@ page:
 
 .. code-block:: python
 
-    from feincms3.apps import reverse_app
+    from feincms3.applications import reverse_app
 
     def page_detail(request, path=None):
         page = ...
@@ -82,7 +82,7 @@ The german apps namespace comes first in the list. If the german part of
 the site does not contain an articles app, the reversing continues in
 all other languages.
 
-If the namespace argument to :func:`~feincms3.apps.reverse_app` was a
+If the namespace argument to :func:`~feincms3.applications.reverse_app` was a
 list (or tuple), the list is even longer. Suppose that variants of the
 articles app may be added to the tree where only a single category is
 shown:
@@ -156,7 +156,7 @@ Reversing URLs outside the request-response cycle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Outside the request-response cycle, respectively outside
-:func:`feincms3.apps.apps_middleware`'s ``request.urlconf`` assignment,
+:func:`feincms3.applications.apps_middleware`'s ``request.urlconf`` assignment,
 the reversing functions only use the URLconf module configured using the
 ``ROOT_URLCONF`` setting. In this case applications are impossible to
 find. However, all reversing functions support specifying the root URLconf
@@ -164,6 +164,6 @@ module used for reversing:
 
 .. code-block:: python
 
-    from feincms3.apps import apps_urlconf, reverse_app
+    from feincms3.applications import apps_urlconf, reverse_app
 
     reverse_app("articles", "article-list", urlconf=apps_urlconf())

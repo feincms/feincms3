@@ -39,7 +39,7 @@ afterwards:
 
 Add ``feincms3_sites.middleware.site_middleware`` near the top of your
 ``MIDDLEWARE`` setting, in any case before
-``feincms3.apps.apps_middleware`` if you're using it. The middleware
+``feincms3.applications.apps_middleware`` if you're using it. The middleware
 either sets ``request.site`` to the current
 ``feincms3_sites.models.Site`` instance or raises a ``Http404``
 exception.

@@ -121,7 +121,7 @@ the current page):
     </nav>
 
 
-.. admonition:: LanguageAndTranslationOfMixin within feincms3 apps
+.. admonition:: LanguageAndTranslationOfMixin within feincms3.applications
 
    The same should work for any CMS object inheriting
    :class:`feincms3.mixins.LanguageAndTranslationOfMixin`, and should
@@ -129,14 +129,14 @@ the current page):
    (:ref:`Apps will be introduced later <apps-introduction>`.)
 
    In this case it may be extra-important to wrap the object's call to
-   :func:`~feincms3.apps.reverse_app` in a block which overrides the
+   :func:`~feincms3.applications.reverse_app` in a block which overrides the
    active language so that the article is preferrably shown in a website
    with the matching language:
 
    .. code-block:: python
 
        from django.utils.translation import override
-       from feincms3.apps import reverse_app
+       from feincms3.applications import reverse_app
 
        class Article(LanguageAndTranslationOfMixin, ...):
            def get_absolute_url(self):
