@@ -6,6 +6,12 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- **(not yet) BACKWARDS INCOMPATIBLE** Moved the ``feincms3.apps``
+  module to :mod:`feincms3.applications`. The reason for this change is
+  that Django 3.2 will start autodiscovering app configs and therefore
+  automatically loads the ``.apps`` submodule of all entries in
+  ``INSTALLED_APPS``. This leads to a crash when the ``.apps`` module
+  contains models (such as our ``AppsMixin``).
 - Fixed an infinite recursion crash when referencing pages using
   ``on_delete=SET_NULL``
 - Added a ``LanguageAndTranslationOfMixin`` which not only allows

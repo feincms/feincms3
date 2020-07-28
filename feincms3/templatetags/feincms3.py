@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from django.template.base import Node, TemplateSyntaxError, kwarg_re
+from django.urls import NoReverseMatch
 from django.utils.html import conditional_escape
 
 from feincms3 import apps
@@ -60,7 +61,7 @@ class ReverseAppNode(Node):
                 kwargs=kwargs,
                 current_app=self._current_app(context),
             )
-        except apps.NoReverseMatch:
+        except NoReverseMatch:
             if fallback is not None:
                 url = fallback
             elif self.asvar is None:

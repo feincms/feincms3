@@ -6,17 +6,10 @@ from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.template import Context, Template, TemplateSyntaxError
 from django.test import Client, RequestFactory, TestCase
-from django.urls import set_urlconf
+from django.urls import NoReverseMatch, reverse, set_urlconf
 from django.utils.translation import deactivate_all, override
 
-from feincms3.apps import (
-    NoReverseMatch,
-    apps_urlconf,
-    reverse,
-    reverse_any,
-    reverse_app,
-    reverse_fallback,
-)
+from feincms3.apps import apps_urlconf, reverse_any, reverse_app, reverse_fallback
 from feincms3.plugins.external import ExternalForm
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
