@@ -1,5 +1,3 @@
-# pragma: no cover
-
 import warnings
 
 import django
