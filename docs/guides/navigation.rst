@@ -89,6 +89,7 @@ For this example, the page class should also inherit the
 
     class Page(MenuMixin, ..., AbstractPage):
         MENUS = (
+            ("", "–"),  # Looks better than "None"
             ("main", _("main navigation")),
             ("meta", _("meta navigation")),
         )

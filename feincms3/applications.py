@@ -318,6 +318,7 @@ class AppsMixin(models.Model):
 
         class Page(AppsMixin, LanguageMixin, AbstractPage):
             APPLICATIONS = [
+                ("", "–"),  # Looks better than "None"
                 (
                     "publications",
                     _("publications"),
