@@ -13,23 +13,16 @@ register = template.Library()
 @register.simple_tag
 def menus():
     menus = defaultdict(list)
-    pages = (
-        Page.objects.with_tree_fields()
-        .filter(Q(is_active=True), Q(language_code=get_language()), ~Q(menu=""))
-        .extra(where=["tree_depth BETWEEN 1 AND 2"])
-    )
+    pages = Page.objects.filter(
+        Q(is_active=True), Q(language_code=get_language()), ~Q(menu="")
+    ).extra(where=["tree_depth BETWEEN 1 AND 2"])
     for page in pages:
-        menus[page.menu].append(page)
+        menus[page.menu.replace("-", "_")].append(page)
     return menus
 
 
 @register.filter
-def group_by_tree(iterable):
-    """
-    Given a list of pages in tree order, generate pairs consisting of the
-    parents and their descendants in a list.
-    """
-
+def group_by_parent(iterable):
     parent = None
     children = []
     depth = -1
@@ -48,3 +41,30 @@ def group_by_tree(iterable):
 
     if parent:
         yield parent, children
+
+
+@register.tag
+def ifactive(parser, token):
+    try:
+        tag_name, page = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError(
+            "%r tag requires a single argument" % token.contents.split()[0]
+        )
+
+    nodelist = parser.parse(("endifactive",))
+    parser.delete_first_token()
+    return IfActiveNode(page, nodelist)
+
+
+class IfActiveNode(template.Node):
+    def __init__(self, page, nodelist):
+        self.page = template.Variable(page)
+        self.nodelist = nodelist
+
+    def render(self, context):
+        page = self.page.resolve(context)
+        current_page = context.get("page")
+        if not current_page or page.id not in current_page.tree_path:
+            return ""
+        return self.nodelist.render(context)
