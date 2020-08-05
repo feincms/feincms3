@@ -25,17 +25,15 @@ def menus():
 def group_by_parent(iterable):
     parent = None
     children = []
-    depth = -1
 
     for element in iterable:
-        if parent is None or element.tree_depth == depth:
+        if parent is None or element.tree_depth == parent.tree_depth:
             if parent:
                 yield parent, children
                 parent = None
                 children = []
 
             parent = element
-            depth = element.tree_depth
         else:
             children.append(element)
 

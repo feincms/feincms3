@@ -127,20 +127,18 @@ with their children:
 .. code-block:: python
 
     @register.filter
-    def group_by_tree(iterable):
+    def group_by_parent(iterable):
         parent = None
         children = []
-        depth = -1
 
         for element in iterable:
-            if parent is None or element.tree_depth == depth:
+            if parent is None or element.tree_depth == parent.tree_depth:
                 if parent:
                     yield parent, children
                     parent = None
                     children = []
 
                 parent = element
-                depth = element.tree_depth
             else:
                 children.append(element)
 
@@ -153,7 +151,7 @@ Now, a possible use of those two tags in the template looks as follows::
     {% all_menus as menus %}
 
     <nav class="nav-main">
-    {% for main, children in menus.main|group_by_tree %}
+    {% for main, children in menus.main|group_by_parent %}
       <a
         {% if page and main.id in page.tree_path %}class="active"{% endif %}
         href="{{ main.get_absolute_url }}">{{ main.title }}</a>
