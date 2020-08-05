@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Switched from ``url()`` to ``re_path()`` in ``apps_urlconf()`` to
+  avoid deprecation warnings.
+
 
 `0.35`_ (2020-07-28)
 ~~~~~~~~~~~~~~~~~~~~

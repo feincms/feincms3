@@ -1,5 +1,5 @@
-from django.conf.urls import url
 from django.shortcuts import get_object_or_404
+from django.urls import path
 
 from feincms3.applications import page_for_app_request
 from feincms3.shortcuts import render_detail, render_list
@@ -34,7 +34,7 @@ def article_detail(request, pk):
 
 app_name = "articles"
 urlpatterns = [
-    url(r"^all/$", article_list_all, name="article-list-all"),
-    url(r"^$", article_list, name="article-list"),
-    url(r"^(?P<pk>[0-9]+)/$", article_detail, name="article-detail"),
+    path("all/", article_list_all, name="article-list-all"),
+    path("", article_list, name="article-list"),
+    path("<int:pk>/", article_detail, name="article-detail"),
 ]

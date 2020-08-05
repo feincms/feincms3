@@ -7,11 +7,10 @@ from collections import defaultdict
 from importlib import import_module
 
 from django.conf import settings
-from django.conf.urls import include, url
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, signals
-from django.urls import NoReverseMatch, reverse
+from django.urls import NoReverseMatch, include, re_path, reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
 from feincms3.utils import validation_error
@@ -196,7 +195,7 @@ def apps_urlconf(*, apps=None):
             if application not in app_config:
                 continue
             mapping[language_code].append(
-                url(
+                re_path(
                     r"^%s" % re.escape(path.lstrip("/")),
                     include(
                         app_config[application]["urlconf"],
@@ -206,7 +205,7 @@ def apps_urlconf(*, apps=None):
             )
 
         m.urlpatterns = [
-            url(
+            re_path(
                 r"",
                 include(
                     (instances, _APPS_MODEL.LANGUAGE_CODES_NAMESPACE),
