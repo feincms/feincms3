@@ -8,6 +8,9 @@ Change log
 
 - Switched from ``url()`` to ``re_path()`` in ``apps_urlconf()`` to
   avoid deprecation warnings.
+- Removed the limitation that apps could not have descendants in a page
+  tree. There may be valid use cases for this, especially if an apps'
+  URLconf module does not handle *all* paths.
 
 
 `0.35`_ (2020-07-28)

@@ -13,8 +13,6 @@ from django.db.models import Q, signals
 from django.urls import NoReverseMatch, include, re_path, reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
-from feincms3.utils import validation_error
-
 
 __all__ = (
     "AppsMixin",
@@ -283,11 +281,10 @@ class AppsMixin(models.Model):
     """
     The page class should inherit this mixin. It adds an ``application`` field
     containing the selected application, and an ``app_instance_namespace``
-    field which contains the instance namespace of the application. Most of
-    the time these two fields will have the same value. This mixin also ensures
-    that applications can only be activated on leaf nodes in the page tree.
-    Note that currently the :class:`~feincms3.mixins.LanguageMixin` is a
-    required dependency of :mod:`feincms3.applications`.
+    field which contains the instance namespace of the application. Most of the
+    time these two fields will have the same value.  Note that currently the
+    :class:`~feincms3.mixins.LanguageMixin` is a required dependency of
+    :mod:`feincms3.applications`.
 
     ``APPLICATIONS`` contains a list of application configurations consisting
     of:
@@ -401,22 +398,6 @@ class AppsMixin(models.Model):
         """
         exclude = [] if exclude is None else exclude
         super().clean_fields(exclude)
-
-        if self.parent and (
-            self.parent.application
-            or self.parent.ancestors().exclude(application="").exists()
-        ):
-            error = _("Apps may not have any descendants.")
-            raise validation_error(
-                _("Invalid parent: %s") % (error,), field="parent", exclude=exclude
-            )
-
-        if self.application and self.children.exists():
-            raise validation_error(
-                _("Apps may not have any descendants in the tree."),
-                field="application",
-                exclude=exclude,
-            )
 
         app_config = self.application_config()
         if app_config and app_config.get("required_fields"):

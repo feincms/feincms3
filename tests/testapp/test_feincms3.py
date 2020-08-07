@@ -393,32 +393,6 @@ class Test(TestCase):
         )
         return home, blog
 
-    def test_apps_leaf(self):
-        """Test that applications are leaf nodes"""
-
-        home, blog = self._apps_validation_models()
-        home.application = "blog"
-        with self.assertRaises(ValidationError) as cm:
-            home.full_clean()
-
-        self.assertEqual(
-            cm.exception.error_dict["application"][0].message,
-            "Apps may not have any descendants in the tree.",
-        )
-
-    def test_apps_no_descendants(self):
-        """Test that apps have no descendants"""
-
-        home, blog = self._apps_validation_models()
-        third = Page(title="third", slug="third", language_code="en", parent=blog)
-        with self.assertRaises(ValidationError) as cm:
-            third.full_clean()
-
-        self.assertEqual(
-            cm.exception.error_dict["parent"][0].message,
-            "Invalid parent: Apps may not have any descendants.",
-        )
-
     def test_apps_duplicate(self):
         """Test that apps cannot be added twice with the exact same configuration"""
         home, blog = self._apps_validation_models()
@@ -467,7 +441,7 @@ class Test(TestCase):
         self.assertContains(response, "set_application")
 
         response = client.post(clone_url, {"target": home.pk, "set_application": True})
-        self.assertContains(response, "Apps may not have any descendants in the tree.")
+        self.assertContains(response, "This exact app already exists.")
 
         # The other way round works
         clone_url = reverse("admin:testapp_page_clone", args=(home.pk,))
@@ -847,29 +821,6 @@ class Test(TestCase):
                 (p1.pk, root.pk, 20),
                 (p2.pk, root.pk, 30),
             ],
-        )
-
-    def test_invalid_parent(self):
-        root, p1, p2 = self.prepare_for_move()
-        p1.application = "blog"
-        p1.save()
-
-        p2 = Page.objects.get(pk=p2.pk)
-        p2.parent_id = p1.pk
-
-        # Apps may not have descendants
-        self.assertRaises(ValidationError, p2.full_clean)
-
-        client = self.login()
-        response = client.post(
-            reverse("admin:testapp_page_move", args=(p2.pk,)),
-            {"move_to": "first", "of": p1.pk},
-        )
-
-        self.assertContains(
-            response,
-            "<li>Invalid parent: Apps may not have any descendants.</li>",
-            status_code=200,
         )
 
     def test_redirects(self):
