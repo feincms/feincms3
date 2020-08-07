@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.36`_ (2020-08-07)
+~~~~~~~~~~~~~~~~~~~~
+
 - Switched from ``url()`` to ``re_path()`` in ``apps_urlconf()`` to
   avoid deprecation warnings.
 - Removed the limitation that apps could not have descendants in a page
