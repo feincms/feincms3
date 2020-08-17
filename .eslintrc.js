@@ -1,11 +1,11 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
   },
   extends: "eslint:recommended",
   parserOptions: {
-    ecmaVersion: 2018
+    ecmaVersion: 2018,
   },
   plugins: ["prettier"],
   rules: {
@@ -15,6 +15,6 @@ module.exports = {
     semi: ["error", "always"],
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "prettier/prettier": "error",
-    quotes: 0
-  }
+    quotes: 0,
+  },
 };
