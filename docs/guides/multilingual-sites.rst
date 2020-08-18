@@ -144,13 +144,13 @@ the current page):
                    return reverse_app("articles", "detail", ...)
 
    Generating the navigation menu for changing the language should
-   preferrably link to the trnslated article and only fall back to the
+   preferrably link to the translated article and only fall back to the
    translated page's URL if no such article exists:
 
    .. code-block:: python
 
         def article_detail(request, ...):
-            page = page_for_app_request(request, Page.objects.active())
+            page = page_for_app_request(request)
             page.activate_language(request)
             article = get_object_or_404(Article, ...)
 
