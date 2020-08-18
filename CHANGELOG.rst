@@ -6,6 +6,12 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed :func:`feincms3.applications.page_for_app_request` to only use
+  active pages by default. This change should mostly not change anything
+  since :func:`~feincms3.applications.apps_urlconf()` and therefore
+  :func:`~feincms3.applications.apps_middleware` only add active
+  applications anyway.
+
 
 `0.36`_ (2020-08-07)
 ~~~~~~~~~~~~~~~~~~~~

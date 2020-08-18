@@ -252,7 +252,7 @@ def page_for_app_request(request, *, queryset=None):
     """
 
     if queryset is None:
-        queryset = _APPS_MODEL._default_manager.with_tree_fields()
+        queryset = _APPS_MODEL._default_manager.active().with_tree_fields()
     # Unguarded - if this fails, we shouldn't even be here.
     return queryset.get(
         language_code=request.resolver_match.namespaces[0][
