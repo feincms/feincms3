@@ -83,9 +83,14 @@ def oembed_html(url, *, cache_failures=True):
 
 def render_external(plugin, **kwargs):
     """
-    Render the plugin, embedding it in the appropriate markup for Foundation's
+    Render the plugin, embedding it in the appropriate markup for `Foundation's
     responsive-embed element
-    (https://foundation.zurb.com/sites/docs/responsive-embed.html)
+    <https://foundation.zurb.com/sites/docs/responsive-embed.html>`__
+
+    The HTML embed code is generated using
+    :func:`~feincms3.plugins.external.oembed_html`. Maybe you want to take a
+    look at :mod:`feincms3.embedding` for a less versatile but much faster
+    alternative.
     """
 
     html = oembed_html(plugin.url)
