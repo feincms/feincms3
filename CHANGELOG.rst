@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.37`_ (2020-09-10)
+~~~~~~~~~~~~~~~~~~~~
+
 - Changed :func:`feincms3.applications.page_for_app_request` to only use
   active pages by default. This change should mostly not change anything
   since :func:`~feincms3.applications.apps_urlconf()` and therefore
@@ -644,4 +647,5 @@ functionality.
 .. _0.34: https://github.com/matthiask/feincms3/compare/0.33...0.34
 .. _0.35: https://github.com/matthiask/feincms3/compare/0.34...0.35
 .. _0.36: https://github.com/matthiask/feincms3/compare/0.35...0.36
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.36...main
+.. _0.37: https://github.com/matthiask/feincms3/compare/0.36...0.37
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.37...main
