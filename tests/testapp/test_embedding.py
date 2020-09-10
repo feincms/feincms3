@@ -9,7 +9,7 @@ class EmbeddingTest(TestCase):
         self.assertEqual(embed("stuff"), None)
 
     def test_youtube(self):
-        """Test a youtube link"""
+        """YouTube video embedding works"""
         self.assertEqual(
             embed("https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
             """\
@@ -36,6 +36,7 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
         )
 
     def test_vimeo(self):
+        """Vimeo video embedding works"""
         self.assertEqual(
             embed("https://vimeo.com/455728498"),
             """\

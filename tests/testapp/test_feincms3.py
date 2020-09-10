@@ -407,6 +407,7 @@ class Test(TestCase):
         )
 
     def test_apps_required_fields(self):
+        """Apps can bave required fields"""
         home = Page(
             title="home",
             slug="home",
@@ -717,6 +718,7 @@ class Test(TestCase):
         return root, p1, p2
 
     def test_move_to_root_last(self):
+        """Last child of no parent should move to the root"""
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
@@ -736,6 +738,7 @@ class Test(TestCase):
         )
 
     def test_move_to_root_first(self):
+        """First child of no parent should move to the root"""
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
@@ -750,6 +753,7 @@ class Test(TestCase):
         )
 
     def test_move_to_child(self):
+        """First child of a different page, new siblings are pushed back"""
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
@@ -764,6 +768,7 @@ class Test(TestCase):
         )
 
     def test_invalid_move(self):
+        """Various invalid moves and their validation errors"""
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
@@ -788,6 +793,7 @@ class Test(TestCase):
         )
 
     def test_reorder_siblings(self):
+        """Reordering of siblings"""
         root, p1, p2 = self.prepare_for_move()
 
         p3 = Page.objects.create(title="p3", slug="p3", parent=root)
@@ -824,6 +830,7 @@ class Test(TestCase):
         )
 
     def test_redirects(self):
+        """Exercise model and view aspects of redirects"""
         page1 = Page.objects.create(
             title="home",
             slug="home",
@@ -926,6 +933,7 @@ class Test(TestCase):
         self.assertEqual(regions.cache_key("main"), "testapp.page-%s-main" % page.pk)
 
     def test_plugin_template_instance(self):
+        """The renderer handles template instances, not just template paths etc."""
         renderer = TemplatePluginRenderer()
         renderer.register_template_renderer(HTML, Template("{{ plugin.html|safe }}"))
         page = Page.objects.create(template_key="standard")
@@ -938,6 +946,7 @@ class Test(TestCase):
         self.assertEqual(regions.render("main", None), "<b>Hello</b>")
 
     def test_reverse_app_tag(self):
+        """Exercise the {% reverse_app %} template tag"""
         Page.objects.create(
             title="blog",
             slug="blog",
@@ -980,6 +989,7 @@ class Test(TestCase):
             )
 
     def test_reverse_app_failures(self):
+        """Invalid parameters to {% reverse_app %}"""
         with self.assertRaises(TemplateSyntaxError) as cm:
             Template("{% load feincms3 %}{% reverse_app %}")
         self.assertEqual(
@@ -988,6 +998,7 @@ class Test(TestCase):
         )
 
     def test_descendant_update(self):
+        """Saving pages with descendants updates descendants too"""
         self.prepare_for_move()
         root, p1, p2 = list(Page.objects.all())
 
@@ -1017,6 +1028,7 @@ class Test(TestCase):
         self.assertEqual(p2.path, "/root/p2/")
 
     def test_move_view_redirect(self):
+        """Move view redirects as expected when encountering an invalid PK"""
         client = self.login()
         # move_view also redirects to index page when encountering invalid
         # object IDs
@@ -1070,17 +1082,21 @@ class Test(TestCase):
         )
 
     def test_default_template_fallback(self):
+        """The TemplateMixin falls back to the first template"""
         template = Page(template_key="__notexists").template
         self.assertEqual(template.key, "standard")
 
     def test_apps_urlconf_no_apps(self):
+        """apps_urlconf returns the ROOT_URLCONF when there are no apps at all"""
         self.assertEqual(apps_urlconf(apps=[]), "testapp.urls")
 
     def test_get_absolute_url(self):
+        """Page.get_absolute_url with and without paths"""
         self.assertEqual(Page(path="/test/").get_absolute_url(), "/test/")
         self.assertEqual(Page(path="/").get_absolute_url(), "/")
 
     def test_render_list(self):
+        """render_list, automatic template selection and pagination"""
         for i in range(7):
             Article.objects.create(title="Article %s" % i, category="publications")
 
@@ -1095,6 +1111,7 @@ class Test(TestCase):
         self.assertEqual(response.context_data["object_list"].paginator.num_pages, 4)
 
     def test_language_and_translation_of_mixin(self):
+        """LanguageAndTranslationOfMixin.translations testing"""
         original = Page.objects.create(
             title="home-en",
             slug="home-en",
@@ -1132,6 +1149,7 @@ class Test(TestCase):
         self.assertEqual(set(translation.translations()), set())
 
     def test_language_and_translation_of_mixin_in_app(self):
+        """LanguageAndTranslationOfMixin when used within a feincms3 app"""
         Page.objects.create(
             title="home-en",
             slug="home-en",
@@ -1166,6 +1184,7 @@ class Test(TestCase):
             )
 
     def test_translations_filter_edge_cases(self):
+        """Exercise edge cases of the |translations filter"""
         self.assertEqual(len(translations(None)), 3)
         self.assertEqual(len(translations({})), 3)
 

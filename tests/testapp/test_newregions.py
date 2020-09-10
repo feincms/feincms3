@@ -56,6 +56,7 @@ class MyRegions(Regions):
 
 class Test(TestCase):
     def test_enter_exit(self):
+        """Entering and exiting the teasers subregion produces a wrapping element"""
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -74,6 +75,7 @@ class Test(TestCase):
         )
 
     def test_subregion_at_end(self):
+        """Subregions are properly closed when subregion element is last"""
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -90,6 +92,7 @@ class Test(TestCase):
         )
 
     def test_other_subregion(self):
+        """Switching to a different subregion closes the former and opens the latter"""
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -109,6 +112,8 @@ class Test(TestCase):
         )
 
     def test_explicit_exit(self):
+        """Explicitly exiting a subregion works. More than one exit is silently
+        ignored."""
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -127,6 +132,8 @@ class Test(TestCase):
         )
 
     def test_both_allowed(self):
+        """Files do not specify a subregion, and therefore shouldn't influence
+        the current subregion when rendered"""
         regions = MyRegions.from_contents(
             contents={
                 "main": [
@@ -147,6 +154,8 @@ class Test(TestCase):
         )
 
     def test_restart_subregion(self):
+        """Restarting the subregion we're already in works correctly"""
+
         class RestartRegions(Regions):
             def handle_restart(self, items, context):
                 first = True
@@ -193,6 +202,8 @@ class Test(TestCase):
         )
 
     def test_enter_exit_with_custom_default(self):
+        """Entering and exiting also works with a default subregion override"""
+
         class CustomDefaultRegions(MyRegions):
             def handle_default(self, items, context):
                 yield '<div class="default">'
@@ -235,6 +246,7 @@ class Test(TestCase):
         )
 
     def test_cache(self):
+        """Caching really caches the values"""
         regions = MyRegions.from_contents(
             contents={"main": [Text(text="Stuff")]},
             renderer=renderer,
@@ -244,11 +256,14 @@ class Test(TestCase):
         output = regions.render("main")
 
         regions = MyRegions.from_contents(
-            contents={}, renderer=renderer, cache_key=lambda region: region
+            contents={},  # Different contents!
+            renderer=renderer,
+            cache_key=lambda region: region,
         )
         self.assertEqual(output, regions.render("main"))
 
     def test_unknown_subregion(self):
+        """Unknown subregions should crash the rendering"""
         regions = MyRegions.from_contents(
             contents={"main": [Text(text="Stuff"), Command(subregion="unknown")]},
             renderer=renderer,
