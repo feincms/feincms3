@@ -12,8 +12,8 @@ Change log
   :func:`~feincms3.applications.apps_middleware` only add active
   applications anyway.
 - Upgraded prettier and ESLint to recent versions.
-- Added some undocumented code to embed videos from YouTube and Vimeo
-  without requiring oEmbed.
+- Added some code to embed videos from YouTube and Vimeo without
+  requiring oEmbed.
 - Dropped compatibility with Python 3.5.
 
 

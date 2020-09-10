@@ -1,3 +1,7 @@
+"""
+Embedding videos and other 3rd party content without oEmbed.
+"""
+
 import re
 
 from django.utils.html import mark_safe
@@ -23,6 +27,13 @@ VIMEO_RE = re.compile(
 
 
 def embed_youtube(url):
+    """
+    Return HTML for embedding YouTube videos or ``None``, if argument isn't a
+    YouTube link.
+
+    The YouTube ``<iframe>`` is wrapped in a
+    ``<div class="responsive-embed widescreen youtube">`` element.
+    """
     match = re.search(YOUTUBE_RE, url)
     if not match:
         return None
@@ -37,6 +48,13 @@ def embed_youtube(url):
 
 
 def embed_vimeo(url):
+    """
+    Return HTML for embedding Vimeo videos or ``None``, if argument isn't a
+    Vimeo link.
+
+    The Vimeo ``<iframe>`` is wrapped in a
+    ``<div class="responsive-embed widescreen vimeo">`` element.
+    """
     match = re.search(VIMEO_RE, url)
     if not match:
         return None
@@ -50,7 +68,16 @@ def embed_vimeo(url):
     )
 
 
-def embed_video(url, *, handlers=[embed_youtube, embed_vimeo]):
+def embed(url, *, handlers=[embed_youtube, embed_vimeo]):
+    """embed(url, *, handlers=[embed_youtube, embed_vimeo])
+    Run a selection of embedding handlers and return the first value, or
+    ``None`` if URL couldn't be processed by any handler.
+
+    You could write your own handler converting the URL argument into a plain
+    old anchor element or maybe even
+    :func:`feincms3.plugins.external.oembed_html` if you wanted to fall back to
+    oEmbed.
+    """
     for handler in handlers:
         html = handler(url)
         if html is not None:

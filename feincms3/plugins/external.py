@@ -27,7 +27,7 @@ __all__ = (
 def oembed_json(url, *, cache_failures=True):
     """
     Asks `Noembed <https://noembed.com/>`_ for the embedding HTML code for
-    arbitrary URLs. Sites supported include Youtube, Vimeo, Twitter and many
+    arbitrary URLs. Sites supported include YouTube, Vimeo, Twitter and many
     others.
 
     Successful embeds are always cached for 30 days.
@@ -90,7 +90,7 @@ def render_external(plugin, **kwargs):
 
     html = oembed_html(plugin.url)
     if "youtube.com" in html:
-        html = '<div class="responsive-embed widescreen">%s</div>' % (html,)
+        html = '<div class="responsive-embed widescreen youtube">%s</div>' % (html,)
     elif "vimeo.com" in html:
         html = '<div class="responsive-embed widescreen vimeo">%s</div>' % (html,)
     return mark_safe(html)
