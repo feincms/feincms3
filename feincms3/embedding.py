@@ -37,7 +37,7 @@ def embed_youtube(url):
     The YouTube ``<iframe>`` is wrapped in a
     ``<div class="responsive-embed widescreen youtube">`` element.
     """
-    match = re.search(YOUTUBE_RE, url)
+    match = YOUTUBE_RE.search(url)
     if not match:
         return None
     d = match.groupdict()
@@ -58,7 +58,7 @@ def embed_vimeo(url):
     The Vimeo ``<iframe>`` is wrapped in a
     ``<div class="responsive-embed widescreen vimeo">`` element.
     """
-    match = re.search(VIMEO_RE, url)
+    match = VIMEO_RE.search(url)
     if not match:
         return None
     d = match.groupdict()
