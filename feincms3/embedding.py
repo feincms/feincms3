@@ -7,6 +7,9 @@ import re
 from django.utils.html import mark_safe
 
 
+__all__ = ("embed_youtube", "embed_vimeo", "embed")
+
+
 YOUTUBE_RE = re.compile(
     r"""youtu(\.?)be(\.com)?/  # match youtube's domains
         (\#/)? # for mobile urls
