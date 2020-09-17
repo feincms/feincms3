@@ -138,6 +138,9 @@ def render_in_context(context, template, local_context=None):
     ``dict`` and not a full-blown ``Context`` instance which would needlessly
     burn CPU cycles."""
 
+    if context is None:
+        context = Context()
+
     if not hasattr(template, "render"):  # Quacks like a template?
         try:
             engine = context.template.engine
