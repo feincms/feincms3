@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Made :func:`~feincms3.renderer.render_in_context` create its own
+  ``Context`` if the context passed is ``None``.
+
+
 `0.37`_ (2020-09-10)
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -18,8 +22,6 @@ Change log
 - Added some code to embed videos from YouTube and Vimeo without
   requiring oEmbed.
 - Dropped compatibility with Python 3.5.
-- Made :func:`~feincms3.renderer.render_in_context` create its own
-  ``Context`` if the context passed is ``None``.
 
 
 `0.36`_ (2020-08-07)
