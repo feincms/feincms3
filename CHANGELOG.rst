@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.38`_ (2020-09-23)
+~~~~~~~~~~~~~~~~~~~~
+
 - **BACKWARDS INCOMPATIBLE** The ``AbstractPageManager`` has been
   replaced by :class:`feincms3.pages.AbstractPageQuerySet`. Subclassing
   querysets and running ``.as_manager()`` in the end is more useful.
@@ -655,4 +659,5 @@ functionality.
 .. _0.35: https://github.com/matthiask/feincms3/compare/0.34...0.35
 .. _0.36: https://github.com/matthiask/feincms3/compare/0.35...0.36
 .. _0.37: https://github.com/matthiask/feincms3/compare/0.36...0.37
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.37...main
+.. _0.38: https://github.com/matthiask/feincms3/compare/0.37...0.38
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.38...main
