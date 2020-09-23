@@ -7,12 +7,13 @@ Change log
 ~~~~~~~~~~~~~~~
 
 
-`0.38`_ (2020-09-23)
-~~~~~~~~~~~~~~~~~~~~
+`0.38.1`_ (2020-09-23)
+~~~~~~~~~~~~~~~~~~~~~~
 
-- **BACKWARDS INCOMPATIBLE** The ``AbstractPageManager`` has been
-  replaced by :class:`feincms3.pages.AbstractPageQuerySet`. Subclassing
-  querysets and running ``.as_manager()`` in the end is more useful.
+- The ``AbstractPageManager.active()`` method has been moved to a new
+  :class:`feincms3.pages.AbstractPageQuerySet`. If subclassing the
+  queryset you should re-create the page manager using
+  ``pages.AbstractPageManager.from_queryset(<your new subclass>)``.
 - Made :func:`~feincms3.renderer.render_in_context` create its own
   ``Context`` if the context passed is ``None``.
 
@@ -659,5 +660,5 @@ functionality.
 .. _0.35: https://github.com/matthiask/feincms3/compare/0.34...0.35
 .. _0.36: https://github.com/matthiask/feincms3/compare/0.35...0.36
 .. _0.37: https://github.com/matthiask/feincms3/compare/0.36...0.37
-.. _0.38: https://github.com/matthiask/feincms3/compare/0.37...0.38
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.38...main
+.. _0.38.1: https://github.com/matthiask/feincms3/compare/0.37...0.38.1
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.38.1...main

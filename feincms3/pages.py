@@ -17,10 +17,6 @@ class AbstractPageQuerySet(TreeQuerySet):
     ``is_active=True``.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.with_tree_fields()  # Mutates in place
-
     def active(self):
         """
         Return only active pages
@@ -29,6 +25,13 @@ class AbstractPageQuerySet(TreeQuerySet):
         and is the recommended way to fetch active pages in your code as well.
         """
         return self.filter(is_active=True)
+
+
+class AbstractPageManager(models.Manager.from_queryset(AbstractPageQuerySet)):
+    """Always return a queryset with tree fields"""
+
+    def get_queryset(self):
+        return super().get_queryset().with_tree_fields()
 
 
 class AbstractPage(TreeNode):
@@ -90,7 +93,7 @@ class AbstractPage(TreeNode):
     )
     static_path = models.BooleanField(_("static path"), default=False)
 
-    objects = AbstractPageQuerySet.as_manager()
+    objects = AbstractPageManager()
 
     class Meta:
         abstract = True
