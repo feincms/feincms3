@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- **BACKWARDS INCOMPATIBLE** The ``AbstractPageManager`` has been
+  replaced by :class:`feincms3.pages.AbstractPageQuerySet`. Subclassing
+  querysets and running ``.as_manager()`` in the end is more useful.
 - Made :func:`~feincms3.renderer.render_in_context` create its own
   ``Context`` if the context passed is ``None``.
 

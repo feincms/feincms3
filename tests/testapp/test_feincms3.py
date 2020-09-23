@@ -1131,14 +1131,29 @@ class Test(TestCase):
             menu="main",
             translation_of=original,
         )
+        translation_fr = Page.objects.create(
+            title="home-fr",
+            slug="home-fr",
+            path="/fr/",
+            static_path=True,
+            language_code="fr",
+            is_active=False,  # Important!
+            menu="main",
+            translation_of=original,
+        )
 
-        self.assertEqual(set(original.translations()), {original, translation})
-        self.assertEqual(set(translation.translations()), {original, translation})
+        self.assertEqual(
+            set(original.translations()), {original, translation, translation_fr}
+        )
+        self.assertEqual(set(original.translations().active()), {original, translation})
+        self.assertEqual(
+            set(translation.translations().active()), {original, translation}
+        )
 
         self.assertEqual(
             [
                 language["object"]
-                for language in translations(translation.translations())
+                for language in translations(translation.translations().active())
             ],
             [original, translation, None],
         )
