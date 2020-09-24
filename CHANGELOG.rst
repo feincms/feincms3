@@ -6,6 +6,14 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- **BACKWARDS INCOMPATIBLE**: ``AbstractPageManager`` has been removed.
+  You should subclass the :class:`feincms3.pages.AbstractPageQuerySet`
+  instead and use the queryset's ``.as_manager(with_tree_fields=True)``
+  classmethod to generate a manager which adds tree fields to select
+  queries by default. If you didn't use the ``AbstractPageManager`` in
+  your code directly you don't have to do anything.
+- Started requiring ``django-tree-queries>=0.4.1``.
+
 
 `0.38.1`_ (2020-09-23)
 ~~~~~~~~~~~~~~~~~~~~~~

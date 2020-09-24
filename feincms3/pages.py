@@ -27,13 +27,6 @@ class AbstractPageQuerySet(TreeQuerySet):
         return self.filter(is_active=True)
 
 
-class AbstractPageManager(models.Manager.from_queryset(AbstractPageQuerySet)):
-    """Always return a queryset with tree fields"""
-
-    def get_queryset(self):
-        return super().get_queryset().with_tree_fields()
-
-
 class AbstractPage(TreeNode):
     """
     Short version: If you want to build a CMS with a hierarchical page
@@ -93,7 +86,7 @@ class AbstractPage(TreeNode):
     )
     static_path = models.BooleanField(_("static path"), default=False)
 
-    objects = AbstractPageManager()
+    objects = AbstractPageQuerySet.as_manager(with_tree_fields=True)
 
     class Meta:
         abstract = True
