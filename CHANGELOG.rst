@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.39`_ (2020-09-25)
+~~~~~~~~~~~~~~~~~~~~
+
 - **BACKWARDS INCOMPATIBLE**: ``AbstractPageManager`` has been removed.
   You should subclass the :class:`feincms3.pages.AbstractPageQuerySet`
   instead and use the queryset's ``.as_manager(with_tree_fields=True)``
@@ -13,6 +17,8 @@ Change log
   queries by default. If you didn't use the ``AbstractPageManager`` in
   your code directly you don't have to do anything.
 - Started requiring ``django-tree-queries>=0.4.1``.
+- Completely reworked the page move form; allow directly specifying the
+  new position.
 
 
 `0.38.1`_ (2020-09-23)
@@ -669,4 +675,5 @@ functionality.
 .. _0.36: https://github.com/matthiask/feincms3/compare/0.35...0.36
 .. _0.37: https://github.com/matthiask/feincms3/compare/0.36...0.37
 .. _0.38.1: https://github.com/matthiask/feincms3/compare/0.37...0.38.1
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.38.1...main
+.. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.39...main
