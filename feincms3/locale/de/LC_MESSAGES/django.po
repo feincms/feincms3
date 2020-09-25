@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 13:08+0200\n"
+"POT-Creation-Date: 2020-09-25 22:03+0200\n"
 "PO-Revision-Date: 2013-10-25 09:15+0000\n"
 "Last-Translator: Matthias Kestenholz <mk@feinheit.ch>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/feincms/language/"
@@ -20,125 +20,87 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:100 pages.py:60
+#: admin.py:97 pages.py:60
 msgid "title"
 msgstr "Titel"
 
-#: admin.py:114
+#: admin.py:111
 msgid "move"
 msgstr "verschieben"
 
-#: admin.py:140
+#: admin.py:137
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:145
+#: admin.py:142
 #, python-format
 msgid "Clone %s"
 msgstr "%s klonen"
 
-#: admin.py:204
-msgid "left sibling"
-msgstr "linkes Geschwister"
-
-#: admin.py:205
-msgid "right sibling"
-msgstr "rechtes Geschwister"
-
-#: admin.py:206
-msgid "first child"
-msgstr "erstes Kind"
-
-#: admin.py:207
-msgid "last child"
-msgstr "letztes Kind"
-
 #: admin.py:211
-msgid "Make node"
-msgstr "Mach Knoten"
+msgid "move to"
+msgstr "verschieben nach"
 
-#: admin.py:223
-msgctxt "MoveForm"
-msgid "Of"
-msgstr "Von"
+#: admin.py:248 admin.py:259 admin.py:269
+msgid "move here"
+msgstr "hierhin verschieben"
 
-#: admin.py:242
-msgid "Cannot move node to a position relative to itself."
-msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
-
-#: admin.py:288
+#: admin.py:327
 #, python-format
-msgid "The node %(node)s has been made the %(move_to)s of node %(to)s."
-msgstr "%(node)s wurde %(move_to)s von %(to)s."
+msgid "The node %(node)s has been moved to the new position."
+msgstr "%(node)s wurde zur neuen Position verschoben."
 
-#: admin.py:294
-msgid "root node"
-msgstr "Wurzel"
-
-#: admin.py:312
+#: admin.py:345
 msgid "target"
 msgstr "Ziel"
 
-#: admin.py:322
+#: admin.py:355
 msgid "Replace target's content"
 msgstr "Inhalt des Ziels ersetzen"
 
-#: admin.py:324
+#: admin.py:357
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Betrifft die folgenden Inhalte: %s."
 
-#: admin.py:346
+#: admin.py:379
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Aktuell: \"%s\""
 
-#: admin.py:356
+#: admin.py:389
 msgid "Cannot clone node to itself."
 msgstr "Kann Knoten nicht zu sich selbst klonen."
 
-#: admin.py:379
+#: admin.py:412
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Aktualisierte Felder von %(node)s: %(fields)s"
 
-#: admin.py:403
+#: admin.py:436
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Ersetzte den Inhalt von %(target)s mit dem Inhalt von %(source)s."
 
-#: admin.py:432
+#: admin.py:465
 msgid "ancestor"
 msgstr "übergeordnet"
 
-#: apps.py:346
+#: applications.py:352
 msgid "application"
 msgstr "Applikation"
 
-#: apps.py:352
+#: applications.py:358
 msgid "app instance namespace"
 msgstr "Appinstanz-Namensraum"
 
-#: apps.py:400
-msgid "Apps may not have any descendants."
-msgstr "Apps dürfen keine Unterelemente haben."
-
-#: apps.py:402
-#, python-format
-msgid "Invalid parent: %s"
-msgstr "Ungültiger übergeordneter Knoten: %s"
-
-#: apps.py:407
-msgid "Apps may not have any descendants in the tree."
-msgstr "Apps dürfen keine Unterelemente haben."
-
-#: apps.py:420
+#: applications.py:410
 #, python-format
 msgid "This field is required for the application %s."
 msgstr "Dieses Feld wird für die App %s benötigt."
 
-#: apps.py:448
+#: applications.py:438
 msgid "This exact app already exists."
 msgstr "Diese exakte App existiert bereits."
 
@@ -154,37 +116,55 @@ msgstr "Template"
 msgid "language"
 msgstr "Sprache"
 
-#: mixins.py:121
+#: mixins.py:128
+msgid "translation of"
+msgstr "Übersetzung von"
+
+#: mixins.py:169
+msgid ""
+"Objects in the primary language cannot be the translation of another object."
+msgstr ""
+"Objekte in der primären Sprache können nicht eine Übersetzung eines anderen "
+"Objektes sein."
+
+#: mixins.py:182
+msgid "Objects may only be the translation of objects in the primary language."
+msgstr ""
+"Objekte können nur Übersetzungen sein von Objekten in der primären Sprache."
+
+#: mixins.py:195
 msgid "Redirect to URL"
 msgstr "Weiterleiten zu URL"
 
-#: mixins.py:128
+#: mixins.py:202
 msgid "Redirect to page"
 msgstr "Weiterleiten zu Seite"
 
-#: mixins.py:142
+#: mixins.py:216
 msgid "Only set one redirect value."
 msgstr "Bitte nur einen Weiterleitungs-Wert setzen."
 
-#: mixins.py:150
+#: mixins.py:224
 msgid "Cannot redirect to self."
 msgstr "Kann nicht zu sich selbst weiterleiten."
 
-#: mixins.py:158
+#: mixins.py:235
 #, python-format
 msgid ""
-"Do not chain redirects. The selected page redirects to %(title)s (%(path)s)."
+"Do not chain redirects. The selected page \"%(title)s\" redirects to "
+"\"%(path)s\"."
 msgstr ""
-"Die gewählte Seite leitet schon zu %(title)s (%(path)s) weiter, bitte "
-"Verkettungen von Weiterleitungen vermeiden."
+"Die gewählte Seite \"%(title)s\" leitet schon weiter auf \"%(path)s\" "
+"weiter, bitte Verkettungen von Weiterleitungen vermeiden."
 
-#: mixins.py:175
+#: mixins.py:256
 #, python-format
 msgid ""
-"Do not chain redirects. The page %(page)s already redirects to this page."
+"Do not chain redirects. The following pages already redirect to this page: "
+"%(pages)s"
 msgstr ""
-"Verkettung von Weiterleitungen nicht erlaubt. Die Seite %(page)s leitet "
-"schon zu dieser Seite weiter."
+"Verkettung von Weiterleitungen nicht erlaubt. Die folgenden Seiten leiten "
+"schon auf diese Seite weiter: %(pages)s"
 
 #: pages.py:59
 msgid "is active"
@@ -194,52 +174,56 @@ msgstr "ist aktiv"
 msgid "slug"
 msgstr "Slug"
 
-#: pages.py:66
+#: pages.py:68
+msgid "Position is expected to be greater than zero."
+msgstr "Position sollte grösser als Null sein."
+
+#: pages.py:75
 msgid "path"
 msgstr "Pfad"
 
-#: pages.py:70
+#: pages.py:79
 msgid "Generated automatically if 'static path' is unset."
 msgstr "Automatisch generiert falls 'statischer Pfad' nicht gesetzt ist."
 
-#: pages.py:74
+#: pages.py:83
 msgid "Path must start and end with a slash (/)."
 msgstr "Pfad muss mit einem Slash (/) starten und enden."
 
-#: pages.py:78
+#: pages.py:87
 msgid "static path"
 msgstr "statischer Pfad"
 
-#: pages.py:85
+#: pages.py:94
 msgid "page"
 msgstr "Seite"
 
-#: pages.py:86
+#: pages.py:95
 msgid "pages"
 msgstr "Seiten"
 
-#: pages.py:123
+#: pages.py:137
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statische Pfade können nicht leer sein. Meinten Sie '/'?"
 
-#: pages.py:142
+#: pages.py:157
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Der Pfad %(path)s der Seite %(page)s würde nicht eindeutig sein."
 
-#: plugins/external.py:107
+#: plugins/external.py:109
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:111
+#: plugins/external.py:113
 msgid "external content"
 msgstr "externer Inhalt"
 
-#: plugins/external.py:127
+#: plugins/external.py:129
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Kann das HTML für diese URL nicht abholen, tut mir leid!"
 
-#: plugins/html.py:26
+#: plugins/html.py:27
 msgid ""
 "The content will be inserted directly into the page. It is VERY important "
 "that the HTML snippet is well-formed!"
@@ -268,26 +252,61 @@ msgstr "Fokuspunkt"
 msgid "images"
 msgstr "Bilder"
 
-#: plugins/richtext.py:30
+#: plugins/richtext.py:31
 msgid "text"
 msgstr "Text"
 
-#: plugins/richtext.py:34
+#: plugins/richtext.py:35
 msgid "rich text"
 msgstr "Text"
 
-#: plugins/richtext.py:35
+#: plugins/richtext.py:36
 msgid "rich texts"
 msgstr "Texte"
 
-#: plugins/snippet.py:29
+#: plugins/snippet.py:33
 msgid "template name"
 msgstr "Template-Name"
 
-#: plugins/snippet.py:36
+#: plugins/snippet.py:40
 msgid "snippet"
 msgstr "Schnipsel"
 
-#: plugins/snippet.py:37
+#: plugins/snippet.py:41
 msgid "snippets"
 msgstr "Schnipsel"
+
+#~ msgid "left sibling"
+#~ msgstr "linkes Geschwister"
+
+#~ msgid "right sibling"
+#~ msgstr "rechtes Geschwister"
+
+#~ msgid "first child"
+#~ msgstr "erstes Kind"
+
+#~ msgid "last child"
+#~ msgstr "letztes Kind"
+
+#~ msgid "Make node"
+#~ msgstr "Mach Knoten"
+
+#~ msgctxt "MoveForm"
+#~ msgid "Of"
+#~ msgstr "Von"
+
+#~ msgid "Cannot move node to a position relative to itself."
+#~ msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
+
+#~ msgid "root node"
+#~ msgstr "Wurzel"
+
+#~ msgid "Apps may not have any descendants."
+#~ msgstr "Apps dürfen keine Unterelemente haben."
+
+#, python-format
+#~ msgid "Invalid parent: %s"
+#~ msgstr "Ungültiger übergeordneter Knoten: %s"
+
+#~ msgid "Apps may not have any descendants in the tree."
+#~ msgstr "Apps dürfen keine Unterelemente haben."
