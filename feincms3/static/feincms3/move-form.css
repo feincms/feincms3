@@ -1,0 +1,28 @@
+#id_move_to label {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+#id_move_to label::after {
+  display: none !important;
+}
+
+#id_move_to input {
+  margin-right: 1rem;
+}
+
+#id_move_to div.mv-self {
+  text-decoration: underline;
+}
+
+#id_move_to div.mv-first {
+  align-self: flex-end;
+  line-height: 1.5;
+  margin: 2px 0 -4px 0;
+}
+
+#id_move_to input {
+  align-self: flex-end;
+}
