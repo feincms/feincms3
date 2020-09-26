@@ -1,7 +1,7 @@
 #id_move_to {
   background: repeating-linear-gradient(
     to right,
-    var(--hairline-color, #ccc) 0,
+    var(--hairline-color, #e8e8e8) 0,
     #fff 1px,
     #fff 30px
   );
