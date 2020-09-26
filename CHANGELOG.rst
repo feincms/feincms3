@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Changed the move form styling (hide the radio inputs and use
+  background colors, stripes to visualize the tree structure better.
+
 
 `0.39`_ (2020-09-25)
 ~~~~~~~~~~~~~~~~~~~~

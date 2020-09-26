@@ -218,8 +218,8 @@ class MoveForm(forms.Form):
         for node in queryset:
             children[node.parent_id].append(node)
 
-        def _indent(depth):
-            return mark_safe(" ".join(["&nbsp; "] * depth * 6))
+        def _text_indent(depth):
+            return mark_safe(' style="text-indent:{}px"'.format(depth * 30))
 
         choices = []
 
@@ -229,8 +229,8 @@ class MoveForm(forms.Form):
                     choices[-1] = (
                         "",
                         format_html(
-                            '<div class="mv-self">{} <strong>{}</strong>',
-                            _indent(node.tree_depth),
+                            '<div class="mv is-self"{}><strong>{}</strong>',
+                            _text_indent(node.tree_depth),
                             node,
                         ),
                     )
@@ -240,11 +240,11 @@ class MoveForm(forms.Form):
                     (
                         "{}:first".format(node.id),
                         format_html(
-                            '<div class="mv-first">{} <strong>{}</strong>'
-                            "<br>{} &rarr; {}</div>",
-                            _indent(node.tree_depth),
+                            '<div class="mv to-first"{}><strong>{}</strong>'
+                            '<div class="mv-mark"{}>&rarr; {}</div></div>',
+                            _text_indent(node.tree_depth),
                             node,
-                            _indent(node.tree_depth + 1),
+                            _text_indent(node.tree_depth + 1),
                             _("move here"),
                         ),
                     )
@@ -254,8 +254,8 @@ class MoveForm(forms.Form):
                     (
                         "{}:right".format(node.id),
                         format_html(
-                            '<div class="mv-right">{} &rarr; {}</div>',
-                            _indent(node.tree_depth),
+                            '<div class="mv to-right mv-mark"{}>&rarr; {}</div>',
+                            _text_indent(node.tree_depth),
                             _("move here"),
                         ),
                     )
@@ -265,7 +265,7 @@ class MoveForm(forms.Form):
             (
                 "0:first",
                 format_html(
-                    '<div class="mv-root">&rarr; {}</div>',
+                    '<div class="mv to-root mv-mark">&rarr; {}</div>',
                     _("move here"),
                 ),
             )

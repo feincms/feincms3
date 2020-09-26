@@ -1,28 +1,59 @@
+#id_move_to {
+  background: repeating-linear-gradient(
+    to right,
+    var(--hairline-color, #ccc) 0,
+    #fff 1px,
+    #fff 30px
+  );
+  padding-left: 10px; /* default value */
+  background-position: 8px 0;
+}
+
+#id_move_to li {
+  line-height: 1;
+  position: relative;
+  top: -8px;
+}
+
 #id_move_to label {
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 0.5rem;
-  cursor: pointer;
+  display: block;
 }
 
 #id_move_to label::after {
   display: none !important;
 }
 
-#id_move_to input {
-  margin-right: 1rem;
+#id_move_to .mv.is-self {
+  background: var(--selected-bg, #e4e4e4);
 }
 
-#id_move_to div.mv-self {
-  text-decoration: underline;
-}
-
-#id_move_to div.mv-first {
+#id_move_to .mv.to-first {
   align-self: flex-end;
-  line-height: 1.5;
   margin: 2px 0 -4px 0;
 }
 
+#id_move_to .mv.is-self,
+#id_move_to .mv-mark {
+  padding: 8px 0;
+  margin: 4px 0 0 0;
+}
+
+#id_move_to .mv-mark {
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+#id_move_to .mv-mark:hover {
+  background: var(--selected-row, #ffc);
+}
+
 #id_move_to input {
+  display: none;
   align-self: flex-end;
+}
+
+#id_move_to input:checked + .mv.mv-mark,
+#id_move_to input:checked + .mv .mv-mark {
+  font-weight: bold;
+  background: var(--selected-row, #ffc);
 }
