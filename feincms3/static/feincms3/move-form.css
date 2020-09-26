@@ -7,6 +7,7 @@
   );
   padding-left: 10px; /* default value */
   background-position: 8px 0;
+  min-width: 100%;
 }
 
 #id_new_location li {
@@ -56,4 +57,10 @@
 #id_new_location input:checked + .mv .mv-mark {
   font-weight: bold;
   background: var(--selected-row, #ffc);
+}
+
+@media (max-width: 767px) {
+  label[for^="id_new_location_"] {
+    display: none;
+  }
 }

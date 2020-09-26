@@ -10,6 +10,7 @@ Change log
   background colors, stripes to visualize the tree structure better.
 - Added a warning when trying to move a node but there are no valid
   targets.
+- Fixed the move form widget in the responsive layout.
 
 
 `0.39`_ (2020-09-25)
