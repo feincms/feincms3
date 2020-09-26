@@ -233,9 +233,9 @@ class MoveForm(forms.Form):
         choices = []
 
         def _iterate(parent_id):
-            for node in children[parent_id]:
+            for index, node in enumerate(children[parent_id]):
                 if node == self.instance:
-                    choices[-1] = (
+                    choice = (
                         "",
                         format_html(
                             '<div class="mv is-self"{}><strong>{}</strong>',
@@ -243,6 +243,15 @@ class MoveForm(forms.Form):
                             node,
                         ),
                     )
+                    if index == 0 and parent_id:
+                        # Moving the first child of parent_id; do not remove parent_id
+                        choices[-1] = (
+                            choices[-1][0],
+                            mark_safe(choices[-1][1].replace("mv-mark", "hidden")),
+                        )
+                        choices.append(choice)
+                    else:
+                        choices[-1] = choice
                     continue
 
                 choices.append(

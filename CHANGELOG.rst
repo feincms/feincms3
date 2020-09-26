@@ -11,6 +11,8 @@ Change log
 - Added a warning when trying to move a node but there are no valid
   targets.
 - Fixed the move form widget in the responsive layout.
+- Avoided removing the parent node from the move form when moving the
+  first child.
 
 
 `0.39`_ (2020-09-25)
