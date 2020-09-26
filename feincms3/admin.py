@@ -2,6 +2,7 @@ from collections import defaultdict
 from functools import update_wrapper
 
 from django import forms
+from django.contrib import messages
 from django.contrib.admin import ModelAdmin, SimpleListFilter, helpers
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.utils import unquote
@@ -206,12 +207,20 @@ class MoveForm(forms.Form):
 
         super().__init__(*args, **kwargs)
 
-        queryset = self.model._default_manager.with_tree_fields()
-        self.fields["move_to"] = forms.ChoiceField(
-            label=capfirst(_("move to")),
+        choices = self._generate_choices(self.model._default_manager.with_tree_fields())
+        self.fields["new_location"] = forms.ChoiceField(
+            label=_("New location"),
             widget=forms.RadioSelect,
-            choices=self._generate_choices(queryset),
+            choices=choices,
         )
+        if len(choices) <= 1:
+            messages.warning(
+                self.request,
+                _(
+                    "Moving isn't possible because there are no valid targets."
+                    " Maybe you selected the only root node?"
+                ),
+            )
 
     def _generate_choices(self, queryset):
         children = defaultdict(list)
@@ -275,10 +284,10 @@ class MoveForm(forms.Form):
 
     def clean(self):
         data = super().clean()
-        if not data.get("move_to"):
+        if not data.get("new_location"):
             return data
 
-        pk, _sep, first_or_right = data["move_to"].partition(":")
+        pk, _sep, first_or_right = data["new_location"].partition(":")
         data["first_or_right"] = first_or_right
 
         if pk == "0":

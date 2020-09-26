@@ -8,6 +8,8 @@ Change log
 
 - Changed the move form styling (hide the radio inputs and use
   background colors, stripes to visualize the tree structure better.
+- Added a warning when trying to move a node but there are no valid
+  targets.
 
 
 `0.39`_ (2020-09-25)

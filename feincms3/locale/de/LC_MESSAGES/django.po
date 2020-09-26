@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 22:03+0200\n"
+"POT-Creation-Date: 2020-09-26 14:11+0200\n"
 "PO-Revision-Date: 2013-10-25 09:15+0000\n"
 "Last-Translator: Matthias Kestenholz <mk@feinheit.ch>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/feincms/language/"
@@ -20,70 +20,78 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:97 pages.py:60
+#: admin.py:98 pages.py:60
 msgid "title"
 msgstr "Titel"
 
-#: admin.py:111
+#: admin.py:112
 msgid "move"
 msgstr "verschieben"
 
-#: admin.py:137
+#: admin.py:138
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:142
+#: admin.py:143
 #, python-format
 msgid "Clone %s"
 msgstr "%s klonen"
 
-#: admin.py:211
-msgid "move to"
-msgstr "verschieben nach"
+#: admin.py:212
+msgid "New location"
+msgstr "Neuer Ort"
 
-#: admin.py:248 admin.py:259 admin.py:269
+#: admin.py:220
+msgid ""
+"Moving isn't possible because there are no valid targets. Maybe you selected "
+"the only root node?"
+msgstr ""
+"Verschieben ist nicht möglich weil es keine gültigen Zielorte gibt. "
+"Vielleicht  den einzigen Wurzelknoten gewählt?"
+
+#: admin.py:257 admin.py:268 admin.py:278
 msgid "move here"
 msgstr "hierhin verschieben"
 
-#: admin.py:327
+#: admin.py:336
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "%(node)s wurde zur neuen Position verschoben."
 
-#: admin.py:345
+#: admin.py:354
 msgid "target"
 msgstr "Ziel"
 
-#: admin.py:355
+#: admin.py:364
 msgid "Replace target's content"
 msgstr "Inhalt des Ziels ersetzen"
 
-#: admin.py:357
+#: admin.py:366
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Betrifft die folgenden Inhalte: %s."
 
-#: admin.py:379
+#: admin.py:388
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Aktuell: \"%s\""
 
-#: admin.py:389
+#: admin.py:398
 msgid "Cannot clone node to itself."
 msgstr "Kann Knoten nicht zu sich selbst klonen."
 
-#: admin.py:412
+#: admin.py:421
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Aktualisierte Felder von %(node)s: %(fields)s"
 
-#: admin.py:436
+#: admin.py:445
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Ersetzte den Inhalt von %(target)s mit dem Inhalt von %(source)s."
 
-#: admin.py:465
+#: admin.py:474
 msgid "ancestor"
 msgstr "übergeordnet"
 
@@ -275,6 +283,9 @@ msgstr "Schnipsel"
 #: plugins/snippet.py:41
 msgid "snippets"
 msgstr "Schnipsel"
+
+#~ msgid "move to"
+#~ msgstr "verschieben nach"
 
 #~ msgid "left sibling"
 #~ msgstr "linkes Geschwister"

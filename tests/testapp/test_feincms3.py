@@ -717,14 +717,14 @@ class Test(TestCase):
 
         return root, p1, p2
 
-    def test_move_to_root(self):
+    def test_new_location_root(self):
         """First child of no parent should move to the root"""
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p1.pk,)),
-            {"move_to": "0:first"},
+            {"new_location": "0:first"},
         )
         self.assertRedirects(response, "/admin/testapp/page/")
 
@@ -733,14 +733,14 @@ class Test(TestCase):
             [(p1.pk, None, 10), (root.pk, None, 20), (p2.pk, root.pk, 20)],
         )
 
-    def test_move_to_child(self):
+    def test_new_location_child(self):
         """First child of a different page, new siblings are pushed back"""
         root, p1, p2 = self.prepare_for_move()
         client = self.login()
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p2.pk,)),
-            {"move_to": "{}:first".format(p1.pk)},
+            {"new_location": "{}:first".format(p1.pk)},
         )
         self.assertRedirects(response, "/admin/testapp/page/")
 
@@ -758,7 +758,7 @@ class Test(TestCase):
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p3.pk,)),
-            {"move_to": "{}:right".format(p1.pk)},
+            {"new_location": "{}:right".format(p1.pk)},
         )
         self.assertRedirects(response, "/admin/testapp/page/")
 
