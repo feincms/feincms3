@@ -24,7 +24,7 @@ setup(
     platforms=["OS Independent"],
     packages=find_packages(exclude=["tests", "testapp"]),
     include_package_data=True,
-    install_requires=["django-content-editor", "django-tree-queries>=0.4.1"],
+    install_requires=["django-content-editor", "django-tree-queries>=0.4.3"],
     python_requires=">=3.6",
     extras_require={
         "all": [
