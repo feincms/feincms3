@@ -21,8 +21,8 @@ def page_detail(request, path=None):
     )
     page.activate_language(request)
 
-    if page.redirect_to_url or page.redirect_to_page:
-        return redirect(page.redirect_to_url or page.redirect_to_page)
+    if page.get_redirect_url():
+        return redirect(page.get_redirect_url())
 
     return render(
         request,
