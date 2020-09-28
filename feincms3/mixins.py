@@ -205,6 +205,15 @@ class RedirectMixin(models.Model):
     class Meta:
         abstract = True
 
+    def get_redirect_url(self):
+        """
+        Return the URL for the redirect, if a redirect is configured
+        """
+        if self.redirect_to_url:
+            return self.redirect_to_url
+        elif self.redirect_to_page:
+            return self.redirect_to_page.get_absolute_url()
+
     def clean_fields(self, exclude=None):
         """
         Ensure that redirects are configured properly.

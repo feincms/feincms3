@@ -13,6 +13,9 @@ Change log
 - Fixed the move form widget in the responsive layout.
 - Avoided removing the parent node from the move form when moving the
   first child.
+- Added a ``get_redirect_url`` to the
+  :class:`~feincms3.mixins.RedirectMixin` which returns the target URL
+  or ``None``.
 
 
 `0.39`_ (2020-09-25)

@@ -801,6 +801,10 @@ class Test(TestCase):
             redirect_to_url="http://example.com/",
         )
 
+        self.assertEqual(page1.get_redirect_url(), None)
+        self.assertEqual(page2.get_redirect_url(), "/de/")
+        self.assertEqual(page3.get_redirect_url(), "http://example.com/")
+
         self.assertRedirects(
             self.client.get(page2.get_absolute_url()), page1.get_absolute_url()
         )
