@@ -16,6 +16,7 @@ Change log
 - Added a ``get_redirect_url`` to the
   :class:`~feincms3.mixins.RedirectMixin` which returns the target URL
   or ``None``.
+- Added the :func:`feincms3.utils.is_first_party_link` utilty.
 
 
 `0.39`_ (2020-09-25)
