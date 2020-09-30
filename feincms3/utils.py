@@ -19,7 +19,7 @@ def validation_error(error, *, field, exclude, **kwargs):
 
 def is_first_party_link(url, *, first_party_hosts=None):
     """
-    Verify whether an URL is a first-party link or not.
+    Return whether an URL is a first-party link or not.
 
     First parties are defined by ``ALLOWED_HOSTS`` and can be overridden by
     passing an alternative list of hosts. The wildcard ``["*"]`` isn't

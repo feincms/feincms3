@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.40`_ (2020-09-30)
+~~~~~~~~~~~~~~~~~~~~
+
 - Changed the move form styling (hide the radio inputs and use
   background colors, stripes to visualize the tree structure better.
 - Added a warning when trying to move a node but there are no valid
@@ -688,4 +692,5 @@ functionality.
 .. _0.37: https://github.com/matthiask/feincms3/compare/0.36...0.37
 .. _0.38.1: https://github.com/matthiask/feincms3/compare/0.37...0.38.1
 .. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.39...main
+.. _0.40: https://github.com/matthiask/feincms3/compare/0.39...0.40
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.40...main
