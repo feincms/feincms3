@@ -19,12 +19,13 @@ there always comes a moment where you have understand the layers
 beneath, and often the learning curve gets steep quickly.
 
 feincms3 is your Do It Yourself kit for CMS building, as Django is your
-Do It Yourself kit for website building. Getting started isn't easy at
-first but it pays off later.
+Do It Yourself kit for website building.
 
 feincms3 only has abstract model classes and mixins. Any concrete
 classes (for example, the page model) **have** to be added by you in
-your own project. This is by design, and a quick win for customization.
+your own project. This is by design, and paves the way for introducing
+local customizations without having to rely on hooks, extension points
+and whatnot.
 
 
 Standing on the shoulders
