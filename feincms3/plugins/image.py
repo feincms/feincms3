@@ -3,11 +3,10 @@ Provides an image plugin with support for setting the primary point of
 interest. This is very useful especially when cropping images. Depends on
 `django-imagefield <https://django-imagefield.readthedocs.io>`__.  """
 
+from content_editor.admin import ContentEditorInline
 from django.db import models
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-
-from content_editor.admin import ContentEditorInline
 from imagefield.fields import ImageField, PPOIField
 
 

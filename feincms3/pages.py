@@ -5,7 +5,6 @@ from django.db import models
 from django.db.models import Max, Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from tree_queries.models import TreeNode, TreeQuerySet
 
 from feincms3.utils import validation_error

@@ -1,11 +1,10 @@
 from collections import deque
 from functools import wraps
 
+from content_editor.contents import contents_for_item
 from django.core.cache import cache
 from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
-
-from content_editor.contents import contents_for_item
 
 
 __all__ = ("Regions", "matches", "cached_render")

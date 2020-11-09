@@ -14,7 +14,6 @@ from django.utils.html import format_html, mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
-
 from tree_queries.forms import TreeNodeChoiceField
 
 

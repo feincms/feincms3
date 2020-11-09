@@ -29,8 +29,8 @@ Available tasks are:
 
 * ``tox -e style``: Reformats the code using black and runs flake8.
 * ``tox -e docs``: Builds the HTML docs into ``build/docs/html/``
-* ``tox -e tests``: Runs tests using a local PostgreSQL server.
-* ``tox -e tests-sqlite3``: Runs tests using sqlite3.
+* ``tox -e py??-dj?'``: Runs tests using combinations of Python and
+  Django. See ``tox -l`` for all available combinations.
 
 Both testing tasks also generate HTML-based code coverage output into
 the ``htmlcov/`` folder.
@@ -41,7 +41,7 @@ Style
 
 Python code for the feincms3 project may be automatically formatted and
 checked using ``tox -e style``. The coding style is also checked when
-building pull requests on Travis CI.
+building pull requests using Github actions.
 
 
 Patches and translations

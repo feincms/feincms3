@@ -6,12 +6,11 @@ from __future__ import unicode_literals
 
 from collections import defaultdict
 
+from content_editor.admin import ContentEditorInline
 from django.db import models
 from django.db.models import signals
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-
-from content_editor.admin import ContentEditorInline
 
 
 __all__ = ("Snippet", "SnippetInline", "render_snippet")

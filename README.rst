@@ -2,9 +2,6 @@
 feincms3
 ========
 
-.. image:: https://travis-ci.org/matthiask/feincms3.svg?branch=main
-    :target: https://travis-ci.org/matthiask/feincms3
-
 .. image:: https://readthedocs.org/projects/feincms3/badge/?version=latest
     :target: https://feincms3.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status

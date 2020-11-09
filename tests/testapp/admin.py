@@ -1,8 +1,7 @@
+from content_editor.admin import ContentEditor
 from django.contrib import admin
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
-
-from content_editor.admin import ContentEditor
 
 from feincms3.admin import AncestorFilter, TreeAdmin
 from feincms3.plugins import external, html, image, richtext, snippet

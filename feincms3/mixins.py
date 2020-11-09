@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q, signals
 from django.utils.translation import activate, get_language, gettext_lazy as _
-
 from tree_queries.fields import TreeNodeForeignKey
 
 from feincms3.utils import validation_error

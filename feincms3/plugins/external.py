@@ -5,14 +5,13 @@ arbitrary URLs. Depends on `requests <https://docs.python-requests.org>`_.
 
 from hashlib import md5
 
+import requests
+from content_editor.admin import ContentEditorInline
 from django import forms
 from django.core.cache import cache
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.translation import gettext, gettext_lazy as _
-
-import requests
-from content_editor.admin import ContentEditorInline
 
 
 __all__ = (
