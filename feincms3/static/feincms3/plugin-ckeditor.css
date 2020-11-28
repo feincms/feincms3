@@ -1,0 +1,9 @@
+.order-machine .django-ckeditor-widget {
+  width: calc(100% - 170px);
+  max-width: 1000px;
+}
+@media (max-width: 767px) {
+  .order-machine .django-ckeditor-widget {
+    width: calc(100%);
+  }
+}

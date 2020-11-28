@@ -7,6 +7,8 @@ Change log
 ~~~~~~~~~~~~~~~
 
 - Switched from Travis CI to GitHub Actions.
+- Dropped the custom CKEditor activation JavaScript,
+  `django-ckeditor`_ does all we need already.
 
 
 `0.40`_ (2020-09-30)
