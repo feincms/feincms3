@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`0.41`_ (2020-11-28)
+~~~~~~~~~~~~~~~~~~~~
+
 - Switched from Travis CI to GitHub Actions.
 - Dropped the custom CKEditor activation JavaScript,
   `django-ckeditor`_ does all we need already.
@@ -697,4 +700,5 @@ functionality.
 .. _0.38.1: https://github.com/matthiask/feincms3/compare/0.37...0.38.1
 .. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
 .. _0.40: https://github.com/matthiask/feincms3/compare/0.39...0.40
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.40...main
+.. _0.41: https://github.com/matthiask/feincms3/compare/0.40...0.41
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.41...main
