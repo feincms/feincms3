@@ -1,0 +1,322 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Matthias Kestenholz <mk@feinheit.ch>, 2011
+# sbaechler <simon@stellanera.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: feincms\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-26 14:11+0200\n"
+"PO-Revision-Date: 2020-12-04 09:46+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
+"feincms3/feincms3/nb_NO/>\n"
+"Language: nb_NO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.4-dev\n"
+
+#: admin.py:98 pages.py:60
+msgid "title"
+msgstr "tittel"
+
+#: admin.py:112
+msgid "move"
+msgstr "flytt"
+
+#: admin.py:138
+#, python-format
+msgid "Move %s"
+msgstr "Flytt %s"
+
+#: admin.py:143
+#, python-format
+msgid "Clone %s"
+msgstr "Klon %s"
+
+#: admin.py:212
+msgid "New location"
+msgstr "Ny plassering"
+
+#: admin.py:220
+msgid ""
+"Moving isn't possible because there are no valid targets. Maybe you selected "
+"the only root node?"
+msgstr ""
+"Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte "
+"den eneste rotnoden?"
+
+#: admin.py:257 admin.py:268 admin.py:278
+msgid "move here"
+msgstr "flytt hit"
+
+#: admin.py:336
+#, python-format
+msgid "The node %(node)s has been moved to the new position."
+msgstr "Noden %(node)s har blitt flyttet til ny plassering"
+
+#: admin.py:354
+msgid "target"
+msgstr "mål"
+
+#: admin.py:364
+msgid "Replace target's content"
+msgstr "Erstatt målets innhold"
+
+#: admin.py:366
+#, python-format
+msgid "Affects the following models: %s."
+msgstr "Har innvirkning på følgende moduler: %s."
+
+#: admin.py:388
+#, python-format
+msgid "Current: \"%s\""
+msgstr "Nåværende: «%s»"
+
+#: admin.py:398
+msgid "Cannot clone node to itself."
+msgstr "Kan ikke klone node til seg selv."
+
+#: admin.py:421
+#, python-format
+msgid "Updated fields of %(node)s: %(fields)s"
+msgstr "Oppdaterte felter tilhørende %(node)s:"
+
+#: admin.py:445
+#, python-format
+msgid "Replaced the content of %(target)s with the contents of %(source)s."
+msgstr "Erstattet innholdet i %(target)s med innholdet i %(source)s."
+
+#: admin.py:474
+msgid "ancestor"
+msgstr "opphav"
+
+#: applications.py:352
+msgid "application"
+msgstr "program"
+
+#: applications.py:358
+msgid "app instance namespace"
+msgstr "programinstans-navnerom"
+
+#: applications.py:410
+#, python-format
+msgid "This field is required for the application %s."
+msgstr "Dette feltet kreves for programmet %s."
+
+#: applications.py:438
+msgid "This exact app already exists."
+msgstr "Akkurat dette programmet finnes allerede."
+
+#: mixins.py:19
+msgid "menu"
+msgstr "meny"
+
+#: mixins.py:52
+msgid "template"
+msgstr "mal"
+
+#: mixins.py:98
+msgid "language"
+msgstr "språk"
+
+#: mixins.py:128
+msgid "translation of"
+msgstr "oversettelse av"
+
+#: mixins.py:169
+msgid ""
+"Objects in the primary language cannot be the translation of another object."
+msgstr ""
+"Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
+
+#: mixins.py:182
+msgid "Objects may only be the translation of objects in the primary language."
+msgstr "Objekter kan kun være oversettelser av objekter i primærspråk."
+
+#: mixins.py:195
+msgid "Redirect to URL"
+msgstr "Videresendt til nettadresse"
+
+#: mixins.py:202
+msgid "Redirect to page"
+msgstr "Videresendt til side"
+
+#: mixins.py:216
+msgid "Only set one redirect value."
+msgstr "Kun sett én videresendingsverdi."
+
+#: mixins.py:224
+msgid "Cannot redirect to self."
+msgstr "Kan ikke videresende til seg selv."
+
+#: mixins.py:235
+#, python-format
+msgid ""
+"Do not chain redirects. The selected page \"%(title)s\" redirects to "
+"\"%(path)s\"."
+msgstr ""
+"Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» "
+"videresender til «%(path)s»."
+
+#: mixins.py:256
+#, python-format
+msgid ""
+"Do not chain redirects. The following pages already redirect to this page: "
+"%(pages)s"
+msgstr ""
+"Ikke opprett videresendelser i stafett. Følgende sider videresender til "
+"denne siden:"
+
+#: pages.py:59
+msgid "is active"
+msgstr "er aktiv"
+
+#: pages.py:61
+msgid "slug"
+msgstr ""
+
+#: pages.py:68
+msgid "Position is expected to be greater than zero."
+msgstr "Posisjonen forventes å være større enn null."
+
+#: pages.py:75
+msgid "path"
+msgstr "sti"
+
+#: pages.py:79
+msgid "Generated automatically if 'static path' is unset."
+msgstr "Generert automatisk hvis «statisk sti» ikke er valgt."
+
+#: pages.py:83
+msgid "Path must start and end with a slash (/)."
+msgstr "Sti må starte og slutt med skråstrek (/)."
+
+#: pages.py:87
+msgid "static path"
+msgstr "statisk sti"
+
+#: pages.py:94
+msgid "page"
+msgstr "side"
+
+#: pages.py:95
+msgid "pages"
+msgstr "sider"
+
+#: pages.py:137
+msgid "Static paths cannot be empty. Did you mean '/'?"
+msgstr "Statiske stier må fylles ut. Mente du «/»?"
+
+#: pages.py:157
+#, python-format
+msgid "The page %(page)s's new path %(path)s would not be unique."
+msgstr "Siden «%(page)s» sin nye sti %(path)s finnes allerede."
+
+#: plugins/external.py:109
+msgid "URL"
+msgstr "Nettadresse"
+
+#: plugins/external.py:113
+msgid "external content"
+msgstr "eksternt innhold"
+
+#: plugins/external.py:129
+msgid "Unable to fetch HTML for this URL, sorry!"
+msgstr "Klarte ikke å hente HTML for denne nettadressen."
+
+#: plugins/html.py:27
+msgid ""
+"The content will be inserted directly into the page. It is VERY important "
+"that the HTML snippet is well-formed!"
+msgstr ""
+
+#: plugins/image.py:23 plugins/image.py:41 plugins/versatileimage.py:30
+#: plugins/versatileimage.py:46
+msgid "image"
+msgstr "bilde"
+
+#: plugins/image.py:32 plugins/versatileimage.py:37
+msgid "image width"
+msgstr "bildebredde"
+
+#: plugins/image.py:35 plugins/versatileimage.py:40
+msgid "image height"
+msgstr "bildehøyde"
+
+#: plugins/image.py:37 plugins/versatileimage.py:42
+msgid "primary point of interest"
+msgstr "hoved-interessepunkt"
+
+#: plugins/image.py:42 plugins/versatileimage.py:47
+msgid "images"
+msgstr "bilder"
+
+#: plugins/richtext.py:31
+msgid "text"
+msgstr "tekst"
+
+#: plugins/richtext.py:35
+#, fuzzy
+msgid "rich text"
+msgstr "rikholdig tekst"
+
+#: plugins/richtext.py:36
+#, fuzzy
+msgid "rich texts"
+msgstr "rikholdige tekster"
+
+#: plugins/snippet.py:33
+msgid "template name"
+msgstr "malnavn"
+
+#: plugins/snippet.py:40
+msgid "snippet"
+msgstr "tekstsnutt"
+
+#: plugins/snippet.py:41
+msgid "snippets"
+msgstr "tekstsnutter"
+
+#~ msgid "move to"
+#~ msgstr "verschieben nach"
+
+#~ msgid "left sibling"
+#~ msgstr "linkes Geschwister"
+
+#~ msgid "right sibling"
+#~ msgstr "rechtes Geschwister"
+
+#~ msgid "first child"
+#~ msgstr "erstes Kind"
+
+#~ msgid "last child"
+#~ msgstr "letztes Kind"
+
+#~ msgid "Make node"
+#~ msgstr "Mach Knoten"
+
+#~ msgctxt "MoveForm"
+#~ msgid "Of"
+#~ msgstr "Von"
+
+#~ msgid "Cannot move node to a position relative to itself."
+#~ msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
+
+#~ msgid "root node"
+#~ msgstr "Wurzel"
+
+#~ msgid "Apps may not have any descendants."
+#~ msgstr "Apps dürfen keine Unterelemente haben."
+
+#, python-format
+#~ msgid "Invalid parent: %s"
+#~ msgstr "Ungültiger übergeordneter Knoten: %s"
+
+#~ msgid "Apps may not have any descendants in the tree."
+#~ msgstr "Apps dürfen keine Unterelemente haben."
