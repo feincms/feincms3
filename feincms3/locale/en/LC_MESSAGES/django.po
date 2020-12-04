@@ -1,0 +1,272 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-04 10:44+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:97 pages.py:59
+msgid "title"
+msgstr ""
+
+#: admin.py:111
+msgid "move"
+msgstr ""
+
+#: admin.py:137
+#, python-format
+msgid "Move %s"
+msgstr ""
+
+#: admin.py:142
+#, python-format
+msgid "Clone %s"
+msgstr ""
+
+#: admin.py:211
+msgid "New location"
+msgstr ""
+
+#: admin.py:219
+msgid ""
+"Moving isn't possible because there are no valid targets. Maybe you selected "
+"the only root node?"
+msgstr ""
+
+#: admin.py:265 admin.py:276 admin.py:286
+msgid "move here"
+msgstr ""
+
+#: admin.py:344
+#, python-format
+msgid "The node %(node)s has been moved to the new position."
+msgstr ""
+
+#: admin.py:362
+msgid "target"
+msgstr ""
+
+#: admin.py:372
+msgid "Replace target's content"
+msgstr ""
+
+#: admin.py:374
+#, python-format
+msgid "Affects the following models: %s."
+msgstr ""
+
+#: admin.py:396
+#, python-format
+msgid "Current: \"%s\""
+msgstr ""
+
+#: admin.py:406
+msgid "Cannot clone node to itself."
+msgstr ""
+
+#: admin.py:429
+#, python-format
+msgid "Updated fields of %(node)s: %(fields)s"
+msgstr ""
+
+#: admin.py:453
+#, python-format
+msgid "Replaced the content of %(target)s with the contents of %(source)s."
+msgstr ""
+
+#: admin.py:482
+msgid "ancestor"
+msgstr ""
+
+#: applications.py:352
+msgid "application"
+msgstr ""
+
+#: applications.py:358
+msgid "app instance namespace"
+msgstr ""
+
+#: applications.py:410
+#, python-format
+msgid "This field is required for the application %s."
+msgstr ""
+
+#: applications.py:438
+msgid "This exact app already exists."
+msgstr ""
+
+#: mixins.py:18
+msgid "menu"
+msgstr ""
+
+#: mixins.py:51
+msgid "template"
+msgstr ""
+
+#: mixins.py:97
+msgid "language"
+msgstr ""
+
+#: mixins.py:127
+msgid "translation of"
+msgstr ""
+
+#: mixins.py:168
+msgid ""
+"Objects in the primary language cannot be the translation of another object."
+msgstr ""
+
+#: mixins.py:181
+msgid "Objects may only be the translation of objects in the primary language."
+msgstr ""
+
+#: mixins.py:194
+msgid "Redirect to URL"
+msgstr ""
+
+#: mixins.py:201
+msgid "Redirect to page"
+msgstr ""
+
+#: mixins.py:224
+msgid "Only set one redirect value."
+msgstr ""
+
+#: mixins.py:232
+msgid "Cannot redirect to self."
+msgstr ""
+
+#: mixins.py:243
+#, python-format
+msgid ""
+"Do not chain redirects. The selected page \"%(title)s\" redirects to "
+"\"%(path)s\"."
+msgstr ""
+
+#: mixins.py:264
+#, python-format
+msgid ""
+"Do not chain redirects. The following pages already redirect to this page: "
+"%(pages)s"
+msgstr ""
+
+#: pages.py:58
+msgid "is active"
+msgstr ""
+
+#: pages.py:60
+msgid "slug"
+msgstr ""
+
+#: pages.py:67
+msgid "Position is expected to be greater than zero."
+msgstr ""
+
+#: pages.py:74
+msgid "path"
+msgstr ""
+
+#: pages.py:78
+msgid "Generated automatically if 'static path' is unset."
+msgstr ""
+
+#: pages.py:82
+msgid "Path must start and end with a slash (/)."
+msgstr ""
+
+#: pages.py:86
+msgid "static path"
+msgstr ""
+
+#: pages.py:93
+msgid "page"
+msgstr ""
+
+#: pages.py:94
+msgid "pages"
+msgstr ""
+
+#: pages.py:136
+msgid "Static paths cannot be empty. Did you mean '/'?"
+msgstr ""
+
+#: pages.py:156
+#, python-format
+msgid "The page %(page)s's new path %(path)s would not be unique."
+msgstr ""
+
+#: plugins/external.py:108
+msgid "URL"
+msgstr ""
+
+#: plugins/external.py:112
+msgid "external content"
+msgstr ""
+
+#: plugins/external.py:128
+msgid "Unable to fetch HTML for this URL, sorry!"
+msgstr ""
+
+#: plugins/html.py:26
+msgid ""
+"The content will be inserted directly into the page. It is VERY important "
+"that the HTML snippet is well-formed!"
+msgstr ""
+
+#: plugins/image.py:22 plugins/image.py:40 plugins/versatileimage.py:29
+#: plugins/versatileimage.py:45
+msgid "image"
+msgstr ""
+
+#: plugins/image.py:31 plugins/versatileimage.py:36
+msgid "image width"
+msgstr ""
+
+#: plugins/image.py:34 plugins/versatileimage.py:39
+msgid "image height"
+msgstr ""
+
+#: plugins/image.py:36 plugins/versatileimage.py:41
+msgid "primary point of interest"
+msgstr ""
+
+#: plugins/image.py:41 plugins/versatileimage.py:46
+msgid "images"
+msgstr ""
+
+#: plugins/richtext.py:30
+msgid "text"
+msgstr ""
+
+#: plugins/richtext.py:34
+msgid "rich text"
+msgstr ""
+
+#: plugins/richtext.py:35
+msgid "rich texts"
+msgstr ""
+
+#: plugins/snippet.py:32
+msgid "template name"
+msgstr ""
+
+#: plugins/snippet.py:39
+msgid "snippet"
+msgstr ""
+
+#: plugins/snippet.py:40
+msgid "snippets"
+msgstr ""
