@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-26 14:11+0200\n"
-"PO-Revision-Date: 2013-10-25 09:15+0000\n"
-"Last-Translator: Matthias Kestenholz <mk@feinheit.ch>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/feincms/language/"
-"de/)\n"
+"PO-Revision-Date: 2020-12-04 09:43+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/feincms3/feincms3/"
+"de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: admin.py:98 pages.py:60
 msgid "title"
@@ -48,7 +49,7 @@ msgid ""
 "the only root node?"
 msgstr ""
 "Verschieben ist nicht möglich weil es keine gültigen Zielorte gibt. "
-"Vielleicht  den einzigen Wurzelknoten gewählt?"
+"Vielleicht den einzigen Wurzelknoten gewählt?"
 
 #: admin.py:257 admin.py:268 admin.py:278
 msgid "move here"
@@ -75,7 +76,7 @@ msgstr "Betrifft die folgenden Inhalte: %s."
 #: admin.py:388
 #, python-format
 msgid "Current: \"%s\""
-msgstr "Aktuell: \"%s\""
+msgstr "Aktuell: „%s“"
 
 #: admin.py:398
 msgid "Cannot clone node to itself."
@@ -97,20 +98,20 @@ msgstr "übergeordnet"
 
 #: applications.py:352
 msgid "application"
-msgstr "Applikation"
+msgstr "Anwendung"
 
 #: applications.py:358
 msgid "app instance namespace"
-msgstr "Appinstanz-Namensraum"
+msgstr "Anwendungsinstanznamensraum"
 
 #: applications.py:410
 #, python-format
 msgid "This field is required for the application %s."
-msgstr "Dieses Feld wird für die App %s benötigt."
+msgstr "Dieses Feld wird für die Anwendung %s benötigt."
 
 #: applications.py:438
 msgid "This exact app already exists."
-msgstr "Diese exakte App existiert bereits."
+msgstr "Diese exakte Anwendung existiert bereits."
 
 #: mixins.py:19
 msgid "menu"
@@ -118,7 +119,7 @@ msgstr "Menü"
 
 #: mixins.py:52
 msgid "template"
-msgstr "Template"
+msgstr "Vorlage"
 
 #: mixins.py:98
 msgid "language"
@@ -162,8 +163,8 @@ msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
 "\"%(path)s\"."
 msgstr ""
-"Die gewählte Seite \"%(title)s\" leitet schon weiter auf \"%(path)s\" "
-"weiter, bitte Verkettungen von Weiterleitungen vermeiden."
+"Die gewählte Seite „%(title)s“ leitet schon weiter auf „%(path)s“ weiter, "
+"bitte Verkettungen von Weiterleitungen vermeiden."
 
 #: mixins.py:256
 #, python-format
@@ -192,7 +193,7 @@ msgstr "Pfad"
 
 #: pages.py:79
 msgid "Generated automatically if 'static path' is unset."
-msgstr "Automatisch generiert falls 'statischer Pfad' nicht gesetzt ist."
+msgstr "Automatisch generiert falls „statischer Pfad“ nicht gesetzt ist."
 
 #: pages.py:83
 msgid "Path must start and end with a slash (/)."
@@ -212,7 +213,7 @@ msgstr "Seiten"
 
 #: pages.py:137
 msgid "Static paths cannot be empty. Did you mean '/'?"
-msgstr "Statische Pfade können nicht leer sein. Meinten Sie '/'?"
+msgstr "Statische Pfade können nicht leer sein. Meinten Sie „/“?"
 
 #: pages.py:157
 #, python-format
@@ -274,7 +275,7 @@ msgstr "Texte"
 
 #: plugins/snippet.py:33
 msgid "template name"
-msgstr "Template-Name"
+msgstr "Vorlagenname"
 
 #: plugins/snippet.py:40
 msgid "snippet"
