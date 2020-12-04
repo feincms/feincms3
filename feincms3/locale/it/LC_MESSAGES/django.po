@@ -1,0 +1,321 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Matthias Kestenholz <mk@feinheit.ch>, 2011
+# sbaechler <simon@stellanera.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: feincms\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-26 14:11+0200\n"
+"PO-Revision-Date: 2020-12-04 09:43+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/feincms3/"
+"feincms3/it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.4-dev\n"
+
+#: admin.py:98 pages.py:60
+msgid "title"
+msgstr "titolo"
+
+#: admin.py:112
+msgid "move"
+msgstr "sposta"
+
+#: admin.py:138
+#, python-format
+msgid "Move %s"
+msgstr "Sposta %s"
+
+#: admin.py:143
+#, python-format
+msgid "Clone %s"
+msgstr "Clona %s"
+
+#: admin.py:212
+msgid "New location"
+msgstr "Nuova posizione"
+
+#: admin.py:220
+msgid ""
+"Moving isn't possible because there are no valid targets. Maybe you selected "
+"the only root node?"
+msgstr ""
+"Lo spostamento non è possibile perché non ci sono bersagli validi. Forse hai "
+"selezionato l'unico nodo radice?"
+
+#: admin.py:257 admin.py:268 admin.py:278
+msgid "move here"
+msgstr "sposta qui"
+
+#: admin.py:336
+#, python-format
+msgid "The node %(node)s has been moved to the new position."
+msgstr ""
+
+#: admin.py:354
+msgid "target"
+msgstr ""
+
+#: admin.py:364
+msgid "Replace target's content"
+msgstr ""
+
+#: admin.py:366
+#, python-format
+msgid "Affects the following models: %s."
+msgstr ""
+
+#: admin.py:388
+#, python-format
+msgid "Current: \"%s\""
+msgstr "Attuale: «%s»"
+
+#: admin.py:398
+msgid "Cannot clone node to itself."
+msgstr ""
+
+#: admin.py:421
+#, python-format
+msgid "Updated fields of %(node)s: %(fields)s"
+msgstr ""
+
+#: admin.py:445
+#, python-format
+msgid "Replaced the content of %(target)s with the contents of %(source)s."
+msgstr ""
+
+#: admin.py:474
+msgid "ancestor"
+msgstr ""
+
+#: applications.py:352
+msgid "application"
+msgstr "applicazione"
+
+#: applications.py:358
+msgid "app instance namespace"
+msgstr "spazio dei nomi istanza dell’app"
+
+#: applications.py:410
+#, python-format
+msgid "This field is required for the application %s."
+msgstr "Questo campo è obbligatorio per l’applicazione %s."
+
+#: applications.py:438
+msgid "This exact app already exists."
+msgstr "Questa applicazione esatta esiste già."
+
+#: mixins.py:19
+msgid "menu"
+msgstr "menù"
+
+#: mixins.py:52
+msgid "template"
+msgstr "modello"
+
+#: mixins.py:98
+msgid "language"
+msgstr "lingua"
+
+#: mixins.py:128
+msgid "translation of"
+msgstr "traduzione di"
+
+#: mixins.py:169
+msgid ""
+"Objects in the primary language cannot be the translation of another object."
+msgstr ""
+"Gli oggetti nella lingua principale non possono essere la traduzione di un "
+"altro oggetto."
+
+#: mixins.py:182
+msgid "Objects may only be the translation of objects in the primary language."
+msgstr ""
+"Gli oggetti possono essere solo la traduzione di oggetti nella lingua "
+"principale."
+
+#: mixins.py:195
+msgid "Redirect to URL"
+msgstr "Reindirizza all’URL"
+
+#: mixins.py:202
+msgid "Redirect to page"
+msgstr "Reindirizza alla pagina"
+
+#: mixins.py:216
+msgid "Only set one redirect value."
+msgstr ""
+
+#: mixins.py:224
+msgid "Cannot redirect to self."
+msgstr ""
+
+#: mixins.py:235
+#, python-format
+msgid ""
+"Do not chain redirects. The selected page \"%(title)s\" redirects to "
+"\"%(path)s\"."
+msgstr ""
+
+#: mixins.py:256
+#, python-format
+msgid ""
+"Do not chain redirects. The following pages already redirect to this page: "
+"%(pages)s"
+msgstr ""
+
+#: pages.py:59
+msgid "is active"
+msgstr "è attivo"
+
+#: pages.py:61
+msgid "slug"
+msgstr ""
+
+#: pages.py:68
+msgid "Position is expected to be greater than zero."
+msgstr ""
+
+#: pages.py:75
+msgid "path"
+msgstr ""
+
+#: pages.py:79
+msgid "Generated automatically if 'static path' is unset."
+msgstr ""
+
+#: pages.py:83
+msgid "Path must start and end with a slash (/)."
+msgstr ""
+
+#: pages.py:87
+msgid "static path"
+msgstr ""
+
+#: pages.py:94
+msgid "page"
+msgstr "pagina"
+
+#: pages.py:95
+msgid "pages"
+msgstr "pagine"
+
+#: pages.py:137
+msgid "Static paths cannot be empty. Did you mean '/'?"
+msgstr ""
+
+#: pages.py:157
+#, python-format
+msgid "The page %(page)s's new path %(path)s would not be unique."
+msgstr ""
+
+#: plugins/external.py:109
+msgid "URL"
+msgstr "URL"
+
+#: plugins/external.py:113
+msgid "external content"
+msgstr ""
+
+#: plugins/external.py:129
+msgid "Unable to fetch HTML for this URL, sorry!"
+msgstr ""
+
+#: plugins/html.py:27
+msgid ""
+"The content will be inserted directly into the page. It is VERY important "
+"that the HTML snippet is well-formed!"
+msgstr ""
+"Il contenuto verrà inserito direttamente nella pagina. È MOLTO importante "
+"che il frammento HTML sia ben formato!"
+
+#: plugins/image.py:23 plugins/image.py:41 plugins/versatileimage.py:30
+#: plugins/versatileimage.py:46
+msgid "image"
+msgstr "imagine"
+
+#: plugins/image.py:32 plugins/versatileimage.py:37
+msgid "image width"
+msgstr "larghezza immagine"
+
+#: plugins/image.py:35 plugins/versatileimage.py:40
+msgid "image height"
+msgstr "altezza immagine"
+
+#: plugins/image.py:37 plugins/versatileimage.py:42
+msgid "primary point of interest"
+msgstr ""
+
+#: plugins/image.py:42 plugins/versatileimage.py:47
+msgid "images"
+msgstr "imagini"
+
+#: plugins/richtext.py:31
+msgid "text"
+msgstr "testo"
+
+#: plugins/richtext.py:35
+msgid "rich text"
+msgstr ""
+
+#: plugins/richtext.py:36
+msgid "rich texts"
+msgstr ""
+
+#: plugins/snippet.py:33
+msgid "template name"
+msgstr "nome del modello"
+
+#: plugins/snippet.py:40
+msgid "snippet"
+msgstr "frammento"
+
+#: plugins/snippet.py:41
+msgid "snippets"
+msgstr "frammenti"
+
+#~ msgid "move to"
+#~ msgstr "verschieben nach"
+
+#~ msgid "left sibling"
+#~ msgstr "linkes Geschwister"
+
+#~ msgid "right sibling"
+#~ msgstr "rechtes Geschwister"
+
+#~ msgid "first child"
+#~ msgstr "erstes Kind"
+
+#~ msgid "last child"
+#~ msgstr "letztes Kind"
+
+#~ msgid "Make node"
+#~ msgstr "Mach Knoten"
+
+#~ msgctxt "MoveForm"
+#~ msgid "Of"
+#~ msgstr "Von"
+
+#~ msgid "Cannot move node to a position relative to itself."
+#~ msgstr "Kann Knoten nicht in eine Position relativ zu sich selbst bewegen."
+
+#~ msgid "root node"
+#~ msgstr "Wurzel"
+
+#~ msgid "Apps may not have any descendants."
+#~ msgstr "Apps dürfen keine Unterelemente haben."
+
+#, python-format
+#~ msgid "Invalid parent: %s"
+#~ msgstr "Ungültiger übergeordneter Knoten: %s"
+
+#~ msgid "Apps may not have any descendants in the tree."
+#~ msgstr "Apps dürfen keine Unterelemente haben."
