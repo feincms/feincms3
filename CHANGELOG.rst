@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Tried out a web-based translation platform. It wasn't exactly a big
+  success, but we gained a few translations. Thanks to all contributors!
+
+
 `0.41`_ (2020-11-28)
 ~~~~~~~~~~~~~~~~~~~~
 
