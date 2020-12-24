@@ -37,8 +37,6 @@ def zero_management_form_data(prefix):
     return {
         "%s-TOTAL_FORMS" % prefix: 0,
         "%s-INITIAL_FORMS" % prefix: 0,
-        "%s-MIN_NUM_FORMS" % prefix: 0,
-        "%s-MAX_NUM_FORMS" % prefix: 1000,
     }
 
 
