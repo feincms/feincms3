@@ -2,6 +2,10 @@
 feincms3
 ========
 
+.. image:: https://github.com/matthiask/feincms3/workflows/Tests/badge.svg
+    :target: https://github.com/matthiask/feincms3/
+    :alt: CI Status
+
 .. image:: https://readthedocs.org/projects/feincms3/badge/?version=latest
     :target: https://feincms3.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
