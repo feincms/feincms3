@@ -1166,6 +1166,7 @@ class Test(TestCase):
             class Meta:
                 pass
 
+        errors = Page.check()
         expected = [
             Warning(
                 "The page subclass isn't ordered by `position`.",
@@ -1177,5 +1178,4 @@ class Test(TestCase):
                 id="feincms3.W001",
             ),
         ]
-        errors = Page.check()
         self.assertEqual(errors, expected)

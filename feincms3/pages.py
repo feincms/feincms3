@@ -214,11 +214,11 @@ class AbstractPage(TreeNode):
     @classmethod
     def check(cls, **kwargs):
         errors = super().check(**kwargs)
-        errors.extend(cls._check_ordering(**kwargs))
+        errors.extend(cls._check_feincms3_pages_default_ordering(**kwargs))
         return errors
 
     @classmethod
-    def _check_ordering(cls, **kwargs):
+    def _check_feincms3_pages_default_ordering(cls, **kwargs):
         if not tuple(cls._meta.ordering) == ("position",):
             return [
                 Warning(
