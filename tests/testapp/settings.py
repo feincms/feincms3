@@ -3,6 +3,7 @@ import warnings
 
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
