@@ -14,6 +14,7 @@ from feincms3.plugins import external, html, image, richtext, snippet
 
 
 class Page(
+    # Add this first so that AbstractPage.Meta's properties are active:
     AbstractPage,
     # For adding the articles app to pages through the CMS:
     AppsMixin,

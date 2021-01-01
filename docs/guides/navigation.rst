@@ -87,7 +87,7 @@ For this example, the page class should also inherit the
     from feincms3.mixins import MenuMixin
     from feincms3.pages import AbstractPage
 
-    class Page(MenuMixin, ..., AbstractPage):
+    class Page(AbstractPage, MenuMixin, ...):
         MENUS = (
             ("", "–"),  # Looks better than "None"
             ("main", _("main navigation")),

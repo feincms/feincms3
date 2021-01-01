@@ -21,7 +21,7 @@ Make the page model inherit the mixin:
     from feincms3.pages import AbstractPage
     from feincms3_meta.models import MetaMixin
 
-    class Page(MetaMixin, ..., AbstractPage):
+    class Page(AbstractPage, MetaMixin, ...):
         pass
 
 If you define ``fieldsets`` on a ``ModelAdmin`` subclass, you may

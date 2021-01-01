@@ -22,7 +22,7 @@ per-site:
 
     from feincms3_sites.models import AbstractPage
 
-    class Page(..., AbstractPage):
+    class Page(AbstractPage, ...):
         pass
 
 

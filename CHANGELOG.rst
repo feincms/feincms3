@@ -10,6 +10,9 @@ Change log
   success, but we gained a few translations. Thanks to all contributors!
 - Added a system check for page subclasses without the appropriate
   ordering definition.
+- Changed the docs so that ``AbstractPage`` always comes before mixins
+  so that ``AbstractPage``'s ``Meta`` properties are actually inherited
+  by default.
 
 
 `0.41`_ (2020-11-28)

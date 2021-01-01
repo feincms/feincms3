@@ -13,7 +13,7 @@ the char field ``redirect_to_url`` and the self-referencing foreign key
     from feincms3.mixins import RedirectMixin
     from feincms3.pages import AbstractPage
 
-    class Page(RedirectMixin, AbstractPage):
+    class Page(AbstractPage, RedirectMixin):
         pass
 
 At most one of ``redirect_to_url`` or ``redirect_to_page`` may be set,

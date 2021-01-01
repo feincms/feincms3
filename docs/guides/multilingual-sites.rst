@@ -17,7 +17,7 @@ as default:
     from feincms3.mixins import LanguageMixin
     from feincms3.pages import AbstractPage
 
-    class Page(LanguageMixin, AbstractPage):
+    class Page(AbstractPage, LanguageMixin):
         pass
 
 

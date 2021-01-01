@@ -75,7 +75,7 @@ layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
     from feincms3.mixins import TemplateMixin
     from feincms3.pages import AbstractPage
 
-    class Page(TemplateMixin, AbstractPage):
+    class Page(AbstractPage, TemplateMixin):
         TEMPLATES = [
             Template(
                 key="standard",

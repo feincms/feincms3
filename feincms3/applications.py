@@ -312,7 +312,7 @@ class AppsMixin(models.Model):
         from feincms3.mixins import LanguageMixin
         from feincms3.pages import AbstractPage
 
-        class Page(AppsMixin, LanguageMixin, AbstractPage):
+        class Page(AbstractPage, AppsMixin, LanguageMixin):
             APPLICATIONS = [
                 ("", "–"),  # Looks better than "None"
                 (

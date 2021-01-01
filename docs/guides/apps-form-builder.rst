@@ -21,7 +21,7 @@ an ``APPLICATIONS`` attribute to the class:
     from feincms3.mixins import LanguageMixin
     from feincms3.pages import AbstractPage
 
-    class Page(AppsMixin, LanguageMixin, ..., AbstractPage):
+    class Page(AbstractPage, AppsMixin, LanguageMixin, ...):
         # ...
         APPLICATIONS = [
             (

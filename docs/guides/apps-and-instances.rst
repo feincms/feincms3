@@ -89,7 +89,7 @@ shown:
 
 .. code-block:: python
 
-    class Page(AppsMixin, LanguageMixin, ..., AbstractPage):
+    class Page(AbstractPage, AppsMixin, LanguageMixin, ...):
         APPLICATIONS = [
             (
                 "articles",
