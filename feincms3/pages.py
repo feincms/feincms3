@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+from django.core.checks import Warning
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.db.models import Max, Q
@@ -209,3 +210,25 @@ class AbstractPage(TreeNode):
         if self.path == "/":
             return reverse("pages:root")
         return reverse("pages:page", kwargs={"path": self.path.strip("/")})
+
+    @classmethod
+    def check(cls, **kwargs):
+        errors = super().check(**kwargs)
+        errors.extend(cls._check_ordering(**kwargs))
+        return errors
+
+    @classmethod
+    def _check_ordering(cls, **kwargs):
+        if not tuple(cls._meta.ordering) == ("position",):
+            return [
+                Warning(
+                    "The page subclass isn't ordered by `position`.",
+                    hint=(
+                        'Define `ordering = ("position",)` when defining your own'
+                        " `class Meta` on subclassed pages."
+                    ),
+                    obj=cls,
+                    id="feincms3.W001",
+                ),
+            ]
+        return []

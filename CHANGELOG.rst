@@ -8,6 +8,8 @@ Change log
 
 - Tried out a web-based translation platform. It wasn't exactly a big
   success, but we gained a few translations. Thanks to all contributors!
+- Added a system check for page subclasses without the appropriate
+  ordering definition.
 
 
 `0.41`_ (2020-11-28)

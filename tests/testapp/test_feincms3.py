@@ -1,11 +1,13 @@
 from contextlib import contextmanager
 
 from django.contrib.auth.models import User
+from django.core.checks import Warning
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
 from django.template import Context, Template, TemplateSyntaxError
 from django.test import Client, RequestFactory, TestCase
+from django.test.utils import isolate_apps
 from django.urls import NoReverseMatch, reverse, set_urlconf
 from django.utils.translation import deactivate_all, override
 
@@ -15,6 +17,7 @@ from feincms3.applications import (
     reverse_app,
     reverse_fallback,
 )
+from feincms3.pages import AbstractPage
 from feincms3.plugins.external import ExternalForm
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
@@ -1154,3 +1157,25 @@ class Test(TestCase):
         self.assertEqual(t.render(Context({"c": None})), "endefr")
         self.assertEqual(t.render(Context({"c": []})), "endefr")
         self.assertEqual(t.render(Context({"c": 1})), "endefr")
+
+    @isolate_apps("testapp")
+    def test_page_with_missing_ordering(self):
+        """Page subclass without ordering doesn't check out"""
+
+        class Page(AbstractPage):
+            class Meta:
+                pass
+
+        expected = [
+            Warning(
+                "The page subclass isn't ordered by `position`.",
+                hint=(
+                    'Define `ordering = ("position",)` when defining your own'
+                    " `class Meta` on subclassed pages."
+                ),
+                obj=Page,
+                id="feincms3.W001",
+            ),
+        ]
+        errors = Page.check()
+        self.assertEqual(errors, expected)
