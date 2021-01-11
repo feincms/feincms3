@@ -801,10 +801,20 @@ class Test(TestCase):
             is_active=True,
             redirect_to_url="http://example.com/",
         )
+        page4 = Page.objects.create(
+            title="redirect-does-not-look-like-url",
+            slug="redirect-does-not-look-like-url",
+            path="/something3/",
+            static_path=True,
+            language_code="de",
+            is_active=True,
+            redirect_to_url="looks_like_a_viewname",
+        )
 
         self.assertEqual(page1.get_redirect_url(), None)
         self.assertEqual(page2.get_redirect_url(), "/de/")
         self.assertEqual(page3.get_redirect_url(), "http://example.com/")
+        self.assertEqual(page4.get_redirect_url(), "looks_like_a_viewname")
 
         self.assertRedirects(
             self.client.get(page2.get_absolute_url()), page1.get_absolute_url()
@@ -813,6 +823,12 @@ class Test(TestCase):
         self.assertRedirects(
             self.client.get(page3.get_absolute_url(), follow=False),
             "http://example.com/",
+            fetch_redirect_response=False,
+        )
+
+        self.assertRedirects(
+            self.client.get(page4.get_absolute_url(), follow=False),
+            "/something3/looks_like_a_viewname",
             fetch_redirect_response=False,
         )
 

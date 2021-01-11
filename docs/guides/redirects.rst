@@ -22,10 +22,10 @@ has to be implemented in the page view:
 
 .. code-block:: python
 
-    from django.shortcuts import redirect
+    from django.http import HttpResponseRedirect
 
     def page_detail(request, path):
         page = ...
         if page.get_redirect_url():
-            return redirect(page.get_redirect_url())
+            return HttpResponseRedirect(page.get_redirect_url())
         # Default rendering continues here.

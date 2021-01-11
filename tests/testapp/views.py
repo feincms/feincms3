@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 
 from feincms3.plugins import external, html, richtext
 from feincms3.regions import Regions
@@ -22,7 +23,7 @@ def page_detail(request, path=None):
     page.activate_language(request)
 
     if page.get_redirect_url():
-        return redirect(page.get_redirect_url())
+        return HttpResponseRedirect(page.get_redirect_url())
 
     return render(
         request,
