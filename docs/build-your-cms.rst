@@ -130,7 +130,7 @@ implementation which expects something like this:
 
 .. code-block:: python
 
-    from django.urls import re_path
+    from django.urls import path
 
     from app.pages import views
 
