@@ -119,7 +119,7 @@ calling :func:`feincms3.applications.page_for_app_request`:
 
     app_name = "forms"
     urlpatterns = [
-        re_path(r"^$", form, name="form"),
+        path("", form, name="form"),
     ]
 
 
