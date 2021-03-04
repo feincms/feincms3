@@ -137,8 +137,8 @@ implementation which expects something like this:
 
     app_name = "pages"
     urlpatterns = [
-        re_path(r"^(?P<path>[-\w/]+)/$", views.page_detail, name="page"),
-        re_path(r"^$", views.page_detail, name="root"),
+        path("<path:path>/", views.page_detail, name="page"),
+        path("", views.page_detail, name="root"),
     ]
 
 If you don't like this, you're completely free to write your own views,
