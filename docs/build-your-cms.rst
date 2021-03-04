@@ -130,15 +130,15 @@ implementation which expects something like this:
 
 .. code-block:: python
 
-    from django.conf.urls import url
+    from django.urls import path
 
     from app.pages import views
 
 
     app_name = "pages"
     urlpatterns = [
-        url(r"^(?P<path>[-\w/]+)/$", views.page_detail, name="page"),
-        url(r"^$", views.page_detail, name="root"),
+        path("<path:path>/", views.page_detail, name="page"),
+        path("", views.page_detail, name="root"),
     ]
 
 If you don't like this, you're completely free to write your own views,
