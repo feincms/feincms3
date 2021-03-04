@@ -72,7 +72,6 @@ calling :func:`feincms3.applications.page_for_app_request`:
 
 .. code-block:: python
 
-    from django.urls import re_path
     from django.http import HttpResponseRedirect
     from django.shortcuts import render
     from django.urls import path
