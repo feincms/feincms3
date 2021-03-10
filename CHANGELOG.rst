@@ -17,6 +17,7 @@ Change log
   :class:`feincms3.mixins.RedirectMixin` redirect, not the ``redirect``
   shortcut. The latter may crash if the ``redirect_to_url`` doesn't look
   like a URL.
+- Dropped the django-versatileimagefield-based image plugin.
 
 
 `0.41`_ (2020-11-28)

@@ -21,9 +21,3 @@ except ImportError:  # pragma: no cover
     pass
 else:
     from . import richtext
-try:
-    import versatileimagefield
-except ImportError:  # pragma: no cover
-    pass
-else:
-    from . import versatileimage
