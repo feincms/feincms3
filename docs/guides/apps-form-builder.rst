@@ -12,39 +12,47 @@ form_designer itself the following steps are necessary.
 Extending the page model
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Make the page model inherit ``AppsMixin`` and ``LanguageMixin`` and add
-an ``APPLICATIONS`` attribute to the class:
+Make the page model inherit ``PageTypeMixin`` and ``LanguageMixin`` and add
+a ``TYPES`` attribute to the class:
 
 .. code-block:: python
 
-    from feincms3.applications import AppsMixin
+    from feincms3.applications import PageTypeMixin
+    from feincms3.applications import ApplicationType, TemplateType
     from feincms3.mixins import LanguageMixin
     from feincms3.pages import AbstractPage
 
     class Page(AbstractPage, AppsMixin, LanguageMixin, ...):
         # ...
-        APPLICATIONS = [
-            (
-                "forms",
-                _("forms"),
-                {
-                    # Required: A module containing urlpatterns
-                    "urlconf": "app.forms",
+        TYPES = [
+            TemplateType(
+                key="standard",
+                title="...",
+                regions=[Region(key="main", title="...")],
+                # Available as page.type.template_name
+                template_name="pages/standard.html",
+            ),
+            ApplicationType(
+                key="forms",
+                title=_("forms"),
+                # Required: A module containing urlpatterns
+                urlconf="app.forms",
 
-                    # The "form" field on the page is required when
-                    # selecting the forms app
-                    "required_fields": ("form",),
+                # If you want to add content, not just the form. Not required.
+                regions=[Region(key="main", title="...")],
 
-                    # Not necessary, but helpful for finding a form's URL using
-                    # reverse_app("forms-{}".format(form.pk), "form")
-                    "app_instance_namespace": lambda page: "{}-{}".format(
-                        page.application,
-                        page.form_id,
-                    ),
-                },
+                # The "form" field on the page is required when
+                # selecting the forms app
+                required_fields=("form",),
+
+                # Only necessary if you want to add more than one form to the
+                # page tree (per language). Also helpful for finding a form's u
+                # URL using reverse_app(f"forms-{form.pk}", "form")
+                app_namespace=lambda page: f"{page.page_type}-{page.form_id}",
             ),
             # ...
         ]
+
         form = models.ForeignKey(
             "form_designer.Form",
             on_delete=models.SET_NULL,

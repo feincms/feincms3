@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from types import SimpleNamespace
 
 from django.contrib.auth.models import User
 from django.core.checks import Warning
@@ -12,6 +13,7 @@ from django.urls import NoReverseMatch, reverse, set_urlconf
 from django.utils.translation import deactivate_all, override
 
 from feincms3.applications import (
+    ApplicationType,
     apps_urlconf,
     reverse_any,
     reverse_app,
@@ -88,10 +90,9 @@ class Test(TestCase):
                     "path": "/en/",
                     "static_path": 1,
                     "language_code": "en",
-                    "application": "",
                     "is_active": 1,
                     "menu": "main",
-                    "template_key": "standard",
+                    "page_type": "standard",
                 },
                 zero_management_form_data("testapp_richtext_set"),
                 zero_management_form_data("testapp_image_set"),
@@ -124,10 +125,9 @@ class Test(TestCase):
                     "path": "/en/",
                     "static_path": 1,
                     "language_code": "en",
-                    "application": "",
                     "is_active": 1,
                     "menu": "main",
-                    "template_key": "standard",
+                    "page_type": "standard",
                 },
                 zero_management_form_data("testapp_richtext_set"),
                 zero_management_form_data("testapp_image_set"),
@@ -315,7 +315,7 @@ class Test(TestCase):
                     static_path=False,
                     language_code=root.language_code,
                     is_active=True,
-                    application=app,
+                    page_type=app,
                     parent_id=root.pk,
                 )
 
@@ -389,7 +389,7 @@ class Test(TestCase):
             language_code="en",
             is_active=True,
             menu="main",
-            application="blog",
+            page_type="blog",
             parent=home,
         )
         return home, blog
@@ -403,7 +403,7 @@ class Test(TestCase):
             blog2.full_clean()
 
         self.assertEqual(
-            cm.exception.error_dict["application"][0].message,
+            cm.exception.error_dict["page_type"][0].message,
             "This exact app already exists.",
         )
 
@@ -417,14 +417,14 @@ class Test(TestCase):
             language_code="en",
             is_active=True,
             menu="main",
-            application="stuff-with-required",
+            page_type="stuff-with-required",
         )
         with self.assertRaises(ValidationError) as cm:
             home.full_clean(exclude=["not_editable"])
 
         self.assertEqual(
             cm.exception.error_dict["optional"][0].message,
-            "This field is required for the application stuff-with-required.",
+            "This field is required for the page type stuff-with-required.",
         )
 
         home.optional = 1
@@ -440,21 +440,21 @@ class Test(TestCase):
 
         response = client.get(clone_url)
         self.assertContains(response, "_set_content")
-        self.assertContains(response, "set_application")
+        self.assertContains(response, "set_page_type")
 
-        response = client.post(clone_url, {"target": home.pk, "set_application": True})
+        response = client.post(clone_url, {"target": home.pk, "set_page_type": True})
         self.assertContains(response, "This exact app already exists.")
 
         # The other way round works
         clone_url = reverse("admin:testapp_page_clone", args=(home.pk,))
 
-        response = client.post(clone_url, {"target": blog.pk, "set_application": True})
+        response = client.post(clone_url, {"target": blog.pk, "set_page_type": True})
         self.assertRedirects(
             response, reverse("admin:testapp_page_change", args=(blog.pk,))
         )
 
         # No apps in tree anymore
-        self.assertEqual(Page.objects.exclude(application="").count(), 0)
+        self.assertEqual(Page.objects.filter(page_type="blog").count(), 0)
 
     def test_snippet(self):
         """Check that snippets have access to the main rendering context
@@ -525,7 +525,7 @@ class Test(TestCase):
                     "title": "sub",
                     "slug": "sub",
                     "language_code": "en",
-                    "template_key": "standard",
+                    "page_type": "standard",
                 },
                 zero_management_form_data("testapp_richtext_set"),
                 zero_management_form_data("testapp_image_set"),
@@ -566,7 +566,7 @@ class Test(TestCase):
                     "path": "/",
                     "static_path": True,
                     "language_code": "en",
-                    "template_key": "standard",
+                    "page_type": "standard",
                 },
                 zero_management_form_data("testapp_richtext_set"),
                 zero_management_form_data("testapp_image_set"),
@@ -629,7 +629,7 @@ class Test(TestCase):
         """Test both render_plugins and render_plugin"""
 
         page = Page.objects.create(
-            is_active=True, title="main", slug="main", template_key="with-sidebar"
+            is_active=True, title="main", slug="main", page_type="with-sidebar"
         )
         page.testapp_richtext_set.create(ordering=0, region="main", text="<b>main</b>")
         page.testapp_richtext_set.create(
@@ -653,8 +653,7 @@ class Test(TestCase):
                     "title": "main",
                     "slug": "main",
                     "language_code": "en",
-                    "application": "",
-                    "template_key": "standard",
+                    "page_type": "standard",
                 },
                 zero_management_form_data("testapp_richtext_set"),
                 zero_management_form_data("testapp_image_set"),
@@ -677,8 +676,7 @@ class Test(TestCase):
                     "title": "main",
                     "slug": "main",
                     "language_code": "en",
-                    "application": "",
-                    "template_key": "standard",
+                    "page_type": "standard",
                     "static_path": True,
                     "path": "",
                 },
@@ -871,7 +869,7 @@ class Test(TestCase):
             HTML, ["renderer/html.html", "renderer/html.html"]
         )
 
-        page = Page.objects.create(template_key="standard")
+        page = Page.objects.create(page_type="standard")
         HTML.objects.create(
             parent=page, ordering=10, region="main", html="<b>Hello</b>"
         )
@@ -900,7 +898,7 @@ class Test(TestCase):
         """The renderer handles template instances, not just template paths etc."""
         renderer = TemplatePluginRenderer()
         renderer.register_template_renderer(HTML, Template("{{ plugin.html|safe }}"))
-        page = Page.objects.create(template_key="standard")
+        page = Page.objects.create(page_type="standard")
         HTML.objects.create(
             parent=page, ordering=10, region="main", html="<b>Hello</b>"
         )
@@ -917,7 +915,7 @@ class Test(TestCase):
             static_path=False,
             language_code="en",
             is_active=True,
-            application="blog",
+            page_type="blog",
         )
 
         tests = [
@@ -1047,8 +1045,7 @@ class Test(TestCase):
 
     def test_default_template_fallback(self):
         """The TemplateMixin falls back to the first template"""
-        template = Page(template_key="__notexists").template
-        self.assertEqual(template.key, "standard")
+        self.assertEqual(Page(page_type="__notexists").type.key, "standard")
 
     def test_apps_urlconf_no_apps(self):
         """apps_urlconf returns the ROOT_URLCONF when there are no apps at all"""
@@ -1134,14 +1131,14 @@ class Test(TestCase):
             slug="home-en",
             language_code="en",
             is_active=True,
-            application="translated-articles",
+            page_type="translated-articles",
         )
         Page.objects.create(
             title="home-de",
             slug="home-de",
             language_code="de",
             is_active=True,
-            application="translated-articles",
+            page_type="translated-articles",
         )
 
         original = TranslatedArticle.objects.create(title="News", language_code="en")
@@ -1195,3 +1192,31 @@ class Test(TestCase):
             ),
         ]
         self.assertEqual(errors, expected)
+
+    def test_application_type(self):
+        """Overriding ``app_namespace`` should be possible"""
+
+        with self.assertRaises(TypeError):
+            ApplicationType()
+
+        at = ApplicationType(
+            key="test",
+            title="test",
+            urlconf="test",
+            app_namespace=lambda page: f"{page.page_type}-{page.category_id}",
+        )
+
+        self.assertEqual(
+            at.app_namespace(SimpleNamespace(page_type="blog", category_id=3)),
+            "blog-3",
+        )
+
+        at = ApplicationType(
+            key="test",
+            title="test",
+            urlconf="test",
+        )
+        self.assertEqual(
+            at.app_namespace(SimpleNamespace(page_type="blog", category_id=3)),
+            "blog",
+        )

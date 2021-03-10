@@ -1,14 +1,14 @@
-from content_editor.models import Region, Template, create_plugin_base
+from content_editor.models import Region, create_plugin_base
 from django.db import models
 from django.utils.translation import gettext_lazy as _, override
 
-from feincms3.applications import AppsMixin, reverse_app
-from feincms3.mixins import (
-    LanguageAndTranslationOfMixin,
-    MenuMixin,
-    RedirectMixin,
-    TemplateMixin,
+from feincms3.applications import (
+    ApplicationType,
+    PageTypeMixin,
+    TemplateType,
+    reverse_app,
 )
+from feincms3.mixins import LanguageAndTranslationOfMixin, MenuMixin, RedirectMixin
 from feincms3.pages import AbstractPage
 from feincms3.plugins import external, html, image, richtext, snippet
 
@@ -17,10 +17,7 @@ class Page(
     # Add this first so that AbstractPage.Meta's properties are active:
     AbstractPage,
     # For adding the articles app to pages through the CMS:
-    AppsMixin,
-    # Two page templates, one with only a main region and another with a
-    # sidebar as well:
-    TemplateMixin,
+    PageTypeMixin,
     # We have a main and a footer navigation (meta):
     MenuMixin,
     # We're building a multilingual CMS. (Also, feincms3.applications depends on
@@ -30,15 +27,18 @@ class Page(
     RedirectMixin,
 ):
 
-    # TemplateMixin
-    TEMPLATES = [
-        Template(
+    # MenuMixin
+    MENUS = [("main", _("main")), ("footer", _("footer"))]
+
+    # PageTypeMixin. We have two templates and four apps.
+    TYPES = [
+        TemplateType(
             key="standard",
             title=_("standard"),
             template_name="pages/standard.html",
             regions=(Region(key="main", title=_("Main")),),
         ),
-        Template(
+        TemplateType(
             key="with-sidebar",
             title=_("with sidebar"),
             template_name="pages/with-sidebar.html",
@@ -47,32 +47,26 @@ class Page(
                 Region(key="sidebar", title=_("Sidebar")),
             ),
         ),
-    ]
-
-    # MenuMixin
-    MENUS = [("main", _("main")), ("footer", _("footer"))]
-
-    # AppsMixin. We have two apps, one is for company PR, the other
-    # for a more informal blog.
-    #
-    # NOTE! The app names (first element in the tuple) have to match the
-    # article categories exactly for URL reversing and filtering articles by
-    # app to work! (See app.articles.models.Article.CATEGORIES)
-    APPLICATIONS = [
-        ("publications", _("publications"), {"urlconf": "testapp.articles_urls"}),
-        ("blog", _("blog"), {"urlconf": "testapp.articles_urls"}),
-        (
-            "stuff-with-required",
-            "stuff-with-required",
-            {
-                "urlconf": "stuff-with-required",
-                "required_fields": ("optional", "not_editable"),
-            },
+        ApplicationType(
+            key="publications",
+            title=_("publications"),
+            urlconf="testapp.articles_urls",
         ),
-        (
-            "translated-articles",
-            _("translated articles"),
-            {"urlconf": "testapp.translated_articles_urls"},
+        ApplicationType(
+            key="blog",
+            title=_("blog"),
+            urlconf="testapp.articles_urls",
+        ),
+        ApplicationType(
+            key="stuff-with-required",
+            title="stuff-with-required",
+            urlconf="stuff-with-required",
+            required_fields=("optional", "not_editable"),
+        ),
+        ApplicationType(
+            key="translated-articles",
+            title=_("translated articles"),
+            urlconf="testapp.translated_articles_urls",
         ),
     ]
 

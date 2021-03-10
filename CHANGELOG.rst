@@ -6,6 +6,51 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+This release contains a few backwards-incompatible changes which are the result
+of efforts to produce a better foundation and fix oversights towards a 1.0
+release of feincms3.
+
+Page types
+----------
+
+Introduced the concept of page types. Merged the functionality of
+``TemplateMixin`` and ``AppsMixin`` into a new ``PageTypeMixin`` and removed
+``AppsMixin``.  Editors do not have to choose a template anymore when
+activating an app. The latter overrides the former selection anyway. Also, this
+allows using a custom selection of regions per application.
+
+The following steps should be followed to upgrade existing sites:
+
+- Create an automatic migration for the pages app.
+- Edit the generated migration; create the ``page_type`` field first, and
+  insert a ``RunSQL`` migration with the following SQL next: ``UPDATE
+  pages_page SET page_type=CASE WHEN application<>'' THEN application ELSE
+  template_key END``.
+- Ensure that the ``app_instance_namespace`` is renamed to ``app_namespace``
+  using a ``RenameField`` operation.
+- Remove ``template_key`` from any code and replace ``application`` with
+  ``page_type`` in the model admin configuration.
+- Convert the entries in your ``TEMPLATES`` list to ``TemplateType`` instances,
+  convert ``APPLICATIONS`` to ``ApplicationType`` instances and add both to a
+  new ``TYPES`` class-level list.
+- The ``.template`` attribute of page classes does not exist any longer, to
+  access e.g. the ``template_name`` replace ``page.template.template_name``
+  with ``page.type.template_name``.
+- Replace uses of ``page.application`` with ``page.page_type``,
+  ``page.app_instance_namespace`` with ``page.app_namespace``. Properties
+  mapping the former to the latter will stay in place for a release or two but
+  they are already deprecated.
+
+Other backwards-incompatible changes
+------------------------------------
+
+- Added ``alternative_text`` and ``caption`` fields to the image and the
+  external plugin.
+- Dropped the django-versatileimagefield-based image plugin.
+
+Minor changes
+-------------
+
 - Tried out a web-based translation platform. It wasn't exactly a big
   success, but we gained a few translations. Thanks to all contributors!
 - Added a system check for page subclasses without the appropriate
@@ -17,9 +62,6 @@ Change log
   :class:`feincms3.mixins.RedirectMixin` redirect, not the ``redirect``
   shortcut. The latter may crash if the ``redirect_to_url`` doesn't look
   like a URL.
-- Added ``alternative_text`` and ``caption`` fields to the image and the
-  external plugin.
-- Dropped the django-versatileimagefield-based image plugin.
 
 
 `0.41`_ (2020-11-28)

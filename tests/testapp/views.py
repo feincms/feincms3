@@ -27,7 +27,7 @@ def page_detail(request, path=None):
 
     return render(
         request,
-        page.template.template_name,
+        page.type.template_name,
         {
             "page": page,
             "regions": Regions.from_item(

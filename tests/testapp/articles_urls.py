@@ -11,7 +11,7 @@ def article_list_all(request):
     page = page_for_app_request(request)
     page.activate_language(request)
     return render_list(
-        request, Article.objects.filter(category=page.application), {"page": page}
+        request, Article.objects.filter(category=page.page_type), {"page": page}
     )
 
 
@@ -20,7 +20,7 @@ def article_list(request):
     page.activate_language(request)
     return render_list(
         request,
-        Article.objects.filter(category=page.application),
+        Article.objects.filter(category=page.page_type),
         {"page": page},
         paginate_by=5,
     )

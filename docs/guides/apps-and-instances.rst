@@ -24,13 +24,12 @@ The application URLconfs are included using nested namespaces:
 - The outer application namespace is ``"apps"`` by default.
 - The outer instance namespace is ``"apps-" + LANGUAGE_CODE``.
 - The inner namespace is the app namespace, specified by the value of
-  ``app_name`` în the apps' URLconf module. The string must correspond
-  with the value used in the ``APPLICATIONS`` list on the page model.
-  application's name in the ``APPLICATIONS`` list.
-- The inner instance namespace is the same as the app namespace, except
-  if you return a different value in the applications
-  ``app_instance_namespace`` function specified in the ``APPLICATIONS``
-  list.
+  ``app_name`` în the apps' URLconf module. The string must correspond with the
+  key of the :class:`~feincms3.applications.ApplicationType` instance in the
+  ``TYPES`` list on the page model.
+- The inner instance namespace is the same as the app namespace, except if you
+  return a different value from the application type's ``app_namespace``
+  function.
 
 Apps are contained in nested URLconf namespaces which
 allows for URL reversing using Django's ``reverse()`` mechanism. The
@@ -50,7 +49,7 @@ The best way for reversing app URLs is by using
 :func:`feincms3.applications.reverse_app`. The method expects at least two
 arguments, a namespace and a viewname. The namespace argument also
 supports passing a list of namespaces which is useful in conjunction
-with the ``app_instance_namespace`` option of applications.
+with the ``app_namespace`` option of applications.
 
 :func:`~feincms3.applications.reverse_app` first generates a list of viewnames
 and passes them on to :func:`feincms3.applications.reverse_any` (which returns
@@ -89,17 +88,24 @@ shown:
 
 .. code-block:: python
 
-    class Page(AbstractPage, AppsMixin, LanguageMixin, ...):
-        APPLICATIONS = [
-            (
-                "articles",
-                _("Articles"),
-                {
-                    "urlconf": "app.articles.urls",
-                    "app_instance_namespace": lambda page: "{}-{}".format(
-                        page.application, page.category_id or "all"
-                    ),
-                },
+    from feincms3.pages import AbstractPage
+    from feincms3.applications import PageTypeMixin
+    from feincms3.applications import ApplicationType, TemplateType
+
+    class Page(AbstractPage, PageTypeMixin, LanguageMixin, ...):
+        TYPES = [
+            TemplateType(
+                key="standard",
+                title="...",
+                regions=[Region(key="main", title="...")],
+                # Available as page.type.template_name
+                template_name="pages/standard.html",
+            ),
+            ApplicationType(
+                key="articles",
+                title=_("Articles"),
+                urlconf="app.articles.urls",
+                app_namespace=lambda page: f"{page.page_type}-{page.category_id or 'all'}",
             ),
             ...
         ]
@@ -118,8 +124,8 @@ category:
 .. code-block:: python
 
     reverse_app(
-        ["articles-{}".format(category.pk), "articles"],
-        "article-list"
+        [f"articles-{category.pk}", "articles"],
+        "article-list",
     )
 
 The list of viewnames in this case is (assuming that the category has a

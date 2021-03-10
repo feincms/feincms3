@@ -2,11 +2,13 @@ import hashlib
 import itertools
 import re
 import sys
-import types
+import warnings
 from collections import defaultdict
 from importlib import import_module
+from types import ModuleType
 
 from django.conf import settings
+from django.core.checks import Warning
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, signals
@@ -15,7 +17,9 @@ from django.utils.translation import get_language, gettext_lazy as _
 
 
 __all__ = (
-    "AppsMixin",
+    "PageTypeMixin",
+    "TemplateType",
+    "ApplicationType",
     "apps_middleware",
     "apps_urlconf",
     "page_for_app_request",
@@ -137,10 +141,10 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
 
 def apps_urlconf(*, apps=None):
     """
-    Generates a dynamic URLconf Python module including all applications in
-    their assigned place and adding the ``urlpatterns`` from ``ROOT_URLCONF``
-    at the end. Returns the value of ``ROOT_URLCONF`` directly if there are
-    no active applications.
+    Generates a dynamic URLconf Python module including all application page
+    types in their assigned place and adding the ``urlpatterns`` from
+    ``ROOT_URLCONF`` at the end. Returns the value of ``ROOT_URLCONF`` directly
+    if there are no active application page types.
 
     Since Django uses an LRU cache for URL resolvers, we try hard to only
     generate a changed URLconf when application URLs actually change.
@@ -156,22 +160,22 @@ def apps_urlconf(*, apps=None):
     - The inner namespace is the app namespace, where the application
       namespace is defined by the app itself (assign ``app_name`` in the
       same module as ``urlpatterns``) and the instance namespace is defined
-      by the application name (from ``APPLICATIONS``).
+      by the application name (from ``TYPES``).
 
     Modules stay around as long as the Python (most of the time WSGI) process
     lives. Unloading modules is tricky and probably not worth it since the
     URLconf modules shouldn't gobble up much memory.
 
     The set of applications can be overridden by passing a list of
-    ``(path, application, app_instance_namespace, language_code)`` tuples.
+    ``(path, page_type, app_namespace, language_code)`` tuples.
     """
 
     if apps is None:
-        fields = ("path", "application", "app_instance_namespace", "language_code")
+        fields = ("path", "page_type", "app_namespace", "language_code")
         apps = (
             _APPS_MODEL._default_manager.active()
             .with_tree_fields(False)
-            .exclude(app_instance_namespace="")
+            .exclude(app_namespace="")
             .values_list(*fields)
             .order_by(*fields)
         )
@@ -184,21 +188,18 @@ def apps_urlconf(*, apps=None):
     module_name = "urlconf_%s" % hashlib.md5(key.encode("utf-8")).hexdigest()
 
     if module_name not in sys.modules:
-        app_config = {app[0]: app[2] for app in _APPS_MODEL.APPLICATIONS if app[0]}
+        types = {app.key: app for app in _APPS_MODEL.TYPES if app.get("urlconf")}
 
-        m = types.ModuleType(module_name)
+        m = ModuleType(module_name)
 
         mapping = defaultdict(list)
-        for path, application, app_instance_namespace, language_code in apps:
-            if application not in app_config:
+        for path, page_type, app_namespace, language_code in apps:
+            if page_type not in types:
                 continue
             mapping[language_code].append(
                 re_path(
                     r"^%s" % re.escape(path.lstrip("/")),
-                    include(
-                        app_config[application]["urlconf"],
-                        namespace=app_instance_namespace,
-                    ),
+                    include(types[page_type]["urlconf"], namespace=app_namespace),
                 )
             )
 
@@ -248,7 +249,7 @@ def page_for_app_request(request, *, queryset=None):
 
     It is possible to override the queryset used to fetch a page instance. The
     default implementation simply uses the first concrete subclass of
-    :class:`~feincms3.applications.AppsMixin`.
+    :class:`~feincms3.applications.PageTypeMixin`.
     """
 
     if queryset is None:
@@ -258,7 +259,7 @@ def page_for_app_request(request, *, queryset=None):
         language_code=request.resolver_match.namespaces[0][
             len(_APPS_MODEL.LANGUAGE_CODES_NAMESPACE) + 1 :
         ],
-        app_instance_namespace=request.resolver_match.namespaces[1],
+        app_namespace=request.resolver_match.namespaces[1],
     )
 
 
@@ -277,70 +278,106 @@ def apps_middleware(get_response):
     return middleware
 
 
-class AppsMixin(models.Model):
+class Type(dict):
+    _REQUIRED = {"key", "title"}
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault("app_namespace", lambda instance: "")
+        missing = self._REQUIRED - set(kwargs)
+        if missing:
+            raise TypeError(
+                f"Missing arguments to {self.__class__.__name__}: {missing}"
+            )
+        super().__init__(**kwargs)
+
+    __getattr__ = dict.__getitem__
+
+
+class TemplateType(Type):
+    _REQUIRED = {"key", "title", "template_name", "regions"}
+
+
+class ApplicationType(Type):
+    _REQUIRED = {"key", "title", "urlconf"}
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault("template_name", "")
+        kwargs.setdefault("regions", [])
+        kwargs.setdefault("app_namespace", lambda instance: instance.page_type)
+        super().__init__(**kwargs)
+
+
+class PageTypeMixin(models.Model):
     """
-    The page class should inherit this mixin. It adds an ``application`` field
-    containing the selected application, and an ``app_instance_namespace``
-    field which contains the instance namespace of the application. Most of the
-    time these two fields will have the same value.  Note that currently the
-    :class:`~feincms3.mixins.LanguageMixin` is a required dependency of
-    :mod:`feincms3.applications`.
+    The page class should inherit this mixin. It adds a ``page_type`` field
+    containing the selected page type, and an ``app_namespace`` field which
+    contains the instance namespace of the application, if the type of the page
+    is an application type. The field is empty e.g. for template page types.
+    Note that currently the :class:`~feincms3.mixins.LanguageMixin` is a
+    required dependency of :mod:`feincms3.applications`.
 
-    ``APPLICATIONS`` contains a list of application configurations consisting
-    of:
+    ``TYPES`` contains a list of page type instances, either
+    :class:`~feincms3.applications.TemplateType` or
+    :class:`~feincms3.applications.ApplicationType` and maybe others in the
+    future. The configuration values are specific to each type, common to all
+    of them are a key (stored in the ``page_type`` field) and a user-visible
+    title.
 
-    - Application name (used as instance namespace)
-    - User-visible name
-    - Options dictionary
+    Template types additionally require a ``template_name`` and a ``regions``
+    value.
 
-    Available options include:
+    Application types require a ``urlconf`` value and support the following
+    options:
 
     - ``urlconf``: The path to the URLconf module for the application. Besides
       the ``urlpatterns`` list the module should probably also specify a
       ``app_name``.
     - ``required_fields``: A list of page class fields which must be non-empty
       for the application to work. The values are checked in
-      ``AppsMixin.clean_fields``.
-    - ``app_instance_namespace``: A callable which receives the page instance
+      ``PageTypeMixin.clean_fields``.
+    - ``app_namespace``: A callable which receives the page instance
       as its only argument and returns a string suitable for use as an
       instance namespace.
 
     Usage::
 
+        from content_editor.models import Region
         from django.utils.translation import gettext_lazy as _
-        from feincms3.applications import AppsMixin
+        from feincms3.applications import PageTypeMixin
         from feincms3.mixins import LanguageMixin
         from feincms3.pages import AbstractPage
 
-        class Page(AbstractPage, AppsMixin, LanguageMixin):
-            APPLICATIONS = [
-                ("", "–"),  # Looks better than "None"
-                (
-                    "publications",
-                    _("publications"),
-                    {"urlconf": "app.articles.urls"},
+        class Page(AbstractPage, PageTypeMixin, LanguageMixin):
+            TYPES = [
+                # It is recommended to always put a TemplateType type first
+                # because it will be the default type:
+                TemplateType(
+                    key="standard",
+                    title=_("Standard"),
+                    template_name="pages/standard.html",
+                    regions=[Region(key="main", title=_("Main"))],
                 ),
-                (
-                    "blog",
-                    _("blog"),
-                    {"urlconf": "app.articles.urls"},
+                ApplicationType(
+                    key="publications",
+                    title=_("publications"),
+                    urlconf="app.articles.urls",
                 ),
-                (
-                    "contact",
-                    _("contact form"),
-                    {"urlconf": "app.forms.contact_urls"},
+                ApplicationType(
+                    key="blog",
+                    title=_("blog"),
+                    urlconf="app.articles.urls",
                 ),
-                (
-                    "teams",
-                    _("teams"),
-                    {
-                        "urlconf": "app.teams.urls",
-                        "app_instance_namespace": lambda page: "%s-%s" % (
-                            page.application,
-                            page.team_id,
-                        ),
-                        "required_fields": ("team",),
-                    },
+                ApplicationType(
+                    key="contact",
+                    title=_("contact form"),
+                    urlconf="app.forms.contact_urls",
+                ),
+                ApplicationType(
+                    key="teams",
+                    title=_("teams"),
+                    urlconf="app.teams.urls",
+                    app_namespace=lambda page: f"{page.page_type}-{page.team_id}",
+                    required_fields=["team"],
                 ),
             ]
     """
@@ -348,67 +385,56 @@ class AppsMixin(models.Model):
     #: Override this to set a different name for the outer namespace.
     LANGUAGE_CODES_NAMESPACE = "apps"
 
-    application = models.CharField(
-        _("application"),
+    page_type = models.CharField(
+        _("page type"),
         max_length=20,
-        blank=True,
         choices=(("", ""),),  # Non-empty choices for get_*_display
     )
-    app_instance_namespace = models.CharField(
-        _("app instance namespace"), max_length=100, blank=True, editable=False
+    app_namespace = models.CharField(
+        ("app instance namespace"), max_length=100, blank=True, editable=False
     )
 
     class Meta:
         abstract = True
 
-    def application_config(self):
+    @property
+    def type(self):
         """
-        Returns the selected application options dictionary, or ``None`` if
-        no application is selected or the application does not exist anymore.
+        Returns the appropriate page type instance, either the selected type or
+        the first type in the list of ``TYPES`` if no type is selected or if
+        the type does not exist anymore.
         """
-        try:
-            return {app[0]: app[2] for app in self.APPLICATIONS if app[0]}[
-                self.application
-            ]
-        except KeyError:
-            return None
+        return self.TYPES_DICT.get(self.page_type, self.TYPES[0])
+
+    @property
+    def regions(self):
+        return self.type.regions
 
     def save(self, *args, **kwargs):
         """
-        Updates ``app_instance_namespace``.
+        Updates ``app_namespace``.
         """
-        app_config = self.application_config() or {}
-        # If app_config is empty or None, this simply sets
-        # app_instance_namespace to the empty string.
-        setter = app_config.get(
-            "app_instance_namespace", lambda instance: instance.application
-        )
-        self.app_instance_namespace = setter(self)
-
+        self.app_namespace = self.type.app_namespace(self)
         super().save(*args, **kwargs)
 
     save.alters_data = True
 
     def clean_fields(self, exclude=None):
         """
-        Checks that application nodes do not have any descendants, and that
-        required fields for the selected application (if any) are filled out,
-        and that app instances with the same instance namespace and same
-        language only exist once on a site.
+        Checks that required fields are given and that an app namespace only
+        exists once per site and language.
         """
         exclude = [] if exclude is None else exclude
         super().clean_fields(exclude)
 
-        app_config = self.application_config()
-        if app_config and app_config.get("required_fields"):
+        type = self.type
+        if type and type.get("required_fields"):
             missing = [
-                field
-                for field in app_config["required_fields"]
-                if not getattr(self, field)
+                field for field in type["required_fields"] if not getattr(self, field)
             ]
             if missing:
-                error = _("This field is required for the application %s.") % (
-                    self.get_application_display(),
+                error = _("This field is required for the page type %s.") % (
+                    self.get_page_type_display(),
                 )
                 errors = {}
                 for field in missing:
@@ -421,18 +447,14 @@ class AppsMixin(models.Model):
 
                 raise ValidationError(errors)
 
-        if app_config:
-            app_instance_namespace = app_config.get(
-                "app_instance_namespace", lambda instance: instance.application
-            )(self)
-
+        if type and type.app_namespace(self):
             if self.__class__._default_manager.filter(
-                Q(app_instance_namespace=app_instance_namespace),
+                Q(app_namespace=type.app_namespace(self)),
                 Q(language_code=self.language_code),
                 ~Q(pk=self.pk),
             ).exists():
-                fields = ["__all__", "application"]
-                fields.extend(app_config.get("required_fields", ()))
+                fields = ["__all__", "page_type"]
+                fields.extend(type.get("required_fields", ()))
                 raise ValidationError(
                     {
                         field: _("This exact app already exists.")
@@ -442,18 +464,62 @@ class AppsMixin(models.Model):
                 )
 
     @staticmethod
-    def fill_application_choices(sender, **kwargs):
+    def fill_page_type_choices(sender, **kwargs):
         """
-        Fills in the choices for ``application`` from the ``APPLICATIONS``
+        Fills in the choices for ``page_type`` from the ``TYPES``
         class variable. This method is a receiver of Django's
         ``class_prepared`` signal.
         """
-        if issubclass(sender, AppsMixin) and not sender._meta.abstract:
-            sender._meta.get_field("application").choices = [
-                app[:2] for app in sender.APPLICATIONS
-            ]
+        if issubclass(sender, PageTypeMixin) and not sender._meta.abstract:
+            field = sender._meta.get_field("page_type")
+            field.choices = [(app.key, app.title) for app in sender.TYPES]
+            field.default = sender.TYPES[0].key
+            sender.TYPES_DICT = {app.key: app for app in sender.TYPES}
             global _APPS_MODEL
             _APPS_MODEL = sender
 
+    @classmethod
+    def check(cls, **kwargs):
+        errors = super().check(**kwargs)
+        errors.extend(cls._check_feincms3_appsmixin_templatemixin_clash(**kwargs))
+        return errors
 
-signals.class_prepared.connect(AppsMixin.fill_application_choices)
+    @classmethod
+    def _check_feincms3_appsmixin_templatemixin_clash(cls, **kwargs):
+        from feincms3.mixins import TemplateMixin
+
+        if not cls._meta.abstract and issubclass(cls, TemplateMixin):
+            return [
+                Warning(
+                    f"The model {cls._meta.label} extends both"
+                    " PageTypeMixin and TemplateMixin. The new PageTypeMixin includes"
+                    " the functionality of the TemplateMixin, please remove"
+                    " the latter, fill in ``page_type`` fields either from"
+                    " ``application`` (if non-empty) or from ``template_key``,"
+                    " and rename ``app_instance_namespace`` to ``app_namespace``.",
+                    obj=cls,
+                    id="feincms3.W002",
+                )
+            ]
+        return []
+
+    @property
+    def application(self):
+        warnings.warn(
+            "AppsMixin.application is PageTypeMixin.page_type now.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.page_type
+
+    @property
+    def app_instance_namespace(self):
+        warnings.warn(
+            "AppsMixin.app_instance_namespace is PageTypeMixin.app_namespace now.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.app_namespace
+
+
+signals.class_prepared.connect(PageTypeMixin.fill_page_type_choices)
