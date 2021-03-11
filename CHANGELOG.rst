@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.90b1`_ (2021-03-11)
+~~~~~~~~~~~~~~~~~~~~~~
+
 This release contains a few backwards-incompatible changes which are the result
 of efforts to produce a better foundation and fix oversights towards a 1.0
 release of feincms3.
@@ -759,4 +763,5 @@ functionality.
 .. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
 .. _0.40: https://github.com/matthiask/feincms3/compare/0.39...0.40
 .. _0.41: https://github.com/matthiask/feincms3/compare/0.40...0.41
+.. _0.90b1: https://github.com/matthiask/feincms3/compare/0.41...0.90b1
 .. _Next version: https://github.com/matthiask/feincms3/compare/0.41...main
