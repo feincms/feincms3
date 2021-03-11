@@ -235,8 +235,8 @@ class RedirectMixin(models.Model):
                 )
 
             if (
-                self.redirect_to_page.redirect_to_page_id
-                or self.redirect_to_page.redirect_to_url
+                self.redirect_to_page.redirect_to_url
+                or self.redirect_to_page.redirect_to_page
             ):
                 raise validation_error(
                     _(
@@ -245,11 +245,7 @@ class RedirectMixin(models.Model):
                     )
                     % {
                         "title": self.redirect_to_page,
-                        "path": (
-                            self.redirect_to_page.redirect_to_page.get_absolute_url()
-                            if self.redirect_to_page.redirect_to_page
-                            else self.redirect_to_page.redirect_to_url
-                        ),
+                        "path": self.redirect_to_page.get_redirect_url(),
                     },
                     field="redirect_to_page",
                     exclude=exclude,
