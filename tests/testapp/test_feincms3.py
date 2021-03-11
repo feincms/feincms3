@@ -424,7 +424,7 @@ class Test(TestCase):
 
         self.assertEqual(
             cm.exception.error_dict["optional"][0].message,
-            "This field is required for the page type stuff-with-required.",
+            'This field is required for the page type "stuff-with-required".',
         )
 
         home.optional = 1

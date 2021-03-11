@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-04 10:44+0100\n"
+"POT-Creation-Date: 2021-03-11 14:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:97 pages.py:59
+#: admin.py:97 pages.py:60
 msgid "title"
 msgstr ""
 
@@ -88,23 +88,19 @@ msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr ""
 
 #: admin.py:482
-msgid "ancestor"
+msgid "subtree"
 msgstr ""
 
-#: applications.py:352
-msgid "application"
+#: applications.py:389
+msgid "page type"
 msgstr ""
 
-#: applications.py:358
-msgid "app instance namespace"
-msgstr ""
-
-#: applications.py:410
+#: applications.py:436
 #, python-format
-msgid "This field is required for the application %s."
+msgid "This field is required for the page type \"%s\"."
 msgstr ""
 
-#: applications.py:438
+#: applications.py:460
 msgid "This exact app already exists."
 msgstr ""
 
@@ -163,47 +159,47 @@ msgid ""
 "%(pages)s"
 msgstr ""
 
-#: pages.py:58
+#: pages.py:59
 msgid "is active"
 msgstr ""
 
-#: pages.py:60
+#: pages.py:61
 msgid "slug"
 msgstr ""
 
-#: pages.py:67
+#: pages.py:68
 msgid "Position is expected to be greater than zero."
 msgstr ""
 
-#: pages.py:74
+#: pages.py:75
 msgid "path"
 msgstr ""
 
-#: pages.py:78
+#: pages.py:79
 msgid "Generated automatically if 'static path' is unset."
 msgstr ""
 
-#: pages.py:82
+#: pages.py:83
 msgid "Path must start and end with a slash (/)."
 msgstr ""
 
-#: pages.py:86
+#: pages.py:87
 msgid "static path"
 msgstr ""
 
-#: pages.py:93
+#: pages.py:94
 msgid "page"
 msgstr ""
 
-#: pages.py:94
+#: pages.py:95
 msgid "pages"
 msgstr ""
 
-#: pages.py:136
+#: pages.py:137
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr ""
 
-#: pages.py:156
+#: pages.py:157
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr ""
@@ -212,11 +208,23 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: plugins/external.py:112
+#: plugins/external.py:110 plugins/image.py:38
+msgid "alternative text"
+msgstr ""
+
+#: plugins/external.py:111 plugins/image.py:39
+msgid "Describe the contents, e.g. for screenreaders."
+msgstr ""
+
+#: plugins/external.py:115 plugins/image.py:43
+msgid "caption"
+msgstr ""
+
+#: plugins/external.py:119
 msgid "external content"
 msgstr ""
 
-#: plugins/external.py:128
+#: plugins/external.py:135
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr ""
 
@@ -226,24 +234,23 @@ msgid ""
 "that the HTML snippet is well-formed!"
 msgstr ""
 
-#: plugins/image.py:22 plugins/image.py:40 plugins/versatileimage.py:29
-#: plugins/versatileimage.py:45
+#: plugins/image.py:22 plugins/image.py:47
 msgid "image"
 msgstr ""
 
-#: plugins/image.py:31 plugins/versatileimage.py:36
+#: plugins/image.py:31
 msgid "image width"
 msgstr ""
 
-#: plugins/image.py:34 plugins/versatileimage.py:39
+#: plugins/image.py:34
 msgid "image height"
 msgstr ""
 
-#: plugins/image.py:36 plugins/versatileimage.py:41
+#: plugins/image.py:36
 msgid "primary point of interest"
 msgstr ""
 
-#: plugins/image.py:41 plugins/versatileimage.py:46
+#: plugins/image.py:48
 msgid "images"
 msgstr ""
 

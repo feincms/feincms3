@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-26 14:11+0200\n"
+"POT-Creation-Date: 2021-03-11 14:14+0100\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/feincms3/feincms3/"
@@ -21,29 +21,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:98 pages.py:60
+#: admin.py:97 pages.py:60
 msgid "title"
 msgstr "titre"
 
-#: admin.py:112
+#: admin.py:111
 msgid "move"
 msgstr "déplacer"
 
-#: admin.py:138
+#: admin.py:137
 #, python-format
 msgid "Move %s"
 msgstr "Déplacer %s"
 
-#: admin.py:143
+#: admin.py:142
 #, python-format
 msgid "Clone %s"
 msgstr "Cloner %s"
 
-#: admin.py:212
+#: admin.py:211
 msgid "New location"
 msgstr "Nouvel emplacement"
 
-#: admin.py:220
+#: admin.py:219
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -51,114 +51,113 @@ msgstr ""
 "Le déplacement n’est pas possible car il n’y a pas de cibles valides. Peut-"
 "être avez-vous sélectionné le seul nœud racine ?"
 
-#: admin.py:257 admin.py:268 admin.py:278
+#: admin.py:265 admin.py:276 admin.py:286
 msgid "move here"
 msgstr "déplacer ici"
 
-#: admin.py:336
+#: admin.py:344
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Le nœud %(node)s a été déplacé vers la nouvelle position."
 
-#: admin.py:354
+#: admin.py:362
 msgid "target"
 msgstr "cible"
 
-#: admin.py:364
+#: admin.py:372
 msgid "Replace target's content"
 msgstr "Remplacer le contenu de la cible"
 
-#: admin.py:366
+#: admin.py:374
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Affecte les modèles suivants : %s."
 
-#: admin.py:388
+#: admin.py:396
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Actuel : « %s »"
 
-#: admin.py:398
+#: admin.py:406
 msgid "Cannot clone node to itself."
 msgstr "Impossible de cloner le nœud sur lui-même."
 
-#: admin.py:421
+#: admin.py:429
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Champs mis à jour de %(node)s : %(fields)s"
 
-#: admin.py:445
+#: admin.py:453
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Remplacement du contenu de %(target)s par le contenu de %(source)s."
 
-#: admin.py:474
-msgid "ancestor"
-msgstr "ancêtre"
+#: admin.py:482
+msgid "subtree"
+msgstr ""
 
-#: applications.py:352
-msgid "application"
-msgstr "application"
+#: applications.py:389
+#, fuzzy
+#| msgid "page"
+msgid "page type"
+msgstr "page"
 
-#: applications.py:358
-msgid "app instance namespace"
-msgstr "espace de noms d’instance d’application"
-
-#: applications.py:410
-#, python-format
-msgid "This field is required for the application %s."
+#: applications.py:436
+#, fuzzy, python-format
+#| msgid "This field is required for the application %s."
+msgid "This field is required for the page type \"%s\"."
 msgstr "Ce champ est obligatoire pour l’application %s."
 
-#: applications.py:438
+#: applications.py:460
 msgid "This exact app already exists."
 msgstr "Cette application exacte existe déjà."
 
-#: mixins.py:19
+#: mixins.py:18
 msgid "menu"
 msgstr "menu"
 
-#: mixins.py:52
+#: mixins.py:51
 msgid "template"
 msgstr "modèle"
 
-#: mixins.py:98
+#: mixins.py:97
 msgid "language"
 msgstr "langue"
 
-#: mixins.py:128
+#: mixins.py:127
 msgid "translation of"
 msgstr "traduction de"
 
-#: mixins.py:169
+#: mixins.py:168
 msgid ""
 "Objects in the primary language cannot be the translation of another object."
 msgstr ""
 "Les objets dans la langue principale ne peuvent pas être la traduction d’un "
 "autre objet."
 
-#: mixins.py:182
+#: mixins.py:181
 msgid "Objects may only be the translation of objects in the primary language."
 msgstr ""
 "Les objets peuvent seulement être la traduction d’objets dans la langue "
 "principale."
 
-#: mixins.py:195
+#: mixins.py:194
 msgid "Redirect to URL"
 msgstr "Rediriger vers l’URL"
 
-#: mixins.py:202
+#: mixins.py:201
 msgid "Redirect to page"
 msgstr "Rediriger vers la page"
 
-#: mixins.py:216
+#: mixins.py:224
 msgid "Only set one redirect value."
 msgstr "Définissez une seule valeur de redirection."
 
-#: mixins.py:224
+#: mixins.py:232
 msgid "Cannot redirect to self."
 msgstr "Impossible de rediriger vers soi."
 
-#: mixins.py:235
+#: mixins.py:243
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
@@ -167,7 +166,7 @@ msgstr ""
 "Ne pas enchaîner les redirections. La page sélectionnée « %(title)s » "
 "redirige vers « %(path)s »."
 
-#: mixins.py:256
+#: mixins.py:264
 #, python-format
 msgid ""
 "Do not chain redirects. The following pages already redirect to this page: "
@@ -222,70 +221,89 @@ msgstr ""
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Le nouveau chemin %(path)s de la page %(page)s ne serait pas unique."
 
-#: plugins/external.py:109
+#: plugins/external.py:108
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:113
+#: plugins/external.py:110 plugins/image.py:38
+msgid "alternative text"
+msgstr ""
+
+#: plugins/external.py:111 plugins/image.py:39
+msgid "Describe the contents, e.g. for screenreaders."
+msgstr ""
+
+#: plugins/external.py:115 plugins/image.py:43
+#, fuzzy
+#| msgid "application"
+msgid "caption"
+msgstr "application"
+
+#: plugins/external.py:119
 msgid "external content"
 msgstr "contenu externe"
 
-#: plugins/external.py:129
+#: plugins/external.py:135
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Impossible de récupérer le HTML pour cette URL, désolé !"
 
-#: plugins/html.py:27
+#: plugins/html.py:26
 msgid ""
 "The content will be inserted directly into the page. It is VERY important "
 "that the HTML snippet is well-formed!"
 msgstr ""
-"Le contenu sera inséré directement dans la page. Il est TRÈS important que l’"
-"extrait de code HTML soit bien formé !"
+"Le contenu sera inséré directement dans la page. Il est TRÈS important que "
+"l’extrait de code HTML soit bien formé !"
 
-#: plugins/image.py:23 plugins/image.py:41 plugins/versatileimage.py:30
-#: plugins/versatileimage.py:46
+#: plugins/image.py:22 plugins/image.py:47
 msgid "image"
 msgstr "image"
 
-#: plugins/image.py:32 plugins/versatileimage.py:37
+#: plugins/image.py:31
 msgid "image width"
 msgstr "Largeur de l’image"
 
-#: plugins/image.py:35 plugins/versatileimage.py:40
+#: plugins/image.py:34
 msgid "image height"
 msgstr "hauteur de l’image"
 
-#: plugins/image.py:37 plugins/versatileimage.py:42
+#: plugins/image.py:36
 msgid "primary point of interest"
 msgstr "principal point d’intérêt"
 
-#: plugins/image.py:42 plugins/versatileimage.py:47
+#: plugins/image.py:48
 msgid "images"
 msgstr "images"
 
-#: plugins/richtext.py:31
+#: plugins/richtext.py:30
 msgid "text"
 msgstr "texte"
 
-#: plugins/richtext.py:35
+#: plugins/richtext.py:34
 msgid "rich text"
 msgstr "texte riche"
 
-#: plugins/richtext.py:36
+#: plugins/richtext.py:35
 msgid "rich texts"
 msgstr "textes riches"
 
-#: plugins/snippet.py:33
+#: plugins/snippet.py:32
 msgid "template name"
 msgstr "nom du modèle"
 
-#: plugins/snippet.py:40
+#: plugins/snippet.py:39
 msgid "snippet"
 msgstr "extrait"
 
-#: plugins/snippet.py:41
+#: plugins/snippet.py:40
 msgid "snippets"
 msgstr "extraits"
+
+#~ msgid "ancestor"
+#~ msgstr "ancêtre"
+
+#~ msgid "app instance namespace"
+#~ msgstr "espace de noms d’instance d’application"
 
 #~ msgid "move to"
 #~ msgstr "verschieben nach"

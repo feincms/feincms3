@@ -433,7 +433,7 @@ class PageTypeMixin(models.Model):
                 field for field in type["required_fields"] if not getattr(self, field)
             ]
             if missing:
-                error = _("This field is required for the page type %s.") % (
+                error = _('This field is required for the page type "%s".') % (
                     self.get_page_type_display(),
                 )
                 errors = {}

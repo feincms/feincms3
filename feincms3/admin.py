@@ -479,7 +479,7 @@ class AncestorFilter(SimpleListFilter):
         admin.site.register(Node, NodeAdmin)
     """
 
-    title = _("ancestor")
+    title = _("subtree")
     parameter_name = "ancestor"
     max_depth = 1
 

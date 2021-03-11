@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-26 14:11+0200\n"
+"POT-Creation-Date: 2021-03-11 14:14+0100\n"
 "PO-Revision-Date: 2020-12-04 09:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -21,29 +21,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:98 pages.py:60
+#: admin.py:97 pages.py:60
 msgid "title"
 msgstr "tittel"
 
-#: admin.py:112
+#: admin.py:111
 msgid "move"
 msgstr "flytt"
 
-#: admin.py:138
+#: admin.py:137
 #, python-format
 msgid "Move %s"
 msgstr "Flytt %s"
 
-#: admin.py:143
+#: admin.py:142
 #, python-format
 msgid "Clone %s"
 msgstr "Klon %s"
 
-#: admin.py:212
+#: admin.py:211
 msgid "New location"
 msgstr "Ny plassering"
 
-#: admin.py:220
+#: admin.py:219
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -51,111 +51,110 @@ msgstr ""
 "Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte "
 "den eneste rotnoden?"
 
-#: admin.py:257 admin.py:268 admin.py:278
+#: admin.py:265 admin.py:276 admin.py:286
 msgid "move here"
 msgstr "flytt hit"
 
-#: admin.py:336
+#: admin.py:344
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Noden %(node)s har blitt flyttet til ny plassering"
 
-#: admin.py:354
+#: admin.py:362
 msgid "target"
 msgstr "mål"
 
-#: admin.py:364
+#: admin.py:372
 msgid "Replace target's content"
 msgstr "Erstatt målets innhold"
 
-#: admin.py:366
+#: admin.py:374
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Har innvirkning på følgende moduler: %s."
 
-#: admin.py:388
+#: admin.py:396
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Nåværende: «%s»"
 
-#: admin.py:398
+#: admin.py:406
 msgid "Cannot clone node to itself."
 msgstr "Kan ikke klone node til seg selv."
 
-#: admin.py:421
+#: admin.py:429
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
-msgstr "Oppdaterte felter tilhørende %(node)s:"
+msgstr "Oppdaterte felter tilhørende %(node)s: %(fields)s"
 
-#: admin.py:445
+#: admin.py:453
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Erstattet innholdet i %(target)s med innholdet i %(source)s."
 
-#: admin.py:474
-msgid "ancestor"
-msgstr "opphav"
+#: admin.py:482
+msgid "subtree"
+msgstr ""
 
-#: applications.py:352
-msgid "application"
-msgstr "program"
+#: applications.py:389
+#, fuzzy
+#| msgid "page"
+msgid "page type"
+msgstr "side"
 
-#: applications.py:358
-msgid "app instance namespace"
-msgstr "programinstans-navnerom"
-
-#: applications.py:410
-#, python-format
-msgid "This field is required for the application %s."
+#: applications.py:436
+#, fuzzy, python-format
+#| msgid "This field is required for the application %s."
+msgid "This field is required for the page type \"%s\"."
 msgstr "Dette feltet kreves for programmet %s."
 
-#: applications.py:438
+#: applications.py:460
 msgid "This exact app already exists."
 msgstr "Akkurat dette programmet finnes allerede."
 
-#: mixins.py:19
+#: mixins.py:18
 msgid "menu"
 msgstr "meny"
 
-#: mixins.py:52
+#: mixins.py:51
 msgid "template"
 msgstr "mal"
 
-#: mixins.py:98
+#: mixins.py:97
 msgid "language"
 msgstr "språk"
 
-#: mixins.py:128
+#: mixins.py:127
 msgid "translation of"
 msgstr "oversettelse av"
 
-#: mixins.py:169
+#: mixins.py:168
 msgid ""
 "Objects in the primary language cannot be the translation of another object."
 msgstr ""
 "Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
 
-#: mixins.py:182
+#: mixins.py:181
 msgid "Objects may only be the translation of objects in the primary language."
 msgstr "Objekter kan kun være oversettelser av objekter i primærspråk."
 
-#: mixins.py:195
+#: mixins.py:194
 msgid "Redirect to URL"
 msgstr "Videresendt til nettadresse"
 
-#: mixins.py:202
+#: mixins.py:201
 msgid "Redirect to page"
 msgstr "Videresendt til side"
 
-#: mixins.py:216
+#: mixins.py:224
 msgid "Only set one redirect value."
 msgstr "Kun sett én videresendingsverdi."
 
-#: mixins.py:224
+#: mixins.py:232
 msgid "Cannot redirect to self."
 msgstr "Kan ikke videresende til seg selv."
 
-#: mixins.py:235
+#: mixins.py:243
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
@@ -164,14 +163,14 @@ msgstr ""
 "Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» "
 "videresender til «%(path)s»."
 
-#: mixins.py:256
+#: mixins.py:264
 #, python-format
 msgid ""
 "Do not chain redirects. The following pages already redirect to this page: "
 "%(pages)s"
 msgstr ""
 "Ikke opprett videresendelser i stafett. Følgende sider videresender til "
-"denne siden:"
+"denne siden: %(pages)s"
 
 #: pages.py:59
 msgid "is active"
@@ -218,70 +217,89 @@ msgstr "Statiske stier må fylles ut. Mente du «/»?"
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Siden «%(page)s» sin nye sti %(path)s finnes allerede."
 
-#: plugins/external.py:109
+#: plugins/external.py:108
 msgid "URL"
 msgstr "Nettadresse"
 
-#: plugins/external.py:113
+#: plugins/external.py:110 plugins/image.py:38
+msgid "alternative text"
+msgstr ""
+
+#: plugins/external.py:111 plugins/image.py:39
+msgid "Describe the contents, e.g. for screenreaders."
+msgstr ""
+
+#: plugins/external.py:115 plugins/image.py:43
+#, fuzzy
+#| msgid "application"
+msgid "caption"
+msgstr "program"
+
+#: plugins/external.py:119
 msgid "external content"
 msgstr "eksternt innhold"
 
-#: plugins/external.py:129
+#: plugins/external.py:135
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Klarte ikke å hente HTML for denne nettadressen."
 
-#: plugins/html.py:27
+#: plugins/html.py:26
 msgid ""
 "The content will be inserted directly into the page. It is VERY important "
 "that the HTML snippet is well-formed!"
 msgstr ""
 
-#: plugins/image.py:23 plugins/image.py:41 plugins/versatileimage.py:30
-#: plugins/versatileimage.py:46
+#: plugins/image.py:22 plugins/image.py:47
 msgid "image"
 msgstr "bilde"
 
-#: plugins/image.py:32 plugins/versatileimage.py:37
+#: plugins/image.py:31
 msgid "image width"
 msgstr "bildebredde"
 
-#: plugins/image.py:35 plugins/versatileimage.py:40
+#: plugins/image.py:34
 msgid "image height"
 msgstr "bildehøyde"
 
-#: plugins/image.py:37 plugins/versatileimage.py:42
+#: plugins/image.py:36
 msgid "primary point of interest"
 msgstr "hoved-interessepunkt"
 
-#: plugins/image.py:42 plugins/versatileimage.py:47
+#: plugins/image.py:48
 msgid "images"
 msgstr "bilder"
 
-#: plugins/richtext.py:31
+#: plugins/richtext.py:30
 msgid "text"
 msgstr "tekst"
 
-#: plugins/richtext.py:35
+#: plugins/richtext.py:34
 #, fuzzy
 msgid "rich text"
 msgstr "rikholdig tekst"
 
-#: plugins/richtext.py:36
+#: plugins/richtext.py:35
 #, fuzzy
 msgid "rich texts"
 msgstr "rikholdige tekster"
 
-#: plugins/snippet.py:33
+#: plugins/snippet.py:32
 msgid "template name"
 msgstr "malnavn"
 
-#: plugins/snippet.py:40
+#: plugins/snippet.py:39
 msgid "snippet"
 msgstr "tekstsnutt"
 
-#: plugins/snippet.py:41
+#: plugins/snippet.py:40
 msgid "snippets"
 msgstr "tekstsnutter"
+
+#~ msgid "ancestor"
+#~ msgstr "opphav"
+
+#~ msgid "app instance namespace"
+#~ msgstr "programinstans-navnerom"
 
 #~ msgid "move to"
 #~ msgstr "verschieben nach"
