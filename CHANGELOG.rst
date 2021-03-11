@@ -36,7 +36,8 @@ The following steps should be followed to upgrade existing sites:
   ``page_type`` in the model admin configuration.
 - Convert the entries in your ``TEMPLATES`` list to ``TemplateType`` instances,
   convert ``APPLICATIONS`` to ``ApplicationType`` instances and add both to a
-  new ``TYPES`` class-level list.
+  new ``TYPES`` class-level list. Note that those applications do not have
+  *any* regions by default at all.
 - The ``.template`` attribute of page classes does not exist any longer, to
   access e.g. the ``template_name`` replace ``page.template.template_name``
   with ``page.type.template_name``.
