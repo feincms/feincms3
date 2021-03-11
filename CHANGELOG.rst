@@ -51,6 +51,7 @@ Other backwards-incompatible changes
 - Added ``alternative_text`` and ``caption`` fields to the image and the
   external plugin.
 - Dropped the django-versatileimagefield-based image plugin.
+- Removed the shims in ``feincms3.apps``.
 
 Minor changes
 -------------
