@@ -43,10 +43,3 @@ Snippets
 
 .. automodule:: feincms3.plugins.snippet
    :members:
-
-
-Versatile images
-~~~~~~~~~~~~~~~~
-
-.. automodule:: feincms3.plugins.versatileimage
-   :members:

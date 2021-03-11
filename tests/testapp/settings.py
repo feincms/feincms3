@@ -87,13 +87,6 @@ CKEDITOR_CONFIGS["richtext-plugin"] = CKEDITOR_CONFIGS["default"]
 
 
 def patch():
-    # Monkey patch the translation module because versatileimagefield still
-    # references those settings
-    from django.utils import translation
-
-    translation.ugettext = translation.gettext
-    translation.ugettext_lazy = translation.gettext_lazy
-
     # Something about inspect.getargspec in beautifulsoup4.
     warnings.filterwarnings("ignore", module=r"bs4\.builder\._lxml")
 

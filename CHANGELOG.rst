@@ -19,6 +19,7 @@ Change log
   like a URL.
 - Added ``alternative_text`` and ``caption`` fields to the image and the
   external plugin.
+- Dropped the django-versatileimagefield-based image plugin.
 
 
 `0.41`_ (2020-11-28)
