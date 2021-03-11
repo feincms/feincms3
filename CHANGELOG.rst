@@ -7,7 +7,7 @@ Change log
 ~~~~~~~~~~~~~~~
 
 
-`0.90b1`_ (2021-03-11)
+`0.90b2`_ (2021-03-11)
 ~~~~~~~~~~~~~~~~~~~~~~
 
 This release contains a few backwards-incompatible changes which are the result
