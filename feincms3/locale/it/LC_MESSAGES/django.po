@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 14:14+0100\n"
+"POT-Creation-Date: 2021-03-11 19:51+0100\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/feincms3/"
@@ -116,7 +116,7 @@ msgstr "Questa applicazione esatta esiste già."
 msgid "menu"
 msgstr "menù"
 
-#: mixins.py:51
+#: mixins.py:51 plugins/snippet.py:32
 msgid "template"
 msgstr "modello"
 
@@ -282,17 +282,22 @@ msgstr ""
 msgid "rich texts"
 msgstr ""
 
-#: plugins/snippet.py:32
-msgid "template name"
-msgstr "nome del modello"
-
 #: plugins/snippet.py:39
-msgid "snippet"
-msgstr "frammento"
+msgid "predefined snippet"
+msgstr ""
 
 #: plugins/snippet.py:40
-msgid "snippets"
-msgstr "frammenti"
+msgid "predefined snippets"
+msgstr ""
+
+#~ msgid "snippet"
+#~ msgstr "frammento"
+
+#~ msgid "snippets"
+#~ msgstr "frammenti"
+
+#~ msgid "template name"
+#~ msgstr "nome del modello"
 
 #~ msgid "app instance namespace"
 #~ msgstr "spazio dei nomi istanza dell’app"

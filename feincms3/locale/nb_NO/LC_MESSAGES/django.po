@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 14:14+0100\n"
+"POT-Creation-Date: 2021-03-11 19:51+0100\n"
 "PO-Revision-Date: 2020-12-04 09:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -116,7 +116,7 @@ msgstr "Akkurat dette programmet finnes allerede."
 msgid "menu"
 msgstr "meny"
 
-#: mixins.py:51
+#: mixins.py:51 plugins/snippet.py:32
 msgid "template"
 msgstr "mal"
 
@@ -283,17 +283,22 @@ msgstr "rikholdig tekst"
 msgid "rich texts"
 msgstr "rikholdige tekster"
 
-#: plugins/snippet.py:32
-msgid "template name"
-msgstr "malnavn"
-
 #: plugins/snippet.py:39
-msgid "snippet"
-msgstr "tekstsnutt"
+msgid "predefined snippet"
+msgstr ""
 
 #: plugins/snippet.py:40
-msgid "snippets"
-msgstr "tekstsnutter"
+msgid "predefined snippets"
+msgstr ""
+
+#~ msgid "snippet"
+#~ msgstr "tekstsnutt"
+
+#~ msgid "snippets"
+#~ msgstr "tekstsnutter"
+
+#~ msgid "template name"
+#~ msgstr "malnavn"
 
 #~ msgid "ancestor"
 #~ msgstr "opphav"

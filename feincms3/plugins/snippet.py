@@ -29,15 +29,15 @@ class Snippet(models.Model):
     """
 
     template_name = models.CharField(
-        _("template name"),
+        _("template"),
         max_length=200,
         choices=(("", ""),),  # Non-empty choices for get_*_display
     )
 
     class Meta:
         abstract = True
-        verbose_name = _("snippet")
-        verbose_name_plural = _("snippets")
+        verbose_name = _("predefined snippet")
+        verbose_name_plural = _("predefined snippets")
 
     def __str__(self):
         return "{}".format(self.get_template_name_display())
