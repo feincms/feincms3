@@ -763,5 +763,5 @@ functionality.
 .. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
 .. _0.40: https://github.com/matthiask/feincms3/compare/0.39...0.40
 .. _0.41: https://github.com/matthiask/feincms3/compare/0.40...0.41
-.. _0.90b1: https://github.com/matthiask/feincms3/compare/0.41...0.90b1
+.. _0.90b2: https://github.com/matthiask/feincms3/compare/0.41...0.90b2
 .. _Next version: https://github.com/matthiask/feincms3/compare/0.41...main
