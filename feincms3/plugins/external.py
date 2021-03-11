@@ -119,7 +119,7 @@ class External(models.Model):
         verbose_name = _("external content")
 
     def __str__(self):
-        return self.url
+        return self.caption or self.url
 
 
 class ExternalForm(forms.ModelForm):

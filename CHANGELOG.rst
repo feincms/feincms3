@@ -49,7 +49,7 @@ Other backwards-incompatible changes
 ------------------------------------
 
 - Added ``alternative_text`` and ``caption`` fields to the image and the
-  external plugin.
+  external plugin. Made both plugins prefer the caption in ``__str__``.
 - Dropped the django-versatileimagefield-based image plugin.
 - Removed the shims in ``feincms3.apps``.
 
@@ -67,6 +67,7 @@ Minor changes
   :class:`feincms3.mixins.RedirectMixin` redirect, not the ``redirect``
   shortcut. The latter may crash if the ``redirect_to_url`` doesn't look
   like a URL.
+- Removed useless fallbacks.
 
 
 `0.41`_ (2020-11-28)
