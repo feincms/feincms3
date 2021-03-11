@@ -106,6 +106,13 @@ class External(models.Model):
     """
 
     url = models.URLField(_("URL"))
+    alternative_text = models.CharField(
+        _("alternative text"),
+        help_text=_("Describe the contents, e.g. for screenreaders."),
+        max_length=200,
+        blank=True,
+    )
+    caption = models.CharField(_("caption"), blank=True, max_length=200)
 
     class Meta:
         abstract = True
