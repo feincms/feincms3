@@ -70,7 +70,7 @@ class TemplateMixin(models.Model):
         Return the selected template instances' ``regions`` attribute, falling
         back to an empty list if no template instance could be found.
         """
-        return self.template.regions if self.template else []
+        return self.template.regions
 
     @staticmethod
     def fill_template_key_choices(sender, **kwargs):
