@@ -69,6 +69,8 @@ Minor changes
   shortcut. The latter may crash if the ``redirect_to_url`` doesn't look
   like a URL.
 - Removed useless fallbacks.
+- Fixed background colors in the move form to work with Django admin's dark
+  mode.
 
 
 `0.41`_ (2020-11-28)

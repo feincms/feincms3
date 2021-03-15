@@ -2,8 +2,8 @@
   background: repeating-linear-gradient(
     to right,
     var(--hairline-color, #e8e8e8) 0,
-    #fff 1px,
-    #fff 30px
+    transparent 1px,
+    transparent 30px
   );
   padding-left: 10px; /* default value */
   background-position: 8px 0;
