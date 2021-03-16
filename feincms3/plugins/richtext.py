@@ -2,8 +2,9 @@
 Provides a rich text area whose content is automatically cleaned using a
 very restrictive allowlist of tags and attributes.
 
-Depends on django-ckeditor and `html-sanitizer
-<https://pypi.org/project/html-sanitizer>`__.
+Depends on
+`django-ckeditor <https://github.com/django-ckeditor/django-ckeditor/>`__ and
+`html-sanitizer <https://pypi.org/project/html-sanitizer>`__.
 """
 from content_editor.admin import ContentEditorInline
 from django.db import models
