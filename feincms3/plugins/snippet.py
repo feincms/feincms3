@@ -2,8 +2,6 @@
 Plugin for including template snippets through the CMS
 """
 
-from __future__ import unicode_literals
-
 from collections import defaultdict
 
 from content_editor.admin import ContentEditorInline
