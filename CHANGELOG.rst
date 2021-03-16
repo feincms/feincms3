@@ -71,8 +71,8 @@ Minor changes
 - Removed useless fallbacks.
 - Fixed background colors in the move form to work with Django admin's dark
   mode.
-- Added a ``feincms3/static-path.js`` script which automatically reduces the
-  opacity of the path field unless the path is defined manually.
+- Added a ``feincms3/static-path-style.js`` script which automatically reduces
+  the opacity of the path field unless the path is defined manually.
 
 
 `0.41`_ (2020-11-28)
