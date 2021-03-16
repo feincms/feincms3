@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pathRow.style.opacity = staticPathField.checked ? 1 : 0.5;
   }
 
-  if (staticPathField & pathRow) {
+  if (staticPathField && pathRow) {
     pathRow.style.transition = "opacity 0.2s";
 
     assignOpacity();
