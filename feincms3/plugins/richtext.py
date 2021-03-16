@@ -42,8 +42,8 @@ class RichText(models.Model):
 class RichTextInline(ContentEditorInline):
     """
     The only difference with the standard ``ContentEditorInline`` is that this
-    inline adds the ``feincms3/plugin_ckeditor.js`` file which handles the
-    CKEditor widget activation and deactivation inside the content editor.
+    inline adds the ``feincms3/plugin-ckeditor.css`` file which adjusts the
+    width of the django-ckeditor widget inside the content editor.
     """
 
     class Media:
