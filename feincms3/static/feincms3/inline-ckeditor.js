@@ -1,6 +1,6 @@
 (function () {
   const DEFAULTS = {
-    format_tags: "h1;h2;h3;p;pre",
+    format_tags: "h1;h2;h3;p",
     toolbar: "Custom",
     toolbar_Custom: [
       [
