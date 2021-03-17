@@ -31,7 +31,7 @@
     const config = Object.assign({}, DEFAULTS, window.CKEDITOR_CONFIG);
     document.querySelectorAll("textarea[data-ckeditor]").forEach((el) => {
       if (el.dataset.ckeditor !== "active" && !el.id.includes("__prefix__")) {
-        CKEDITOR.inline(el, config);
+        window.CKEDITOR.inline(el, config);
         el.dataset.ckeditor = "active";
       }
     });

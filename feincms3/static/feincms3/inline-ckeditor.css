@@ -12,7 +12,7 @@
   }
 }
 
-.cke_textarea_inline * {
+.cke_textarea_inline *:not(hr) {
   background: none !important;
   color: inherit !important;
   border: none !important;
@@ -28,7 +28,7 @@
 .cke_textarea_inline h6 {
   font-size: 1em !important;
   font-weight: bold;
-  margin: 0.5em 0 0.25em 0 !important;
+  margin: 0.75rem 0 0.5rem 0 !important;
 }
 
 .cke_textarea_inline h1 {
@@ -47,11 +47,28 @@
   font-size: 1.2em !important;
 }
 
-.cke_textarea_inline p {
-  margin-bottom: 1em !important;
+.cke_textarea_inline p,
+.cke_textarea_inline ul,
+.cke_textarea_inline ol,
+.cke_textarea_inline hr {
+  margin-bottom: 0.5rem !important;
+}
+
+.cke_textarea_inline > *:last-child {
+  margin-bottom: 0 !important;
 }
 
 .cke_textarea_inline a {
   color: blue !important;
   text-decoration: underline !important;
+}
+
+.cke_textarea_inline ul > li {
+  list-style: disc !important;
+  margin-left: 1em !important;
+}
+
+.cke_textarea_inline ol > li {
+  list-style: decimal !important;
+  margin-left: 1em !important;
 }
