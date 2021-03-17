@@ -63,6 +63,7 @@ CKEDITOR = JS(
         # "integrity": "sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",  # noqa
         "crossorigin": "anonymous",
         "data-ckeditor-defaults": json.dumps(DEFAULTS),
+        "defer": "defer",
     },
     static=False,
 )
