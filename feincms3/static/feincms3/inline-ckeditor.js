@@ -1,17 +1,15 @@
 (function () {
-  const DEFAULTS = JSON.parse(
-    document.querySelector("[data-ckeditor-defaults]").dataset.ckeditorDefaults
-  );
+  const script = document.querySelector("[data-inline-cke-config]");
+  const config = JSON.parse(script.dataset.inlineCkeConfig);
 
-  function initialize() {
-    const config = Object.assign({}, DEFAULTS, window.CKEDITOR_CONFIG);
-    document.querySelectorAll("textarea[data-ckeditor]").forEach((el) => {
+  function initializeInlineCKE() {
+    document.querySelectorAll("textarea[data-inline-cke]").forEach((el) => {
       if (el.dataset.ckeditor !== "active" && !el.id.includes("__prefix__")) {
         window.CKEDITOR.inline(el, config);
-        el.dataset.ckeditor = "active";
+        el.dataset.inlineCke = "active";
       }
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initialize);
+  document.addEventListener("DOMContentLoaded", initializeInlineCKE);
 })();
