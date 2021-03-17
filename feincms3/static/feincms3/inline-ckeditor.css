@@ -1,9 +1,9 @@
 .cke_textarea_inline {
   margin-left: 170px;
-  max-width: 1000px;
+  max-width: 80ch;
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  padding: 0.5rem;
+  padding: 5px 6px;
 }
 
 @media (max-width: 767px) {
