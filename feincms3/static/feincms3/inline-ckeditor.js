@@ -1,31 +1,7 @@
 (function () {
-  const DEFAULTS = {
-    format_tags: "h1;h2;h3;p",
-    toolbar: "Custom",
-    toolbar_Custom: [
-      [
-        "Format",
-        "RemoveFormat",
-        "-",
-        "Bold",
-        "Italic",
-        "Subscript",
-        "Superscript",
-        "-",
-        "NumberedList",
-        "BulletedList",
-        "-",
-        "Anchor",
-        "Link",
-        "Unlink",
-        "-",
-        "HorizontalRule",
-        "SpecialChar",
-        "-",
-        "Source",
-      ],
-    ],
-  };
+  const DEFAULTS = JSON.parse(
+    document.querySelector("[data-ckeditor-defaults]").dataset.ckeditorDefaults
+  );
 
   function initialize() {
     const config = Object.assign({}, DEFAULTS, window.CKEDITOR_CONFIG);
