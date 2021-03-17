@@ -7,7 +7,7 @@ Change log
 ~~~~~~~~~~~~~~~
 
 
-`0.90b4`_ (2021-03-16)
+`0.90b5`_ (2021-03-17)
 ~~~~~~~~~~~~~~~~~~~~~~
 
 This release contains a few backwards-incompatible changes which are the result
@@ -73,6 +73,7 @@ Minor changes
   mode.
 - Added a ``feincms3/static-path-style.js`` script which automatically reduces
   the opacity of the path field unless the path is defined manually.
+- Introduced an experimental inline CKEditor field.
 
 
 `0.41`_ (2020-11-28)
@@ -770,5 +771,5 @@ functionality.
 .. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
 .. _0.40: https://github.com/matthiask/feincms3/compare/0.39...0.40
 .. _0.41: https://github.com/matthiask/feincms3/compare/0.40...0.41
-.. _0.90b4: https://github.com/matthiask/feincms3/compare/0.41...0.90b4
+.. _0.90b5: https://github.com/matthiask/feincms3/compare/0.41...0.90b5
 .. _Next version: https://github.com/matthiask/feincms3/compare/0.41...main
