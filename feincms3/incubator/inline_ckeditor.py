@@ -86,6 +86,7 @@ class InlineCKEditorWidget(forms.Textarea):
         return forms.Media(
             css={"all": ["feincms3/inline-ckeditor.css"]},
             js=[
+                "admin/js/jquery.init.js",
                 self.ckeditor,
                 JS(
                     "feincms3/inline-ckeditor.js",
