@@ -28,7 +28,8 @@
 .cke_textarea_inline h6 {
   font-size: 1em !important;
   font-weight: bold;
-  margin: 0.75rem 0 0.5rem 0 !important;
+  line-height: 1.2;
+  margin: 0.75rem 0 0.25rem 0 !important;
 }
 
 .cke_textarea_inline h1 {
