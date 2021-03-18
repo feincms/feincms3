@@ -7,7 +7,7 @@ from js_asset import JS
 
 
 CKEDITOR = JS(
-    "https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js",
+    "https://cdn.ckeditor.com/4.16.0/full/ckeditor.js",
     {
         # "integrity": "sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",  # noqa
         "crossorigin": "anonymous",
