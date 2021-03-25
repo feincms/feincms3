@@ -7,8 +7,8 @@ Change log
 ~~~~~~~~~~~~~~~
 
 
-`0.90b9`_ (2021-03-18)
-~~~~~~~~~~~~~~~~~~~~~~
+`0.90b10`_ (2021-03-25)
+~~~~~~~~~~~~~~~~~~~~~~~
 
 This release contains a few backwards-incompatible changes which are the result
 of efforts to produce a better foundation and fix oversights towards a 1.0
@@ -772,5 +772,5 @@ functionality.
 .. _0.39: https://github.com/matthiask/feincms3/compare/0.38.1...0.39
 .. _0.40: https://github.com/matthiask/feincms3/compare/0.39...0.40
 .. _0.41: https://github.com/matthiask/feincms3/compare/0.40...0.41
-.. _0.90b9: https://github.com/matthiask/feincms3/compare/0.41...0.90b9
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.90b9...main
+.. _0.90b10: https://github.com/matthiask/feincms3/compare/0.41...0.90b10
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.90b10...main
