@@ -16,7 +16,7 @@ class MenuMixin(models.Model):
 
     menu = models.CharField(
         _("menu"),
-        max_length=20,
+        max_length=100,
         blank=True,
         choices=(("", ""),),  # Non-empty choices for get_*_display
     )
@@ -191,7 +191,9 @@ class RedirectMixin(models.Model):
     The ``RedirectMixin`` allows adding redirects in the page tree.
     """
 
-    redirect_to_url = models.CharField(_("Redirect to URL"), max_length=200, blank=True)
+    redirect_to_url = models.CharField(
+        _("Redirect to URL"), max_length=1000, blank=True
+    )
     redirect_to_page = TreeNodeForeignKey(
         "self",
         on_delete=models.SET_NULL,

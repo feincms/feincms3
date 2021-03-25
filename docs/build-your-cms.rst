@@ -118,7 +118,7 @@ The page model and a few plugins could be defined as follows:
 
 
     class Image(plugins.image.Image, PagePlugin):
-        caption = models.CharField(_("caption"), max_length=200, blank=True)
+        pass
 
 
 Views and URLs

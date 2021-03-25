@@ -28,7 +28,7 @@ class Snippet(models.Model):
 
     template_name = models.CharField(
         _("template"),
-        max_length=200,
+        max_length=100,
         choices=(("", ""),),  # Non-empty choices for get_*_display
     )
 

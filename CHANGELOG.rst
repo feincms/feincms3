@@ -53,6 +53,7 @@ Other backwards-incompatible changes
   external plugin. Made both plugins prefer the caption in ``__str__``.
 - Dropped the django-versatileimagefield-based image plugin.
 - Removed the shims in ``feincms3.apps``.
+- Standardized ``max_length`` values of ``CharField`` instances.
 
 Minor changes
 -------------

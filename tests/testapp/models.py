@@ -82,7 +82,7 @@ class RichText(richtext.RichText, PagePlugin):
 
 
 class Image(image.Image, PagePlugin):
-    caption = models.CharField(_("caption"), max_length=200, blank=True)
+    pass
 
 
 class Snippet(snippet.Snippet, PagePlugin):
@@ -104,10 +104,10 @@ class HTML(html.HTML, PagePlugin):
 
 
 class Article(models.Model):
-    title = models.CharField(_("title"), max_length=100)
+    title = models.CharField(_("title"), max_length=200)
     category = models.CharField(
         _("category"),
-        max_length=20,
+        max_length=100,
         choices=(("publications", "publications"), ("blog", "blog")),
     )
 
@@ -124,7 +124,7 @@ class Article(models.Model):
 
 
 class TranslatedArticle(LanguageAndTranslationOfMixin):
-    title = models.CharField(_("title"), max_length=100)
+    title = models.CharField(_("title"), max_length=200)
 
     class Meta:
         ordering = ["-pk"]
