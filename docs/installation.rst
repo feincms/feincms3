@@ -16,5 +16,5 @@ The best way to install feincms3 is:
     pip install feincms3[all]
 
 This installs all optional dependencies as required by the bundled rich
-text, image and oEmbed plugins. A more minimal installation can be
-selected by only running ``pip install feincms3``.
+text, image and oEmbed plugins. Should you be using Z-shell (zsh), then use ``pip install 'feincms3[all]'`` to escape globbing. A more minimal installation can be
+selected by only running ``pip install feincms3``
