@@ -54,6 +54,10 @@ Other backwards-incompatible changes
 - Dropped the django-versatileimagefield-based image plugin.
 - Removed the shims in ``feincms3.apps``.
 - Standardized ``max_length`` values of ``CharField`` instances.
+- Changed the snippet plugin to no longer try to render templates not in the
+  ``TEMPLATES`` list. This means that you can just remove templates from
+  ``TEMPLATES`` and not worry about database contents referencing templates
+  which could have been removed in the meantime in the base case.
 
 Minor changes
 -------------

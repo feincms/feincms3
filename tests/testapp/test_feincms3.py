@@ -470,13 +470,18 @@ class Test(TestCase):
             menu="main",
         )
 
-        home_en.testapp_snippet_set.create(
+        snippet = home_en.testapp_snippet_set.create(
             template_name="snippet.html", ordering=10, region="main"
         )
 
         response = self.client.get(home_en.get_absolute_url())
         self.assertContains(response, "<h2>snippet on page home (/en/)</h2>", 1)
         self.assertContains(response, "<h2>context</h2>", 1)
+
+        snippet.template_name = "this/template/does/not/exist.html"
+        snippet.save()
+        response = self.client.get(home_en.get_absolute_url())
+        self.assertEqual(response.status_code, 200)  # No crash
 
     def duplicated_path_setup(self):
         """Set up a page structure which leads to duplicated paths when

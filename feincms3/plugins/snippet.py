@@ -7,6 +7,7 @@ from collections import defaultdict
 from content_editor.admin import ContentEditorInline
 from django.db import models
 from django.db.models import signals
+from django.template.base import Template
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 
@@ -63,6 +64,10 @@ class Snippet(models.Model):
         """
         from feincms3.renderer import default_context
 
+        templates = defaultdict(
+            lambda: Template(""),
+            ((row[0], row[0]) for row in cls.TEMPLATES),
+        )
         context_fns = defaultdict(
             lambda: default_context,
             [(row[0], row[2]) for row in cls.TEMPLATES if len(row) > 2],
@@ -70,7 +75,7 @@ class Snippet(models.Model):
 
         renderer.register_template_renderer(
             cls,
-            lambda plugin: plugin.template_name,
+            lambda plugin: templates[plugin.template_name],
             lambda plugin, context: context_fns[plugin.template_name](plugin, context),
         )
 
