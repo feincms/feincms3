@@ -1,12 +1,17 @@
 /* global CKEDITOR, django */
 django.jQuery(function ($) {
-  const script = document.querySelector("[data-inline-cke-config]");
-  const config = JSON.parse(script.dataset.inlineCkeConfig);
+  const configs = {};
+  const scripts = document.querySelectorAll("[data-inline-cke-config]");
+  scripts.forEach(function parseConfig(script) {
+    configs[script.dataset.inlineCkeId] = JSON.parse(
+      script.dataset.inlineCkeConfig
+    );
+  });
 
   function initializeInlineCKE() {
     document.querySelectorAll("textarea[data-inline-cke]").forEach((el) => {
-      if (el.dataset.ckeditor !== "active" && !el.id.includes("__prefix__")) {
-        CKEDITOR.inline(el, config);
+      if (el.dataset.inlineCke !== "active" && !el.id.includes("__prefix__")) {
+        CKEDITOR.inline(el, configs[el.dataset.inlineCke]);
         el.dataset.inlineCke = "active";
       }
     });

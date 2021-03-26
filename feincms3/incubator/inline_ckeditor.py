@@ -75,7 +75,7 @@ class InlineCKEditorWidget(forms.Textarea):
         self.config = kwargs.pop("config") or CONFIG
 
         attrs = kwargs.setdefault("attrs", {})
-        attrs["data-inline-cke"] = True
+        attrs["data-inline-cke"] = id(self.config)
         super().__init__(*args, **kwargs)
 
     @property
@@ -88,6 +88,7 @@ class InlineCKEditorWidget(forms.Textarea):
                 JS(
                     "feincms3/inline-ckeditor.js",
                     {
+                        "data-inline-cke-id": id(self.config),
                         "data-inline-cke-config": json.dumps(self.config),
                         "defer": "defer",
                     },
