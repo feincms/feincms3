@@ -97,16 +97,13 @@ msgid "subtree"
 msgstr ""
 
 #: applications.py:389
-#, fuzzy
-#| msgid "page"
 msgid "page type"
-msgstr "page"
+msgstr "type de page"
 
 #: applications.py:436
-#, fuzzy, python-format
-#| msgid "This field is required for the application %s."
+#, python-format
 msgid "This field is required for the page type \"%s\"."
-msgstr "Ce champ est obligatoire pour l’application %s."
+msgstr "Ce champ est obligatoire pour le type de page \"%s\"."
 
 #: applications.py:460
 msgid "This exact app already exists."
@@ -229,17 +226,16 @@ msgstr "URL"
 
 #: plugins/external.py:110 plugins/image.py:40
 msgid "alternative text"
-msgstr ""
+msgstr "texte alternatif"
 
 #: plugins/external.py:111 plugins/image.py:41
 msgid "Describe the contents, e.g. for screenreaders."
-msgstr ""
+msgstr "Décrit les contenus de l’image, par ex. pour un lecteur d’écran."
 
 #: plugins/external.py:115 plugins/image.py:45
-#, fuzzy
 #| msgid "application"
 msgid "caption"
-msgstr "application"
+msgstr "légende"
 
 #: plugins/external.py:119
 msgid "external content"
