@@ -17,4 +17,4 @@ The best way to install feincms3 is:
 
 This installs all optional dependencies as required by the bundled rich
 text, image and oEmbed plugins. A more minimal installation can be
-selected by only running ``pip install feincms3``
+selected by only running ``pip install feincms3``.
