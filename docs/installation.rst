@@ -13,7 +13,7 @@ The best way to install feincms3 is:
 
 .. code-block:: shell
 
-    pip install feincms3[all]
+    pip install 'feincms3[all]'  # Quote the requirement to escape globbing
 
 This installs all optional dependencies as required by the bundled rich
 text, image and oEmbed plugins. A more minimal installation can be
