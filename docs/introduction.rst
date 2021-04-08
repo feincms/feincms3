@@ -50,7 +50,7 @@ Expressions.
 
    Using django-mptt_ or other tree libraries is possible with feincms3
    as well if you don't want to use CTEs. Reimplementing the abstract
-   page class with a diffefent library should be straightforward.
+   page class with a different library should be straightforward.
 
 
 The parts of feincms3
