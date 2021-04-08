@@ -2,6 +2,8 @@ import json
 
 from django import forms
 from django.db import models
+from django.utils.html import strip_tags
+from django.utils.text import Truncator
 from html_sanitizer.django import get_sanitizer
 from js_asset import JS
 
@@ -67,6 +69,16 @@ class InlineCKEditorField(models.TextField):
     def formfield(self, **kwargs):
         kwargs["widget"] = InlineCKEditorWidget(**self.widget_config)
         return super().formfield(**kwargs)
+
+    def contribute_to_class(self, cls, name, **kwargs):
+        super().contribute_to_class(self, cls, name, **kwargs)
+        setattr(
+            cls,
+            f"get_{name}_excerpt",
+            lambda self, words=10, truncate=" ...": Truncator(
+                strip_tags(getattr(self, name))
+            ).words(words, truncate=truncate),
+        )
 
 
 class InlineCKEditorWidget(forms.Textarea):
