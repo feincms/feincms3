@@ -7,8 +7,11 @@
 }
 
 @media (max-width: 767px) {
-  .order-machine .django-ckeditor-widget {
+  .cke_textarea_inline {
+    margin: 0;
     width: calc(100%);
+    max-width: none;
+    padding: 6px 8px;
   }
 }
 
