@@ -71,7 +71,7 @@ class InlineCKEditorField(models.TextField):
         return super().formfield(**kwargs)
 
     def contribute_to_class(self, cls, name, **kwargs):
-        super().contribute_to_class(self, cls, name, **kwargs)
+        super().contribute_to_class(cls, name, **kwargs)
         setattr(
             cls,
             f"get_{name}_excerpt",
