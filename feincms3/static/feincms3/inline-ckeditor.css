@@ -32,12 +32,20 @@
   font-size: 1em !important;
   font-weight: bold;
   line-height: 1.2;
-  margin: 0.75rem 0 0.25rem 0 !important;
+  margin: 0 0 0.25rem 0 !important;
+}
+
+.cke_textarea_inline * + h1,
+.cke_textarea_inline * + h2,
+.cke_textarea_inline * + h3,
+.cke_textarea_inline * + h4,
+.cke_textarea_inline * + h5,
+.cke_textarea_inline * + h6 {
+  margin-top: 0.75rem !important;
 }
 
 .cke_textarea_inline h1 {
   font-size: 2em !important;
-  margin-top: 0 !important;
 }
 
 .cke_textarea_inline h2 {
