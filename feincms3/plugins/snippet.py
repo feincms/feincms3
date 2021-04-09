@@ -11,6 +11,8 @@ from django.template.base import Template
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 
+from feincms3.mixins import ChoicesCharField
+
 
 __all__ = ("Snippet", "SnippetInline", "render_snippet")
 
@@ -27,11 +29,7 @@ class Snippet(models.Model):
     Template snippet plugin
     """
 
-    template_name = models.CharField(
-        _("template"),
-        max_length=100,
-        choices=(("", ""),),  # Non-empty choices for get_*_display
-    )
+    template_name = ChoicesCharField(_("template"), max_length=100)
 
     class Meta:
         abstract = True

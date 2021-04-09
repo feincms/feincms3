@@ -7,6 +7,22 @@ from tree_queries.fields import TreeNodeForeignKey
 from feincms3.utils import validation_error
 
 
+class ChoicesCharField(models.CharField):
+    """
+    ``models.CharField`` with choices, which makes the migration framework
+    always ignore changes to ``choices``, ever.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("choices", [("", "")])  # Non-empty choices for get_*_display
+        super().__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super().deconstruct()
+        kwargs["choices"] = [("", "")]
+        return name, "django.db.models.CharField", args, kwargs
+
+
 class MenuMixin(models.Model):
     """
     The ``MenuMixin`` is most useful on pages where there are menus with
@@ -14,12 +30,7 @@ class MenuMixin(models.Model):
     and a meta navigation (containing contact, imprint etc.)
     """
 
-    menu = models.CharField(
-        _("menu"),
-        max_length=100,
-        blank=True,
-        choices=(("", ""),),  # Non-empty choices for get_*_display
-    )
+    menu = ChoicesCharField(_("menu"), max_length=100, blank=True)
 
     class Meta:
         abstract = True
@@ -47,11 +58,7 @@ class TemplateMixin(models.Model):
     ``Template`` instances through Django's administration interface.
     """
 
-    template_key = models.CharField(
-        _("template"),
-        max_length=100,
-        choices=(("", ""),),  # Non-empty choices for get_*_display
-    )
+    template_key = ChoicesCharField(_("template"), max_length=100)
 
     class Meta:
         abstract = True
@@ -93,7 +100,7 @@ class LanguageMixin(models.Model):
     Pages may come in varying languages. ``LanguageMixin`` helps with that.
     """
 
-    language_code = models.CharField(
+    language_code = ChoicesCharField(
         _("language"),
         max_length=10,
         choices=settings.LANGUAGES,

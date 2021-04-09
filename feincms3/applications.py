@@ -15,6 +15,8 @@ from django.db.models import Q, signals
 from django.urls import NoReverseMatch, include, re_path, reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
+from feincms3.mixins import ChoicesCharField
+
 
 __all__ = (
     "PageTypeMixin",
@@ -385,11 +387,7 @@ class PageTypeMixin(models.Model):
     #: Override this to set a different name for the outer namespace.
     LANGUAGE_CODES_NAMESPACE = "apps"
 
-    page_type = models.CharField(
-        _("page type"),
-        max_length=100,
-        choices=(("", ""),),  # Non-empty choices for get_*_display
-    )
+    page_type = ChoicesCharField(_("page type"), max_length=100)
     app_namespace = models.CharField(
         ("app instance namespace"), max_length=100, blank=True, editable=False
     )
