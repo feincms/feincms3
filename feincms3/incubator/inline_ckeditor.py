@@ -43,16 +43,9 @@ CONFIG = {
 }
 
 
-def cleanse_html(html):
-    """
-    Pass ugly HTML, get nice HTML back.
-    """
-    return get_sanitizer().sanitize(html)
-
-
 class InlineCKEditorField(models.TextField):
     def __init__(self, *args, **kwargs):
-        self.cleanse = kwargs.pop("cleanse", cleanse_html)
+        self.cleanse = kwargs.pop("cleanse", None) or get_sanitizer().sanitize
         self.widget_config = {
             "ckeditor": kwargs.pop("ckeditor", None),
             "config": kwargs.pop("config", None),
