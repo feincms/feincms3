@@ -4,23 +4,7 @@ from django.db.models import Q, signals
 from django.utils.translation import activate, get_language, gettext_lazy as _
 from tree_queries.fields import TreeNodeForeignKey
 
-from feincms3.utils import validation_error
-
-
-class ChoicesCharField(models.CharField):
-    """
-    ``models.CharField`` with choices, which makes the migration framework
-    always ignore changes to ``choices``, ever.
-    """
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("choices", [("", "")])  # Non-empty choices for get_*_display
-        super().__init__(*args, **kwargs)
-
-    def deconstruct(self):
-        name, path, args, kwargs = super().deconstruct()
-        kwargs["choices"] = [("", "")]
-        return name, "django.db.models.CharField", args, kwargs
+from feincms3.utils import ChoicesCharField, validation_error
 
 
 class MenuMixin(models.Model):

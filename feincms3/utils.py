@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.utils.http import is_same_domain
 
 
@@ -35,3 +36,33 @@ def is_first_party_link(url, *, first_party_hosts=None):
 
     hosts = settings.ALLOWED_HOSTS if first_party_hosts is None else first_party_hosts
     return any(is_same_domain(u.hostname, pattern) for pattern in hosts)
+
+
+class Type(dict):
+    _REQUIRED = set()
+
+    def __init__(self, **kwargs):
+        missing = self._REQUIRED - set(kwargs)
+        if missing:
+            raise TypeError(
+                f"Missing arguments to {self.__class__.__name__}: {missing}"
+            )
+        super().__init__(**kwargs)
+
+    __getattr__ = dict.__getitem__
+
+
+class ChoicesCharField(models.CharField):
+    """
+    ``models.CharField`` with choices, which makes the migration framework
+    always ignore changes to ``choices``, ever.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("choices", [("", "")])  # Non-empty choices for get_*_display
+        super().__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super().deconstruct()
+        kwargs["choices"] = [("", "")]
+        return name, "django.db.models.CharField", args, kwargs

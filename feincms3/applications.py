@@ -16,6 +16,7 @@ from django.urls import NoReverseMatch, include, re_path, reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
 from feincms3.mixins import ChoicesCharField
+from feincms3.utils import Type
 
 
 __all__ = (
@@ -280,27 +281,16 @@ def apps_middleware(get_response):
     return middleware
 
 
-class Type(dict):
-    _REQUIRED = {"key", "title"}
+class TemplateType(Type):
+    _REQUIRED = {"key", "title", "template_name", "regions", "app_namespace"}
 
     def __init__(self, **kwargs):
         kwargs.setdefault("app_namespace", lambda instance: "")
-        missing = self._REQUIRED - set(kwargs)
-        if missing:
-            raise TypeError(
-                f"Missing arguments to {self.__class__.__name__}: {missing}"
-            )
         super().__init__(**kwargs)
-
-    __getattr__ = dict.__getitem__
-
-
-class TemplateType(Type):
-    _REQUIRED = {"key", "title", "template_name", "regions"}
 
 
 class ApplicationType(Type):
-    _REQUIRED = {"key", "title", "urlconf"}
+    _REQUIRED = {"key", "title", "urlconf", "app_namespace"}
 
     def __init__(self, **kwargs):
         kwargs.setdefault("template_name", "")
