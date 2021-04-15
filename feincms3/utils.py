@@ -38,20 +38,6 @@ def is_first_party_link(url, *, first_party_hosts=None):
     return any(is_same_domain(u.hostname, pattern) for pattern in hosts)
 
 
-class Type(dict):
-    _REQUIRED = set()
-
-    def __init__(self, **kwargs):
-        missing = self._REQUIRED - set(kwargs)
-        if missing:
-            raise TypeError(
-                f"Missing arguments to {self.__class__.__name__}: {missing}"
-            )
-        super().__init__(**kwargs)
-
-    __getattr__ = dict.__getitem__
-
-
 class ChoicesCharField(models.CharField):
     """
     ``models.CharField`` with choices, which makes the migration framework

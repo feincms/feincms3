@@ -79,6 +79,8 @@ Minor changes
 - Added a ``feincms3/static-path-style.js`` script which automatically reduces
   the opacity of the path field unless the path is defined manually.
 - Introduced an experimental inline CKEditor field.
+- Raised the minimum django-content-editor version to 4.1 to take advantage of
+  ``content_editor.models.Type``.
 
 
 `0.41`_ (2020-11-28)

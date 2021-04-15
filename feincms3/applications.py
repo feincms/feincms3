@@ -7,6 +7,7 @@ from collections import defaultdict
 from importlib import import_module
 from types import ModuleType
 
+from content_editor.models import Type
 from django.conf import settings
 from django.core.checks import Warning
 from django.core.exceptions import ValidationError
@@ -16,7 +17,6 @@ from django.urls import NoReverseMatch, include, re_path, reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
 from feincms3.mixins import ChoicesCharField
-from feincms3.utils import Type
 
 
 __all__ = (

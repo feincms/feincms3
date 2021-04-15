@@ -1,4 +1,5 @@
-from content_editor.models import SimpleNamespace  # types.SimpleNamespace
+from types import SimpleNamespace
+
 from django.test import TestCase
 
 from feincms3.regions import Regions, matches
