@@ -19,6 +19,11 @@ class Test(TestCase):
                 True,
             ),
             (
+                "https://example.com:80/path",
+                [".example.com"],
+                True,
+            ),
+            (
                 "http://www.example.com:80/path",
                 ["example.com"],
                 False,
