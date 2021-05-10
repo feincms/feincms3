@@ -104,6 +104,8 @@ Related projects
 * `feincms3-meta <https://github.com/matthiask/feincms3-meta>`_: Helpers
   and feincms3 mixins for making Open Graph tags and meta tags less
   annoying.
+* `feincms3-forms <https://github.com/matthiask/feincms3-forms/>`_: A form
+  builder using django-content-editor under the hood.
 * `django-cabinet <https://github.com/matthiask/django-cabinet>`_: A
   media library for Django which works well with feincms3 and follows
   the same software design guidelines.
