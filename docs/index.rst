@@ -30,7 +30,6 @@ Start here if you want to know what feincms3 is and build your first CMS
 based on feincms3.
 
 .. toctree::
-   :maxdepth: 2
 
    introduction
    installation
@@ -45,7 +44,6 @@ They do not have to be read in order and in general only build on the
 knowledge imparted in :ref:`build-your-cms`.
 
 .. toctree::
-   :maxdepth: 2
 
    guides/plugins
    guides/templates-and-regions
@@ -67,7 +65,6 @@ news app with archives, detail pages etc.
 The apps documentation is meant to be read in order.
 
 .. toctree::
-   :maxdepth: 2
 
    guides/apps-introduction
    guides/apps-form-builder
@@ -78,7 +75,6 @@ Reference
 =========
 
 .. toctree::
-   :maxdepth: 1
    :glob:
 
    ref/*
@@ -88,7 +84,6 @@ Project links
 =============
 
 .. toctree::
-   :maxdepth: 1
 
    project/changelog
    project/contributing
