@@ -8,6 +8,9 @@ from html_sanitizer.django import get_sanitizer
 from js_asset import JS
 
 
+__all__ = ["InlineCKEditorField"]
+
+
 CKEDITOR = JS(
     "https://cdn.ckeditor.com/4.16.1/full/ckeditor.js",
     {
@@ -44,6 +47,25 @@ CONFIG = {
 
 
 class InlineCKEditorField(models.TextField):
+    """
+    This field uses an inline CKEditor 4 instance to edit HTML. All HTML is
+    cleansed using `html-sanitizer
+    <https://github.com/matthiask/html-sanitizer>`__.
+
+    The default configuration of both ``InlineCKEditorField`` and HTML
+    sanitizer only allows a heavily restricted subset of HTML. This should make
+    it easier to write CSS which works for all possible combinations of content
+    which can be added through Django's administration interface.
+
+    The field supports the following keyword arguments to alter its
+    configuration and behavior:
+
+    - ``cleanse``: A callable which gets messy HTML and returns cleansed HTML.
+    - ``ckeditor``: A CDN URL for CKEditor 4.
+    - ``config``: Change the CKEditor 4 configuration. See the source for the
+      current default.
+    """
+
     def __init__(self, *args, **kwargs):
         self.cleanse = kwargs.pop("cleanse", None) or get_sanitizer().sanitize
         self.widget_config = {

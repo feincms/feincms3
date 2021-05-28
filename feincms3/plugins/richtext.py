@@ -1,34 +1,16 @@
-"""
-Provides a rich text area whose content is automatically cleaned using a
-very restrictive allowlist of tags and attributes.
-
-Depends on
-`django-ckeditor <https://github.com/django-ckeditor/django-ckeditor/>`__ and
-`html-sanitizer <https://pypi.org/project/html-sanitizer>`__.
-"""
 from content_editor.admin import ContentEditorInline
 from django.db import models
-from django.utils.html import mark_safe, strip_tags
-from django.utils.text import Truncator
+from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from feincms3.cleanse import CleansedRichTextField
+from feincms3.inline_ckeditor import InlineCKEditorField
 
 
 __all__ = ("RichText", "RichTextInline", "render_richtext")
 
 
 class RichText(models.Model):
-    """
-    Rich text plugin
-
-    To use this, a `django-ckeditor
-    <https://github.com/django-ckeditor/django-ckeditor>`_ configuration named
-    ``richtext-plugin`` is required. See the section :mod:`HTML cleansing
-    <feincms3.cleanse>` for the recommended configuration.
-    """
-
-    text = CleansedRichTextField(_("text"), config_name="richtext-plugin")
+    text = InlineCKEditorField(_("text"))
 
     class Meta:
         abstract = True
@@ -36,19 +18,11 @@ class RichText(models.Model):
         verbose_name_plural = _("rich texts")
 
     def __str__(self):
-        # Return the first few words of the content (with tags stripped)
-        return Truncator(strip_tags(self.text)).words(10, truncate=" ...")
+        return self.get_text_excerpt()
 
 
 class RichTextInline(ContentEditorInline):
-    """
-    The only difference with the standard ``ContentEditorInline`` is that this
-    inline adds the ``feincms3/plugin-ckeditor.css`` file which adjusts the
-    width of the django-ckeditor widget inside the content editor.
-    """
-
-    class Media:
-        css = {"screen": ["feincms3/plugin-ckeditor.css"]}
+    pass
 
 
 def render_richtext(plugin, **kwargs):

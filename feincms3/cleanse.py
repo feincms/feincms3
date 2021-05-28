@@ -6,11 +6,20 @@ to be, and a strict allowlist based HTML sanitizer is the best answer
 I have.
 """
 
+import warnings
+
 from ckeditor.fields import RichTextField
 from html_sanitizer.django import get_sanitizer
 
 
 __all__ = ("CleansedRichTextField", "cleanse_html")
+
+warnings.warn(
+    "The feincms3.cleanse module has been deprecated and will be removed"
+    " in the close future. Sorry for the inconvenience.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 def cleanse_html(html):

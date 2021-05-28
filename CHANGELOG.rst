@@ -8,6 +8,15 @@ Change log
 
 - Moved the inline CKEditor out of the incubator. It is a good idea and we
   should commit to supporting it.
+- **BACKWARDS INCOMPATIBLE**: The :mod:`feincms3.plugins.richtext` plugin has
+  been replaced by a widget using an inline CKEditor instance. The new field
+  looks better and doesn't depend on django-ckeditor anymore. The
+  ``CKEDITOR_CONFIGS`` setting from django-ckeditor isn't used anymore either,
+  so if you reconfigured the rich text editor you'll have to update the
+  configuration again. The old plugin is still available as
+  :mod:`feincms3.plugins.old_richtext` for the time being.
+- **BACKWARDS INCOMPATIBLE**: The :mod:`feincms3.cleanse` module has been
+  deprecated. The inline CKEditor includes the cleansing functionality too.
 - Inline CKEditor: Updated the CKEditor CDN URL to include the 4.16.1 patch
   release.
 
