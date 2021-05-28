@@ -1,6 +1,6 @@
 # flake8: noqa
 
-from . import html, snippet
+from . import html, richtext, snippet
 
 
 try:
@@ -15,9 +15,3 @@ except ImportError:  # pragma: no cover
     pass
 else:
     from . import image
-try:
-    import feincms3.cleanse
-except ImportError:  # pragma: no cover
-    pass
-else:
-    from . import richtext
