@@ -6,6 +6,11 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Moved the inline CKEditor out of the incubator. It is a good idea and we
+  should commit to supporting it.
+- Inline CKEditor: Updated the CKEditor CDN URL to include the 4.16.1 patch
+  release.
+
 
 `0.90`_ (2021-04-27)
 ~~~~~~~~~~~~~~~~~~~~
