@@ -75,17 +75,23 @@ class InlineCKEditorField(models.TextField):
         super().__init__(*args, **kwargs)
 
     def clean(self, value, instance):
+        """Run the cleaned form value through the ``cleanse`` callable"""
         return self.cleanse(super().clean(value, instance))
 
     def deconstruct(self):
+        """Act as if we were a ``models.TextField``. Migrations do not have
+        to know that's not 100% true."""
         name, path, args, kwargs = super().deconstruct()
         return (name, "django.db.models.TextField", args, kwargs)
 
     def formfield(self, **kwargs):
+        """Ensure that forms use the ``InlineCKEditorWidget``"""
         kwargs["widget"] = InlineCKEditorWidget(**self.widget_config)
         return super().formfield(**kwargs)
 
     def contribute_to_class(self, cls, name, **kwargs):
+        """Add a ``get_*_excerpt`` method to models which returns a
+        de-HTML-ified excerpt of the contents of this field"""
         super().contribute_to_class(cls, name, **kwargs)
         setattr(
             cls,
