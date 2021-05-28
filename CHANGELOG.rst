@@ -6,6 +6,14 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+Inline CKEditor widget
+----------------------
+
+This release deprecates the django-ckeditor integration of feincms3 and
+officially introduces a new rich text widget which uses the inline mode of
+CKEditor 4. It looks better and avoids the scrollable text area inside the
+(scrollable!) content editor.
+
 - Moved the inline CKEditor out of the incubator. It is a good idea and we
   should commit to supporting it.
 - **BACKWARDS INCOMPATIBLE**: The :mod:`feincms3.plugins.richtext` plugin has
@@ -19,6 +27,9 @@ Change log
   deprecated. The inline CKEditor includes the cleansing functionality too.
 - Inline CKEditor: Updated the CKEditor CDN URL to include the 4.16.1 patch
   release.
+- Removed django-ckeditor from the ``all`` extra of feincms3. This means that
+  installing ``feincms3[all]`` doesn't automatically install django-ckeditor
+  anymore.
 
 
 `0.90`_ (2021-04-27)
