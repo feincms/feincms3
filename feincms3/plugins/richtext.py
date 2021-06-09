@@ -22,7 +22,7 @@ class RichText(models.Model):
 
 
 class RichTextInline(ContentEditorInline):
-    pass
+    button = '<span class="material-icons">notes</span>'
 
 
 def render_richtext(plugin, **kwargs):

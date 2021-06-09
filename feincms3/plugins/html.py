@@ -50,6 +50,7 @@ class HTMLInline(ContentEditorInline):
             )
         }
     }
+    button = '<span class="material-icons">code</span>'
 
 
 def render_html(plugin, **kwargs):

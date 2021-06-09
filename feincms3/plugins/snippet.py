@@ -87,4 +87,4 @@ class SnippetInline(ContentEditorInline):
     with the other feincms3 plugins
     """
 
-    pass
+    button = '<span class="material-icons">smart_toy</span>'

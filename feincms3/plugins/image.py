@@ -58,7 +58,7 @@ class ImageInline(ContentEditorInline):
     Image inline
     """
 
-    pass
+    button = '<span class="material-icons">insert_photo</span>'
 
 
 def render_image(plugin, **kwargs):

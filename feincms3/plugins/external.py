@@ -144,3 +144,4 @@ class ExternalInline(ContentEditorInline):
     """
 
     form = ExternalForm
+    button = '<span class="material-icons">movie_creation</span>'
