@@ -7,6 +7,17 @@ Change log
 ~~~~~~~~~~~~~~~
 
 
+`0.92`_ (2021-06-09)
+~~~~~~~~~~~~~~~~~~~~
+
+- Raised the minimum version of django-content-editor to 5.0a3 to take
+  advantage of the bundled Material Icons library. Added default icon
+  specifications to all plugins' inlines.
+- Fixed a bug where ``feincms3.plugins.richtext`` wasn't available when
+  ``django-ckeditor`` wasn't installed despite no longer depending on it
+  anymore.
+
+
 `0.91`_ (2021-05-28)
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -809,4 +820,5 @@ functionality.
 .. _0.41: https://github.com/matthiask/feincms3/compare/0.40...0.41
 .. _0.90: https://github.com/matthiask/feincms3/compare/0.41...0.90
 .. _0.91: https://github.com/matthiask/feincms3/compare/0.90...0.91
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.91...main
+.. _0.92: https://github.com/matthiask/feincms3/compare/0.91...0.92
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.92...main
