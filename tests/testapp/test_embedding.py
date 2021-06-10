@@ -14,7 +14,7 @@ class EmbeddingTest(TestCase):
             embed("https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
             """\
 <div class="responsive-embed widescreen youtube"><iframe \
-src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" \
+src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" frameborder="0" \
 allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
         )
 
@@ -22,7 +22,7 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
             embed("https://youtu.be/y7-s5ZvC_2A"),
             """\
 <div class="responsive-embed widescreen youtube"><iframe \
-src="https://www.youtube.com/embed/y7-s5ZvC_2A" frameborder="0" \
+src="https://www.youtube.com/embed/y7-s5ZvC_2A?rel=0" frameborder="0" \
 allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
         )
 
