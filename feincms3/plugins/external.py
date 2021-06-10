@@ -17,6 +17,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 __all__ = (
     "External",
     "ExternalInline",
+    "NoembedValidationForm",
     "oembed_json",
     "oembed_html",
     "render_external",
@@ -122,9 +123,27 @@ class External(models.Model):
         return self.caption or self.url
 
 
-class ExternalForm(forms.ModelForm):
+class NoembedValidationForm(forms.ModelForm):
     """
     Tries fetching the oEmbed code for the given URL when cleaning form data
+
+    This isn't active by default. If you want to validate URLs you should use
+    the following snippet:
+
+    .. code-block:: python
+
+        from app.pages import models
+        from feincms3 import plugins
+
+        class SomeAdmin(...):
+            inlines = [
+                ...
+                plugins.external.ExternalInline.create(
+                    model=models.External,
+                    form=plugins.external.NoembedValidationForm,
+                ),
+                ...
+            ]
     """
 
     def clean(self):
@@ -138,10 +157,4 @@ class ExternalForm(forms.ModelForm):
 
 
 class ExternalInline(ContentEditorInline):
-    """
-    Content editor inline using the ``ExternalForm`` to verify whether the
-    given URL is embeddable using oEmbed or not.
-    """
-
-    form = ExternalForm
     button = '<span class="material-icons">movie_creation</span>'

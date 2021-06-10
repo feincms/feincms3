@@ -9,6 +9,9 @@ Change log
 - Changed :func:`feincms3.embedding.embed_youtube` to append ``?rel=0`` to the
   YouTube embed URL which should hopefully suppress recommendations when the
   embedded video ends.
+- **Slightly backwards incompatible**: Dropped the Noembed validation from the
+  default ``feincms3.plugins.external`` admin inline. Renamed the
+  (undocumented!) ``ExternalForm`` to ``NoembedValidationForm``.
 
 
 `0.92`_ (2021-06-09)

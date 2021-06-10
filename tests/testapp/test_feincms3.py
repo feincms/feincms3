@@ -20,7 +20,7 @@ from feincms3.applications import (
     reverse_fallback,
 )
 from feincms3.pages import AbstractPage
-from feincms3.plugins.external import ExternalForm
+from feincms3.plugins.external import NoembedValidationForm
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
@@ -155,10 +155,12 @@ class Test(TestCase):
             response, "<strong>Hello!</strong>", 1  # HTML cleansing worked.
         )
 
-    def test_external_form_validation(self):
+    def test_noembed_validation(self):
         """Test external plugin validation a bit"""
 
-        form_class = modelform_factory(External, form=ExternalForm, fields="__all__")
+        form_class = modelform_factory(
+            External, form=NoembedValidationForm, fields="__all__"
+        )
 
         # Should not crash if URL not provided (765a6b6b53e)
         form = form_class({})
