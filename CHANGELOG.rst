@@ -12,6 +12,8 @@ Change log
 - **Slightly backwards incompatible**: Dropped the Noembed validation from the
   default ``feincms3.plugins.external`` admin inline. Renamed the
   (undocumented!) ``ExternalForm`` to ``NoembedValidationForm``.
+- Raised the versions of required dependencies to recent versions, especially
+  django-tree-queries to include a fix for the upcoming Django 4.0.
 
 
 `0.92`_ (2021-06-09)
