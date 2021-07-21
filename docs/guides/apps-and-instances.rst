@@ -158,6 +158,35 @@ apps with the closer matching instance namespace.
    several languages on the site or because of other factors.
 
 
+Reversing URLs while preferring a specific language
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Suppose that articles are written in a language, and ``get_absolute_url``
+should prefer an app in this language to the same app in other languages. Since
+``reverse_app`` automatically prefers the currently active language we use
+``override`` to activate this language for the duration of the ``reverse_app``
+call:
+
+.. code-block:: python
+
+    from django.utils.translation import override
+    from feincms3.applications import reverse_app, reverse_fallback
+    from feincms3.mixins import LanguageMixin
+
+    class Article(LanguageMixin):
+        # ...
+
+        def get_absolute_url(self):
+            with override(self.language_code):
+                return reverse_fallback(
+                    "/",  # FIXME use a better fallback, maybe...?
+                    reverse_app,
+                    "articles",
+                    "article-detail",
+                    kwargs={"slug": self.slug},
+                )
+
+
 Reversing URLs outside the request-response cycle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
