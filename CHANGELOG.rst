@@ -14,6 +14,7 @@ Change log
   (undocumented!) ``ExternalForm`` to ``NoembedValidationForm``.
 - Raised the versions of required dependencies to recent versions, especially
   django-tree-queries to include a fix for the upcoming Django 4.0.
+- Inline CKEditor: Changed the CDN URL to reference CKEditor 4.16.2.
 
 
 `0.92`_ (2021-06-09)
