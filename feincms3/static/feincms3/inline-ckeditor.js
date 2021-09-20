@@ -1,22 +1,42 @@
 /* global CKEDITOR, django */
-django.jQuery(function ($) {
-  const configs = {};
-  const scripts = document.querySelectorAll("[data-inline-cke-config]");
-  scripts.forEach(function parseConfig(script) {
-    configs[script.dataset.inlineCkeId] = JSON.parse(
-      script.dataset.inlineCkeConfig
-    );
-  });
-
-  function initializeInlineCKE() {
-    document.querySelectorAll("textarea[data-inline-cke]").forEach((el) => {
-      if (el.dataset.inlineCke !== "active" && !el.id.includes("__prefix__")) {
-        CKEDITOR.inline(el, configs[el.dataset.inlineCke]);
-        el.dataset.inlineCke = "active";
-      }
-    });
+(function () {
+  function onReady(fn) {
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      // call on next available tick
+      setTimeout(fn, 1);
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
+    }
   }
 
-  initializeInlineCKE();
-  $(document).on("formset:added", initializeInlineCKE);
-});
+  onReady(function () {
+    const configs = {};
+    const scripts = document.querySelectorAll("[data-inline-cke-config]");
+    scripts.forEach(function parseConfig(script) {
+      configs[script.dataset.inlineCkeId] = JSON.parse(
+        script.dataset.inlineCkeConfig
+      );
+    });
+
+    function initializeInlineCKE() {
+      document.querySelectorAll("textarea[data-inline-cke]").forEach((el) => {
+        if (
+          el.dataset.inlineCke !== "active" &&
+          !el.id.includes("__prefix__")
+        ) {
+          CKEDITOR.inline(el, configs[el.dataset.inlineCke]);
+          el.dataset.inlineCke = "active";
+        }
+      });
+    }
+
+    initializeInlineCKE();
+
+    if (django && django.jQuery) {
+      django.jQuery(document).on("formset:added", initializeInlineCKE);
+    }
+  });
+})();
