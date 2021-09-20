@@ -1,4 +1,4 @@
-.cke_textarea_inline {
+.change-form .cke_textarea_inline {
   margin-left: 170px;
   max-width: 80ch;
   border: 1px solid var(--border-color);
@@ -7,7 +7,7 @@
 }
 
 @media (max-width: 767px) {
-  .cke_textarea_inline {
+  .change-form .cke_textarea_inline {
     margin: 0;
     width: calc(100%);
     max-width: none;

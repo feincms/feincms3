@@ -6,6 +6,8 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Inline CKEditor: Dropped the admin jQuery dependency for real.
+
 
 `0.93`_ (2021-09-20)
 ~~~~~~~~~~~~~~~~~~~~

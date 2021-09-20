@@ -33,10 +33,14 @@
       });
     }
 
+    function addFormsetAddedHandler() {
+      django.jQuery(document).on("formset:added", initializeInlineCKE);
+    }
+
     initializeInlineCKE();
 
-    if (django && django.jQuery) {
-      django.jQuery(document).on("formset:added", initializeInlineCKE);
+    if (window.django) {
+      addFormsetAddedHandler();
     }
   });
 })();
