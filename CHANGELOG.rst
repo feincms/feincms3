@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`0.93`_ (2021-09-20)
+~~~~~~~~~~~~~~~~~~~~
+
 - Changed :func:`feincms3.embedding.embed_youtube` to append ``?rel=0`` to the
   YouTube embed URL which should hopefully suppress recommendations when the
   embedded video ends.
@@ -832,4 +836,5 @@ functionality.
 .. _0.90: https://github.com/matthiask/feincms3/compare/0.41...0.90
 .. _0.91: https://github.com/matthiask/feincms3/compare/0.90...0.91
 .. _0.92: https://github.com/matthiask/feincms3/compare/0.91...0.92
-.. _Next version: https://github.com/matthiask/feincms3/compare/0.92...main
+.. _0.93: https://github.com/matthiask/feincms3/compare/0.92...0.93
+.. _Next version: https://github.com/matthiask/feincms3/compare/0.93...main
