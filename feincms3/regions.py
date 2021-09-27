@@ -61,8 +61,8 @@ class Regions:
         ``timeout``.
         """
         if timeout is not None and "cache_key" not in kwargs:
-            key = "%s-%s" % (item._meta.label_lower, item.pk)
-            kwargs["cache_key"] = lambda region: "%s-%s" % (key, region)
+            key = f"{item._meta.label_lower}-{item.pk}"
+            kwargs["cache_key"] = lambda region: f"{key}-{region}"
         return cls.from_contents(
             SimpleLazyObject(
                 lambda: contents_for_item(
@@ -71,7 +71,7 @@ class Regions:
             ),
             renderer=renderer,
             timeout=timeout,
-            **kwargs
+            **kwargs,
         )
 
     def __init__(self, *, contents, renderer, cache_key=None, timeout=None):

@@ -197,8 +197,8 @@ class Test(TestCase):
 
         for slug in ("a", "b", "c", "d"):
             Page.objects.create(
-                title="%s-%s" % (slug, home_en.language_code),
-                slug="%s-%s" % (slug, home_en.language_code),
+                title=f"{slug}-{home_en.language_code}",
+                slug=f"{slug}-{home_en.language_code}",
                 static_path=False,
                 language_code=home_en.language_code,
                 is_active=True,
@@ -206,8 +206,8 @@ class Test(TestCase):
                 parent_id=home_en.pk,
             )
             sub = Page.objects.create(
-                title="%s-%s" % (slug, home_de.language_code),
-                slug="%s-%s" % (slug, home_de.language_code),
+                title=f"{slug}-{home_de.language_code}",
+                slug=f"{slug}-{home_de.language_code}",
                 static_path=False,
                 language_code=home_de.language_code,
                 is_active=True,
@@ -323,7 +323,7 @@ class Test(TestCase):
 
         for i in range(7):
             for category in ("publications", "blog"):
-                Article.objects.create(title="%s %s" % (category, i), category=category)
+                Article.objects.create(title=f"{category} {i}", category=category)
 
         self.assertContains(self.client.get("/de/blog/all/"), 'class="article"', 7)
         self.assertContains(self.client.get("/de/blog/?page=2"), 'class="article"', 2)
@@ -746,7 +746,7 @@ class Test(TestCase):
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p2.pk,)),
-            {"new_location": "{}:first".format(p1.pk)},
+            {"new_location": f"{p1.pk}:first"},
         )
         self.assertRedirects(response, "/admin/testapp/page/")
 
@@ -764,7 +764,7 @@ class Test(TestCase):
 
         response = client.post(
             reverse("admin:testapp_page_move", args=(p3.pk,)),
-            {"new_location": "{}:right".format(p1.pk)},
+            {"new_location": f"{p1.pk}:right"},
         )
         self.assertRedirects(response, "/admin/testapp/page/")
 
@@ -1159,11 +1159,9 @@ class Test(TestCase):
         )
 
         with override_urlconf(apps_urlconf()):
+            self.assertEqual(original.get_absolute_url(), f"/home-en/{original.pk}/")
             self.assertEqual(
-                original.get_absolute_url(), "/home-en/{}/".format(original.pk)
-            )
-            self.assertEqual(
-                translated.get_absolute_url(), "/home-de/{}/".format(translated.pk)
+                translated.get_absolute_url(), f"/home-de/{translated.pk}/"
             )
 
     def test_translations_filter_edge_cases(self):

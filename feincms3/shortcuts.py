@@ -16,7 +16,7 @@ def template_name(model, template_name_suffix):
         "auth/user_form.html"
     """
 
-    return "%s/%s%s.html" % (
+    return "{}/{}{}.html".format(
         model._meta.app_label,
         model._meta.model_name,
         template_name_suffix,

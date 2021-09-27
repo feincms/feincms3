@@ -105,7 +105,7 @@ class TreeAdmin(ModelAdmin):
         return format_html(
             '<a href="{}">{}</a>',
             reverse(
-                "admin:%s_%s_move" % (opts.app_label, opts.model_name),
+                f"admin:{opts.app_label}_{opts.model_name}_move",
                 args=(instance.pk,),
             ),
             _("move"),
@@ -227,7 +227,7 @@ class MoveForm(forms.Form):
             children[node.parent_id].append(node)
 
         def _text_indent(depth):
-            return mark_safe(' style="text-indent:{}px"'.format(depth * 30))
+            return mark_safe(f' style="text-indent:{depth * 30}px"')
 
         choices = []
 
@@ -255,7 +255,7 @@ class MoveForm(forms.Form):
 
                 choices.append(
                     (
-                        "{}:first".format(node.id),
+                        f"{node.id}:first",
                         format_html(
                             '<div class="mv to-first"{}><strong>{}</strong>'
                             '<div class="mv-mark"{}>&rarr; {}</div></div>',
@@ -269,7 +269,7 @@ class MoveForm(forms.Form):
                 _iterate(node.id)
                 choices.append(
                     (
-                        "{}:right".format(node.id),
+                        f"{node.id}:right",
                         format_html(
                             '<div class="mv to-right mv-mark"{}>&rarr; {}</div>',
                             _text_indent(node.tree_depth),
@@ -346,7 +346,7 @@ class MoveForm(forms.Form):
         )
 
         opts = self.modeladmin.model._meta
-        return redirect("admin:%s_%s_changelist" % (opts.app_label, opts.model_name))
+        return redirect(f"admin:{opts.app_label}_{opts.model_name}_changelist")
 
 
 class CloneForm(forms.Form):
@@ -386,9 +386,9 @@ class CloneForm(forms.Form):
             if field.auto_created or not field.editable:
                 continue
 
-            self.fields["set_{}".format(field.name)] = forms.BooleanField(
+            self.fields[f"set_{field.name}"] = forms.BooleanField(
                 label=(
-                    "{} ({})".format(capfirst(field.verbose_name), field.name)
+                    f"{capfirst(field.verbose_name)} ({field.name})"
                     if hasattr(field, "verbose_name")
                     else field.name
                 ),
@@ -406,7 +406,7 @@ class CloneForm(forms.Form):
             raise forms.ValidationError({"target": _("Cannot clone node to itself.")})
 
         for field in self.instance._meta.get_fields():
-            if self.cleaned_data.get("set_{}".format(field.name)):
+            if self.cleaned_data.get(f"set_{field.name}"):
                 setattr(target, field.name, getattr(self.instance, field.name))
 
         # All fields of model are not in this form
@@ -419,7 +419,7 @@ class CloneForm(forms.Form):
         fields = []
 
         for field in self.instance._meta.get_fields():
-            if self.cleaned_data.get("set_{}".format(field.name)):
+            if self.cleaned_data.get(f"set_{field.name}"):
                 setattr(target, field.name, getattr(self.instance, field.name))
                 fields.append("{}".format(getattr(field, "verbose_name", field.name)))
 
@@ -457,9 +457,7 @@ class CloneForm(forms.Form):
         target.save()
 
         opts = self.modeladmin.model._meta
-        return redirect(
-            "admin:%s_%s_change" % (opts.app_label, opts.model_name), target.pk
-        )
+        return redirect(f"admin:{opts.app_label}_{opts.model_name}_change", target.pk)
 
 
 class AncestorFilter(SimpleListFilter):

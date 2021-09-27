@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(".."))
 
 project = "feincms3"
 author = "Feinheit AG"
-copyright = "2016-%s, %s" % (date.today().year, author)
+copyright = f"2016-{date.today().year}, {author}"
 version = __import__("feincms3").__version__
 release = subprocess.check_output(
     "git fetch --tags; git describe",

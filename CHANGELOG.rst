@@ -7,6 +7,7 @@ Change log
 ~~~~~~~~~~~~~~~
 
 - Inline CKEditor: Dropped the admin jQuery dependency for real.
+- Started using pyupgrade_ for the Python code.
 
 
 `0.93`_ (2021-09-20)
@@ -791,6 +792,7 @@ functionality.
 .. _PostgreSQL: https://www.postgresql.org/
 .. _flake8: https://pypi.python.org/pypi/flake8
 .. _isort: https://pypi.python.org/pypi/isort
+.. _pyupgrade: https://pypi.python.org/pypi/pyupgrade
 .. _requests: http://docs.python-requests.org/
 .. _tox: https://tox.readthedocs.io/
 

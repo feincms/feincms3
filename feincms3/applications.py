@@ -100,7 +100,7 @@ def reverse_app(namespaces, viewname, *args, languages=None, **kwargs):
         ":".join(r)
         for r in itertools.product(
             (
-                "%s-%s" % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, language)
+                f"{_APPS_MODEL.LANGUAGE_CODES_NAMESPACE}-{language}"
                 for language in languages
             ),
             (namespaces if isinstance(namespaces, (list, tuple)) else (namespaces,)),
@@ -427,9 +427,7 @@ class PageTypeMixin(models.Model):
                 errors = {}
                 for field in missing:
                     if field in exclude:
-                        errors.setdefault("__all__", []).append(
-                            "%s: %s" % (field, error)
-                        )
+                        errors.setdefault("__all__", []).append(f"{field}: {error}")
                     else:
                         errors[field] = error
 

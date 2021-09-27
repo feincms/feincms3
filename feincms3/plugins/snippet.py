@@ -37,7 +37,7 @@ class Snippet(models.Model):
         verbose_name_plural = _("predefined snippets")
 
     def __str__(self):
-        return "{}".format(self.get_template_name_display())
+        return self.get_template_name_display()
 
     @staticmethod
     def fill_template_name_choices(sender, **kwargs):

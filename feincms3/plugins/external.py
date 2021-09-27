@@ -95,9 +95,9 @@ def render_external(plugin, **kwargs):
 
     html = oembed_html(plugin.url)
     if "youtube.com" in html:
-        html = '<div class="responsive-embed widescreen youtube">%s</div>' % (html,)
+        html = f'<div class="responsive-embed widescreen youtube">{html}</div>'
     elif "vimeo.com" in html:
-        html = '<div class="responsive-embed widescreen vimeo">%s</div>' % (html,)
+        html = f'<div class="responsive-embed widescreen vimeo">{html}</div>'
     return mark_safe(html)
 
 

@@ -255,8 +255,7 @@ class RedirectMixin(models.Model):
                     )
                     % {
                         "pages": ", ".join(
-                            "%s (%s)" % (page, page.get_absolute_url())
-                            for page in other
+                            f"{page} ({page.get_absolute_url()})" for page in other
                         )
                     },
                     field="redirect_to_page",

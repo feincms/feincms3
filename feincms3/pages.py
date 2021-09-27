@@ -114,7 +114,7 @@ class AbstractPage(TreeNode):
             # Assign already-updated instance:
             node.parent = nodes[node.parent_id]
             if not node.static_path:
-                node.path = "%s%s/" % (node.parent.path, node.slug)
+                node.path = f"{node.parent.path}{node.slug}/"
 
             # Descendants of inactive nodes cannot be active themselves:
             if not node.parent.is_active:
@@ -142,7 +142,9 @@ class AbstractPage(TreeNode):
                     exclude=exclude,
                 )
         else:
-            self.path = "%s%s/" % (self.parent.path if self.parent else "/", self.slug)
+            self.path = "{}{}/".format(
+                self.parent.path if self.parent else "/", self.slug
+            )
 
         super().clean()
 
@@ -177,7 +179,9 @@ class AbstractPage(TreeNode):
         save_descendants = kwargs.pop("save_descendants", None)
 
         if not self.static_path:
-            self.path = "%s%s/" % (self.parent.path if self.parent else "/", self.slug)
+            self.path = "{}{}/".format(
+                self.parent.path if self.parent else "/", self.slug
+            )
 
         if not self.position:
             self.position = 10 + (
