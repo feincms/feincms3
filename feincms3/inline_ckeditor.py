@@ -1,6 +1,7 @@
 import json
 
 from django import forms
+from django.conf import settings
 from django.db import models
 from django.utils.html import strip_tags
 from django.utils.text import Truncator
@@ -11,7 +12,7 @@ from js_asset import JS
 __all__ = ["InlineCKEditorField"]
 
 
-CKEDITOR = JS(
+CKEDITOR_JS_URL = JS(
     "https://cdn.ckeditor.com/4.16.2/full/ckeditor.js",
     {
         # "integrity": "sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",  # noqa
@@ -20,30 +21,33 @@ CKEDITOR = JS(
     },
     static=False,
 )
-CONFIG = {
-    "format_tags": "h1;h2;h3;p",
-    "toolbar": "Custom",
-    "toolbar_Custom": [
-        [
-            "Format",
-            "RemoveFormat",
-            "-",
-            "Bold",
-            "Italic",
-            "Subscript",
-            "Superscript",
-            "-",
-            "BulletedList",
-            "NumberedList",
-            "-",
-            "Link",
-            "Unlink",
-            "Anchor",
-            "-",
-            "HorizontalRule",
+CKEDITOR_CONFIG = {
+    "default": {
+        "format_tags": "h1;h2;h3;p",
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+            [
+                "Format",
+                "RemoveFormat",
+                "-",
+                "Bold",
+                "Italic",
+                "Subscript",
+                "Superscript",
+                "-",
+                "BulletedList",
+                "NumberedList",
+                "-",
+                "Link",
+                "Unlink",
+                "Anchor",
+                "-",
+                "HorizontalRule",
+            ],
         ],
-    ],
+    }
 }
+CKEDITOR_CONFIG.update(getattr(settings, "FEINCMS3_CKEDITOR_CONFIG", {}))
 
 
 class InlineCKEditorField(models.TextField):
@@ -64,14 +68,17 @@ class InlineCKEditorField(models.TextField):
     - ``ckeditor``: A CDN URL for CKEditor 4.
     - ``config``: Change the CKEditor 4 configuration. See the source for the
       current default.
+    - ``config_name``: Alternative way of configuring the CKEditor. Uses the
+      ``FEINCMS3_CKEDITOR_CONFIG`` setting.
     """
 
     def __init__(self, *args, **kwargs):
         self.cleanse = kwargs.pop("cleanse", None) or get_sanitizer().sanitize
-        self.widget_config = {
-            "ckeditor": kwargs.pop("ckeditor", None),
-            "config": kwargs.pop("config", None),
-        }
+        self.widget_config = {"ckeditor": kwargs.pop("ckeditor", None)}
+        if config_name := kwargs.pop("config_name", None):
+            self.widget_config["config"] = CKEDITOR_CONFIG[config_name]
+        else:
+            self.widget_config["config"] = kwargs.pop("config", None)
         super().__init__(*args, **kwargs)
 
     def clean(self, value, instance):
@@ -104,8 +111,8 @@ class InlineCKEditorField(models.TextField):
 
 class InlineCKEditorWidget(forms.Textarea):
     def __init__(self, *args, **kwargs):
-        self.ckeditor = kwargs.pop("ckeditor") or CKEDITOR
-        self.config = kwargs.pop("config") or CONFIG
+        self.ckeditor = kwargs.pop("ckeditor") or CKEDITOR_JS_URL
+        self.config = kwargs.pop("config") or CKEDITOR_CONFIG["default"]
 
         attrs = kwargs.setdefault("attrs", {})
         attrs["data-inline-cke"] = id(self.config)

@@ -9,6 +9,7 @@ Change log
 - Inline CKEditor: Dropped the admin jQuery dependency for real.
 - Started using pyupgrade_ for the Python code.
 - Added Django 4.0a1 to the CI matrix.
+- Added a way to configure the inline CKEditor through Django settings.
 
 
 `0.93`_ (2021-09-20)
