@@ -74,12 +74,21 @@ class InlineCKEditorField(models.TextField):
 
     def __init__(self, *args, **kwargs):
         self.cleanse = kwargs.pop("cleanse", None) or get_sanitizer().sanitize
-        self.widget_config = {"ckeditor": kwargs.pop("ckeditor", None)}
-        if config_name := kwargs.pop("config_name", None):
-            self.widget_config["config"] = CKEDITOR_CONFIG[config_name]
-        else:
-            self.widget_config["config"] = kwargs.pop("config", None)
+        kwargs = self._extract_widget_config(kwargs)
         super().__init__(*args, **kwargs)
+
+    def _extract_widget_config(self, kwargs):
+        if "config_name" in kwargs:
+            self.widget_config = {
+                "ckeditor": kwargs.pop("ckeditor", None),
+                "config": CKEDITOR_CONFIG[kwargs.pop("config_name")],
+            }
+        else:
+            self.widget_config = {
+                "ckeditor": kwargs.pop("ckeditor", None),
+                "config": kwargs.pop("config", None),
+            }
+        return kwargs
 
     def clean(self, value, instance):
         """Run the cleaned form value through the ``cleanse`` callable"""
