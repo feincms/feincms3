@@ -138,6 +138,7 @@ Implementing a Custom Site Model Admin
     class SiteForm(forms.ModelForm):
         default_language = Site._meta.get_field("default_language").formfield(
             choices=[("", "----------")] + list(settings.LANGUAGES),
+            # widget=widgets.AdminRadioSelect,  # Use this if you prefer radio buttons
         )
 
         class Meta:
@@ -145,7 +146,7 @@ Implementing a Custom Site Model Admin
             fields = "__all__"
 
 
-    # filter languages by settings.LANGUAGE and not by global_settings.LANGUAGE
+    # filter languages by settings.LANGUAGES and not by global_settings.LANGUAGES
     class SiteDefaultLanguageListFilter(admin.SimpleListFilter):
 
         title = _("default language")
