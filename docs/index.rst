@@ -53,7 +53,7 @@ knowledge imparted in :ref:`build-your-cms`.
    guides/multilingual-sites
    guides/meta-opengraph-tags
    guides/multisite
-   guides/multisite_custom
+   guides/multisite-custom
 
 
 Embedding apps
