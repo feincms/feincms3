@@ -26,12 +26,16 @@ per-site:
         pass
 
 
+Add ``FEINCMS3_SITES_SITE_MODEL = "feincms3_sites.Site"`` to
+your ``settings``.
+
 Add ``feincms3_sites`` to ``INSTALLED_APPS`` and run migrations
 afterwards:
 
 .. code-block:: python
 
     INSTALLED_APPS.append("feincms3_sites")
+    FEINCMS3_SITES_SITE_MODEL = "feincms3_sites.Site"
 
 .. code-block:: shell
 
