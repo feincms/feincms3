@@ -125,53 +125,24 @@ Implementing a Custom Site Model Admin
 
 .. code-block:: python
 
-    from django import forms
-    from django.conf import settings
     from django.contrib import admin
     from django.utils.translation import gettext_lazy as _
 
+    from feincms3_sites.admin import DefaultLanguageListFilter
+    from feincms3_sites.admin import SiteAdmin
     from feincms3_meta.models import MetaMixin
 
     from .models import Site
 
 
-    class SiteForm(forms.ModelForm):
-        default_language = Site._meta.get_field("default_language").formfield(
-            choices=[("", "----------")] + list(settings.LANGUAGES),
-            # widget=widgets.AdminRadioSelect,  # Use this if you prefer radio buttons
-        )
-
-        class Meta:
-            model = Site
-            fields = "__all__"
-
-
-    # filter languages by settings.LANGUAGES and not by global_settings.LANGUAGES
-    class SiteDefaultLanguageListFilter(admin.SimpleListFilter):
-
-        title = _("default language")
-        parameter_name = "default_language"
-
-        def lookups(self, request, model_admin):
-            return settings.LANGUAGES
-
-        def queryset(self, request, queryset):
-            if self.value():
-                return queryset.filter(default_language=self.value())
-            else:
-                return queryset.all()
-
-
     @admin.register(Site)
-    class SiteAdmin(admin.ModelAdmin):
-        form = SiteForm
-
+    class CustomSiteAdmin(SiteAdmin):
         list_display = [
             "name", "host", "default_language", "is_active", "is_default"
         ]
 
         list_filter = [
-            "is_active", "host", "name", SiteDefaultLanguageListFilter
+            "is_active", "host", "name", DefaultLanguageListFilter
         ]
 
         fieldsets = [
@@ -206,7 +177,9 @@ the ``SiteAdmin``:
 
 .. code-block:: python
 
-    class SiteAdmin(admin.ModelAdmin):
+    ...
+
+    class CustomSiteAdmin(SiteAdmin):
 
         ...
 
