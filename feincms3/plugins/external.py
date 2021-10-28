@@ -46,7 +46,7 @@ def oembed_json(url, *, cache_failures=True, params=None):
     # Thundering herd problem etc...
     p = {"url": url, "nowrap": "on", "maxwidth": 1200, "maxheight": 800}
     if params:
-        p = p.update(params)
+        p.update(params)
     key = (
         "oembed-url-%s-data"
         % md5(json.dumps(p, sort_keys=True).encode("utf-8")).hexdigest()
@@ -57,7 +57,7 @@ def oembed_json(url, *, cache_failures=True, params=None):
         return data
 
     try:
-        data = requests.get("https://noembed.com/embed", p, timeout=2).json()
+        data = requests.get("https://noembed.com/embed", params=p, timeout=2).json()
     except (requests.ConnectionError, requests.ReadTimeout):
         # Connection failed? Hopefully temporary, try again soon.
         timeout = 60
