@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from types import SimpleNamespace
 
+import requests_mock
 from django.contrib.auth.models import User
 from django.core.checks import Warning
 from django.core.exceptions import ValidationError
@@ -20,7 +21,7 @@ from feincms3.applications import (
     reverse_fallback,
 )
 from feincms3.pages import AbstractPage
-from feincms3.plugins.external import NoembedValidationForm
+from feincms3.plugins.external import NoembedValidationForm, oembed_json
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
@@ -172,6 +173,28 @@ class Test(TestCase):
         self.assertIn(
             "<li>Unable to fetch HTML for this URL, sorry!</li>", "%s" % form.errors
         )
+
+    def test_oembed_request(self):
+        """The oEmbed request generation works as expected"""
+
+        with requests_mock.Mocker() as m:
+            m.get("https://noembed.com/embed", text="{}")
+
+            self.assertEqual(
+                oembed_json("https://www.youtube.com/watch?v=4zGnNmncJWg"),
+                {},
+            )
+            self.assertEqual(
+                oembed_json(
+                    "https://www.youtube.com/watch?v=4zGnNmncJWg",
+                    params={"maxwidth": 4000, "maxheight": 3000},
+                ),
+                {},
+            )
+
+        self.assertEqual(len(m.request_history), 2)
+        self.assertEqual(m.request_history[0].qs["maxwidth"], ["1200"])
+        self.assertEqual(m.request_history[1].qs["maxwidth"], ["4000"])
 
     def test_navigation_and_changelist(self):
         """Test menu template tags and the admin changelist"""
