@@ -3,6 +3,7 @@ Uses the `Noembed <https://noembed.com/>`_ oEmbed service to embed (almost)
 arbitrary URLs. Depends on `requests <https://docs.python-requests.org>`_.
 """
 
+import json
 from hashlib import md5
 
 import requests
@@ -24,7 +25,7 @@ __all__ = (
 )
 
 
-def oembed_json(url, *, cache_failures=True):
+def oembed_json(url, *, cache_failures=True, params=None):
     """
     Asks `Noembed <https://noembed.com/>`_ for the embedding HTML code for
     arbitrary URLs. Sites supported include YouTube, Vimeo, Twitter and many
@@ -43,17 +44,20 @@ def oembed_json(url, *, cache_failures=True):
     The return value is always a dictionary, but it may be empty.
     """
     # Thundering herd problem etc...
-    key = "oembed-url-%s-data" % md5(url.encode("utf-8")).hexdigest()
+    p = {"url": url, "nowrap": "on", "maxwidth": 1200, "maxheight": 800}
+    if params:
+        p = p.update(params)
+    key = (
+        "oembed-url-%s-data"
+        % md5(json.dumps(p, sort_keys=True).encode("utf-8")).hexdigest()
+    )
+
     data = cache.get(key)
     if data is not None:
         return data
 
     try:
-        data = requests.get(
-            "https://noembed.com/embed",
-            params={"url": url, "nowrap": "on", "maxwidth": 1200, "maxheight": 800},
-            timeout=2,
-        ).json()
+        data = requests.get("https://noembed.com/embed", p, timeout=2).json()
     except (requests.ConnectionError, requests.ReadTimeout):
         # Connection failed? Hopefully temporary, try again soon.
         timeout = 60
@@ -71,14 +75,14 @@ def oembed_json(url, *, cache_failures=True):
     return {}
 
 
-def oembed_html(url, *, cache_failures=True):
+def oembed_html(url, **kwargs):
     """
     Wraps :func:`~feincms3.plugins.external.oembed_json`, but only returns
     the HTML part of the OEmbed response.
 
     The return value is always either a HTML fragment or an empty string.
     """
-    return oembed_json(url, cache_failures=cache_failures).get("html", "")
+    return oembed_json(url, **kwargs).get("html", "")
 
 
 def render_external(plugin, **kwargs):
