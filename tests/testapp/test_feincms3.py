@@ -185,6 +185,10 @@ class Test(TestCase):
                 {},
             )
             self.assertEqual(
+                oembed_json("https://www.youtube.com/watch?v=4zGnNmncJWg"),
+                {},
+            )
+            self.assertEqual(
                 oembed_json(
                     "https://www.youtube.com/watch?v=4zGnNmncJWg",
                     params={"maxwidth": 4000, "maxheight": 3000},
@@ -195,6 +199,20 @@ class Test(TestCase):
         self.assertEqual(len(m.request_history), 2)
         self.assertEqual(m.request_history[0].qs["maxwidth"], ["1200"])
         self.assertEqual(m.request_history[1].qs["maxwidth"], ["4000"])
+
+        with requests_mock.Mocker() as m:
+            m.get("https://noembed.com/embed", text='{"different": ""}')
+
+            self.assertEqual(
+                oembed_json("https://www.youtube.com/watch?v=4zGnNmncJWg"),
+                {},
+            )
+            self.assertEqual(
+                oembed_json(
+                    "https://www.youtube.com/watch?v=4zGnNmncJWg", force_refresh=True
+                ),
+                {"different": ""},
+            )
 
     def test_navigation_and_changelist(self):
         """Test menu template tags and the admin changelist"""

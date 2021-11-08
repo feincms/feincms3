@@ -25,7 +25,7 @@ __all__ = (
 )
 
 
-def oembed_json(url, *, cache_failures=True, params=None):
+def oembed_json(url, *, cache_failures=True, force_refresh=False, params=None):
     """
     Asks `Noembed <https://noembed.com/>`_ for the embedding HTML code for
     arbitrary URLs. Sites supported include YouTube, Vimeo, Twitter and many
@@ -52,7 +52,7 @@ def oembed_json(url, *, cache_failures=True, params=None):
         % md5(json.dumps(p, sort_keys=True).encode("utf-8")).hexdigest()
     )
 
-    data = cache.get(key)
+    data = None if force_refresh else cache.get(key)
     if data is not None:
         return data
 

@@ -9,6 +9,10 @@ Change log
 - Fixed a Python 3.8-ism.
 - Added a ``params`` parameter to :func:`feincms3.plugins.external.oembed_json`
   which allows overriding values sent to the oEmbed provider.
+- Added a ``force_refresh`` parameter to
+  :func:`feincms3.plugins.external.oembed_json` which allows forcibly
+  refreshing the cached oEmbed data.
+
 
 
 `0.94`_ (2021-09-29)
