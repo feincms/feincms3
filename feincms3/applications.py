@@ -9,6 +9,7 @@ from types import ModuleType
 
 from content_editor.models import Type
 from django.conf import settings
+from django.core.cache import cache
 from django.core.checks import Warning
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -142,7 +143,14 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
         return fallback
 
 
-def apps_urlconf(*, apps=None):
+_APPS_URLCONF_CACHE_KEY = "_apps_urlconf_cache"
+
+
+def clear_apps_urlconf_cache(sender, **kwargs):
+    cache.delete(_APPS_URLCONF_CACHE_KEY)
+
+
+def apps_urlconf(*, apps=None, timeout=3):
     """
     Generates a dynamic URLconf Python module including all application page
     types in their assigned place and adding the ``urlpatterns`` from
@@ -174,14 +182,22 @@ def apps_urlconf(*, apps=None):
     """
 
     if apps is None:
-        fields = ("path", "page_type", "app_namespace", "language_code")
-        apps = (
-            _APPS_MODEL._default_manager.active()
-            .with_tree_fields(False)
-            .exclude(app_namespace="")
-            .values_list(*fields)
-            .order_by(*fields)
-        )
+        if timeout:
+            apps = cache.get(_APPS_URLCONF_CACHE_KEY)
+
+        if apps is None:
+            fields = ("path", "page_type", "app_namespace", "language_code")
+            apps = list(
+                _APPS_MODEL._default_manager.active()
+                .with_tree_fields(False)
+                .exclude(app_namespace="")
+                .values_list(*fields)
+                .order_by(*fields)
+            )
+            # NOTE! We *could* cache the module_name instead but we'd still
+            # have to check if the module actually exists in the local Python
+            # process.
+            cache.set(_APPS_URLCONF_CACHE_KEY, apps, timeout=timeout)
 
     if not apps:
         # No point wrapping ROOT_URLCONF if there are no additional URLs
@@ -463,6 +479,9 @@ class PageTypeMixin(models.Model):
             sender.TYPES_DICT = {app.key: app for app in sender.TYPES}
             global _APPS_MODEL
             _APPS_MODEL = sender
+
+            signals.post_save.connect(clear_apps_urlconf_cache, sender=sender)
+            signals.post_delete.connect(clear_apps_urlconf_cache, sender=sender)
 
     @classmethod
     def check(cls, **kwargs):

@@ -12,7 +12,9 @@ Change log
 - Added a ``force_refresh`` parameter to
   :func:`feincms3.plugins.external.oembed_json` which allows forcibly
   refreshing the cached oEmbed data.
-
+- Added a very short-lived cache to ``apps_urlconf`` (three seconds by default)
+  which allows calling ``apps_urlconf`` several times without producing
+  database queries over and over.
 
 
 `0.94`_ (2021-09-29)
