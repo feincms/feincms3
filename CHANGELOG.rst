@@ -15,6 +15,7 @@ Change log
 - Added a very short-lived cache to ``apps_urlconf`` (three seconds by default)
   which allows calling ``apps_urlconf`` several times without producing
   database queries over and over.
+- Added Python 3.10 to the CI.
 
 
 `0.94`_ (2021-09-29)
