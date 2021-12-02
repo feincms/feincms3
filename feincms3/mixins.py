@@ -109,7 +109,7 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
     another object.
     """
 
-    translation_of = models.ForeignKey(
+    translation_of = TreeNodeForeignKey(
         "self",
         on_delete=models.SET_NULL,
         blank=True,

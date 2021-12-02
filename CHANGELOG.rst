@@ -16,6 +16,8 @@ Change log
   ``apps_urlconf`` several times without producing database queries over and
   over.
 - Added Python 3.10 to the CI.
+- Changed ``LanguageAndTranslationOfMixin.translation_of`` to use a
+  ``TreeNodeForeignKey`` so that the hierarchy is shown when using a dropdown.
 
 
 `0.94`_ (2021-09-29)
