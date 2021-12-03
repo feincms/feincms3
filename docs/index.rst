@@ -18,10 +18,6 @@ hierarchical data such as page trees.
 The tools can be used for a page CMS, but also work well for other types
 of content such as news magazines or API backends for mobile apps.
 
-.. note::
-   Despite its version number feincms3 is already used in production on
-   many sites and backwards compatibility isn't broken lightly.
-
 
 First steps
 ===========

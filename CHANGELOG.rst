@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`1.0`_ (2021-12-03)
+~~~~~~~~~~~~~~~~~~~
+
 - Fixed a Python 3.8-ism.
 - Added a ``params`` parameter to :func:`feincms3.plugins.external.oembed_json`
   which allows overriding values sent to the oEmbed provider.
@@ -18,6 +22,7 @@ Change log
 - Added Python 3.10 to the CI.
 - Changed ``LanguageAndTranslationOfMixin.translation_of`` to use a
   ``TreeNodeForeignKey`` so that the hierarchy is shown when using a dropdown.
+- Raised the minimum version of django-content-editor to 5.0.
 
 
 `0.94`_ (2021-09-29)
