@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Added `pre-commit <https://pre-commit.com/>`__.
+- Dropped compatibility with Python < 3.8, Django < 3.2.
+
 
 `1.0`_ (2021-12-03)
 ~~~~~~~~~~~~~~~~~~~

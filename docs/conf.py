@@ -1,8 +1,9 @@
-from datetime import date
 import os
 import re
 import subprocess
 import sys
+from datetime import date
+
 from django import setup
 from django.conf import settings
 
