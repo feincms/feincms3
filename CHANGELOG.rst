@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+
+`2.0`_ (2022-01-03)
+~~~~~~~~~~~~~~~~~~~
+
 - Added `pre-commit <https://pre-commit.com/>`__.
 - Dropped compatibility with Python < 3.8, Django < 3.2.
 - Changed the linked CKEditor version to 4.17.1.
@@ -873,4 +877,5 @@ functionality.
 .. _0.93: https://github.com/matthiask/feincms3/compare/0.92...0.93
 .. _0.94: https://github.com/matthiask/feincms3/compare/0.93...0.94
 .. _1.0: https://github.com/matthiask/feincms3/compare/0.94...1.0
-.. _Next version: https://github.com/matthiask/feincms3/compare/1.0...main
+.. _2.0: https://github.com/matthiask/feincms3/compare/1.0...2.0
+.. _Next version: https://github.com/matthiask/feincms3/compare/2.0...main
