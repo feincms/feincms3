@@ -9,6 +9,8 @@ Change log
 - Added `pre-commit <https://pre-commit.com/>`__.
 - Dropped compatibility with Python < 3.8, Django < 3.2.
 - Changed the linked CKEditor version to 4.17.1.
+- Fixed the move form CSS when used with Django 4.0. It's not consistent yet
+  but better.
 
 
 `1.0`_ (2021-12-03)
