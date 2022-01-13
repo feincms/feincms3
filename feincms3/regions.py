@@ -85,6 +85,10 @@ class Regions:
             if key.startswith("handle_")
         }
 
+    @property
+    def regions(self):
+        return self.contents.regions
+
     @cached_render
     def render(self, region, context=None):
         """

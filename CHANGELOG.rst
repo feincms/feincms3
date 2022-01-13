@@ -6,6 +6,10 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Exposed the list of content editor regions on
+  :class:`~feincms3.regions.Regions` as ``regions``. Raised the minimum
+  django-content-editor version to 6.0.
+
 
 `2.0`_ (2022-01-03)
 ~~~~~~~~~~~~~~~~~~~
