@@ -182,11 +182,11 @@ elements. We have several teaser plugins but they all share the same
 .. code-block:: python
 
     class ArticleTeaser(PagePlugin):
-        subregion = "teaser"
+        subregion = "teasers"
         article = models.ForeignKey(...)
 
     class ProjectTeaser(PagePlugin):
-        subregion = "teaser"
+        subregion = "teasers"
         project = models.ForeignKey(...)
 
 Next, we have to define a regions class which knows how to handle those
@@ -198,7 +198,7 @@ exactly:
     from feincms3.regions import Regions, matches
 
     class SmartRegions(Regions):
-        def handle_teaser(self, items, context):
+        def handle_teasers(self, items, context):
             # Start the teasers element:
             yield '<div class="teasers">'
             while True:
