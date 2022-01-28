@@ -25,6 +25,9 @@ def is_first_party_link(url, *, first_party_hosts=None):
     First parties are defined by ``ALLOWED_HOSTS`` and can be overridden by
     passing an alternative list of hosts. The wildcard ``["*"]`` isn't
     recognized.
+
+    NOTE! ``first_party_hosts`` should not contain port numbers even if using a
+    non-standard port, the same is true for Django's ``ALLOWED_HOSTS`` setting.
     """
     u = urlparse(url)
 
