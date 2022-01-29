@@ -1010,7 +1010,7 @@ class Test(TestCase):
     def test_descendant_update(self):
         """Saving pages with descendants updates descendants too"""
         self.prepare_for_move()
-        root, p1, p2 = list(Page.objects.all())
+        root, p1, p2 = list(Page.objects.all())  # Fetch again, we need tree_* fields
 
         p2.static_path = True
         p2.save()
