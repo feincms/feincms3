@@ -1,3 +1,4 @@
+import warnings
 from collections import deque
 from functools import wraps
 
@@ -8,6 +9,13 @@ from django.utils.html import mark_safe
 
 
 __all__ = ("Regions", "matches", "cached_render")
+
+
+warnings.warn(
+    "feincms3.regions is deprecated. Switch to feincms3.renderer.RegionRenderer now.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 def cached_render(fn):

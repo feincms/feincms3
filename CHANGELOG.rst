@@ -6,6 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+- Introduced a new :class:`feincms3.renderer.RegionRenderer` infrastructure
+  which merges and replaces :mod:`feincms3.regions` and
+  :class:`feincms3.renderer.TemplatePluginRenderer`. The new module supports
+  other template engines and handles subregions without polluting models with
+  attributes, making it possible to use several renderers in the same project
+  with differing subregion configurations.
+
 
 `2.1`_ (2022-01-13)
 ~~~~~~~~~~~~~~~~~~~
