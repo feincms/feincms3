@@ -6,6 +6,9 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
+`3.0a1`_ (2022-02-01)
+~~~~~~~~~~~~~~~~~~~~~
+
 - Introduced a new :class:`feincms3.renderer.RegionRenderer` infrastructure
   which merges and replaces :mod:`feincms3.regions` and
   :class:`feincms3.renderer.TemplatePluginRenderer`. The new module supports
@@ -894,4 +897,5 @@ functionality.
 .. _1.0: https://github.com/matthiask/feincms3/compare/0.94...1.0
 .. _2.0: https://github.com/matthiask/feincms3/compare/1.0...2.0
 .. _2.1: https://github.com/matthiask/feincms3/compare/2.0...2.1
-.. _Next version: https://github.com/matthiask/feincms3/compare/2.1...main
+.. _3.0a1: https://github.com/matthiask/feincms3/compare/2.1...3.0a1
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.0a1...main
