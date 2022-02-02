@@ -126,8 +126,6 @@ look as follows:
 
     from django.shortcuts import get_object_or_404, render
 
-    from feincms3.regions import Regions
-
     from .models import Page
     from .renderer import renderer
 
@@ -142,9 +140,7 @@ look as follows:
             "pages/standard.html",
             {
                 "page": page,
-                "regions": Regions.from_item(
-                    page, renderer=renderer, timeout=60
-                ),
+                "regions": renderer.regions_from_item(page, timeout=60),
             },
         )
 
@@ -165,19 +161,19 @@ Here's an example how plugins could be rendered,
 
     from django.utils.html import format_html, mark_safe
 
-    from feincms3.renderer import TemplatePluginRenderer
+    from feincms3.renderer import RegionRenderer
 
     from .models import Page, RichText, Image
 
 
-    renderer = TemplatePluginRenderer()
-    renderer.register_string_renderer(
+    renderer = RegionRenderer()
+    renderer.register(
         RichText,
-        lambda plugin: mark_safe(plugin.text),
+        lambda plugin, context: mark_safe(plugin.text),
     )
-    renderer.register_string_renderer(
+    renderer.register(
         Image,
-        lambda plugin: format_html(
+        lambda plugin, context: format_html(
             '<figure><img src="{}" alt=""/><figcaption>{}</figcaption></figure>',
             plugin.image.url,
             plugin.caption,
@@ -188,9 +184,11 @@ Of course if you'd rather let plugins use templates, do this:
 
 .. code-block:: python
 
-    renderer.register_template_renderer(
+    from feincms3.renderer import template_renderer
+
+    renderer.register(
         Image,
-        "plugins/image.html",
+        template_renderer("plugins/image.html"),
     )
 
 And the associated template::
