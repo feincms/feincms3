@@ -25,6 +25,7 @@ You may register a rendering function which returns a HTML string:
 .. code-block:: python
 
     from django.utils.html import mark_safe
+    from feincms3.renderer import RegionRenderer
     from app.pages.models import RichText
 
     renderer = RegionRenderer()

@@ -202,7 +202,7 @@ class _Regions:
         return self._contents.regions
 
     def render(self, region_key, context):
-        rendered = self._rendered(context=context)
+        rendered = self._rendered(context)
         return rendered.get(region_key, "")
 
 

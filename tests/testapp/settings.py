@@ -95,5 +95,5 @@ def patch():
 patch()
 
 if os.environ.get("SLOWTESTS"):
-    TEST_RUNNER = 'django_slowtests.testrunner.DiscoverSlowestTestsRunner'
+    TEST_RUNNER = "django_slowtests.testrunner.DiscoverSlowestTestsRunner"
     NUM_SLOW_TESTS = 30
