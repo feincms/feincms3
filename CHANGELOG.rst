@@ -6,7 +6,7 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-`3.0a1`_ (2022-02-01)
+`3.0a2`_ (2022-02-02)
 ~~~~~~~~~~~~~~~~~~~~~
 
 - Introduced a new :class:`feincms3.renderer.RegionRenderer` infrastructure
@@ -897,5 +897,5 @@ functionality.
 .. _1.0: https://github.com/matthiask/feincms3/compare/0.94...1.0
 .. _2.0: https://github.com/matthiask/feincms3/compare/1.0...2.0
 .. _2.1: https://github.com/matthiask/feincms3/compare/2.0...2.1
-.. _3.0a1: https://github.com/matthiask/feincms3/compare/2.1...3.0a1
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.0a1...main
+.. _3.0a2: https://github.com/matthiask/feincms3/compare/2.1...3.0a2
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.0a2...main
