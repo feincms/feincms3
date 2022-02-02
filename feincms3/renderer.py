@@ -67,15 +67,15 @@ class RegionRenderer:
         self._renderers = {}
         self._subregions = {}
 
-    def register(self, plugin, renderer, /, subregion=""):
-        self._renderers[plugin] = renderer
-        self._subregions[plugin] = subregion
-
         self.handlers = {
             key[7:]: getattr(self, key)
             for key in dir(self)
             if key.startswith("handle_")
         }
+
+    def register(self, plugin, renderer, /, subregion=""):
+        self._renderers[plugin] = renderer
+        self._subregions[plugin] = subregion
 
     def plugins(self):
         return list(self._renderers)
