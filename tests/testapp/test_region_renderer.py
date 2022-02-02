@@ -14,8 +14,8 @@ class RegionRendererTest(TestCase):
         RichText.objects.create(
             parent=p, region="main", ordering=10, text="<p>Hello</p>"
         )
-        HTML.objects.create(parent=p, region="main", ordering=20, html="<a>")
-        HTML.objects.create(parent=p, region="main", ordering=30, html="<b>")
+        HTML.objects.create(parent=p, region="main", ordering=20, html="<br>")
+        HTML.objects.create(parent=p, region="main", ordering=30, html="<hr>")
         RichText.objects.create(
             parent=p, region="main", ordering=40, text="<p>World</p>"
         )
@@ -38,7 +38,7 @@ class RegionRendererTest(TestCase):
         regions = renderer.regions_from_item(p, timeout=1)
         self.assertHTMLEqual(
             regions.render("main", Context({"outer": "x"})),
-            '<div class="rt"><p>Hello</p></div> <a>x <b>x <div class="rt"><p>World</p></div>',
+            '<div class="rt"><p>Hello</p></div> <br>x <hr>x <div class="rt"><p>World</p></div>',
         )
 
         RichText.objects.create(
@@ -47,7 +47,7 @@ class RegionRendererTest(TestCase):
         regions = renderer.regions_from_item(p, timeout=1)
         self.assertHTMLEqual(
             regions.render("main", Context({"outer": "x"})),
-            '<div class="rt"><p>Hello</p></div> <a>x <b>x <div class="rt"><p>World</p></div>',
+            '<div class="rt"><p>Hello</p></div> <br>x <hr>x <div class="rt"><p>World</p></div>',
         )
 
     def test_unconfigured_exception(self):
@@ -62,25 +62,25 @@ class RegionRendererTest(TestCase):
 
     def test_subregions(self):
         class HTMLSubregionRenderer(RegionRenderer):
-            def handle_html(self, items, context):
+            def handle_html(self, plugins, context):
                 return format_html(
                     '<div class="html">{}</div>',
                     mark_safe(
                         "".join(
-                            self.render_item(item, context)
-                            for item in self.takewhile(items, subregion="html")
+                            self.render_plugin(plugin, context)
+                            for plugin in self.takewhile(plugins, subregion="html")
                         )
                     ),
                 )
 
         renderer = HTMLSubregionRenderer()
-        renderer.register(RichText, lambda item, context: mark_safe(item.text))
+        renderer.register(RichText, lambda plugin, context: mark_safe(plugin.text))
         renderer.register(
-            HTML, lambda item, context: mark_safe(item.html), subregion="html"
+            HTML, lambda plugin, context: mark_safe(plugin.html), subregion="html"
         )
 
         regions = renderer.regions_from_item(self.prepare())
         self.assertHTMLEqual(
             regions.render("main", None),
-            '<p>Hello</p> <div class="html"><a><b></div> <p>World</p>',
+            '<p>Hello</p> <div class="html"><br><hr></div> <p>World</p>',
         )
