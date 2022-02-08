@@ -226,21 +226,29 @@ to override the default subregions handler instead:
 
     from django.utils.html import mark_safe
 
-    from feincms3.renderer import RegionRenderer
+    from feincms3.renderer import RegionRenderer, render_in_context
 
     class FullWidthPlugin(PagePlugin):
         pass
 
     class ContainerAwareRegionRenderer(RegionRenderer):
         def handle_default(self, plugins, context):
-            yield '<div class="container">'
-            for plugin self.takewhile_subregion(plugins, subregion="default"):
-                yield self.render_plugin(plugin, context)
-            yield "</div>"
+            content = [
+                self.render_plugin(plugin, context)
+                for plugin in self.takewhile_subregion(plugins, subregion="default")
+            ]
+            yield render_in_context(
+                context, "subregions/default.html", {"content": content}
+            )
 
         def handle_fullwidth(self, plugins, context):
-            for plugin self.takewhile_subregion(plugins, subregion="fullwidth"):
-                yield self.render_plugin(plugins.popleft(), context)
+            content = [
+                self.render_plugin(plugin, context)
+                for plugin in self.takewhile_subregion(plugins, subregion="fullwidth")
+            ]
+            yield render_in_context(
+                context, "subregions/fullwidth.html", {"content": content}
+            )
 
     # Instantiate renderer and register plugins
     renderer = ContainerAwareRegionRenderer()
