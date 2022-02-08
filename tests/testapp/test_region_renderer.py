@@ -68,7 +68,9 @@ class RegionRendererTest(TestCase):
                     mark_safe(
                         "".join(
                             self.render_plugin(plugin, context)
-                            for plugin in self.takewhile(plugins, subregion="html")
+                            for plugin in self.takewhile_subregion(
+                                plugins, subregion="html"
+                            )
                         )
                     ),
                 )

@@ -204,7 +204,7 @@ exactly:
         def handle_teasers(self, plugins, context):
             # Start the teasers element:
             yield '<div class="teasers">'
-            for plugin in self.takewhile(plugins, subregion="teasers"):
+            for plugin in self.takewhile_subregion(plugins, subregion="teasers"):
                 # items is a deque, render the leftmost item:
                 yield self.render_plugin(plugin, context)
             yield "</div>"
@@ -234,12 +234,12 @@ to override the default subregions handler instead:
     class ContainerAwareRegionRenderer(RegionRenderer):
         def handle_default(self, plugins, context):
             yield '<div class="container">'
-            for plugin self.takewhile(plugins, subregion="default"):
+            for plugin self.takewhile_subregion(plugins, subregion="default"):
                 yield self.render_plugin(plugin, context)
             yield "</div>"
 
         def handle_fullwidth(self, plugins, context):
-            for plugin self.takewhile(plugins, subregion="fullwidth"):
+            for plugin self.takewhile_subregion(plugins, subregion="fullwidth"):
                 yield self.render_plugin(plugins.popleft(), context)
 
     # Instantiate renderer and register plugins

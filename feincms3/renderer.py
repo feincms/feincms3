@@ -102,7 +102,7 @@ class RegionRenderer:
             return subregion(plugin) or "default"
         return subregion or "default"
 
-    def takewhile(self, plugins, *, subregion):
+    def takewhile_subregion(self, plugins, *, subregion):
         while plugins and self.subregion(plugins[0]) == subregion:
             yield plugins.popleft()
 
@@ -126,7 +126,7 @@ class RegionRenderer:
         Renders plugins from the queue as long as there are plugins belonging
         to the ``default`` subregion.
         """
-        for plugin in self.takewhile(plugins, subregion="default"):
+        for plugin in self.takewhile_subregion(plugins, subregion="default"):
             yield self.render_plugin(plugin, context)
 
     def render_region(self, *, region, contents, context):
