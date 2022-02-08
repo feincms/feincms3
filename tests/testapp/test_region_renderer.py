@@ -1,3 +1,5 @@
+from collections import deque
+
 from content_editor.contents import contents_for_item
 from django.template import Context
 from django.test import TestCase
@@ -85,4 +87,51 @@ class RegionRendererTest(TestCase):
         self.assertHTMLEqual(
             regions.render("main", None),
             '<p>Hello</p> <div class="html"><br><hr></div> <p>World</p>',
+        )
+
+    def test_marks(self):
+        class MarksRenderer(RegionRenderer):
+            def render_region(self, *, region, contents, context):
+                def _render():
+                    plugins = deque(contents[region.key])
+                    while plugins:
+                        if items := list(self.takewhile_mark(plugins, mark="html")):
+                            yield format_html(
+                                '<div class="html">{}</div>',
+                                mark_safe(
+                                    "".join(
+                                        self.render_plugin(plugin, context)
+                                        for plugin in items
+                                    )
+                                ),
+                            )
+                        if items := list(self.takewhile_mark(plugins, mark="stuff")):
+                            yield format_html(
+                                '<div class="stuff">{}</div>',
+                                mark_safe(
+                                    "".join(
+                                        self.render_plugin(plugin, context)
+                                        for plugin in items
+                                    )
+                                ),
+                            )
+
+                return mark_safe("".join(output for output in _render()))
+
+        renderer = MarksRenderer()
+        renderer.register(
+            RichText,
+            lambda plugin, context: mark_safe(plugin.text),
+            marks={"stuff"},
+        )
+        renderer.register(
+            HTML,
+            lambda plugin, context: mark_safe(plugin.html),
+            marks=lambda plugin: {"html"},
+        )
+
+        regions = renderer.regions_from_item(self.prepare())
+        self.assertHTMLEqual(
+            regions.render("main", None),
+            '<div class="stuff"><p>Hello</p></div><div class="html"><br><hr></div><div class="stuff"><p>World</p></div>',
         )

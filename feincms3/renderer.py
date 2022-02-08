@@ -66,6 +66,7 @@ class RegionRenderer:
     def __init__(self):
         self._renderers = {}
         self._subregions = {}
+        self._marks = {}
 
         self.handlers = {
             key[7:]: getattr(self, key)
@@ -73,9 +74,10 @@ class RegionRenderer:
             if key.startswith("handle_")
         }
 
-    def register(self, plugin, renderer, /, subregion=""):
+    def register(self, plugin, renderer, /, subregion="", marks={"default"}):
         self._renderers[plugin] = renderer
         self._subregions[plugin] = subregion
+        self._marks[plugin] = marks
 
     def plugins(self):
         return list(self._renderers)
@@ -104,6 +106,21 @@ class RegionRenderer:
 
     def takewhile_subregion(self, plugins, *, subregion):
         while plugins and self.subregion(plugins[0]) == subregion:
+            yield plugins.popleft()
+
+    def marks(self, plugin):
+        try:
+            marks = self._marks[plugin.__class__]
+        except KeyError:
+            raise PluginNotRegistered(
+                f"Plugin {plugin._meta.label_lower} is not registered"
+            )
+        if callable(marks):
+            return marks(plugin)
+        return marks
+
+    def takewhile_mark(self, plugins, *, mark):
+        while plugins and mark in self.marks(plugins[0]):
             yield plugins.popleft()
 
     def handle(self, plugins, context):
