@@ -258,6 +258,55 @@ to override the default subregions handler instead:
     regions = renderer.regions_from_item(page)
 
 
+Using marks
+~~~~~~~~~~~
+
+Some plugins may be usable inside several subregions. In this case you cannot
+simply set the ``subregion``; you have to find another way.
+
+One example may be a plugin which starts a collapsible region and which only
+supports text inside. Adding an image will automatically close the collapsible
+subregion as will adding another ``CollapsibleRegionPlugin``.
+
+.. code-block:: python
+
+    class CollapsibleRegionPlugin(PagePlugin):
+        title = models.CharField(
+            _("title"),
+            max_length=200,
+            blank=True,
+            help_text=_("Leave empty to explicitly finish a previously opened region."),
+        )
+
+    class CollapsibleRegionRenderer(RegionRenderer):
+        def handle_collapsible(self, plugins, context):
+            collapsible = self.render_plugin(plugins.popleft(), context)
+            content = [
+                self.render_plugin(plugin, context)
+                for plugin in self.takewhile_mark(plugins, mark="collapsible-content")
+            ]
+            yield from ...
+
+
+    renderer = CollapsibleRegionRenderer()
+    renderer.register(
+        CollapsibleRegionPlugin,
+        lambda plugin, context: {
+            "title": plugin.title, "is_collapsible": bool(plugin.title)
+        },
+        subregion="collapsible",
+    )
+    renderer.register(
+        RichText,
+        lambda plugin, context: mark_safe(plugin.text),
+        marks={"collapsible-content"},
+    )
+    renderer.register(
+        Image,
+        # ...
+    )
+
+
 Generating JSON
 ~~~~~~~~~~~~~~~
 
