@@ -1,3 +1,9 @@
+"""
+.. warning::
+   This module is deprecated. Use :mod:`feincms3.renderer.RegionRenderer`
+   instead.
+"""
+
 import warnings
 from collections import deque
 from functools import wraps
