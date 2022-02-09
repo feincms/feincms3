@@ -10,15 +10,20 @@ from django.utils.html import mark_safe
 
 __all__ = (
     "PluginNotRegistered",
-    "RegionRenderer",
-    "TemplatePluginRenderer",
     "default_context",
     "render_in_context",
     "template_renderer",
+    "RegionRenderer",
+    "TemplatePluginRenderer",
 )
 
 
 class PluginNotRegistered(Exception):
+    """
+    Exception raised when encountering a plugin which isn't known to the
+    renderer.
+    """
+
     pass
 
 
@@ -57,12 +62,25 @@ def render_in_context(context, template, local_context=None):
 
 
 def template_renderer(template_name, local_context=default_context, /):
+    """
+    Build a renderer for the region renderer which uses a template (or a list
+    of templates) and optionally a local context function. The context contains
+    the site-wide context variables too when invoked via ``{% render_region %}``
+    """
     return lambda plugin, context: render_in_context(
         context, template_name, local_context(plugin, context)
     )
 
 
 class RegionRenderer:
+    """
+    The region renderer knows how to render single plugins and also complete
+    regions.
+
+    The basic usage is to instantiate the region renderer, register plugins
+    and render a full region with it.
+    """
+
     def __init__(self):
         self._renderers = {}
         self._subregions = {}
@@ -74,15 +92,41 @@ class RegionRenderer:
             if key.startswith("handle_")
         }
 
-    def register(self, plugin, renderer, /, subregion="", marks={"default"}):
+    def register(self, plugin, renderer, /, subregion="default", marks={"default"}):
+        """
+        Register a plugin class
+
+        The renderer is either a static value or a function which always
+        receives two arguments: The plugin instance and the context. When using
+        ``{% render_region %}`` and the Django template language the context
+        will be a Django template ``Context`` (or even ``RequestContext``)
+        instance.
+
+        The two optional keyword arguments' are:
+
+        - ``subregion: str = "default"``: The subregion for this plugin as a
+          string or as a callable accepting a single plugin instance. A
+          matching ``handle_<subregion>`` callable has to exist on the region
+          renderer instance or rendering **will** crash loudly.
+        - ``marks: Set[str] = {"default"}``: The marks of this plugin. Marks
+          only have the meaning you assign to them. Marks are preferrable to
+          running ``isinstance`` on plugin instances especially when using the
+          same region renderer class for different content types.
+        """
         self._renderers[plugin] = renderer
         self._subregions[plugin] = subregion
         self._marks[plugin] = marks
 
     def plugins(self):
+        """
+        Return a list of all registered plugin classes
+        """
         return list(self._renderers)
 
     def render_plugin(self, plugin, context):
+        """
+        Render a single plugin using the registered renderer
+        """
         try:
             renderer = self._renderers[plugin.__class__]
         except KeyError:
@@ -94,6 +138,9 @@ class RegionRenderer:
         return renderer
 
     def subregion(self, plugin):
+        """
+        Return the subregion of a plugin instance
+        """
         try:
             subregion = self._subregions[plugin.__class__]
         except KeyError:
@@ -101,14 +148,21 @@ class RegionRenderer:
                 f"Plugin {plugin._meta.label_lower} is not registered"
             )
         if callable(subregion):
-            return subregion(plugin) or "default"
-        return subregion or "default"
+            return subregion(plugin)
+        return subregion
 
     def takewhile_subregion(self, plugins, subregion):
+        """
+        Yield all plugins from the head of the ``plugins`` deque as long as
+        their subregion equals ``subregion``.
+        """
         while plugins and self.subregion(plugins[0]) == subregion:
             yield plugins.popleft()
 
     def marks(self, plugin):
+        """
+        Return the marks of a plugin instance
+        """
         try:
             marks = self._marks[plugin.__class__]
         except KeyError:
@@ -120,6 +174,10 @@ class RegionRenderer:
         return marks
 
     def takewhile_mark(self, plugins, mark):
+        """
+        Yield all plugins from the head of the ``plugins`` deque as long as
+        their marks include ``mark``.
+        """
         while plugins and mark in self.marks(plugins[0]):
             yield plugins.popleft()
 
@@ -147,12 +205,33 @@ class RegionRenderer:
             yield self.render_plugin(plugin, context)
 
     def render_region(self, *, region, contents, context):
+        """
+        Render one region.
+        """
         return mark_safe("".join(self.handle(contents[region.key], context)))
 
     def regions_from_contents(self, contents, **kwargs):
+        """
+        Return an opaque object encapsulating
+        :mod:`content_editor.contents.Contents` and the logic required to
+        render them.
+
+        All you need to know is that the return value has a ``regions``
+        attribute containing a list of regions and a ``render`` method
+        accepting a region key and a context instance.
+        """
         return _Regions(contents=contents, renderer=self, **kwargs)
 
     def regions_from_item(self, item, /, *, inherit_from=None, timeout=None, **kwargs):
+        """
+        Return an opaque object, see
+        :func:`~feincms3.renderer.RegionRenderer.regions_from_contents`
+
+        Automatically caches the return value if ``timeout`` is truthy. The
+        default cache key only takes the ``item``'s class and primary key into
+        account. You may have to override the cache key by passing
+        ``cache_key`` if you're doing strange^Wadvanced things.
+        """
         if timeout and kwargs.get("cache_key") is None:
             kwargs["cache_key"] = f"regions-{item._meta.label_lower}-{item.pk}"
 
@@ -164,6 +243,8 @@ class RegionRenderer:
     # TemplatePluginRenderer compatibility
 
     def register_string_renderer(self, plugin, renderer):
+        """Backwards compatibility for ``TemplatePluginRenderer``. It is
+        deprecated, don't use in new code."""
         warnings.warn(
             "register_string_renderer is deprecated. Use RegionRenderer.register instead.",
             DeprecationWarning,
@@ -177,6 +258,8 @@ class RegionRenderer:
     def register_template_renderer(
         self, plugin, template_name, context=default_context
     ):
+        """Backwards compatibility for ``TemplatePluginRenderer``. It is
+        deprecated, don't use in new code."""
         warnings.warn(
             "register_template_renderer is deprecated. Use RegionRenderer.register instead.",
             DeprecationWarning,
@@ -185,6 +268,8 @@ class RegionRenderer:
         self.register(plugin, _compat_template_renderer(template_name, context))
 
     def render_plugin_in_context(self, plugin, context=None):
+        """Backwards compatibility for ``TemplatePluginRenderer``. It is
+        deprecated, don't use in new code."""
         warnings.warn(
             "render_plugin_in_context is deprecated. Use RegionRenderer.render_plugin instead.",
             DeprecationWarning,
@@ -194,6 +279,15 @@ class RegionRenderer:
 
 
 class _Regions:
+    """
+    Opaque object implementing the following interface:
+
+    - ``regions``: A list of regions used for the content editor ``Contents``
+      instance.
+    - ``render(region_key, context)``: A function which actually runs the
+      renderer.
+    """
+
     def __init__(self, *, contents, renderer, cache_key=None, timeout=None):
         self._contents = contents
         self._renderer = renderer
@@ -224,6 +318,9 @@ class _Regions:
 
 
 def _compat_template_renderer(_tpl, _ctx=default_context, /):
+    """Compatibility implementation which accepts an optionally callable
+    template and an optionally callable context function."""
+
     def renderer(plugin, context):
         template_name = _tpl(plugin) if callable(_tpl) else _tpl
         local_context = _ctx(plugin, context) if callable(_ctx) else _ctx
@@ -233,6 +330,11 @@ def _compat_template_renderer(_tpl, _ctx=default_context, /):
 
 
 class TemplatePluginRenderer(RegionRenderer):
+    """
+    TemplatePluginRenderer is deprecated, use
+    :class:`~feincms3.renderer.RegionRenderer`.
+    """
+
     def __init__(self, *args, **kwargs):
         warnings.warn(
             "TemplatePluginRenderer is deprecated. Switch to the RegionRenderer now.",
