@@ -204,7 +204,7 @@ exactly:
         def handle_teasers(self, plugins, context):
             # Start the teasers element:
             yield '<div class="teasers">'
-            for plugin in self.takewhile_subregion(plugins, subregion="teasers"):
+            for plugin in self.takewhile_subregion(plugins, "teasers"):
                 # items is a deque, render the leftmost item:
                 yield self.render_plugin(plugin, context)
             yield "</div>"
@@ -235,7 +235,7 @@ to override the default subregions handler instead:
         def handle_default(self, plugins, context):
             content = [
                 self.render_plugin(plugin, context)
-                for plugin in self.takewhile_subregion(plugins, subregion="default")
+                for plugin in self.takewhile_subregion(plugins, "default")
             ]
             yield render_in_context(
                 context, "subregions/default.html", {"content": content}
@@ -244,7 +244,7 @@ to override the default subregions handler instead:
         def handle_fullwidth(self, plugins, context):
             content = [
                 self.render_plugin(plugin, context)
-                for plugin in self.takewhile_subregion(plugins, subregion="fullwidth")
+                for plugin in self.takewhile_subregion(plugins, "fullwidth")
             ]
             yield render_in_context(
                 context, "subregions/fullwidth.html", {"content": content}
@@ -283,7 +283,7 @@ subregion as will adding another ``CollapsibleRegionPlugin``.
             collapsible = self.render_plugin(plugins.popleft(), context)
             content = [
                 self.render_plugin(plugin, context)
-                for plugin in self.takewhile_mark(plugins, mark="collapsible-content")
+                for plugin in self.takewhile_mark(plugins, "collapsible-content")
             ]
             yield from ...
 
