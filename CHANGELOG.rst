@@ -9,6 +9,9 @@ Change log
 .. _Next version: https://github.com/matthiask/feincms3/compare/3.0...main
 
 - Changed the link color in the inline CKEditor to be readable in dark mode.
+- Added a direct dependency on django-js-asset (django-content-editor already
+  depends on it so it's nothing new) and fixed a deprecation warning in our
+  usage.
 
 
 `3.0`_ (2022-02-09)
