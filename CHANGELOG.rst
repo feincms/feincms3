@@ -8,6 +8,8 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/3.0...main
 
+- Changed the link color in the inline CKEditor to be readable in dark mode.
+
 
 `3.0`_ (2022-02-09)
 ~~~~~~~~~~~~~~~~~~~

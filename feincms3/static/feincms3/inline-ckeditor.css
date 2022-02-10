@@ -72,7 +72,7 @@
 }
 
 .cke_textarea_inline a {
-  color: blue !important;
+  color: var(--link-fg) !important;
   text-decoration: underline !important;
 }
 
