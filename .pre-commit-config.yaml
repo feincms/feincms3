@@ -31,7 +31,7 @@ repos:
       - id: isort
         args: [--profile=black, --lines-after-imports=2, --combine-as]
   - repo: https://github.com/psf/black
-    rev: 21.12b0
+    rev: 22.1.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
@@ -46,11 +46,11 @@ repos:
         args: [--list-different, --no-semi]
         exclude: "^conf/|.*\\.html$"
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.7.0
+    rev: v8.9.0
     hooks:
       - id: eslint
         additional_dependencies:
-          - eslint@8.7.0
+          - eslint@8.9.0
           - eslint-config-prettier@8.3.0
           - "@babel/core"
           - "@babel/eslint-parser"
