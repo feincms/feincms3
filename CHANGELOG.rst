@@ -12,6 +12,8 @@ Change log
 - Added a direct dependency on django-js-asset (django-content-editor already
   depends on it so it's nothing new) and fixed a deprecation warning in our
   usage.
+- Added a system check for ``ApplicationType`` instances which errors out if
+  the referenced URLconf modules cannot be imported.
 
 
 `3.0`_ (2022-02-09)

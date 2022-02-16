@@ -10,7 +10,7 @@ from types import ModuleType
 from asgiref.local import Local
 from content_editor.models import Type
 from django.conf import settings
-from django.core.checks import Warning
+from django.core.checks import Error, Warning
 from django.core.exceptions import ValidationError
 from django.core.signals import request_finished
 from django.db import models
@@ -488,6 +488,7 @@ class PageTypeMixin(models.Model):
     def check(cls, **kwargs):
         errors = super().check(**kwargs)
         errors.extend(cls._check_feincms3_appsmixin_templatemixin_clash(**kwargs))
+        errors.extend(cls._check_feincms3_applications(**kwargs))
         return errors
 
     @classmethod
@@ -508,6 +509,18 @@ class PageTypeMixin(models.Model):
                 )
             ]
         return []
+
+    @classmethod
+    def _check_feincms3_applications(cls, **kwargs):
+        for type in cls.TYPES:
+            if isinstance(type, ApplicationType):
+                try:
+                    import_module(type.urlconf)
+                except ModuleNotFoundError as exc:
+                    yield Error(
+                        f"The application type {type.key!r} has an unimportable"
+                        f" URLconf value {type.urlconf!r}: {exc}"
+                    )
 
     @property
     def application(self):
