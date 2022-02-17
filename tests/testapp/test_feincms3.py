@@ -13,6 +13,7 @@ from django.test.utils import isolate_apps
 from django.urls import NoReverseMatch, reverse, set_urlconf
 from django.utils.translation import deactivate_all, override
 
+from feincms3 import applications
 from feincms3.applications import (
     ApplicationType,
     PageTypeMixin,
@@ -1272,16 +1273,24 @@ class Test(TestCase):
     def test_importable_page_types(self):
         """Applications require an importable URLconf module"""
 
-        class Page(AbstractPage, PageTypeMixin):
-            TYPES = [ApplicationType(key="app", title="app", urlconf="does-not-exist")]
+        apps_model = applications._APPS_MODEL
+        try:
 
-        errors = Page.check()
-        expected = [
-            Error(
-                "The application type 'app' has an unimportable"
-                " URLconf value 'does-not-exist': No module named 'does-not-exist'",
-                obj=Page,
-                id="feincms3.E003",
-            ),
-        ]
-        self.assertEqual(errors, expected)
+            class Page(AbstractPage, PageTypeMixin):
+                TYPES = [
+                    ApplicationType(key="app", title="app", urlconf="does-not-exist")
+                ]
+
+            errors = Page.check()
+            expected = [
+                Error(
+                    "The application type 'app' has an unimportable"
+                    " URLconf value 'does-not-exist': No module named 'does-not-exist'",
+                    obj=Page,
+                    id="feincms3.E003",
+                ),
+            ]
+            self.assertEqual(errors, expected)
+
+        finally:
+            applications._APPS_MODEL = apps_model
