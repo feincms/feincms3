@@ -58,9 +58,9 @@ class Page(
             urlconf="testapp.articles_urls",
         ),
         ApplicationType(
-            key="stuff-with-required",
-            title="stuff-with-required",
-            urlconf="stuff-with-required",
+            key="importable_module",
+            title="importable_module",
+            urlconf="importable_module",
             required_fields=("optional", "not_editable"),
         ),
         ApplicationType(

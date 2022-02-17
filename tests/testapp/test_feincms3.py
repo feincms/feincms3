@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 import requests_mock
 from django.contrib.auth.models import User
-from django.core.checks import Warning
+from django.core.checks import Error, Warning
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.forms.models import modelform_factory
@@ -15,6 +15,7 @@ from django.utils.translation import deactivate_all, override
 
 from feincms3.applications import (
     ApplicationType,
+    PageTypeMixin,
     apps_urlconf,
     reverse_any,
     reverse_app,
@@ -460,14 +461,14 @@ class Test(TestCase):
             language_code="en",
             is_active=True,
             menu="main",
-            page_type="stuff-with-required",
+            page_type="importable_module",
         )
         with self.assertRaises(ValidationError) as cm:
             home.full_clean(exclude=["not_editable"])
 
         self.assertEqual(
             cm.exception.error_dict["optional"][0].message,
-            'This field is required for the page type "stuff-with-required".',
+            'This field is required for the page type "importable_module".',
         )
 
         home.optional = 1
@@ -1266,3 +1267,21 @@ class Test(TestCase):
             at.app_namespace(SimpleNamespace(page_type="blog", category_id=3)),
             "blog",
         )
+
+    @isolate_apps("testapp")
+    def test_importable_page_types(self):
+        """Applications require an importable URLconf module"""
+
+        class Page(AbstractPage, PageTypeMixin):
+            TYPES = [ApplicationType(key="app", title="app", urlconf="does-not-exist")]
+
+        errors = Page.check()
+        expected = [
+            Error(
+                "The application type 'app' has an unimportable"
+                " URLconf value 'does-not-exist': No module named 'does-not-exist'",
+                obj=Page,
+                id="feincms3.E003",
+            ),
+        ]
+        self.assertEqual(errors, expected)

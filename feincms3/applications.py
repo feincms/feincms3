@@ -519,7 +519,9 @@ class PageTypeMixin(models.Model):
                 except ModuleNotFoundError as exc:
                     yield Error(
                         f"The application type {type.key!r} has an unimportable"
-                        f" URLconf value {type.urlconf!r}: {exc}"
+                        f" URLconf value {type.urlconf!r}: {exc}",
+                        obj=cls,
+                        id="feincms3.E003",
                     )
 
     @property
