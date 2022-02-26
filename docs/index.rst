@@ -8,8 +8,8 @@ feincms3 offers tools and building blocks which make building a CMS that
 is versatile, powerful and tailor-made at the same time for each project
 a reachable reality.
 
-It builds on other powerful tools such as Django itself and its admin
-interface, `django-content-editor
+It builds on other powerful tools such as Django itself and its
+excellent standard admin interface, `django-content-editor
 <https://django-content-editor.readthedocs.io>`__ to allow creating and
 editing structured content and `django-tree-queries
 <https://github.com/matthiask/django-tree-queries>`__ for querying
