@@ -14,6 +14,8 @@ Change log
   usage.
 - Added a system check for ``ApplicationType`` instances which errors out if
   the referenced URLconf modules cannot be imported.
+- Added a few style resets for CKEditor 4 popups so that it works better in the
+  Django admin's dark mode.
 
 
 `3.0`_ (2022-02-09)

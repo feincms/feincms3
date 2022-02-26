@@ -85,3 +85,14 @@
   list-style: decimal !important;
   margin-left: 1em !important;
 }
+
+.cke_dialog_container tr:nth-child(2n),
+.cke_dialog_container tr:nth-child(2n + 1) {
+  background: transparent;
+}
+
+.cke_dialog_container input,
+.cke_dialog_container textarea,
+.cke_dialog_container select {
+  color: #000;
+}
