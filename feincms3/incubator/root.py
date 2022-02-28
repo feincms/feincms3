@@ -35,7 +35,7 @@ Example code for using this module (e.g. ``app.pages.middleware``):
     # added in the last position except if you have a very good reason not to
     # do this.
     page_if_404_middleware = create_page_if_404_middleware(
-        queryset=Page.objects.active(),
+        queryset=lambda request: Page.objects.active(),
         handler=handler,
     )
 
