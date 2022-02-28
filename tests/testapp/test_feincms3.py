@@ -1294,3 +1294,42 @@ class Test(TestCase):
 
         finally:
             applications._APPS_MODEL = apps_model
+
+    def test_404_language_code_redirect_at_root(self):
+        """Root page redirect when a matching page exists"""
+
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 404)
+
+        Page.objects.create(
+            title="de",
+            slug="de",
+            path="/de/",
+            static_path=True,
+            language_code="de",
+            is_active=True,
+        )
+
+        response = self.client.get("/", HTTP_ACCEPT_LANGUAGE="de")
+        self.assertRedirects(response, "/de/")
+
+        response = self.client.get("/", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(response.status_code, 404)
+
+    def test_404_language_code_redirect_deeper(self):
+        """No redirects despite using i18n_patterns"""
+
+        Page.objects.create(
+            title="de-home",
+            slug="de-home",
+            path="/de/home/",
+            static_path=True,
+            language_code="de",
+            is_active=True,
+        )
+
+        response = self.client.get("/home/", HTTP_ACCEPT_LANGUAGE="de")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.get("/", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(response.status_code, 404)
