@@ -64,7 +64,7 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=T
                 return response
             if page := queryset.filter(path=request.path_info).first():
                 return handler(request, page)
-            if language_code_redirect:
+            if language_code_redirect and request.path_info == "/":
                 target = f"/{slugify(request.LANGUAGE_CODE)}/"
                 if queryset.filter(path=target).exists():
                     return HttpResponseRedirect(target)
