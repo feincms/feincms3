@@ -69,6 +69,13 @@ class Page(
             title=_("translated articles"),
             urlconf="testapp.translated_articles_urls",
         ),
+        ApplicationType(
+            key="imprint",
+            title="imprint",
+            urlconf="feincms3.incubator.root_passthru",
+            template_name="pages/standard.html",
+            regions=(Region(key="main", title=_("Main")),),
+        ),
     ]
 
     optional = models.IntegerField(blank=True, null=True)
