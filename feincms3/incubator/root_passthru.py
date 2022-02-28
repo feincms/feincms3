@@ -43,4 +43,7 @@ urlpatterns = [
 
 
 def reverse_passthru(namespace):
+    """
+    Reverse a passthru app URL
+    """
     return reverse_app(namespace, "passthru")

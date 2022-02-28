@@ -55,10 +55,29 @@ from django.utils.encoding import iri_to_uri
 
 
 def path_with_script_prefix(path):
+    """
+    Return ``path`` prefixed with the current script prefix
+    """
+    # See django/contrib/flatpages/models.py
     return iri_to_uri(get_script_prefix().rstrip("/") + path)
 
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=True):
+    """
+    Create a middleware
+
+    Required arguments:
+    - ``queryset``: A page queryset or a callable accepting the request and
+      returning a page queryset.
+    - ``handler``: A callable accepting the request and a page and returning a
+      response.
+
+    Optional arguments:
+    - ``language_code_redirect`` (``True``): Redirect visitor to the language
+      code prefix (e.g. ``/en/``, ``/de-ch/``) if request path equals the
+      script prefix (generally ``/``) and no active page for ``/`` exists.
+    """
+
     def outer(get_response):
         def inner(request):
             response = get_response(request)
@@ -79,6 +98,10 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=T
 
 
 def add_redirect_handler(handler):
+    """
+    Wrap the page handler in a redirect mixin handler
+    """
+
     def inner(request, page):
         if redirect_to := page.get_redirect_url():
             return HttpResponseRedirect(redirect_to)
