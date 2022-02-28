@@ -8,8 +8,8 @@ from feincms3.applications import (
     TemplateType,
     reverse_app,
 )
+from feincms3.incubator.root import AbstractPage
 from feincms3.mixins import LanguageAndTranslationOfMixin, MenuMixin, RedirectMixin
-from feincms3.pages import AbstractPage
 from feincms3.plugins import external, html, image, richtext, snippet
 
 

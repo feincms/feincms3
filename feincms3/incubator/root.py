@@ -43,7 +43,6 @@ Example code for using this module (e.g. ``app.pages.middleware``):
 from django.http import HttpResponseRedirect
 from django.urls import get_script_prefix
 from django.utils.encoding import iri_to_uri
-from django.utils.text import slugify
 
 from feincms3.pages import AbstractPage
 
@@ -65,7 +64,7 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=T
             if page := queryset.filter(path=request.path_info).first():
                 return handler(request, page)
             if language_code_redirect and request.path_info == "/":
-                target = f"/{slugify(request.LANGUAGE_CODE)}/"
+                target = f"/{request.LANGUAGE_CODE}/"
                 if queryset.filter(path=target).exists():
                     return HttpResponseRedirect(target)
             return response
