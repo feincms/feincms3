@@ -38,21 +38,24 @@ Example code for using this module (e.g. ``app.pages.middleware``):
         queryset=Page.objects.active(),
         handler=handler,
     )
+
+You'll also have to override the ``get_absolute_url`` method on your page
+class because the default method uses ``reverse()``:
+
+.. code-block:: python
+
+    class Page(AbstractPage, ...):
+        def get_absolute_url(self):
+            return path_with_script_prefix(self.path)
 """
 
 from django.http import HttpResponseRedirect
 from django.urls import get_script_prefix
 from django.utils.encoding import iri_to_uri
 
-from feincms3.pages import AbstractPage
 
-
-class AbstractPage(AbstractPage):
-    class Meta(AbstractPage.Meta):
-        abstract = True
-
-    def get_absolute_url(self):
-        return iri_to_uri(get_script_prefix().rstrip("/") + self.path)
+def path_with_script_prefix(path):
+    return iri_to_uri(get_script_prefix().rstrip("/") + path)
 
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=True):
