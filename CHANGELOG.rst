@@ -6,7 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.1...main
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.2...main
+
+
+`3.2`_ (2022-03-01)
+~~~~~~~~~~~~~~~~~~~
+
+.. _3.2: https://github.com/matthiask/feincms3/compare/3.1...3.2
 
 - Added a ``fallback`` keyword argument to
   :func:`~feincms3.applications.reverse_app`,
