@@ -6,7 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.0...main
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.1...main
+
+
+`3.1`_ (2022-03-01)
+~~~~~~~~~~~~~~~~~~~
+
+.. _3.0: https://github.com/matthiask/feincms3/compare/3.0...3.1
 
 - Changed the link color in the inline CKEditor to be readable in dark mode.
 - Added a direct dependency on django-js-asset (django-content-editor already
@@ -21,6 +27,9 @@ Change log
   the URL fails.
 - Changed the "Build your CMS" guide to recommend a middleware instead of URLs
   and views.
+- Added the :mod:`feincms3.incubator.root` and
+  :mod:`feincms3.incubator.root_passthru` modules which support using
+  middleware to render pages.
 
 
 `3.0`_ (2022-02-09)
