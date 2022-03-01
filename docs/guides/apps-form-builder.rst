@@ -85,7 +85,6 @@ calling :func:`feincms3.applications.page_for_app_request`:
     from django.urls import path
 
     from feincms3.applications import page_for_app_request
-    from feincms3.regions import Regions
 
     from app.pages.renderer import renderer
 
@@ -114,9 +113,8 @@ calling :func:`feincms3.applications.page_for_app_request`:
 
         context.update({
             "page": page,
-            "regions": Regions.from_item(
+            "regions": renderer.regions_from_item(
                 page,
-                renderer=renderer,
                 inherit_from=page.ancestors().reverse(),
                 timeout=60,
             )

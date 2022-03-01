@@ -114,7 +114,7 @@ Regions instances
 
 Because fetching plugins may be expensive (at least one database query
 per plugin type) it makes sense to avoid fetching plugins if there is a
-valid cached version. The :class:`feincms3.regions.RegionRenderer` which
+valid cached version. The :class:`feincms3.renderer.RegionRenderer` which
 handles the specifics of rendering plugins belonging to specific regions
 has a method, ``RegionRenderer.regions_from_item``, which automatically creates
 a lazily evaluated :class:`content_editor.contents.Contents` instance.
@@ -176,9 +176,8 @@ e.g. an API key would be different for different URLs.
 Grouping plugins into subregions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``Regions`` class supports rendering subregions differently. Plugins
-may be grouped automatically by their type or by some attribute they
-share.
+The ``RegionRenderer`` class supports rendering subregions differently. Plugins
+may be grouped automatically by their type or by some attribute they share.
 
 Let's make an example. Assume that we want to group adjacent teaser
 elements. We have several teaser plugins but they all share the same
@@ -311,11 +310,11 @@ Generating JSON
 ~~~~~~~~~~~~~~~
 
 A different real-world example is generating JSON instead of HTML. This
-is possible with a custom ``Regions`` class too:
+is possible with a custom ``RegionRenderer`` class too:
 
 .. code-block:: python
 
-    from feincms3.regions import RegionRenderer
+    from feincms3.renderer import RegionRenderer
 
     class JSONRegionRenderer(RegionRenderer):
         def render_region(self, *, region, contents, context):

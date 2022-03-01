@@ -50,7 +50,6 @@ you will have to do this in your view, e.g.
 
     from django.shortcuts import get_object_or_404, render, redirect
 
-    from feincms3.regions import Regions
     from feincms3_meta.utils import meta_tags
 
     from .models import Page
@@ -74,8 +73,9 @@ you will have to do this in your view, e.g.
         """
         actual_site = request.site
         if not path:
-            # make sure that the user is redirected to the correct url
-            # we expect a root page with custom path /<default_language>/ to exist here
+            # Make sure that the user is redirected to the correct url.
+            # We expect a root page with custom path /<default_language>/ to
+            # exist here.
             redirect_path = "/{}/".format(actual_site.default_language)
             return redirect(redirect_path)
 
@@ -92,16 +92,16 @@ you will have to do this in your view, e.g.
             page.type.template_name,
             {
                 "page": page,
-                "regions": Regions.from_item(
+                "regions": renderer.regions_from_item(
                     page,
-                    renderer=renderer,
                     inherit_from=ancestors,
-                    timeout=60
+                    timeout=60,
                 ),
                 "meta_tags": meta_tags(
                     meta_data_providers,
                     request=request,
-                    # The default site model doesn't have a name attribute, see the custom site model above
+                    # The default site model doesn't have a name attribute, see
+                    # the custom site model above.
                     site_name=page.site.name
                 )
             },

@@ -13,9 +13,8 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def render_region(context, regions, region, **kwargs):
     """
-    Render a single region. See :class:`~feincms3.regions.Regions` for
-    additional details. Any and all keyword arguments are forwarded to the
-    ``render`` method of the ``Regions`` instance.
+    Render a single region. See :class:`~feincms3.renderer.RegionRenderer` for
+    additional details.
 
     Usage::
 
