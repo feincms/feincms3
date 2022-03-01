@@ -38,7 +38,7 @@ app_name = "passthru"
 urlpatterns = [
     path(
         "",
-        # Run page_if_404_middleware
+        # Trigger the page_if_404_middleware
         lambda request: HttpResponseNotFound(),
         name="passthru",
     ),

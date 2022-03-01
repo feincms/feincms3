@@ -25,21 +25,23 @@ Example code for using this module (e.g. ``app.pages.middleware``):
     from app.pages.utils import page_context
 
     # The page handler receives the request and the page.
-    # ``add_redirect_handler`` wraps the handler function with support for the
-    # RedirectMixin.
-    handler = add_redirect_handler(
-        lambda request, page: render(
-            request, page.type.template_name, page_context(request, page=page)
-        )
-    )
+    def handler(request, page):
+        return render(request, page.type.template_name, page_context(request, page=page))
 
     # This is the middleware which you want to add to ``MIDDLEWARE`` as
     # ``app.pages.middleware.page_if_404_middleware``. The middleware should be
     # added in the last position except if you have a very good reason not to
     # do this.
     page_if_404_middleware = create_page_if_404_middleware(
+
+        # queryset=Page.objects.active() works too (if .active() doesn't use
+        # get_language or anything similar)
         queryset=lambda request: Page.objects.active(),
-        handler=handler,
+
+        # ``add_redirect_handler`` wraps the handler function with support for
+        # the RedirectMixin.
+        handler=add_redirect_handler(handler),
+
     )
 
 You'll also have to override the ``get_absolute_url`` method on your page
