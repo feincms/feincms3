@@ -52,3 +52,10 @@ class Test(TestCase):
         with override_urlconf(apps_urlconf()):
             url = reverse_passthru("imprint")
             self.assertEqual(url, "/de/impressum/")
+
+        # The fallback keyword argument is supported
+        self.assertEqual(reverse_passthru("imprint", fallback="/asdf/"), "/asdf/")
+
+        # Outside the request-response cycle
+        url = reverse_passthru("imprint", urlconf=apps_urlconf())
+        self.assertEqual(url, "/de/impressum/")

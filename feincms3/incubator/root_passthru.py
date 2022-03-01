@@ -25,7 +25,14 @@ Reverse the URL of the page (if it exists):
 
 .. code-block:: python
 
+    # Raise NoReverseMatch on failure
     reverse_passthru("imprint")
+
+    # Fallback
+    reverse_passthru("imprint", fallback="/en/imprint/")
+
+    # Outside the request-response cycle
+    reverse_passthru("imprint", urlconf=apps_urlconf())
 """
 
 from django.http import HttpResponseNotFound
