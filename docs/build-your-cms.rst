@@ -96,61 +96,6 @@ The page model and a few plugins could be defined as follows:
    whatever you want is quite straightforward and completely supported.
 
 
-Views and URLs
-~~~~~~~~~~~~~~
-
-You're completely free to define your own views and URLs. That being
-said, the ``AbstractPage`` class already has a ``get_absolute_url``
-implementation which expects something like this:
-
-.. code-block:: python
-
-    from django.urls import path
-
-    from app.pages import views
-
-
-    app_name = "pages"
-    urlpatterns = [
-        path("<path:path>/", views.page_detail, name="page"),
-        path("", views.page_detail, name="root"),
-    ]
-
-If you don't like this, you're completely free to write your own views,
-URLs and ``get_absolute_url`` method.
-
-With the URLconf above the view in the ``app.pages.views`` module would
-look as follows:
-
-.. code-block:: python
-
-    from django.shortcuts import get_object_or_404, render
-
-    from .models import Page
-    from .renderer import renderer
-
-
-    def page_detail(request, path=None):
-        page = get_object_or_404(
-            Page.objects.active(),
-            path="/{}/".format(path) if path else "/",
-        )
-        return render(
-            request,
-            "pages/standard.html",
-            {
-                "page": page,
-                "regions": renderer.regions_from_item(page, timeout=60),
-            },
-        )
-
-.. note::
-   `FeinCMS <https://github.com/feincms/feincms>`_ provided request and
-   response processors and several ways how plugins (in FeinCMS: content
-   types) could hook into the request-response processing. This isn't
-   necessary with feincms3 -- simply put the functionality into your own
-   views code.
-
 Rendering and templates
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -179,6 +124,7 @@ Here's an example how plugins could be rendered,
             plugin.caption,
         ),
     )
+
 
 Of course if you'd rather let plugins use templates, do this:
 
@@ -217,6 +163,88 @@ And a ``pages/standard.html`` template::
         {% render_region regions "main" %}
       </main>
     {% endblock %}
+
+It is recommended to add a utility as follows to the ``app.pages.renderer``
+module:
+
+.. code-block:: python
+
+    def page_context(request, \*, page):
+        # page = page or page_for_app_request(request)
+        page.activate_language(request)
+        ancestors = list(page.ancestors().reverse())
+        return {
+            "page": page,
+            "page_regions": renderer.regions_from_item(
+                page,
+                inherit_from=ancestors,
+                timeout=30,
+            ),
+        }
+
+
+Middleware
+~~~~~~~~~~
+
+.. note::
+   The guide previously recommended to use a standard view for rendering pages.
+   The problem is that you have to add a catch-all pattern to your URLconf
+   which has some unwanted interactions e.g. with ``i18n_patterns``. (All paths
+   are resolvable but visiting them might still obviously generate 404 errors.)
+   Because of this the guide now recommends using a middleware. Feel free to
+   upgrade your code but the old way (tm) should work for the foreseeable
+   future.
+
+It is recommended to use a middleware to render pages. You're completely free
+to define your own middleware or even your own views and URLs. That being said,
+the ``AbstractPage`` class already has a ``get_absolute_url`` implementation
+which returns the page's ``path``. If the Django app isn't mounted at ``/``
+(this is possible but improbable) ``get_absolute_url`` automatically prepends
+the script prefix.
+
+.. note::
+   ``AbstractPage.get_absolute_url`` still tries reversing ``pages:page`` and
+   ``pages:root`` before falling back to the behavior described above.
+
+A basic middleware module ``app.pages.middleware`` would look as follows:
+
+.. code-block:: python
+
+    from django.shortcuts import render
+
+    from app.pages.models import Page
+    from app.pages.renderer import page_context
+
+
+    def page_middleware(get_response):
+        def middleware(request):
+            response = get_response(request)
+            if response.status_code != 404:
+                # Someone else already handled this request
+                return response
+
+            # path is the full path, path_info excludes the script prefix.
+            if page := Page.objects.active().filter(path=request.path_info).first():
+                return render(
+                    request,
+                    "pages/standard.html",
+                    page_context(request, page=page),
+                )
+
+            # No page found, fall back to the original 404 response
+            return response
+
+        return middleware
+
+The ``app.pages.middleware.page_middleware`` middleware should be added at the
+end of ``MIDDLEWARE``.
+
+.. note::
+   `FeinCMS <https://github.com/feincms/feincms>`_ provided request and
+   response processors and several ways how plugins (in FeinCMS: content
+   types) could hook into the request-response processing. This isn't
+   necessary with feincms3 -- simply put the functionality into your own
+   code.
 
 
 Admin classes

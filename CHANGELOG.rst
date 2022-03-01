@@ -19,6 +19,8 @@ Change log
 - Added a fallback to :func:`feincms3.pages.AbstractPage.get_absolute_url`
   which returns the page's path prefixed with the script prefix if reversing
   the URL fails.
+- Changed the "Build your CMS" guide to recommend a middleware instead of URLs
+  and views.
 
 
 `3.0`_ (2022-02-09)
