@@ -51,7 +51,13 @@ from django.http import HttpResponseRedirect
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=False):
     """
-    Create a middleware
+    Create a middleware for handling pages
+
+    This utility is there for your convenience, you do not have to use it. The
+    returned middleware already handles returning non-404 responses as-is,
+    fetching a page instance from the database and calling a user-defined
+    handler on success. It optionally also supports redirecting requests to the
+    root of the app to a language-specific landing page.
 
     Required arguments:
 
