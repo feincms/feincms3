@@ -1,4 +1,7 @@
 """
+Page middleware (``feincms3.incubator.root``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The guide recommends using a view for the feincms3 pages app. However, using
 catch-all URLs together with ``i18n_patterns`` leads to the strange behavior
 where 404-errors always lead to a redirect if the URL doesn't begin with a
@@ -67,12 +70,14 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=T
     Create a middleware
 
     Required arguments:
+
     - ``queryset``: A page queryset or a callable accepting the request and
       returning a page queryset.
     - ``handler``: A callable accepting the request and a page and returning a
       response.
 
     Optional arguments:
+
     - ``language_code_redirect`` (``True``): Redirect visitor to the language
       code prefix (e.g. ``/en/``, ``/de-ch/``) if request path equals the
       script prefix (generally ``/``) and no active page for ``/`` exists.

@@ -1,4 +1,7 @@
 """
+Passthru page apps (``feincms3.incubator.root_passthru``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The idea of this module is to allow tagging pages to allow programmatically
 determing the URL of pages which are often linked to, e.g. privacy policy or
 imprint pages.
@@ -45,5 +48,7 @@ urlpatterns = [
 def reverse_passthru(namespace):
     """
     Reverse a passthru app URL
+
+    Raises ``NoReverseMatch`` if page could not be found.
     """
     return reverse_app(namespace, "passthru")
