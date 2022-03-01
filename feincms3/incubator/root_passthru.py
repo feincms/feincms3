@@ -45,10 +45,10 @@ urlpatterns = [
 ]
 
 
-def reverse_passthru(namespace):
+def reverse_passthru(namespace, **kwargs):
     """
     Reverse a passthru app URL
 
     Raises ``NoReverseMatch`` if page could not be found.
     """
-    return reverse_app(namespace, "passthru")
+    return reverse_app(namespace, "passthru", **kwargs)

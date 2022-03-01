@@ -170,7 +170,7 @@ call:
 .. code-block:: python
 
     from django.utils.translation import override
-    from feincms3.applications import reverse_app, reverse_fallback
+    from feincms3.applications import reverse_app
     from feincms3.mixins import LanguageMixin
 
     class Article(LanguageMixin):
@@ -178,14 +178,21 @@ call:
 
         def get_absolute_url(self):
             with override(self.language_code):
-                return reverse_fallback(
-                    "/",  # FIXME use a better fallback, maybe...?
-                    reverse_app,
+                return reverse_app(
                     "articles",
                     "article-detail",
                     kwargs={"slug": self.slug},
+
+                    # Pass a fallback value if you do not want to crash with a
+                    # NoReverseMatch exception if reversing fails. Maybe use a
+                    # better fallback value.though.
+                    fallback="/",
                 )
 
+.. note::
+   Previous versions recommended the use of
+   :func:`~feincms3.applications.reverse_fallback`. It's still available but
+   not recommended anymore.
 
 Reversing URLs outside the request-response cycle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

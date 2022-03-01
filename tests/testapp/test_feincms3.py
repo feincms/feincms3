@@ -747,6 +747,8 @@ class Test(TestCase):
         self.assertEqual(reverse_fallback("test", reverse, "not-exists"), "test")
         self.assertEqual(reverse_fallback("test", reverse, "admin:index"), "/admin/")
         self.assertEqual(reverse_any(("not-exists", "admin:index")), "/admin/")
+        self.assertEqual(reverse_any(("not-exists",), fallback="blub"), "blub")
+        self.assertEqual(reverse_app("not", "exists", fallback="blub"), "blub")
         with self.assertRaisesRegex(
             NoReverseMatch,
             r"Reverse for any of 'not-exists-1', 'not-exists-2' with"

@@ -35,9 +35,18 @@ __all__ = (
 
 
 _APPS_MODEL = None
+_sentinel = object()
 
 
-def reverse_any(viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwargs):
+def reverse_any(
+    viewnames,
+    urlconf=None,
+    args=None,
+    kwargs=None,
+    fallback=_sentinel,
+    *fargs,
+    **fkwargs,
+):
     """
     Tries reversing a list of viewnames with the same arguments, and returns
     the first result where no ``NoReverseMatch`` exception is raised.
@@ -55,7 +64,8 @@ def reverse_any(viewnames, urlconf=None, args=None, kwargs=None, *fargs, **fkwar
             return reverse(viewname, urlconf, args, kwargs, *fargs, **fkwargs)
         except NoReverseMatch:
             pass
-
+    if fallback is not _sentinel:
+        return fallback
     raise NoReverseMatch(
         "Reverse for any of '%s' with arguments '%s' and keyword arguments"
         " '%s' not found." % ("', '".join(viewnames), args or [], kwargs or {})

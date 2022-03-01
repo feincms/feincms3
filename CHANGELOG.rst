@@ -8,6 +8,14 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/3.1...main
 
+- Added a ``fallback`` keyword argument to
+  :func:`~feincms3.applications.reverse_app`,
+  :func:`~feincms3.applications.reverse_any` and
+  :func:`~feincms3.incubator.root_passthru.reverse_passthru` which offers an
+  easy way to avoid the ``NoReverseMatch`` exception when a fallback value is
+  actually OK. This can be used to avoid the
+  :func:`~feincms3.applications.reverse_fallback` wrapper.
+
 
 `3.1`_ (2022-03-01)
 ~~~~~~~~~~~~~~~~~~~
