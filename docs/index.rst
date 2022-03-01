@@ -50,6 +50,7 @@ knowledge imparted in :ref:`build-your-cms`.
    guides/meta-opengraph-tags
    guides/multisite
    guides/multisite-custom
+   guides/urls-and-views
 
 
 Embedding apps
