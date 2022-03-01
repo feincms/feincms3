@@ -48,10 +48,13 @@ def reverse_any(
     **fkwargs,
 ):
     """
-    Tries reversing a list of viewnames with the same arguments, and returns
-    the first result where no ``NoReverseMatch`` exception is raised.
+    Try reversing a list of viewnames with the same arguments, and returns the
+    first result where no ``NoReverseMatch`` exception is raised. Return
+    ``fallback`` if it is provided and all viewnames fail to be reversed.
 
-    Usage::
+    Usage:
+
+    .. code-block:: python
 
         url = reverse_any(
             ("blog:article-detail", "articles:article-detail"),
@@ -92,9 +95,12 @@ def reverse_app(namespaces, viewname, *args, languages=None, **kwargs):
     - ``apps-en.articles.article-detail``
 
     reverse_app tries harder returning an URL in the correct language than
-    returning an URL for the correct instance namespace.
+    returning an URL for the correct instance namespace. The ``fallback``
+    keyword argument is supported too.
 
-    Example::
+    Example:
+
+    .. code-block:: python
 
         url = reverse_app(
             ("category-1", "blog"),
@@ -129,7 +135,9 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
     reversing app URLs from outside the app and you do not want crashes if the
     app isn't available anywhere.
 
-    The following two examples are equivalent, choose whichever you like best::
+    The following two examples are equivalent, choose whichever you like best:
+
+    .. code-block:: python
 
         reverse_fallback(
             "/",
@@ -146,6 +154,18 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
             ("articles",),
             "article-detail",
             kwargs={"slug": self.slug},
+        )
+
+    Note though that ``reverse_app`` supports directly specifying the fallback
+    since 3.1.1:
+
+    .. code-block:: python
+
+        reverse_app(
+            ("articles",),
+            "article-detail",
+            kwargs={"slug": self.slug},
+            fallback="/",
         )
     """
     try:
@@ -268,7 +288,9 @@ def page_for_app_request(request, *, queryset=None):
     because :func:`~feincms3.applications.apps_urlconf` wouldn't have added the app
     in the first place if a matching page wouldn't exist, but still.)
 
-    Example::
+    Example:
+
+    .. code-block:: python
 
         def article_detail(request, slug):
             page = page_for_app_request(request)

@@ -169,7 +169,7 @@ module:
 
 .. code-block:: python
 
-    def page_context(request, \*, page):
+    def page_context(request, *, page):
         # page = page or page_for_app_request(request)
         page.activate_language(request)
         ancestors = list(page.ancestors().reverse())
