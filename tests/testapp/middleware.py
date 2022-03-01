@@ -1,23 +1,13 @@
 from django.shortcuts import render
 from testapp.models import Page
-from testapp.renderer import renderer
+from testapp.renderer import page_context
 
 from feincms3.incubator.root import add_redirect_handler, create_page_if_404_middleware
-from feincms3.regions import Regions
 
 
 @add_redirect_handler
 def handler(request, page):
-    return render(
-        request,
-        page.type.template_name,
-        {
-            "page": page,
-            "regions": Regions.from_item(
-                item=page, renderer=renderer, inherit_from=page.ancestors().reverse()
-            ),
-        },
-    )
+    return render(request, page.type.template_name, page_context(request, page=page))
 
 
 page_if_404_middleware = create_page_if_404_middleware(
