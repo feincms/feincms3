@@ -16,6 +16,9 @@ Change log
   the referenced URLconf modules cannot be imported.
 - Added a few style resets for CKEditor 4 popups so that it works better in the
   Django admin's dark mode.
+- Added a fallback to :func:`feincms3.pages.AbstractPage.get_absolute_url`
+  which returns the page's path prefixed with the script prefix if reversing
+  the URL fails.
 
 
 `3.0`_ (2022-02-09)

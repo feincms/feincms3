@@ -8,7 +8,6 @@ from feincms3.applications import (
     TemplateType,
     reverse_app,
 )
-from feincms3.incubator.root import path_with_script_prefix
 from feincms3.mixins import LanguageAndTranslationOfMixin, MenuMixin, RedirectMixin
 from feincms3.pages import AbstractPage
 from feincms3.plugins import external, html, image, richtext, snippet
@@ -80,9 +79,6 @@ class Page(
 
     optional = models.IntegerField(blank=True, null=True)
     not_editable = models.IntegerField(blank=True, null=True, editable=False)
-
-    def get_absolute_url(self):
-        return path_with_script_prefix(self.path)
 
 
 PagePlugin = create_plugin_base(Page)

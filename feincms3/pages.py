@@ -4,11 +4,20 @@ from django.core.checks import Warning
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.db.models import Max, Q
-from django.urls import reverse
+from django.urls import NoReverseMatch, get_script_prefix, reverse
+from django.utils.encoding import iri_to_uri
 from django.utils.translation import gettext_lazy as _
 from tree_queries.models import TreeNode, TreeQuerySet
 
 from feincms3.utils import validation_error
+
+
+def path_with_script_prefix(path):
+    """
+    Return ``path`` prefixed with the current script prefix
+    """
+    # See django/contrib/flatpages/models.py
+    return iri_to_uri(get_script_prefix().rstrip("/") + path)
 
 
 class AbstractPageQuerySet(TreeQuerySet):
@@ -206,17 +215,24 @@ class AbstractPage(TreeNode):
 
     def get_absolute_url(self):
         """
-        Return the page's absolute URL using ``reverse()``
+        Return the page's absolute URL
 
         If path is ``/``, reverses ``pages:root`` without any arguments,
         alternatively reverses ``pages:page`` with an argument of ``path``.
         Note that this ``path`` is not the same as ``self.path`` -- slashes
         are stripped from the beginning and the end of the string to make
         building an URLconf more straightforward.
+
+        If any ``reverse()`` call fails it falls back to returning
+        ``self.path`` prefixed with the script prefix which is ``/`` in the
+        standard case.
         """
-        if self.path == "/":
-            return reverse("pages:root")
-        return reverse("pages:page", kwargs={"path": self.path.strip("/")})
+        try:
+            if self.path == "/":
+                return reverse("pages:root")
+            return reverse("pages:page", kwargs={"path": self.path.strip("/")})
+        except NoReverseMatch:
+            return path_with_script_prefix(self.path)
 
     @classmethod
     def check(cls, **kwargs):
