@@ -22,4 +22,5 @@ def handle_template(request, page):
 page_if_404_middleware = create_page_if_404_middleware(
     queryset=Page.objects.active(),
     handler=add_redirect_handler(handle_template),
+    language_code_redirect=True,
 )

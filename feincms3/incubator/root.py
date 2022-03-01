@@ -48,7 +48,7 @@ Example code for using this module (e.g. ``app.pages.middleware``):
 from django.http import HttpResponseRedirect
 
 
-def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=True):
+def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=False):
     """
     Create a middleware
 
@@ -61,7 +61,7 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=T
 
     Optional arguments:
 
-    - ``language_code_redirect`` (``True``): Redirect visitor to the language
+    - ``language_code_redirect`` (``False``): Redirect visitor to the language
       code prefix (e.g. ``/en/``, ``/de-ch/``) if request path equals the
       script prefix (generally ``/``) and no active page for ``/`` exists.
     """
