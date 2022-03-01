@@ -102,7 +102,7 @@ you will have to do this in your view, e.g.
                     request=request,
                     # The default site model doesn't have a name attribute, see
                     # the custom site model above.
-                    site_name=page.site.name
+                    site_name=page.site.name,
                 )
             },
         )

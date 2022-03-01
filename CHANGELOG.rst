@@ -15,6 +15,9 @@ Change log
   easy way to avoid the ``NoReverseMatch`` exception when a fallback value is
   actually OK. This can be used to avoid the
   :func:`~feincms3.applications.reverse_fallback` wrapper.
+- Upgraded a few code patterns in the docs to use recommended functionality.
+- Changed the guides to nudge people towards using middleware instead of
+  catch-all URLconf patterns.
 
 
 `3.1`_ (2022-03-01)
