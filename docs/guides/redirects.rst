@@ -26,6 +26,6 @@ has to be implemented in the page view:
 
     def page_detail(request, path):
         page = ...
-        if page.get_redirect_url():
-            return HttpResponseRedirect(page.get_redirect_url())
+        if url := page.get_redirect_url():
+            return HttpResponseRedirect(url)
         # Default rendering continues here.

@@ -35,12 +35,9 @@ define any content.
 The ``page_detail`` view presented in the guide also works with more
 than one region. However, for region inheritance to work you have to
 provide the pages whose content should be inherited yourself. There
-isn't much to do though, just add the ``inherit_from`` keyword argument
-to the ``Regions.from_item`` factory method:
+isn't much to do though, just add the ``inherit_from`` keyword argument:
 
 .. code-block:: python
-
-    from feincms3.regions import Regions
 
     def page_detail(request, path=None):
         page = ...
@@ -49,9 +46,8 @@ to the ``Regions.from_item`` factory method:
             "pages/standard.html",
             {
                 "page": page,
-                "regions": Regions.from_item(
+                "regions": renderer.regions_from_item(
                     page,
-                    renderer=renderer,
                     inherit_from=page.ancestors().reverse(),
                 ),
             },
@@ -71,13 +67,13 @@ layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
 .. code-block:: python
 
     from django.utils.translation import gettext_lazy as _
-    from content_editor.models import Template, Region
-    from feincms3.mixins import TemplateMixin
+    from content_editor.models import Region
+    from feincms3.applications import PageTypeMixin, TemplateType
     from feincms3.pages import AbstractPage
 
-    class Page(AbstractPage, TemplateMixin):
-        TEMPLATES = [
-            Template(
+    class Page(AbstractPage, PageTypeMixin):
+        TYPES = [
+            TemplateType(
                 key="standard",
                 title=_("standard"),
                 template_name="pages/standard.html",
@@ -85,23 +81,22 @@ layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
                     Region(key="main", title=_("Main")),
                 ),
             ),
-            Template(
+            TemplateType(
                 key="with-sidebar",
                 title=_("with sidebar"),
                 template_name="pages/with-sidebar.html",
-                regions=(
+                regions=[
                     Region(key="main", title=_("Main")),
                     Region(key="sidebar", title=_("Sidebar"), inherited=True),
-                ),
+                ],
             ),
         ]
 
-The ``regions`` attribute is provided by the ``TemplateMixin`` and must
-be removed from the ``Page`` definition. Additionally, the
-``TemplateMixin`` provides a ``template`` property returning the
-currently selected template. Instead of hard-coding the template value
-we should now change the ``page_detail`` view to render the selected
-template, ``page.template.template_name``:
+The ``regions`` attribute is provided by the ``PageTypeMixin`` and must be
+removed from the ``Page`` definition. Additionally, the ``TemplateMixin``
+provides a ``type`` property returning the currently selected page type.
+Instead of hard-coding the template we should now change the ``page_detail``
+view to render the selected template, ``page.type.template_name``:
 
 .. code-block:: python
 
@@ -109,12 +104,11 @@ template, ``page.template.template_name``:
         page = ...
         return render(
             request,
-            page.template.template_name,
+            page.type.template_name,
             {
                 "page": page,
-                "regions": Regions.from_item(
+                "regions": renderer.regions_from_item(
                     page,
-                    renderer=renderer,
                     inherit_from=page.ancestors().reverse(),
                 ),
             },
