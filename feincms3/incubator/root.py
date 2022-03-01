@@ -25,6 +25,9 @@ Example code for using this module (e.g. ``app.pages.middleware``):
     from app.pages.utils import page_context
 
     # The page handler receives the request and the page.
+    # ``add_redirect_handler`` wraps the handler function with support for the
+    # RedirectMixin.
+    @add_redirect_handler
     def handler(request, page):
         return render(request, page.type.template_name, page_context(request, page=page))
 
@@ -33,17 +36,15 @@ Example code for using this module (e.g. ``app.pages.middleware``):
     # added in the last position except if you have a very good reason not to
     # do this.
     page_if_404_middleware = create_page_if_404_middleware(
-
         # queryset=Page.objects.active() works too (if .active() doesn't use
         # get_language or anything similar)
         queryset=lambda request: Page.objects.active(),
 
-        # ``add_redirect_handler`` wraps the handler function with support for
-        # the RedirectMixin.
-        handler=add_redirect_handler(handler),
-
+        handler=handler,
     )
 """
+
+from functools import wraps
 
 from django.http import HttpResponseRedirect
 
@@ -90,6 +91,7 @@ def add_redirect_handler(handler):
     Wrap the page handler in a redirect mixin handler
     """
 
+    @wraps(handler)
     def inner(request, page):
         if redirect_to := page.get_redirect_url():
             return HttpResponseRedirect(redirect_to)
