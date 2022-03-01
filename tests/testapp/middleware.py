@@ -2,7 +2,7 @@ from django.shortcuts import render
 from testapp.models import Page
 from testapp.renderer import page_context
 
-from feincms3.incubator.root import add_redirect_handler, create_page_if_404_middleware
+from feincms3.root.middleware import add_redirect_handler, create_page_if_404_middleware
 
 
 @add_redirect_handler

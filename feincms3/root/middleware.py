@@ -1,25 +1,18 @@
 """
-Page middleware (``feincms3.incubator.root``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Page middleware (``feincms3.root.middleware``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The guide recommends using a view for the feincms3 pages app. However, using
-catch-all URLs together with ``i18n_patterns`` leads to the strange behavior
-where 404-errors always lead to a redirect if the URL doesn't begin with a
-language code, even for URLs where this isn't appropriate at all.
-
-Using a middleware makes it possible to circumvent the necessity to add a
-catch-all pattern to the URLconf. There's a downside to this though: We have to
-hardcode the pages app mountpoint somewhere because it cannot be automatically
-determined using ``reverse()`` and friends. This is the reason why this module
-is called ``root``, because the page app's mountpoint has to be the Python
-app's mountpoint when using this.
+The guide recommends using a middleware for the feincms3 pages app. This module
+offers helpers and utilities to reduce the amount of code you have to write.
+The reason why this module is called ``root`` is that the page app's mountpoint
+has to be the Python app's mountpoint when using this.
 
 Example code for using this module (e.g. ``app.pages.middleware``):
 
 .. code-block:: python
 
     from django.shortcuts import render
-    from feincms3.incubator.root import add_redirect_handler, create_page_if_404_middleware
+    from feincms3.root.middleware import add_redirect_handler, create_page_if_404_middleware
 
     from app.pages.models import Page
     from app.pages.utils import page_context

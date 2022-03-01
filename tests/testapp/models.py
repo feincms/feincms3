@@ -71,7 +71,7 @@ class Page(
         ApplicationType(
             key="imprint",
             title="imprint",
-            urlconf="feincms3.incubator.root_passthru",
+            urlconf="feincms3.root.passthru",
             template_name="pages/standard.html",
             regions=(Region(key="main", title=_("Main")),),
         ),

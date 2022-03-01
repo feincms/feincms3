@@ -1,6 +1,6 @@
 """
-Passthru page apps (``feincms3.incubator.root_passthru``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Passthru page apps (``feincms3.root.passthru``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The idea of this module is to allow tagging pages to allow programmatically
 determing the URL of pages which are often linked to, e.g. privacy policy or
@@ -13,9 +13,9 @@ Create an application type:
     TYPES = [
         ...
         ApplicationType(
-            key="privacy",
-            title=_("privacy"),
-            urlconf="feincms3.incubator.root_passthru",
+            key="imprint",
+            title=_("imprint"),
+            urlconf="feincms3.root.passthru",
             template_name="pages/standard.html",
             regions=[Region(key="main", title=_("Main"))],
         ),
