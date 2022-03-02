@@ -237,7 +237,14 @@ A basic middleware module ``app.pages.middleware`` would look as follows:
         return middleware
 
 The ``app.pages.middleware.page_middleware`` middleware should be added at the
-end of ``MIDDLEWARE``.
+end of ``MIDDLEWARE``:
+
+.. code-block:: python
+
+    MIDDLEWARE = [
+        ...
+        "app.pages.middleware.page_middleware",
+    ]
 
 .. note::
    `FeinCMS <https://github.com/feincms/feincms>`_ provided request and
