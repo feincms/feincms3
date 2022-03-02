@@ -28,6 +28,18 @@ def is_first_party_link(url, *, first_party_hosts=None):
 
     NOTE! ``first_party_hosts`` should not contain port numbers even if using a
     non-standard port, the same is true for Django's ``ALLOWED_HOSTS`` setting.
+
+    Two template filters are available. Both filters do not allow specifying
+    the list of first party hosts (they always use ``ALLOWED_HOSTS``):
+
+    .. code-block:: html+django
+
+        {# is_first_party_link filter: #}
+        {% if url|is_first_party_link %}...{% endif %}
+
+        {# filter which outputs either 'href="link"' #}
+        {# or 'href="link" target="_blank" rel="noopener"': #}
+        <a {{ url|href_maybe_target_blank }}>text</a>
     """
     u = urlparse(url)
 
