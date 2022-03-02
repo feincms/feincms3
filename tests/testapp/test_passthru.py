@@ -59,3 +59,7 @@ class Test(TestCase):
         # Outside the request-response cycle
         url = reverse_passthru("imprint", urlconf=apps_urlconf())
         self.assertEqual(url, "/de/impressum/")
+
+        # Only this language
+        with self.assertRaises(NoReverseMatch):
+            reverse_passthru("imprint", urlconf=apps_urlconf(), languages=["en"])
