@@ -62,7 +62,7 @@ Making templates selectable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As written in the introduction above, sometimes a single template or
-layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
+layout isn't enough. Enter the :class:`~feincms3.applications.PageTypeMixin`:
 
 .. code-block:: python
 
@@ -93,7 +93,7 @@ layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
         ]
 
 The ``regions`` attribute is provided by the ``PageTypeMixin`` and must be
-removed from the ``Page`` definition. Additionally, the ``TemplateMixin``
+removed from the ``Page`` definition. Additionally, the ``PageTypeMixin``
 provides a ``type`` property returning the currently selected page type.
 Instead of hard-coding the template we should now change the ``page_detail``
 view to render the selected template, ``page.type.template_name``:

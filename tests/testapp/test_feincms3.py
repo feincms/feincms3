@@ -1094,8 +1094,8 @@ class Test(TestCase):
             ["snippet.html"],
         )
 
-    def test_default_template_fallback(self):
-        """The TemplateMixin falls back to the first template"""
+    def test_default_type_fallback(self):
+        """The PageTypeMixin falls back to the first template"""
         self.assertEqual(Page(page_type="__notexists").type.key, "standard")
 
     def test_apps_urlconf_no_apps(self):
