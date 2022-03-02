@@ -92,7 +92,7 @@ you will have to do this in your view, e.g.
             page.type.template_name,
             {
                 "page": page,
-                "regions": renderer.regions_from_item(
+                "page_regions": renderer.regions_from_item(
                     page,
                     inherit_from=ancestors,
                     timeout=60,

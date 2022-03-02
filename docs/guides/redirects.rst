@@ -24,8 +24,11 @@ has to be implemented in the page view:
 
     from django.http import HttpResponseRedirect
 
-    def page_detail(request, path):
-        page = ...
-        if url := page.get_redirect_url():
-            return HttpResponseRedirect(url)
-        # Default rendering continues here.
+    # Inside a view or middleware:
+    page = ...
+    if url := page.get_redirect_url():
+        return HttpResponseRedirect(url)
+    # Default rendering continues here.
+
+If you're using :ref:`ref-root` you can decorate your handler with
+``add_redirect_handler``.

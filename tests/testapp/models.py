@@ -36,16 +36,16 @@ class Page(
             key="standard",
             title=_("standard"),
             template_name="pages/standard.html",
-            regions=(Region(key="main", title=_("Main")),),
+            regions=[Region(key="main", title=_("Main"))],
         ),
         TemplateType(
             key="with-sidebar",
             title=_("with sidebar"),
             template_name="pages/with-sidebar.html",
-            regions=(
+            regions=[
                 Region(key="main", title=_("Main")),
                 Region(key="sidebar", title=_("Sidebar")),
-            ),
+            ],
         ),
         ApplicationType(
             key="publications",
@@ -73,7 +73,7 @@ class Page(
             title="imprint",
             urlconf="feincms3.root.passthru",
             template_name="pages/standard.html",
-            regions=(Region(key="main", title=_("Main")),),
+            regions=[Region(key="main", title=_("Main"))],
         ),
     ]
 

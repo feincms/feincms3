@@ -35,10 +35,9 @@ different language, however that's not specific to feincms3.
 
 .. code-block:: python
 
-    def page_detail(request, path):
-        page = ...  # MAGIC! (or maybe get_object_or_404...)
-        page.activate_language(request)
-        ...
+    page = ...  # MAGIC! (or maybe get_object_or_404...)
+    page.activate_language(request)
+    ...
 
 .. note::
    ``page.activate_language`` does not persist the language across

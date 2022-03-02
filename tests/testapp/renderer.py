@@ -16,7 +16,7 @@ renderer.register_string_renderer(HTML, html.render_html)
 def page_context(request, *, page):
     return {
         "page": page,
-        "regions": Regions.from_item(
+        "page_regions": Regions.from_item(
             item=page,
             renderer=renderer,
             inherit_from=page.ancestors().reverse(),

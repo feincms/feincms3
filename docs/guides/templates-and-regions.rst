@@ -39,19 +39,19 @@ isn't much to do though, just add the ``inherit_from`` keyword argument:
 
 .. code-block:: python
 
-    def page_detail(request, path=None):
-        page = ...
-        return render(
-            request,
-            "pages/standard.html",
-            {
-                "page": page,
-                "regions": renderer.regions_from_item(
-                    page,
-                    inherit_from=page.ancestors().reverse(),
-                ),
-            },
-        )
+    # Inside a view or middleware:
+    page = ...
+    return render(
+        request,
+        "pages/standard.html",
+        {
+            "page": page,
+            "page_regions": renderer.regions_from_item(
+                page,
+                inherit_from=page.ancestors().reverse(),
+            ),
+        },
+    )
 
 ``page.ancestors().reverse()`` returns ancestors ordered from the page's
 parent to the root of the tree. We want pages to inherit content from
@@ -77,9 +77,9 @@ layout isn't enough. Enter the :class:`~feincms3.mixins.TemplateMixin`:
                 key="standard",
                 title=_("standard"),
                 template_name="pages/standard.html",
-                regions=(
+                regions=[
                     Region(key="main", title=_("Main")),
-                ),
+                ],
             ),
             TemplateType(
                 key="with-sidebar",
@@ -100,16 +100,16 @@ view to render the selected template, ``page.type.template_name``:
 
 .. code-block:: python
 
-    def page_detail(request, path=None):
-        page = ...
-        return render(
-            request,
-            page.type.template_name,
-            {
-                "page": page,
-                "regions": renderer.regions_from_item(
-                    page,
-                    inherit_from=page.ancestors().reverse(),
-                ),
-            },
-        )
+    # Inside a view or middleware:
+    page = ...
+    return render(
+        request,
+        page.type.template_name,
+        {
+            "page": page,
+            "page_regions": renderer.regions_from_item(
+                page,
+                inherit_from=page.ancestors().reverse(),
+            ),
+        },
+    )

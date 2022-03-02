@@ -56,20 +56,17 @@ and passes them on to :func:`feincms3.applications.reverse_any` (which returns
 the first viewname that can be reversed to a URL).
 
 For the sake of an example let's assume that our site is configured with
-english, german and french as available languages and that we're trying
-to reverse the article list page, and that we are processing a german
-page:
+english, german and french as available languages and that we're trying to
+reverse the article list page, and that the current language (as returned by
+``get_language``) is german:
 
 .. code-block:: python
 
     from feincms3.applications import reverse_app
 
-    def page_detail(request, path=None):
-        page = ...
-        page.activate_language(request)
-
-        articles_list_url = reverse_app("articles", "article-list")
-        ...
+    # Inside a view or middleware:
+    articles_list_url = reverse_app("articles", "article-list")
+    ...
 
 The list of viewnames reversed is in order:
 

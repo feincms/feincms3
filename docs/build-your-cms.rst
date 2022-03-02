@@ -160,7 +160,7 @@ And a ``pages/standard.html`` template::
     {% block content %}
       <main>
         <h1>{{ page.title }}</h1>
-        {% render_region regions "main" %}
+        {% render_region page_regions "main" %}
       </main>
     {% endblock %}
 
@@ -192,8 +192,8 @@ Middleware
    which has some unwanted interactions e.g. with ``i18n_patterns``. (All paths
    are resolvable but visiting them might still obviously generate 404 errors.)
    Because of this the guide now recommends using a middleware. Feel free to
-   upgrade your code but the old way (tm) should work for the foreseeable
-   future.
+   upgrade your code whenever you feel like it. Using :ref:`urls-and-views` is
+   documented and there's no reason to think it won't work in the future.
 
 It is recommended to use a middleware to render pages. You're completely free
 to define your own middleware or even your own views and URLs. That being said,

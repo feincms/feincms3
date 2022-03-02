@@ -142,17 +142,17 @@ To render regions in the template, the template first requires the
 
     from .renderer import renderer
 
-    def page_detail(request, path=None):
-        page = ...
-        ...
-        return render(
-            request,
-            ...,
-            {
-                "page": page,
-                "regions": renderer.regions_from_item(page, timeout=60),
-            },
-        )
+    # Inside a view or middleware:
+    page = ...
+    ...
+    return render(
+        request,
+        ...,
+        {
+            "page": page,
+            "page_regions": renderer.regions_from_item(page, timeout=60),
+        },
+    )
 
 In the template you can now use the template tag:
 
@@ -160,7 +160,7 @@ In the template you can now use the template tag:
 
     {% load feincms3 %}
 
-    {% render_region regions "main" %}
+    {% render_region page_regions "main" %}
 
 Using the template tag is advantageous because it automatically provides
 the surrounding template context to individual plugins' templates,

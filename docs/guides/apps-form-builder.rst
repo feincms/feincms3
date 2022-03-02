@@ -113,7 +113,7 @@ calling :func:`feincms3.applications.page_for_app_request`:
 
         context.update({
             "page": page,
-            "regions": renderer.regions_from_item(
+            "page_regions": renderer.regions_from_item(
                 page,
                 inherit_from=page.ancestors().reverse(),
                 timeout=60,
@@ -138,7 +138,7 @@ Add the required template:
     {% load feincms3 %}
 
     {% block content %}
-      {% render_region regions 'main' %}
+      {% render_region page_regions 'main' %}
 
       {% if form %}
         <form method="post" action=".#form" id="form">
@@ -186,7 +186,7 @@ The app:
 
         context.update({
             "page": page,
-            "regions": renderer.regions(
+            "page_regions": renderer.regions(
                 page, inherit_from=page.ancestors().reverse()),
         })
 

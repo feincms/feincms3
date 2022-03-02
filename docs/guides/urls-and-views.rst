@@ -1,3 +1,5 @@
+.. _urls-and-views:
+
 URLs and views
 ==============
 
@@ -26,7 +28,9 @@ the script prefix:
     ]
 
 Just to be on the safe side you may want to override ``get_absolute_url`` on
-your own page class:
+your own page class (the default implementation does the same but catches
+``NoReverseMatch`` exceptions and falls back to return the path prefixed with
+the script prefix):
 
 .. code-block:: python
 
