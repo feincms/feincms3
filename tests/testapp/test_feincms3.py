@@ -300,8 +300,7 @@ class Test(TestCase):
         self.assertNotContains(response_de, "inactive")
 
         response_404 = self.client.get("/de/not-exists/")
-        self.assertContains(response_404, "<h1>Page not found</h1>", 1, status_code=404)
-        self.assertContains(response_404, 'href="/de/', 8, status_code=404)
+        self.assertEqual(response_404.status_code, 404)
 
         # Changelist and filtering
         client = self.login()
