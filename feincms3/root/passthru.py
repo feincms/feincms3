@@ -41,15 +41,15 @@ from django.urls import path
 from feincms3.applications import reverse_app
 
 
+def passthru(request):
+    response = HttpResponseNotFound()
+    # Trigger the root middleware
+    response._root_middleware = True
+    return response
+
+
 app_name = "passthru"
-urlpatterns = [
-    path(
-        "",
-        # Trigger the page_if_404_middleware
-        lambda request: HttpResponseNotFound(),
-        name="passthru",
-    ),
-]
+urlpatterns = [path("", passthru, name="passthru")]
 
 
 def reverse_passthru(namespace, **kwargs):
