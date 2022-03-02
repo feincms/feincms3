@@ -119,24 +119,29 @@ handles the specifics of rendering plugins belonging to specific regions
 has a method, ``RegionRenderer.regions_from_item``, which automatically creates
 a lazily evaluated :class:`content_editor.contents.Contents` instance.
 
-By inspecting the plugins registered with the renderer the regions
-instance automatically knows which plugins to load. It also supports
+The region renderer knows which plugins to load. It also supports
 inherited regions introduced in the :ref:`more-regions` section
 of the :ref:`templates-and-regions` guide.
 
 The object returned by ``regions_from_item`` (and ``regions_from_contents``)
-has one method which we'll concern ourselves with right now,
-``.render(region)``. This method is used to render one single region. When
-passing a ``timeout`` argument to the ``RegionRenderer.regions_from_item``
-factory method all return values of ``.render(region)`` are automatically
-cached.
+is an opaque object with the following interface:
+
+- ``regions`` is the list of :class:`content_editor.models.Region` objects.
+- ``render(region_key, context)`` is a method which returns a single rendered
+  region.
+
+If ``RegionRenderer.regions_from_item`` received a ``timeout`` argument
+accesses to the interface above are automatically cached.
+
+.. note::
+   Caching either works for all regions or for none at all.
 
 
 Rendering regions in the template
 ---------------------------------
 
-To render regions in the template, the template first requires the
-``regions`` instance:
+The template requires the regions instance mentioned above so that regions can
+be rendered:
 
 .. code-block:: python
 
@@ -162,13 +167,10 @@ In the template you can now use the template tag:
 
     {% render_region page_regions "main" %}
 
-Using the template tag is advantageous because it automatically provides
-the surrounding template context to individual plugins' templates,
-meaning that they could for example access the ``request`` instance if
+Using the template tag is advantageous because it automatically provides the
+surrounding template context to individual plugins' renderers, meaning that
+they could for example access the ``request`` instance in a plugin template if
 e.g. an API key would be different for different URLs.
-
-.. note::
-   Caching either works for all regions  or for none at all.
 
 
 .. _grouping-plugins-into-subregions:
@@ -253,8 +255,8 @@ to override the default subregions handler instead:
     renderer = ContainerAwareRegionRenderer()
     renderer.register(FullWidthPlugin, ..., subregion="fullwidth")
 
-    # Use our new regions class, not the default
     regions = renderer.regions_from_item(page)
+    output = regions.render(...)
 
 
 Using marks
