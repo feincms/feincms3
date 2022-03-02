@@ -1334,3 +1334,20 @@ class Test(TestCase):
 
         response = self.client.get("/", HTTP_ACCEPT_LANGUAGE="en")
         self.assertEqual(response.status_code, 404)
+
+    def test_404_for_resolvable_path(self):
+        """404s from resolvable paths are not handled by the middleware"""
+
+        Page.objects.create(
+            title="test",
+            slug="test",
+            path="/not-found/",
+            static_path=True,
+            language_code="en",
+            is_active=True,
+        )
+
+        # 404 from view is forwarded; middleware only acts on non-resolvable
+        # paths
+        response = self.client.get("/not-found/")
+        self.assertEqual(response.status_code, 404)

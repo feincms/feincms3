@@ -40,6 +40,7 @@ Example code for using this module (e.g. ``app.pages.middleware``):
 from functools import wraps
 
 from django.http import HttpResponseRedirect
+from django.urls import is_valid_path
 
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=False):
@@ -69,7 +70,7 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
     def outer(get_response):
         def inner(request):
             response = get_response(request)
-            if response.status_code != 404:
+            if response.status_code != 404 or is_valid_path(request.path_info):
                 return response
             qs = queryset(request) if callable(queryset) else queryset._clone()
             if page := qs.filter(path=request.path_info).first():

@@ -12,4 +12,5 @@ urlpatterns = i18n_patterns(
     path("i18n/", lambda request: HttpResponse(request.LANGUAGE_CODE))
 ) + [
     path("admin/", admin.site.urls),
+    path("not-found/", not_found),
 ]
