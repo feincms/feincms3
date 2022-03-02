@@ -2,7 +2,6 @@ import hashlib
 import itertools
 import re
 import sys
-import warnings
 from collections import defaultdict
 from importlib import import_module
 from types import ModuleType
@@ -555,24 +554,6 @@ class PageTypeMixin(models.Model):
                         obj=cls,
                         id="feincms3.E003",
                     )
-
-    @property
-    def application(self):
-        warnings.warn(
-            "AppsMixin.application is PageTypeMixin.page_type now.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.page_type
-
-    @property
-    def app_instance_namespace(self):
-        warnings.warn(
-            "AppsMixin.app_instance_namespace is PageTypeMixin.app_namespace now.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.app_namespace
 
 
 signals.class_prepared.connect(PageTypeMixin.fill_page_type_choices)
