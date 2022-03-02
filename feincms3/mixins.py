@@ -163,19 +163,6 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
                 exclude=exclude,
             )
 
-        if (
-            self.translation_of
-            and self.translation_of.language_code != settings.LANGUAGES[0][0]
-        ):
-            raise validation_error(
-                _(
-                    "Objects may only be the translation of"
-                    " objects in the primary language."
-                ),
-                field="translation_of",
-                exclude=exclude,
-            )
-
 
 class RedirectMixin(models.Model):
     """

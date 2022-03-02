@@ -997,7 +997,7 @@ class Test(TestCase):
 
             self.assertRaises(
                 NoReverseMatch,
-                Template("{% load feincms3 %}{% reverse_app 'a' 'a' %}").render,
+                Template("{% load feincms3 %}{% reverse_app 'a' 'a' 42 %}").render,
                 Context(),
             )
 
@@ -1207,6 +1207,41 @@ class Test(TestCase):
             self.assertEqual(
                 translated.get_absolute_url(), f"/home-de/{translated.pk}/"
             )
+
+    def test_language_and_translation_of_mixin_validation(self):
+        """Validation logic of LanguageAndTranslationOfMixin works"""
+        original = Page.objects.create(
+            title="home-en",
+            slug="home-en",
+            language_code="en",
+        )
+
+        with self.assertRaises(ValidationError) as cm:
+            Page(
+                title="translation",
+                slug="translation",
+                language_code="en",
+                translation_of=original,
+            ).full_clean()
+
+        self.assertEqual(
+            cm.exception.error_dict["translation_of"][0].message,
+            "Objects in the primary language cannot be the translation of another object.",
+        )
+
+        original = Page.objects.create(
+            title="home-de",
+            slug="home-de",
+            language_code="de",
+        )
+
+        with self.assertRaises(ValidationError):
+            Page(
+                title="translation",
+                slug="translation",
+                language_code="en",
+                translation_of=original,
+            ).full_clean()
 
     def test_translations_filter_edge_cases(self):
         """Exercise edge cases of the |translations filter"""
