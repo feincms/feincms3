@@ -24,7 +24,7 @@ The application URLconfs are included using nested namespaces:
 - The outer application namespace is ``"apps"`` by default.
 - The outer instance namespace is ``"apps-" + LANGUAGE_CODE``.
 - The inner namespace is the app namespace, specified by the value of
-  ``app_name`` în the apps' URLconf module. The string must correspond with the
+  ``app_name`` in the apps' URLconf module. The string must correspond with the
   key of the :class:`~feincms3.applications.ApplicationType` instance in the
   ``TYPES`` list on the page model.
 - The inner instance namespace is the same as the app namespace, except if you
