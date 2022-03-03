@@ -148,7 +148,9 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
         Implement the following validation rules:
 
         - Objects in the primary language cannot be the translation of another object
-        - Objects in other languages can only reference objects in the primary language
+        - Objects in other languages can only reference objects in the primary
+          language (this is automatically verified by Django because we're
+          using ``limit_choices_to``)
         """
 
         super().clean_fields(exclude)
