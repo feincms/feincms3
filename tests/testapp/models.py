@@ -80,6 +80,9 @@ class Page(
     optional = models.IntegerField(blank=True, null=True)
     not_editable = models.IntegerField(blank=True, null=True, editable=False)
 
+    class Meta(AbstractPage.Meta):
+        unique_together = [("language_code", "translation_of")]
+
 
 PagePlugin = create_plugin_base(Page)
 
@@ -135,6 +138,7 @@ class TranslatedArticle(LanguageAndTranslationOfMixin):
 
     class Meta:
         ordering = ["-pk"]
+        unique_together = [("language_code", "translation_of")]
 
     def __str__(self):
         return self.title

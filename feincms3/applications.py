@@ -9,7 +9,7 @@ from types import ModuleType
 from asgiref.local import Local
 from content_editor.models import Type
 from django.conf import settings
-from django.core.checks import Error, Warning
+from django.core.checks import Error, Info, Warning
 from django.core.exceptions import ValidationError
 from django.core.signals import request_finished
 from django.db import models
@@ -546,7 +546,7 @@ class PageTypeMixin(models.Model):
         for type in cls.TYPES:
             if isinstance(type, ApplicationType):
                 try:
-                    import_module(type.urlconf)
+                    module = import_module(type.urlconf)
                 except ModuleNotFoundError as exc:
                     yield Error(
                         f"The application type {type.key!r} has an unimportable"
@@ -554,6 +554,23 @@ class PageTypeMixin(models.Model):
                         obj=cls,
                         id="feincms3.E003",
                     )
+                else:
+                    app_name = getattr(module, "app_name", None)
+                    if type.key != app_name and not getattr(
+                        module, "ignore_app_name_mismatch", False
+                    ):
+                        yield Info(
+                            f"The URLconf module of the application type {type.key!r}"
+                            f" has app_name = {app_name!r} which doesn't match"
+                            " the application key.",
+                            obj=cls,
+                            id="feincms3.I004",
+                            hint=(
+                                "Silence this warning by adding"
+                                " 'ignore_app_name_mismatch = True'"
+                                f" to the {type.urlconf!r} module if this is expected."
+                            ),
+                        )
 
 
 signals.class_prepared.connect(PageTypeMixin.fill_page_type_choices)

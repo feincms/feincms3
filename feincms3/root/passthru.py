@@ -50,6 +50,7 @@ def passthru(request):
 
 app_name = "passthru"
 urlpatterns = [path("", passthru, name="passthru")]
+ignore_app_name_mismatch = True
 
 
 def reverse_passthru(namespace, **kwargs):

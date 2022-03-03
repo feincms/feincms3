@@ -33,6 +33,7 @@ def article_detail(request, pk):
 
 
 app_name = "articles"
+ignore_app_name_mismatch = True
 urlpatterns = [
     path("all/", article_list_all, name="article-list-all"),
     path("", article_list, name="article-list"),
