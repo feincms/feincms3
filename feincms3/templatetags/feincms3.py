@@ -2,7 +2,7 @@ from django import template
 from django.conf import settings
 from django.template.base import Node, TemplateSyntaxError, kwarg_re
 from django.urls import NoReverseMatch
-from django.utils.html import conditional_escape, format_html
+from django.utils.html import conditional_escape, mark_safe
 
 from feincms3.applications import reverse_app as _reverse_app
 from feincms3.utils import is_first_party_link
@@ -158,11 +158,8 @@ def translations(iterable):
     ]
 
 
-register.filter(is_first_party_link)
-
-
-@register.filter
-def href_maybe_target_blank(url):
-    if is_first_party_link(url):
-        return format_html('href="{}"', url)
-    return format_html('href="{}" target="_blank" rel="noopener"', url)
+@register.simple_tag
+def maybe_target_blank(href, *, attributes='target="_blank" rel="noopener"'):
+    if is_first_party_link(href):
+        return ""
+    return mark_safe(attributes)

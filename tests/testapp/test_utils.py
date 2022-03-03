@@ -54,19 +54,19 @@ class Test(TestCase):
                 )
 
     @override_settings(ALLOWED_HOSTS=[".example.com"])
-    def test_href_template_tag(self):
+    def test_maybe_target_blank_template_tag(self):
         template = Template(
-            "{% load feincms3 %}<a {{ url|href_maybe_target_blank }}>link</a>"
+            '{% load feincms3 %}<a href="{{ url }}" {% maybe_target_blank url %}>link</a>'
         )
 
         html = template.render(Context({"url": "/relative/"}))
-        self.assertEqual(
+        self.assertHTMLEqual(
             html,
             '<a href="/relative/">link</a>',
         )
 
         html = template.render(Context({"url": "http://example.org/relative/"}))
-        self.assertEqual(
+        self.assertHTMLEqual(
             html,
             '<a href="http://example.org/relative/" target="_blank" rel="noopener">link</a>',
         )
