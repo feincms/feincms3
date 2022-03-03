@@ -18,7 +18,8 @@ as default:
     from feincms3.pages import AbstractPage
 
     class Page(AbstractPage, LanguageMixin):
-        pass
+        class Meta(AbstractPage.Meta):
+            unique_together = [("language_code", "translation_of")]
 
 
 Activating the language
@@ -138,6 +139,9 @@ the current page):
        from feincms3.applications import reverse_app
 
        class Article(LanguageAndTranslationOfMixin, ...):
+           class Meta:
+               unique_together = [("language_code", "translation_of")]
+
            def get_absolute_url(self):
                with override(self.language_code):
                    return reverse_app("articles", "detail", ...)
@@ -159,4 +163,4 @@ the current page):
             )
 
             # Use {% for lang in available_translations|translations %} ... {% endfor %}
-            context = {"available_translations": translations}
+            context = {"available_translations": translations.values()}
