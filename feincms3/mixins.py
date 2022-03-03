@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.checks import Warning
 from django.db import models
 from django.db.models import Q, signals
 from django.utils.translation import activate, get_language, gettext_lazy as _
@@ -121,6 +122,24 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
 
     class Meta:
         abstract = True
+
+    @classmethod
+    def check(cls, **kwargs):
+        errors = super().check(**kwargs)
+        errors.extend(cls._check_feincms3_language_and_translation_of_mixin(**kwargs))
+        return errors
+
+    @classmethod
+    def _check_feincms3_language_and_translation_of_mixin(cls, **kwargs):
+        unique_together = [set(fields) for fields in cls._meta.unique_together]
+        if {"language_code", "translation_of"} not in unique_together:
+            yield Warning(
+                "Models using the LanguageAndTranslationOfMixin should ensure"
+                " that only one translation can be added per language.",
+                obj=cls,
+                id="feincms3.W003",
+                hint='Add ("language_code", "translation_of") to unique_together.',
+            )
 
     def translations(self):
         """
