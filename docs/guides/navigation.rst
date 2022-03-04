@@ -94,6 +94,10 @@ For this example, the page class should also inherit the
             ("meta", _("meta navigation")),
         )
 
+.. note::
+   The menu choices should only use valid Python identifiers not starting with
+   an underscore as values.
+
 Let's write a template tag which returns all required nodes at once:
 
 .. code-block:: python

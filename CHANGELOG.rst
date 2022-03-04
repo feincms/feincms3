@@ -12,6 +12,7 @@ Change log
   is set when using the ``LanguageAndTranslationOfMixin``.
 - Added a system check for the ``app_name`` value of application URLconf
   modules.
+- Added a system check for the values of ``MenuMixin.MENUS``.
 
 
 `3.3`_ (2022-03-03)

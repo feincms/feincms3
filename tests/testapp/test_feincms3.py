@@ -13,7 +13,7 @@ from django.test.utils import isolate_apps
 from django.urls import NoReverseMatch, reverse, set_urlconf
 from django.utils.translation import deactivate_all, override
 
-from feincms3 import applications
+from feincms3 import applications, mixins
 from feincms3.applications import (
     ApplicationType,
     PageTypeMixin,
@@ -1276,6 +1276,16 @@ class Test(TestCase):
             ),
         ]
         self.assertEqual(errors, expected)
+
+    @isolate_apps("testapp")
+    def test_page_with_invalid_menu(self):
+        """Using non-identifiers as menu values doesn't work"""
+
+        class Page(AbstractPage, mixins.MenuMixin):
+            MENUS = [("main-menu", "main menu")]
+
+        errors = Page.check()
+        self.assertEqual([error.id for error in errors], ["feincms3.W005"])
 
     def test_application_type(self):
         """Overriding ``app_namespace`` should be possible"""

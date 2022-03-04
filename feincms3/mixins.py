@@ -31,6 +31,27 @@ class MenuMixin(models.Model):
             field.choices = sender.MENUS
             field.default = field.choices[0][0]
 
+    @classmethod
+    def check(cls, **kwargs):
+        errors = super().check(**kwargs)
+        errors.extend(cls._check_feincms3_menu_mixin(**kwargs))
+        return errors
+
+    @classmethod
+    def _check_feincms3_menu_mixin(cls, **kwargs):
+        if invalid := [
+            value
+            for value, label in cls.MENUS
+            if value.startswith("_") or not value.isidentifier()
+        ]:
+            invalid = ", ".join(repr(value) for value in invalid)
+            yield Warning(
+                "MenuMixin menus should only use valid public Python identifiers"
+                f" as keys. {invalid} are different.",
+                obj=cls,
+                id="feincms3.W005",
+            )
+
 
 signals.class_prepared.connect(MenuMixin.fill_menu_choices)
 
