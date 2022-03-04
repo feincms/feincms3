@@ -1278,6 +1278,15 @@ class Test(TestCase):
         self.assertEqual(errors, expected)
 
     @isolate_apps("testapp")
+    def test_page_with_valid_menu(self):
+        """Using non-identifiers as menu values doesn't work"""
+
+        class Page(AbstractPage, mixins.MenuMixin):
+            MENUS = [("", "-"), ("main", "main menu")]
+
+        self.assertEqual(Page.check(), [])
+
+    @isolate_apps("testapp")
     def test_page_with_invalid_menu(self):
         """Using non-identifiers as menu values doesn't work"""
 

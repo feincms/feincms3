@@ -44,12 +44,11 @@ class MenuMixin(models.Model):
         if invalid := [
             value
             for value, label in cls.MENUS
-            if value.startswith("_") or not value.isidentifier()
+            if value and (value.startswith("_") or not value.isidentifier())
         ]:
-            invalid = ", ".join(repr(value) for value in invalid)
             yield Warning(
                 "MenuMixin menus should only use valid public Python identifiers"
-                f" as keys. {invalid} are different.",
+                f" as keys. Invalid: {sorted(invalid)!r}.",
                 obj=cls,
                 id="feincms3.W005",
             )
