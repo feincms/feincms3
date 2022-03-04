@@ -13,6 +13,8 @@ Change log
 - Added a system check for the ``app_name`` value of application URLconf
   modules.
 - Added a system check for the values of ``MenuMixin.MENUS``.
+- Slowly start deprecating the :mod:`~feincms3.mixins.TemplateMixin`. (It
+  probably won't go away for a long time.)
 
 
 `3.3`_ (2022-03-03)

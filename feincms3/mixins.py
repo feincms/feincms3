@@ -1,3 +1,5 @@
+import warnings
+
 from django.conf import settings
 from django.core.checks import Warning
 from django.db import models
@@ -31,27 +33,6 @@ class MenuMixin(models.Model):
             field.choices = sender.MENUS
             field.default = field.choices[0][0]
 
-    @classmethod
-    def check(cls, **kwargs):
-        errors = super().check(**kwargs)
-        errors.extend(cls._check_feincms3_menu_mixin(**kwargs))
-        return errors
-
-    @classmethod
-    def _check_feincms3_menu_mixin(cls, **kwargs):
-        if invalid := [
-            value
-            for value, label in cls.MENUS
-            if value.startswith("_") or not value.isidentifier()
-        ]:
-            invalid = ", ".join(repr(value) for value in invalid)
-            yield Warning(
-                "MenuMixin menus should only use valid public Python identifiers"
-                f" as keys. {invalid} are different.",
-                obj=cls,
-                id="feincms3.W005",
-            )
-
 
 signals.class_prepared.connect(MenuMixin.fill_menu_choices)
 
@@ -62,6 +43,10 @@ class TemplateMixin(models.Model):
     as pages, articles or anything comparable. The ``TemplateMixin``
     provides a ready-made solution for selecting django-content-editor
     ``Template`` instances through Django's administration interface.
+
+    .. warning::
+       You are encouraged to use the PageTypeMixin and TemplateType from
+       :mod:`feincms3.applications` instead.
     """
 
     template_key = ChoicesCharField(_("template"), max_length=100)
@@ -96,6 +81,14 @@ class TemplateMixin(models.Model):
             field.choices = [(t.key, t.title) for t in sender.TEMPLATES]
             field.default = sender.TEMPLATES[0].key
             sender.TEMPLATES_DICT = {t.key: t for t in sender.TEMPLATES}
+
+            warnings.warn(
+                f"{sender._meta.label} uses the TemplateMixin."
+                " It is recommended to use the PageTypeMixin and TemplateType"
+                " from feincms3.applications even if you're not planning to use"
+                " any apps.",
+                DeprecationWarning,
+            )
 
 
 signals.class_prepared.connect(TemplateMixin.fill_template_key_choices)

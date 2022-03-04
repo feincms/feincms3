@@ -333,14 +333,75 @@ def apps_middleware(get_response):
 
 
 class TemplateType(Type):
+    """
+    Template page type
+
+    Example usage:
+
+    .. code-block:: python
+
+        from feincms3.applications import PageTypeMixin, TemplateType
+        from feincms3.pages import AbstractPage
+        from content_editor.models import Region
+
+        class Page(AbstractPage, PageTypeMixin)
+            TYPES = [
+                TemplateType(
+                    # Required arguments
+                    key="standard",
+                    title="Standard page",
+                    template_name="pages/standard.html",
+                    regions=[
+                        Region(key="main", title="Main"),
+                    ],
+
+                    # You may pass other arguments here, they will be available
+                    # on ``page.type`` as-is.
+                ),
+            ]
+    """
+
     _REQUIRED = {"key", "title", "template_name", "regions", "app_namespace"}
 
     def __init__(self, **kwargs):
+        # Always setting app_namespace makes it easier for PageTypeMixin.save
         kwargs.setdefault("app_namespace", lambda instance: "")
         super().__init__(**kwargs)
 
 
 class ApplicationType(Type):
+    """
+    Application page type
+
+    Example usage:
+
+    .. code-block:: python
+
+        from feincms3.applications import PageTypeMixin, TemplateType
+        from feincms3.pages import AbstractPage
+        from content_editor.models import Region
+
+        class Page(AbstractPage, PageTypeMixin)
+            TYPES = [
+                TemplateType(
+                    # Required arguments
+                    key="standard",
+                    title="Standard page",
+                    urlconf="path.to.urlconf.module",
+
+                    # Optional arguments
+                    template_name="pages/standard.html",
+                    regions=[
+                        Region(key="main", title="Main"),
+                    ],
+                    app_namespace=lambda page: ...,
+
+                    # You may pass other arguments here, they will be available
+                    # on ``page.type`` as-is.
+                ),
+            ]
+    """
+
     _REQUIRED = {"key", "title", "urlconf", "app_namespace"}
 
     def __init__(self, **kwargs):
