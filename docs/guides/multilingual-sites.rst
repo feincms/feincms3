@@ -3,6 +3,13 @@
 Multilingual sites
 ==================
 
+This guide shows you how to implement several languages in a single site.
+
+.. note::
+   If you also want to serve multiple sites in a single Django installation you
+   should start here and continue with :ref:`multisite`.
+
+
 Making the page language selectable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

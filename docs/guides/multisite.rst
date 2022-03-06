@@ -1,8 +1,21 @@
+.. _multisite:
+
 Multisite setup
 ===============
 
-feincms3-sites allows running a feincms3 site on several domains, with
-separate page trees etc. on each (if so desired).
+`feincms3-sites <https://github.com/matthiask/feincms3-sites>`__ allows running
+a feincms3 site on several domains, with separate page trees etc. on each (if
+so desired). The same Django installation can serve several domains with
+different content without having to start a Django server per site as you'd
+have to if you were using ``django.contrib.sites``. This also means that
+feincms3-sites isn't compatible with ``django.contrib.sites`` -- you have to
+use one or the other.
+
+.. note::
+   The simpler case of having exactly one site per language and one language
+   per site is better supported by `feincms3-language-sites
+   <https://github.com/matthiask/feincms3-language-sites>`__.
+
 
 Installation and configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

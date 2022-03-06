@@ -47,11 +47,18 @@ knowledge imparted in :ref:`build-your-cms`.
    guides/navigation
    guides/rendering
    guides/cookie-control
-   guides/multilingual-sites
    guides/meta-opengraph-tags
+   guides/urls-and-views
+
+
+Languages and sites
+===================
+
+.. toctree::
+
+   guides/multilingual-sites
    guides/multisite
    guides/multisite-custom
-   guides/urls-and-views
 
 
 Embedding apps
