@@ -78,8 +78,8 @@ Add the panel to the template, e.g. in ``base.html`` at the end of the
 You'll have to add all tracking scripts yourself now.
 
 
-Customization
-~~~~~~~~~~~~~
+Customize the appearance
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The default colors of the control panel may not fit into your site. The best
 way to customize the appearance is to set a few CSS variables, e.g.:
@@ -91,8 +91,8 @@ way to customize the appearance is to set a few CSS variables, e.g.:
     }
 
 
-Hiding the button
-~~~~~~~~~~~~~~~~~
+Hiding the modify button
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The default presentation of the panel is a fixed banner at the bottom of the
 viewport. Once any cookies have been accepted (essential cookies have to be
@@ -124,7 +124,8 @@ uses the standard page type described in the guide:
 
 We will add an additional page type which can be used as a marker. Since we're
 using feincms3 apps be sure to read the :ref:`apps-introduction` if you haven't
-done this already.
+done this already. You may also want to take a look at
+the :mod:`feincms3.root.passthru` reference.
 
 .. code-block:: python
 
