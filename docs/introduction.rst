@@ -43,7 +43,8 @@ django-tree-queries_ provides a smart way to efficiently fetch
 tree-shaped data in a relational database supporting Common Table
 Expressions.
 
-.. note::
+.. admonition:: Historical note
+
    What we are calling plugins is called a content type in FeinCMS_.
    This can be easily confused with Django's own contenttypes, therefore
    the name was changed for feincms3.

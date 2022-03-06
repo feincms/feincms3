@@ -247,6 +247,10 @@ end of ``MIDDLEWARE``:
     ]
 
 .. note::
+   Check :ref:`ref-root` later for more advanced middleware utilities.
+
+.. admonition:: Historical note
+
    `FeinCMS <https://github.com/feincms/feincms>`_ provided request and
    response processors and several ways how plugins (in FeinCMS: content
    types) could hook into the request-response processing. This isn't

@@ -1,7 +1,7 @@
 .. _ref-root:
 
-Root (``feincms3.root``)
-========================
+Root middleware for pages (``feincms3.root``)
+=============================================
 
 .. automodule:: feincms3.root
 

@@ -1,7 +1,8 @@
 Plugins (``feincms3.plugins``)
 ==============================
 
-.. note::
+.. admonition:: Historical note
+
    The content types in `FeinCMS <https://github.com/feincms/feincms>`__
    had ways to process requests and responses themselves, the
    ``.process()`` and ``.finalize()`` methods. feincms3 plugins do not

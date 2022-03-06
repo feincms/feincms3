@@ -5,7 +5,8 @@ Page middleware (``feincms3.root.middleware``)
 The guide recommends using a middleware for the feincms3 pages app. This module
 offers helpers and utilities to reduce the amount of code you have to write.
 The reason why this module is called ``root`` is that the page app's mountpoint
-has to be the Python app's mountpoint when using this.
+has to be the Python app's mountpoint when using this. If that's not the case
+you may want to write your own :ref:`urls-and-views`.
 
 Example code for using this module (e.g. ``app.pages.middleware``):
 

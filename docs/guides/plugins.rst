@@ -40,7 +40,8 @@ fields and methods in the example above:
   probably be a really good idea to override this classmethod with one
   that adds a ``select_related()`` call.
 
-.. note::
+.. admonition:: Historical note
+
    FeinCMS 1's ``create_content_type`` method could not be avoided
    because it added the dynamically created (concrete!) model to a few
    lists for bookkeeping.
