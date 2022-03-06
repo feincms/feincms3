@@ -46,6 +46,7 @@ knowledge imparted in :ref:`build-your-cms`.
    guides/redirects
    guides/navigation
    guides/rendering
+   guides/cookie-control
    guides/multilingual-sites
    guides/meta-opengraph-tags
    guides/multisite
