@@ -35,6 +35,23 @@ class Test(TestCase):
         self.assertContains(response, "<h1>Impressum</h1>")
         # print(response, response.content.decode("utf-8"))
 
+        # No catch-all; subpages produce a proper 404 ...
+        response = self.client.get("/de/impressum/not-yet/")
+        self.assertEqual(response.status_code, 404)
+
+        Page.objects.create(
+            title="not-yet",
+            slug="not-yet",
+            path="/de/impressum/not-yet/",
+            static_path=True,
+            language_code="de",
+            is_active=True,
+        )
+
+        # ... but once the subpage actually exists it is found and rendered
+        response = self.client.get("/de/impressum/not-yet/")
+        self.assertContains(response, "<h1>not-yet</h1>")
+
     def test_reverse_passthru(self):
         """Try reversing passthru views"""
         Page.objects.create(
