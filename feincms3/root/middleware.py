@@ -40,8 +40,13 @@ Example code for using this module (e.g. ``app.pages.middleware``):
 
 from functools import wraps
 
-from django.http import HttpResponseRedirect
-from django.urls import is_valid_path
+from django.http import HttpResponseNotFound, HttpResponseRedirect
+
+
+class _UseRootMiddlewareResponse(HttpResponseNotFound):
+    """Used by feincms3.root.passthru to tell the middleware to do its thing"""
+
+    pass
 
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=False):
@@ -72,8 +77,8 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
         def inner(request):
             response = get_response(request)
             if response.status_code != 404 or (
-                not getattr(response, "_root_middleware", False)
-                and is_valid_path(request.path_info)
+                request.resolver_match
+                and not isinstance(response, _UseRootMiddlewareResponse)
             ):
                 # Response is not a 404 OR the path can be resolved and running
                 # the middleware hasn't been requested explicitly.

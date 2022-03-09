@@ -35,21 +35,14 @@ Reverse the URL of the page (if it exists):
     reverse_passthru("imprint", urlconf=apps_urlconf())
 """
 
-from django.http import HttpResponseNotFound
 from django.urls import path
 
 from feincms3.applications import reverse_app
-
-
-def passthru(request):
-    response = HttpResponseNotFound()
-    # Trigger the root middleware
-    response._root_middleware = True
-    return response
+from feincms3.root.middleware import _UseRootMiddlewareResponse
 
 
 app_name = "passthru"
-urlpatterns = [path("", passthru, name="passthru")]
+urlpatterns = [path("", lambda request: _UseRootMiddlewareResponse(), name="passthru")]
 ignore_app_name_mismatch = True
 
 
