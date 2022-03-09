@@ -72,6 +72,7 @@ Change log
 - Added the ``feincms3.incubator.root`` and
   ``feincms3.incubator.root_passthru`` modules which support using middleware
   to render pages.
+- Changed the linked CKEditor version to 4.17.2.
 
 
 `3.0`_ (2022-02-09)
