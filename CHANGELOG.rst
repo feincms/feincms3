@@ -6,7 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.3...main
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.4...main
+
+
+`3.4`_ (2022-03-10)
+~~~~~~~~~~~~~~~~~~~
+
+.. _3.4: https://github.com/matthiask/feincms3/compare/3.3...3.4
 
 - Added a system check verifying that the appropriate ``unique_together`` value
   is set when using the ``LanguageAndTranslationOfMixin``.
