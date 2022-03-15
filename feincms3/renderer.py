@@ -111,7 +111,8 @@ class RegionRenderer:
         - ``marks: Set[str] = {"default"}``: The marks of this plugin. Marks
           only have the meaning you assign to them. Marks are preferrable to
           running ``isinstance`` on plugin instances especially when using the
-          same region renderer class for different content types.
+          same region renderer class for different content types (e.g. pages
+          and blog articles).
         """
         self._renderers[plugin] = renderer
         self._subregions[plugin] = subregion
