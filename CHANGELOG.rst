@@ -8,6 +8,11 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/3.4...main
 
+- Changed the feincms3 code to not generate feincms3 deprecation warnings (only
+  in the testsuite, for compatibility). Changed ``Snippet.register_with`` to
+  use the new region renderer API. Changed ``Regions`` to use ``render_plugin``
+  instead of ``render_plugin_in_context``.
+
 
 `3.4`_ (2022-03-10)
 ~~~~~~~~~~~~~~~~~~~

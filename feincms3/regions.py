@@ -135,7 +135,7 @@ class Regions:
         attribute is an empty string.
         """
         while True:
-            yield self.renderer.render_plugin_in_context(items.popleft(), context)
+            yield self.renderer.render_plugin(items.popleft(), context)
             if not items or not matches(items[0], subregions={None, ""}):
                 break
 

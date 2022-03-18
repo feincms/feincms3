@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 
 from feincms3.mixins import ChoicesCharField
+from feincms3.renderer import render_in_context
 
 
 __all__ = ("Snippet", "SnippetInline", "render_snippet")
@@ -71,11 +72,14 @@ class Snippet(models.Model):
             [(row[0], row[2]) for row in cls.TEMPLATES if len(row) > 2],
         )
 
-        renderer.register_template_renderer(
-            cls,
-            lambda plugin: templates[plugin.template_name],
-            lambda plugin, context: context_fns[plugin.template_name](plugin, context),
-        )
+        def _render_snippet(plugin, context):
+            return render_in_context(
+                context,
+                templates[plugin.template_name],
+                context_fns[plugin.template_name](plugin, context),
+            )
+
+        renderer.register(cls, _render_snippet)
 
 
 signals.class_prepared.connect(Snippet.fill_template_name_choices)
