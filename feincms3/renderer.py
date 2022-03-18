@@ -247,7 +247,10 @@ class RegionRenderer:
         """Backwards compatibility for ``TemplatePluginRenderer``. It is
         deprecated, don't use in new code."""
         warnings.warn(
-            "register_string_renderer is deprecated. Use RegionRenderer.register instead.",
+            "register_string_renderer is deprecated. Use register instead."
+            " (Hint: register_string_renderer(plugin, renderer) can be replaced by"
+            " register(plugin, renderer) most of the time. The renderer has to be"
+            " changed to accept an additional `context` argument.)",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -262,7 +265,10 @@ class RegionRenderer:
         """Backwards compatibility for ``TemplatePluginRenderer``. It is
         deprecated, don't use in new code."""
         warnings.warn(
-            "register_template_renderer is deprecated. Use RegionRenderer.register instead.",
+            "register_template_renderer is deprecated. Use register instead."
+            " (Hint: register_template_renderer(plugin, template_name, local_context)"
+            " can be replaced by register(plugin, template_renderer(template_name, local_context))"
+            " most of the time.)",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -272,7 +278,9 @@ class RegionRenderer:
         """Backwards compatibility for ``TemplatePluginRenderer``. It is
         deprecated, don't use in new code."""
         warnings.warn(
-            "render_plugin_in_context is deprecated. Use RegionRenderer.render_plugin instead.",
+            "render_plugin_in_context is deprecated. Use render_plugin instead."
+            " (Hint: render_plugin works exactly the same except that the `context` argument"
+            " is required.)",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -338,7 +346,10 @@ class TemplatePluginRenderer(RegionRenderer):
 
     def __init__(self, *args, **kwargs):
         warnings.warn(
-            "TemplatePluginRenderer is deprecated. Switch to the RegionRenderer now.",
+            "TemplatePluginRenderer is deprecated. Switch to the RegionRenderer now."
+            " (Hint: An incremental upgrade is supported. You can start with"
+            " replacing TemplatePluginRenderer with RegionRenderer, it's just an"
+            " alias with an additional warning.)",
             DeprecationWarning,
             stacklevel=2,
         )
