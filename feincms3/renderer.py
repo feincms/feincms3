@@ -347,7 +347,7 @@ class TemplatePluginRenderer(RegionRenderer):
     def __init__(self, *args, **kwargs):
         warnings.warn(
             "TemplatePluginRenderer is deprecated. Switch to the RegionRenderer now."
-            " (Hint: An incremental upgrade is supported. You can start with"
+            " (Hint: An incremental upgrade is supported. You can start by"
             " replacing TemplatePluginRenderer with RegionRenderer, it's just an"
             " alias with an additional warning.)",
             DeprecationWarning,
