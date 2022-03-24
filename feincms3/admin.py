@@ -74,7 +74,7 @@ class TreeAdmin(ModelAdmin):
     def get_queryset(self, request):
         return self.model._default_manager.with_tree_fields()
 
-    def indented_title(self, instance):
+    def indented_title(self, instance, *, ellipsize=True):
         """
         Use Unicode box-drawing characters to visualize the tree hierarchy.
         """
@@ -87,9 +87,10 @@ class TreeAdmin(ModelAdmin):
         return format_html(
             '<div class="box">'
             '<div class="box-drawing">{}</div>'
-            '<div class="box-text" style="text-indent:{}px">{}</div>'
+            '<div class="box-text{}" style="text-indent:{}px">{}</div>'
             "</div>",
             mark_safe("".join(box_drawing)),
+            " ellipsize" if ellipsize else "",
             instance.tree_depth * 30,
             instance,
         )

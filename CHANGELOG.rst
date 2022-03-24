@@ -12,6 +12,8 @@ Change log
   in the testsuite, for compatibility). Changed ``Snippet.register_with`` to
   use the new region renderer API. Changed ``Regions`` to use ``render_plugin``
   instead of ``render_plugin_in_context``.
+- Changed ``TreeAdmin.indented_title`` to ellipsize super-long titles by
+  default.
 
 
 `3.4`_ (2022-03-10)

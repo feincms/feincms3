@@ -32,3 +32,9 @@
 .box-text {
   padding: 8px;
 }
+
+.box-text.ellipsize {
+  max-width: min(50vw, 70ch);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
