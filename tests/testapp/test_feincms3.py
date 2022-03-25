@@ -1350,6 +1350,32 @@ class Test(TestCase):
         finally:
             applications._APPS_MODEL = apps_model
 
+    @isolate_apps("testapp")
+    def test_unique_page_types(self):
+        """Page types must have unique keys"""
+
+        apps_model = applications._APPS_MODEL
+        try:
+
+            class Page(AbstractPage, PageTypeMixin):
+                TYPES = [
+                    ApplicationType(key="app", title="a", urlconf="importable_module"),
+                    ApplicationType(key="app", title="a", urlconf="importable_module"),
+                ]
+
+            errors = Page.check()
+            expected = [
+                Error(
+                    "Page type keys are used more than once: app.",
+                    obj=Page,
+                    id="feincms3.E006",
+                ),
+            ]
+            self.assertEqual(errors, expected)
+
+        finally:
+            applications._APPS_MODEL = apps_model
+
     def test_404_language_code_redirect_at_root(self):
         """Root page redirect when a matching page exists"""
 

@@ -14,6 +14,7 @@ Change log
   instead of ``render_plugin_in_context``.
 - Changed ``TreeAdmin.indented_title`` to ellipsize super-long titles by
   default.
+- Added a system check which verifies that page types have distinct keys.
 
 
 `3.4`_ (2022-03-10)

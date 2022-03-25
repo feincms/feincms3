@@ -2,7 +2,7 @@ import hashlib
 import itertools
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from importlib import import_module
 from types import ModuleType
 
@@ -581,6 +581,7 @@ class PageTypeMixin(models.Model):
         errors = super().check(**kwargs)
         errors.extend(cls._check_feincms3_appsmixin_templatemixin_clash(**kwargs))
         errors.extend(cls._check_feincms3_applications(**kwargs))
+        errors.extend(cls._check_feincms3_page_types(**kwargs))
         return errors
 
     @classmethod
@@ -632,6 +633,16 @@ class PageTypeMixin(models.Model):
                                 f" to the {type.urlconf!r} module if this is expected."
                             ),
                         )
+
+    @classmethod
+    def _check_feincms3_page_types(cls, **kwargs):
+        type_keys = Counter(type.key for type in cls.TYPES)
+        if keys := sorted(key for key, value in type_keys.items() if value > 1):
+            yield Error(
+                f"Page type keys are used more than once: {', '.join(keys)}.",
+                obj=cls,
+                id="feincms3.E006",
+            )
 
 
 signals.class_prepared.connect(PageTypeMixin.fill_page_type_choices)
