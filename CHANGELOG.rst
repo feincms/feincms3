@@ -15,6 +15,8 @@ Change log
 - Changed ``TreeAdmin.indented_title`` to ellipsize super-long titles by
   default.
 - Added a system check which verifies that page types have distinct keys.
+- Imported the ``old_richtext`` module to ``feincms3.plugins`` as long as it is
+  available.
 
 
 `3.4`_ (2022-03-10)
