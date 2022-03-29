@@ -15,3 +15,9 @@ except ImportError:  # pragma: no cover
     pass
 else:
     from . import image
+try:
+    import ckeditor
+except ImportError:  # pragma: no cover
+    pass
+else:
+    from . import old_richtext
