@@ -17,6 +17,7 @@ Change log
 - Added a system check which verifies that page types have distinct keys.
 - Imported the ``old_richtext`` module to ``feincms3.plugins`` as long as it is
   available.
+- Changed the linked CKEditor version to 4.18.0.
 
 
 `3.4`_ (2022-03-10)
