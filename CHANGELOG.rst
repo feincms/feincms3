@@ -6,7 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.4...main
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.5...main
+
+
+`3.5`_ (2022-04-11)
+~~~~~~~~~~~~~~~~~~~
+
+.. _3.5: https://github.com/matthiask/feincms3/compare/3.4...3.5
 
 - Changed the feincms3 code to not generate feincms3 deprecation warnings (only
   in the testsuite, for compatibility). Changed ``Snippet.register_with`` to
