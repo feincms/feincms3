@@ -96,7 +96,7 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
                 if qs.filter(path=target).exists():
                     return HttpResponseRedirect(target)
             if settings.APPEND_SLASH and not request.path_info.endswith("/"):
-                target = request.path + "/"
+                target = request.path_info + "/"
                 if qs.filter(path=target).exists():
                     return HttpResponsePermanentRedirect(target)
             return response
