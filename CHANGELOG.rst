@@ -18,6 +18,10 @@ Change log
 - Imported the ``old_richtext`` module to ``feincms3.plugins`` as long as it is
   available.
 - Changed the linked CKEditor version to 4.18.0.
+- Added ``APPEND_SLASH`` handling to the middleware created by
+  :func:`feincms3.root.middleware.create_page_if_404_middleware`. This has to
+  be done explicitly because valid page paths aren't resolvable when using a
+  middleware.
 
 
 `3.4`_ (2022-03-10)

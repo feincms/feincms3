@@ -40,7 +40,12 @@ Example code for using this module (e.g. ``app.pages.middleware``):
 
 from functools import wraps
 
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.conf import settings
+from django.http import (
+    HttpResponseNotFound,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+)
 
 
 class _UseRootMiddlewareResponse(HttpResponseNotFound):
@@ -90,6 +95,10 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
                 target = f"/{request.LANGUAGE_CODE}/"
                 if qs.filter(path=target).exists():
                     return HttpResponseRedirect(target)
+            if settings.APPEND_SLASH and not request.path_info.endswith("/"):
+                target = request.path + "/"
+                if qs.filter(path=target).exists():
+                    return HttpResponsePermanentRedirect(target)
             return response
 
         return inner
