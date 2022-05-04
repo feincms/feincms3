@@ -17,7 +17,7 @@ version = __import__("feincms3").__version__
 release = subprocess.check_output(
     "git fetch --tags; git describe",
     shell=True,
-    universal_newlines=True,
+    text=True,
 ).strip()
 language = "en"
 

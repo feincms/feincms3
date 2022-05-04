@@ -160,6 +160,14 @@ def translations(iterable):
 
 @register.simple_tag
 def maybe_target_blank(href, *, attributes='target="_blank" rel="noopener"'):
+    """
+    Return the value of ``attributes`` if the first argument isn't a first party link
+    (as determined by :func:`~feincms3.utils.is_first_party_link`)
+
+    Usage::
+
+        <a href="{{ url }}" {% maybe_target_blank url %}>...</a>
+    """
     if is_first_party_link(href):
         return ""
     return mark_safe(attributes)
