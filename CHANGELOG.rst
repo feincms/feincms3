@@ -10,6 +10,8 @@ Change log
 
 - Fixed the ``APPEND_SLASH`` handling to also use ``request.path_info``, not
   ``request.path``.
+- Added support for embedding YouTube shorts when using
+  :mod:`feincms3.embedding`.
 
 
 `3.5`_ (2022-04-11)

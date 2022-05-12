@@ -34,6 +34,8 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
                 "https://www.youtube.com/watch?v=DYu_bGbZiiQ&list=RDJMOOG7rWTPg&index=7"
             )
         )
+        self.assertTrue(embed("https://www.youtube.com/watch/ZumRshfKdtM"))
+        self.assertTrue(embed("https://www.youtube.com/shorts/ZumRshfKdtM"))
 
     def test_vimeo(self):
         """Vimeo video embedding works"""
