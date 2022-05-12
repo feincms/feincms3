@@ -44,3 +44,13 @@ Snippets
 
 .. automodule:: feincms3.plugins.snippet
    :members:
+
+
+Deprecated plugins
+~~~~~~~~~~~~~~~~~~
+
+Rich text support using django-ckeditor
+---------------------------------------
+
+.. automodule:: feincms3.plugins.old_richtext
+   :members:
