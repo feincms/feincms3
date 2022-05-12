@@ -6,7 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.5...main
+.. _Next version: https://github.com/matthiask/feincms3/compare/3.6...main
+
+
+`3.6`_ (2022-05-12)
+~~~~~~~~~~~~~~~~~~~
+
+.. _3.6: https://github.com/matthiask/feincms3/compare/3.5...3.6
 
 - Fixed the ``APPEND_SLASH`` handling to also use ``request.path_info``, not
   ``request.path``.
