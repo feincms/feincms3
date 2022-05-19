@@ -8,6 +8,8 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/3.6...main
 
+- Added Django 4.1a1 to the CI matrix.
+
 
 `3.6`_ (2022-05-12)
 ~~~~~~~~~~~~~~~~~~~
