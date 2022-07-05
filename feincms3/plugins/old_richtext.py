@@ -56,6 +56,8 @@ class RichTextInline(ContentEditorInline):
     width of the django-ckeditor widget inside the content editor.
     """
 
+    button = '<span class="material-icons">notes</span>'
+
     class Media:
         css = {"screen": ["feincms3/plugin-ckeditor.css"]}
 
