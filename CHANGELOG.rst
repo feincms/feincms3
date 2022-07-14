@@ -10,6 +10,7 @@ Change log
 
 - Added Django 4.1b1 to the CI matrix.
 - Specified a custom plugin button for the old richtext plugin.
+- Changed the linked CKEditor version to 4.19.1.
 
 
 `3.6`_ (2022-05-12)
