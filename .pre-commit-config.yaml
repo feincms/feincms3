@@ -8,12 +8,12 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.34.0
+    rev: v2.37.3
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.7.0
+    rev: 1.8.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "3.2"]
@@ -23,11 +23,11 @@ repos:
       - id: isort
         args: [--profile=black, --lines-after-imports=2, --combine-as]
   - repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 22.6.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
-    rev: 4.0.1
+    rev: 5.0.4
     hooks:
       - id: flake8
         args: ["--ignore=E203,E501,W503"]
@@ -38,13 +38,13 @@ repos:
         args: [--list-different, --no-semi]
         exclude: "^conf/|.*\\.html$"
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.18.0
+    rev: v8.21.0
     hooks:
       - id: eslint
         args: [--fix]
         verbose: true
         additional_dependencies:
-          - eslint@8.18.0
+          - eslint@8.21.0
           - eslint-config-prettier
           - "@babel/core"
           - "@babel/eslint-parser"
