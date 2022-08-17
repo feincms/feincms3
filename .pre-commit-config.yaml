@@ -38,13 +38,13 @@ repos:
         args: [--list-different, --no-semi]
         exclude: "^conf/|.*\\.html$"
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.21.0
+    rev: v8.22.0
     hooks:
       - id: eslint
         args: [--fix]
         verbose: true
         additional_dependencies:
-          - eslint@8.21.0
+          - eslint@8.22.0
           - eslint-config-prettier
           - "@babel/core"
           - "@babel/eslint-parser"
