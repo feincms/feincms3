@@ -71,7 +71,10 @@ def embed_vimeo(url):
     )
 
 
-def embed(url, *, handlers=[embed_youtube, embed_vimeo]):
+_default_handlers = [embed_youtube, embed_vimeo]
+
+
+def embed(url, *, handlers=_default_handlers):
     """embed(url, *, handlers=[embed_youtube, embed_vimeo])
     Run a selection of embedding handlers and return the first value, or
     ``None`` if URL couldn't be processed by any handler.

@@ -8,9 +8,10 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/3.6...main
 
-- Added Django 4.1b1 to the CI matrix.
+- Added Django 4.1 to the CI matrix.
 - Specified a custom plugin button for the old richtext plugin.
 - Changed the linked CKEditor version to 4.19.1.
+- Added flake8-bugbear.
 
 
 `3.6`_ (2022-05-12)

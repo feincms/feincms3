@@ -162,7 +162,7 @@ class AbstractPage(TreeNode):
             return
 
         clash_candidates = dict(self._path_clash_candidates().values_list("path", "id"))
-        for pk, node in self._branch_for_update().items():
+        for node in self._branch_for_update().values():
             if (
                 node.path in clash_candidates
                 and not clash_candidates[node.path] == node.pk

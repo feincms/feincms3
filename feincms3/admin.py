@@ -79,7 +79,7 @@ class TreeAdmin(ModelAdmin):
         Use Unicode box-drawing characters to visualize the tree hierarchy.
         """
         box_drawing = []
-        for i in range(instance.tree_depth - 1):
+        for _i in range(instance.tree_depth - 1):
             box_drawing.append('<i class="l"></i>')
         if instance.tree_depth > 0:
             box_drawing.append('<i class="a"></i>')

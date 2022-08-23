@@ -72,6 +72,9 @@ def template_renderer(template_name, local_context=default_context, /):
     )
 
 
+_default_marks = {"default"}
+
+
 class RegionRenderer:
     """
     The region renderer knows how to render single plugins and also complete
@@ -92,7 +95,7 @@ class RegionRenderer:
             if key.startswith("handle_")
         }
 
-    def register(self, plugin, renderer, /, subregion="default", marks={"default"}):
+    def register(self, plugin, renderer, /, subregion="default", marks=_default_marks):
         """
         Register a plugin class
 
