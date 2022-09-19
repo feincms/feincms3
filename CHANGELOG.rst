@@ -12,6 +12,7 @@ Change log
 - Specified a custom plugin button for the old richtext plugin.
 - Changed the linked CKEditor version to 4.19.1.
 - Added flake8-bugbear.
+- Suppressed the rendering of the "Save as new" button in the move form.
 
 
 `3.6`_ (2022-05-12)

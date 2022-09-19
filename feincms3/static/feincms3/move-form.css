@@ -60,3 +60,8 @@
     display: none;
   }
 }
+
+/* Suppress the rendering of the save as new button in the move form */
+input[name="_saveasnew"] {
+  display: none !important;
+}
