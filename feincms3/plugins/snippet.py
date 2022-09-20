@@ -53,7 +53,7 @@ class Snippet(models.Model):
             ]
 
     @classmethod
-    def register_with(cls, renderer):
+    def register_with(cls, renderer, **kwargs):
         """
         This helper registers the snippet plugin with a
         ``TemplatePluginRenderer`` while adding support for template-specific
@@ -79,7 +79,7 @@ class Snippet(models.Model):
                 context_fns[plugin.template_name](plugin, context),
             )
 
-        renderer.register(cls, _render_snippet)
+        renderer.register(cls, _render_snippet, **kwargs)
 
 
 signals.class_prepared.connect(Snippet.fill_template_name_choices)

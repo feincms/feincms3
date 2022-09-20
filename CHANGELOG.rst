@@ -14,6 +14,7 @@ Change log
 - Added flake8-bugbear.
 - Suppressed the rendering of the "Save as new" button in the move form.
 - Added the ``render_regions`` hook to the ``RegionRenderer``.
+- Added ``**kwargs``  to ``Snippet.register_with``.
 
 
 `3.6`_ (2022-05-12)
