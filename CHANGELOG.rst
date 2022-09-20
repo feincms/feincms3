@@ -13,6 +13,7 @@ Change log
 - Changed the linked CKEditor version to 4.19.1.
 - Added flake8-bugbear.
 - Suppressed the rendering of the "Save as new" button in the move form.
+- Added the ``render_regions`` hook to the ``RegionRenderer``.
 
 
 `3.6`_ (2022-05-12)

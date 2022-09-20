@@ -214,6 +214,19 @@ class RegionRenderer:
         """
         return mark_safe("".join(self.handle(contents[region.key], context)))
 
+    def render_regions(self, *, regions, contents, context):
+        """
+        Render multiple regions.
+
+        This method should return a dictionary.
+        """
+        return {
+            region.key: self.render_region(
+                region=region, contents=contents, context=context
+            )
+            for region in regions
+        }
+
     def regions_from_contents(self, contents, **kwargs):
         """
         Return an opaque object encapsulating
@@ -310,12 +323,9 @@ class _Regions:
         caching = self._cache_key and self._timeout
         if caching and (result := cache.get(self._cache_key)):
             return result
-        result = {
-            region.key: self._renderer.render_region(
-                region=region, contents=self._contents, context=context
-            )
-            for region in self.regions
-        }
+        result = self._renderer.render_regions(
+            regions=self.regions, contents=self._contents, context=context
+        )
         if caching:
             cache.set(self._cache_key, result, timeout=self._timeout)
         return result
