@@ -11,6 +11,8 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from imagefield.fields import ImageField, PPOIField
 
+from feincms3.utils import upload_to
+
 
 __all__ = ("Image", "ImageInline", "render_image")
 
@@ -22,7 +24,7 @@ class Image(models.Model):
 
     image = ImageField(
         _("image"),
-        upload_to="images/%Y/%m",
+        upload_to=upload_to,
         width_field="width",
         height_field="height",
         ppoi_field="ppoi",

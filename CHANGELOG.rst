@@ -15,6 +15,8 @@ Change log
 - Suppressed the rendering of the "Save as new" button in the move form.
 - Added the ``render_regions`` hook to the ``RegionRenderer``.
 - Added ``**kwargs``  to ``Snippet.register_with``.
+- Changed the ``upload_to`` value of images to a version which is less likely
+  to produce collisions.
 
 
 `3.6`_ (2022-05-12)

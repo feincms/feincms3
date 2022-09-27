@@ -1,8 +1,11 @@
+import datetime as dt
+from types import SimpleNamespace
+
 from django.template import Context, Template
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from feincms3.utils import is_first_party_link
+from feincms3.utils import is_first_party_link, upload_to
 
 
 class Test(TestCase):
@@ -70,3 +73,10 @@ class Test(TestCase):
             html,
             '<a href="http://example.org/relative/" target="_blank" rel="noopener">link</a>',
         )
+
+    def test_upload_to(self):
+        instance = SimpleNamespace(_meta=SimpleNamespace(label_lower="app.model"))
+        day = dt.date.today().strftime("%y/%j")
+        filename = "upload.jpg"
+
+        self.assertEqual(upload_to(instance, filename), f"app.model/{day}/upload.jpg")

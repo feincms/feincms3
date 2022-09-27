@@ -1,3 +1,5 @@
+import datetime as dt
+import posixpath
 from urllib.parse import urlparse
 
 from django.conf import settings
@@ -65,3 +67,21 @@ class ChoicesCharField(models.CharField):
         name, path, args, kwargs = super().deconstruct()
         kwargs["choices"] = [("", "")]
         return name, "django.db.models.CharField", args, kwargs
+
+
+def upload_to(instance, filename):
+    """
+    Standard ``upload_to`` callable for feincms3 file fields
+
+    The generated path consists of:
+
+    - The instance's lowercased model label
+    - The year and the day of the year
+    - The original filename
+    """
+
+    return posixpath.join(
+        instance._meta.label_lower,
+        dt.date.today().strftime("%y/%j"),
+        filename,
+    )
