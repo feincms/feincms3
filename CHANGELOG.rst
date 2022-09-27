@@ -6,7 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/3.6...main
+.. _Next version: https://github.com/matthiask/feincms3/compare/4.0a1...main
+
+
+`4.0a1`_ (2022-09-27)
+~~~~~~~~~~~~~~~~~~~~~
+
+.. _3.6: https://github.com/matthiask/feincms3/compare/3.5...3.6
 
 - Added Django 4.1 to the CI matrix.
 - Specified a custom plugin button for the old richtext plugin.
