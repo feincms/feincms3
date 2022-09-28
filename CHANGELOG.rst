@@ -8,6 +8,9 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/4.0a1...main
 
+- Stopped importing ``feincms3.plugins.richtext`` unconditionally, it depends
+  on html-sanitizer_.
+
 
 `4.0a1`_ (2022-09-27)
 ~~~~~~~~~~~~~~~~~~~~~

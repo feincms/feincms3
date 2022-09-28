@@ -1,8 +1,14 @@
 # flake8: noqa
 
-from . import html, richtext, snippet
+from . import html, snippet
 
 
+try:
+    import html_sanitizer
+except ImportError:  # pragma: no cover
+    pass
+else:
+    from . import richtext
 try:
     import requests
 except ImportError:  # pragma: no cover
