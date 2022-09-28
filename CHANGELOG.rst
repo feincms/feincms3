@@ -6,16 +6,13 @@ Change log
 `Next version`_
 ~~~~~~~~~~~~~~~
 
-.. _Next version: https://github.com/matthiask/feincms3/compare/4.0a1...main
-
-- Stopped importing ``feincms3.plugins.richtext`` unconditionally, it depends
-  on html-sanitizer_.
+.. _Next version: https://github.com/matthiask/feincms3/compare/4.0...main
 
 
-`4.0a1`_ (2022-09-27)
-~~~~~~~~~~~~~~~~~~~~~
+`4.0`_ (2022-09-28)
+~~~~~~~~~~~~~~~~~~~
 
-.. _3.6: https://github.com/matthiask/feincms3/compare/3.5...3.6
+.. _4.0: https://github.com/matthiask/feincms3/compare/3.6...4.0
 
 - Added Django 4.1 to the CI matrix.
 - Specified a custom plugin button for the old richtext plugin.
@@ -26,6 +23,8 @@ Change log
 - Added ``**kwargs``  to ``Snippet.register_with``.
 - Changed the ``upload_to`` value of images to a version which is less likely
   to produce collisions.
+- Stopped importing ``feincms3.plugins.richtext`` unconditionally, it depends
+  on html-sanitizer_.
 
 
 `3.6`_ (2022-05-12)
