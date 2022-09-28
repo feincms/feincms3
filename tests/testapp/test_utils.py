@@ -75,8 +75,11 @@ class Test(TestCase):
         )
 
     def test_upload_to(self):
-        instance = SimpleNamespace(_meta=SimpleNamespace(label_lower="app.model"))
-        day = dt.date.today().strftime("%y/%j")
+        instance = SimpleNamespace(_meta=SimpleNamespace(model_name="image"))
+        ordinal = str(dt.date.today().toordinal())
         filename = "upload.jpg"
 
-        self.assertEqual(upload_to(instance, filename), f"app.model/{day}/upload.jpg")
+        self.assertEqual(
+            upload_to(instance, filename),
+            "/".join(["image", ordinal[1:3], ordinal[3:6], filename]),
+        )

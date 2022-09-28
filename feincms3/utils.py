@@ -76,12 +76,20 @@ def upload_to(instance, filename):
     The generated path consists of:
 
     - The instance's lowercased model label
-    - The year and the day of the year
+    - A part of the proleptic Gregorian ordinal of the date
     - The original filename
+
+    The ordinal changes each day which means that filename collisions only
+    happen when uploading to the same model (or one with the same name in a
+    different app) and on the same day. This is much better than the previous
+    default of using ``images/%Y/%m`` where you had to wait up to a full month
+    to avoid collisions.
     """
 
+    ordinal = str(dt.date.today().toordinal())
     return posixpath.join(
-        instance._meta.label_lower,
-        dt.date.today().strftime("%y/%j"),
+        instance._meta.model_name,
+        ordinal[1:3],  # cut the first digit, it will only reach 800000 in 2191.
+        ordinal[3:],
         filename,
     )
