@@ -35,7 +35,10 @@ Reverse the URL of the page (if it exists):
     reverse_passthru("imprint", urlconf=apps_urlconf())
 """
 
+from functools import partial
+
 from django.urls import path
+from django.utils.functional import lazy
 
 from feincms3.applications import reverse_app
 from feincms3.root.middleware import _UseRootMiddlewareResponse
@@ -53,3 +56,7 @@ def reverse_passthru(namespace, **kwargs):
     Raises ``NoReverseMatch`` if page could not be found.
     """
     return reverse_app(namespace, "passthru", **kwargs)
+
+
+def reverse_passthru_lazy(namespace, **kwargs):
+    return lazy(partial(reverse_passthru, namespace, **kwargs), str)()

@@ -8,6 +8,8 @@ Change log
 
 .. _Next version: https://github.com/matthiask/feincms3/compare/4.0...main
 
+- Added a ``reverse_passthru_lazy`` helper.
+
 
 `4.0`_ (2022-09-28)
 ~~~~~~~~~~~~~~~~~~~
