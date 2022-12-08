@@ -14,7 +14,7 @@ from django.core.exceptions import ValidationError
 from django.core.signals import request_finished
 from django.db import models
 from django.db.models import Q, signals
-from django.urls import NoReverseMatch, include, re_path, reverse
+from django.urls import NoReverseMatch, include, path, re_path, reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
 from feincms3.mixins import ChoicesCharField
@@ -245,19 +245,19 @@ def apps_urlconf(*, apps=None):
         m = ModuleType(module_name)
 
         mapping = defaultdict(list)
-        for path, page_type, app_namespace, language_code in apps:
+        for app_path, page_type, app_namespace, language_code in apps:
             if page_type not in types:
                 continue
             mapping[language_code].append(
                 re_path(
-                    r"^%s" % re.escape(path.lstrip("/")),
+                    r"^%s" % re.escape(app_path.lstrip("/")),
                     include(types[page_type]["urlconf"], namespace=app_namespace),
                 )
             )
 
         m.urlpatterns = [
-            re_path(
-                r"",
+            path(
+                "",
                 include(
                     (instances, _APPS_MODEL.LANGUAGE_CODES_NAMESPACE),
                     namespace="%s-%s"
