@@ -117,6 +117,11 @@ class RegionRenderer:
           same region renderer class for different content types (e.g. pages
           and blog articles).
         """
+        if plugin in self._renderers:
+            warnings.warn(
+                f"The plugin {plugin} has already been registered with {self.__class__} before.",
+                stacklevel=2,
+            )
         self._renderers[plugin] = renderer
         self._subregions[plugin] = subregion
         self._marks[plugin] = marks
