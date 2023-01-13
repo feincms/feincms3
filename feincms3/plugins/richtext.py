@@ -10,6 +10,13 @@ __all__ = ("RichText", "RichTextInline", "render_richtext")
 
 
 class RichText(models.Model):
+    """
+    Rich text plugin.
+
+    :class:`feincms3.inline_ckeditor.InlineCKEditorField` does all the heavy
+    lifting.
+    """
+
     text = InlineCKEditorField(_("text"))
 
     class Meta:
