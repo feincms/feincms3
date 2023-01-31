@@ -10,6 +10,7 @@ Change log
 
 - Added a ``reverse_passthru_lazy`` helper.
 - Made ``RegionRenderer`` check the API of renderers upon registration.
+- Added Django 4.2a1 to the matrix.
 
 
 `4.0`_ (2022-09-28)
