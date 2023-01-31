@@ -1,8 +1,10 @@
+import inspect
 import warnings
 from collections import deque
 
 from content_editor.contents import contents_for_item
 from django.core.cache import cache
+from django.core.exceptions import ImproperlyConfigured
 from django.template import Context, Engine
 from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
@@ -125,6 +127,11 @@ class RegionRenderer:
         self._renderers[plugin] = renderer
         self._subregions[plugin] = subregion
         self._marks[plugin] = marks
+
+        if callable(renderer) and len(inspect.signature(renderer).parameters) < 2:
+            raise ImproperlyConfigured(
+                f"The renderer function {renderer} has less than the two required arguments."
+            )
 
     def plugins(self):
         """

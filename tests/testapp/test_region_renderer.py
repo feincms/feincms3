@@ -1,6 +1,7 @@
 from collections import deque
 
 from content_editor.contents import contents_for_item
+from django.core.exceptions import ImproperlyConfigured
 from django.template import Context
 from django.test import TestCase
 from django.utils.html import format_html, mark_safe
@@ -135,3 +136,10 @@ class RegionRendererTest(TestCase):
             regions.render("main", None),
             '<div class="stuff"><p>Hello</p></div><div class="html"><br><hr></div><div class="stuff"><p>World</p></div>',
         )
+
+    def test_invalid_renderer(self):
+        r = RegionRenderer()
+        with self.assertRaisesRegex(
+            ImproperlyConfigured, r"has less than the two required arguments"
+        ):
+            r.register(1, lambda plugin: "")

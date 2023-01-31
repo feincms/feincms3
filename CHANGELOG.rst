@@ -9,6 +9,7 @@ Change log
 .. _Next version: https://github.com/matthiask/feincms3/compare/4.0...main
 
 - Added a ``reverse_passthru_lazy`` helper.
+- Made ``RegionRenderer`` check the API of renderers upon registration.
 
 
 `4.0`_ (2022-09-28)
