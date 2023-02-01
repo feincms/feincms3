@@ -26,7 +26,6 @@ class Page(
     # Allow redirecting pages to other pages and/or arbitrary URLs:
     RedirectMixin,
 ):
-
     # MenuMixin
     MENUS = [("main", _("main")), ("footer", _("footer"))]
 
