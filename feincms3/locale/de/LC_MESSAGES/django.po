@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-16 10:34+0100\n"
+"POT-Creation-Date: 2023-02-02 17:10+0100\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/feincms3/feincms3/"
@@ -21,29 +21,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:97 pages.py:60
+#: admin.py:98 pages.py:69
 msgid "title"
 msgstr "Titel"
 
-#: admin.py:111
+#: admin.py:112
 msgid "move"
 msgstr "verschieben"
 
-#: admin.py:137
+#: admin.py:138
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:142
+#: admin.py:143
 #, python-format
 msgid "Clone %s"
 msgstr "%s klonen"
 
-#: admin.py:211
+#: admin.py:212
 msgid "New location"
 msgstr "Neuer Ort"
 
-#: admin.py:219
+#: admin.py:220
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -51,109 +51,109 @@ msgstr ""
 "Verschieben ist nicht möglich weil es keine gültigen Zielorte gibt. "
 "Vielleicht den einzigen Wurzelknoten gewählt?"
 
-#: admin.py:265 admin.py:276 admin.py:286
+#: admin.py:266 admin.py:277 admin.py:287
 msgid "move here"
 msgstr "hierhin verschieben"
 
-#: admin.py:344
+#: admin.py:345
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "%(node)s wurde zur neuen Position verschoben."
 
-#: admin.py:362
+#: admin.py:363
 msgid "target"
 msgstr "Ziel"
 
-#: admin.py:372
+#: admin.py:373
 msgid "Replace target's content"
 msgstr "Inhalt des Ziels ersetzen"
 
-#: admin.py:374
+#: admin.py:375
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Betrifft die folgenden Inhalte: %s."
 
-#: admin.py:396
+#: admin.py:397
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Aktuell: „%s“"
 
-#: admin.py:406
+#: admin.py:407
 msgid "Cannot clone node to itself."
 msgstr "Kann Knoten nicht zu sich selbst klonen."
 
-#: admin.py:429
+#: admin.py:430
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Aktualisierte Felder von %(node)s: %(fields)s"
 
-#: admin.py:453
+#: admin.py:454
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Ersetzte den Inhalt von %(target)s mit dem Inhalt von %(source)s."
 
-#: admin.py:482
+#: admin.py:481
 msgid "subtree"
 msgstr "Unterbaum"
 
-#: applications.py:389
+#: applications.py:492
 msgid "page type"
 msgstr "Seitentyp"
 
-#: applications.py:436
+#: applications.py:536
 #, python-format
 msgid "This field is required for the page type \"%s\"."
 msgstr "Dieses Feld wird für den Seitentyp \"%s\" benötigt."
 
-#: applications.py:460
-msgid "This exact app already exists."
-msgstr "Diese exakte Anwendung existiert bereits."
+#: applications.py:558
+#, python-brace-format
+msgid ""
+"The page type \"{page_type}\" with the specified configuration exists "
+"already."
+msgstr ""
+"Der Seitentyp \"{page_type}\" mit der spezifizierten Konfiguration existiert "
+"schon."
 
-#: mixins.py:18
+#: mixins.py:20
 msgid "menu"
 msgstr "Menü"
 
-#: mixins.py:51 plugins/snippet.py:32
+#: mixins.py:72 plugins/snippet.py:33
 msgid "template"
 msgstr "Vorlage"
 
-#: mixins.py:97
+#: mixins.py:123
 msgid "language"
 msgstr "Sprache"
 
-#: mixins.py:127
+#: mixins.py:153
 msgid "translation of"
 msgstr "Übersetzung von"
 
-#: mixins.py:168
+#: mixins.py:214
 msgid ""
 "Objects in the primary language cannot be the translation of another object."
 msgstr ""
 "Objekte in der primären Sprache können nicht eine Übersetzung eines anderen "
 "Objektes sein."
 
-#: mixins.py:181
-msgid "Objects may only be the translation of objects in the primary language."
-msgstr ""
-"Objekte können nur Übersetzungen sein von Objekten in der primären Sprache."
-
-#: mixins.py:194
+#: mixins.py:228
 msgid "Redirect to URL"
 msgstr "Weiterleiten zu URL"
 
-#: mixins.py:201
+#: mixins.py:236
 msgid "Redirect to page"
 msgstr "Weiterleiten zu Seite"
 
-#: mixins.py:224
+#: mixins.py:259
 msgid "Only set one redirect value."
 msgstr "Bitte nur einen Weiterleitungs-Wert setzen."
 
-#: mixins.py:232
+#: mixins.py:267
 msgid "Cannot redirect to self."
 msgstr "Kann nicht zu sich selbst weiterleiten."
 
-#: mixins.py:243
+#: mixins.py:278
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
@@ -162,7 +162,7 @@ msgstr ""
 "Die gewählte Seite „%(title)s“ leitet schon weiter auf „%(path)s“ weiter, "
 "bitte Verkettungen von Weiterleitungen vermeiden."
 
-#: mixins.py:260
+#: mixins.py:295
 #, python-format
 msgid ""
 "Do not chain redirects. The following pages already redirect to this page: "
@@ -171,23 +171,23 @@ msgstr ""
 "Verkettung von Weiterleitungen nicht erlaubt. Die folgenden Seiten leiten "
 "schon auf diese Seite weiter: %(pages)s"
 
-#: pages.py:59
+#: pages.py:68
 msgid "is active"
 msgstr "ist aktiv"
 
-#: pages.py:61
+#: pages.py:70
 msgid "slug"
 msgstr "Slug"
 
-#: pages.py:68
+#: pages.py:77
 msgid "Position is expected to be greater than zero."
 msgstr "Position sollte grösser als Null sein."
 
-#: pages.py:75
+#: pages.py:84
 msgid "path"
 msgstr "Pfad"
 
-#: pages.py:80
+#: pages.py:89
 msgid ""
 "Automatically generated by concatenating the parent's path and the slug "
 "unless the path is defined manually."
@@ -196,52 +196,52 @@ msgstr ""
 "übergeordneten Seite und des Slugs, ausser wenn der Pfad manuell definiert "
 "wird."
 
-#: pages.py:86
+#: pages.py:95
 msgid "Path must start and end with a slash (/)."
 msgstr "Pfad muss mit einem Slash (/) starten und enden."
 
-#: pages.py:90
+#: pages.py:99
 msgid "manually define the path"
 msgstr "Pfad manuell definieren"
 
-#: pages.py:97
+#: pages.py:106
 msgid "page"
 msgstr "Seite"
 
-#: pages.py:98
+#: pages.py:107
 msgid "pages"
 msgstr "Seiten"
 
-#: pages.py:140
+#: pages.py:149
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statische Pfade können nicht leer sein. Meinten Sie „/“?"
 
-#: pages.py:160
+#: pages.py:171
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Der Pfad %(path)s der Seite %(page)s würde nicht eindeutig sein."
 
-#: plugins/external.py:108
+#: plugins/external.py:113
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:110 plugins/image.py:40
+#: plugins/external.py:115 plugins/image.py:42
 msgid "alternative text"
 msgstr "alternativer Text"
 
-#: plugins/external.py:111 plugins/image.py:41
+#: plugins/external.py:116 plugins/image.py:43
 msgid "Describe the contents, e.g. for screenreaders."
 msgstr "Beschreibung der Bildinhalte, zB für Screenreader."
 
-#: plugins/external.py:115 plugins/image.py:45
+#: plugins/external.py:120 plugins/image.py:47
 msgid "caption"
 msgstr "Legende"
 
-#: plugins/external.py:119
+#: plugins/external.py:124
 msgid "external content"
 msgstr "externer Inhalt"
 
-#: plugins/external.py:135
+#: plugins/external.py:158
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Kann das HTML für diese URL nicht laden, tut mir leid!"
 
@@ -253,45 +253,54 @@ msgstr ""
 "Der Inhalt wird direkt in die Seite eingefügt. Es ist SEHR wichtig, dass das "
 "HTML gültig ist!"
 
-#: plugins/image.py:24 plugins/image.py:49
+#: plugins/image.py:26 plugins/image.py:51
 msgid "image"
 msgstr "Bild"
 
-#: plugins/image.py:33
+#: plugins/image.py:35
 msgid "image width"
 msgstr "Bildbreite"
 
-#: plugins/image.py:36
+#: plugins/image.py:38
 msgid "image height"
 msgstr "Bildhöhe"
 
-#: plugins/image.py:38
+#: plugins/image.py:40
 msgid "primary point of interest"
 msgstr "Fokuspunkt"
 
-#: plugins/image.py:50
+#: plugins/image.py:52
 msgid "images"
 msgstr "Bilder"
 
-#: plugins/richtext.py:30
+#: plugins/old_richtext.py:40 plugins/richtext.py:20
 msgid "text"
 msgstr "Text"
 
-#: plugins/richtext.py:34
+#: plugins/old_richtext.py:44 plugins/richtext.py:24
 msgid "rich text"
 msgstr "Text"
 
-#: plugins/richtext.py:35
+#: plugins/old_richtext.py:45 plugins/richtext.py:25
 msgid "rich texts"
 msgstr "Texte"
 
-#: plugins/snippet.py:39
+#: plugins/snippet.py:37
 msgid "predefined snippet"
 msgstr "vordefinierter Baustein"
 
-#: plugins/snippet.py:40
+#: plugins/snippet.py:38
 msgid "predefined snippets"
 msgstr "vordefinierte Bausteine"
+
+#~ msgid "This exact app already exists."
+#~ msgstr "Diese exakte Anwendung existiert bereits."
+
+#~ msgid ""
+#~ "Objects may only be the translation of objects in the primary language."
+#~ msgstr ""
+#~ "Objekte können nur Übersetzungen sein von Objekten in der primären "
+#~ "Sprache."
 
 #~ msgid "Generated automatically if 'static path' is unset."
 #~ msgstr "Automatisch generiert falls „statischer Pfad“ nicht gesetzt ist."

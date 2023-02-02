@@ -448,7 +448,7 @@ class Test(TestCase):
 
         self.assertEqual(
             cm.exception.error_dict["page_type"][0].message,
-            "This exact app already exists.",
+            'The page type "blog" with the specified configuration exists already.',
         )
 
     def test_apps_required_fields(self):
@@ -487,7 +487,10 @@ class Test(TestCase):
         self.assertContains(response, "set_page_type")
 
         response = client.post(clone_url, {"target": home.pk, "set_page_type": True})
-        self.assertContains(response, "This exact app already exists.")
+        self.assertContains(
+            response,
+            "The page type &quot;blog&quot; with the specified configuration exists already.",
+        )
 
         # The other way round works
         clone_url = reverse("admin:testapp_page_clone", args=(home.pk,))

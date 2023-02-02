@@ -555,7 +555,9 @@ class PageTypeMixin(models.Model):
                 fields.extend(type.get("required_fields", ()))
                 raise ValidationError(
                     {
-                        field: _("This exact app already exists.")
+                        field: _(
+                            'The page type "{page_type}" with the specified configuration exists already.'
+                        ).format(page_type=type.title)
                         for field in fields
                         if field not in exclude
                     }
