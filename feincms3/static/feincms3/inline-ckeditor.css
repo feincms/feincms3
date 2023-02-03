@@ -15,7 +15,7 @@
   }
 }
 
-.cke_textarea_inline *:not(hr) {
+.cke_textarea_inline *:not(hr, table, tr, th, td) {
   background: none !important;
   color: inherit !important;
   border: none !important;
