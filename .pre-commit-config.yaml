@@ -13,7 +13,7 @@ repos:
       - id: pyupgrade
         args: [--py38-plus]
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.12.0
+    rev: 1.13.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "3.2"]
@@ -34,17 +34,17 @@ repos:
         additional_dependencies:
           - flake8-bugbear
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.0-alpha.4
+    rev: v3.0.0-alpha.6
     hooks:
       - id: prettier
         args: [--list-different, --no-semi, "--trailing-comma=es5"]
         exclude: "^conf/|.*\\.html$"
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.33.0
+    rev: v8.36.0
     hooks:
       - id: eslint
         additional_dependencies:
-          - eslint@^8.33.0
+          - eslint
           - eslint-config-prettier
           - "@babel/core"
           - "@babel/eslint-parser"

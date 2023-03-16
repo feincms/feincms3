@@ -12,6 +12,8 @@ Change log
 - Made ``RegionRenderer`` check the API of renderers upon registration.
 - Added Django 4.2a1 to the matrix.
 - Improved the 'page type exists already' wording a bit.
+- Fixed an alignment issue when using the inline CKEditor inside a tabular
+  inline.
 
 
 `4.0`_ (2022-09-28)

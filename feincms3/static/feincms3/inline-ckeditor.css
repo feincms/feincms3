@@ -15,6 +15,10 @@
   }
 }
 
+.inline-group[data-inline-type="tabular"] .cke_textarea_inline {
+  margin: 0;
+}
+
 .cke_textarea_inline *:not(hr, table, tr, th, td) {
   background: none !important;
   color: inherit !important;
