@@ -69,8 +69,8 @@ def reverse_any(
     if fallback is not _sentinel:
         return fallback
     raise NoReverseMatch(
-        "Reverse for any of '%s' with arguments '%s' and keyword arguments"
-        " '%s' not found." % ("', '".join(viewnames), args or [], kwargs or {})
+        "Reverse for any of '{}' with arguments '{}' and keyword arguments"
+        " '{}' not found.".format("', '".join(viewnames), args or [], kwargs or {})
     )
 
 
@@ -497,6 +497,15 @@ class PageTypeMixin(models.Model):
     class Meta:
         abstract = True
 
+    def save(self, *args, **kwargs):
+        """
+        Updates ``app_namespace``.
+        """
+        self.app_namespace = self.type.app_namespace(self)
+        super().save(*args, **kwargs)
+
+    save.alters_data = True
+
     @property
     def type(self):
         """
@@ -509,15 +518,6 @@ class PageTypeMixin(models.Model):
     @property
     def regions(self):
         return self.type.regions
-
-    def save(self, *args, **kwargs):
-        """
-        Updates ``app_namespace``.
-        """
-        self.app_namespace = self.type.app_namespace(self)
-        super().save(*args, **kwargs)
-
-    save.alters_data = True
 
     def clean_fields(self, exclude=None):
         """

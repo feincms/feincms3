@@ -12,7 +12,7 @@ class Test(TestCase):
     def test_is_first_party_link(self):
         """is_first_party_link test battery"""
 
-        TESTS = [
+        tests = [
             (
                 "http://example.com/",
                 ["*"],
@@ -50,7 +50,7 @@ class Test(TestCase):
             ),
         ]
 
-        for url, hosts, result in TESTS:
+        for url, hosts, result in tests:
             with self.subTest(url=url, hosts=hosts, result=result):
                 self.assertEqual(
                     is_first_party_link(url, first_party_hosts=hosts), result

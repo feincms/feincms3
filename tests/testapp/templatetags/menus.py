@@ -3,6 +3,7 @@ from collections import defaultdict
 from django import template
 from django.db.models import Q
 from django.utils.translation import get_language
+
 from testapp.models import Page
 
 
@@ -44,10 +45,10 @@ def group_by_parent(iterable):
 def ifactive(parser, token):
     try:
         tag_name, page = token.split_contents()
-    except ValueError:
+    except ValueError as exc:
         raise template.TemplateSyntaxError(
             "%r tag requires a single argument" % token.contents.split()[0]
-        )
+        ) from exc
 
     nodelist = parser.parse(("endifactive",))
     parser.delete_first_token()

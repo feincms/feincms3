@@ -1,0 +1,69 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "feincms3"
+dynamic = ["version"]
+description = "CMS-building toolkit for Django"
+readme = "README.rst"
+license = "BSD-3-Clause"
+requires-python = ">=3.8"
+authors = [
+    { name = "Matthias Kestenholz", email = "mk@feinheit.ch" },
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+    "django-content-editor>=6.0",
+    "django-js-asset>=2.0",
+    "django-tree-queries>=0.6.0",
+    "Django>=3.2",
+]
+
+[project.optional-dependencies]
+all = [
+    "django-imagefield",
+    "html-sanitizer>=1.1.1",
+    "requests",
+]
+tests = [
+    "coverage",
+    "django-ckeditor",
+    "requests-mock",
+]
+
+[project.urls]
+Homepage = "https://github.com/matthiask/feincms3/"
+
+[tool.hatch.version]
+path = "feincms3/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/feincms3",
+]
+
+[tool.ruff]
+extend-select = ["B", "E", "F", "W", "C90", "I", "N", "UP", "FBT", "C4", "DJ", "PIE"]
+extend-ignore = ["E501"]
+fix = true
+target-version = "py38"
+
+[tool.ruff.isort]
+combine-as-imports = true
+lines-after-imports = 2

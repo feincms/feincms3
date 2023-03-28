@@ -51,8 +51,6 @@ from django.http import (
 class _UseRootMiddlewareResponse(HttpResponseNotFound):
     """Used by feincms3.root.passthru to tell the middleware to do its thing"""
 
-    pass
-
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=False):
     """

@@ -124,12 +124,12 @@ class TreeAdmin(ModelAdmin):
             re_path(
                 r"^(.+)/move/$",
                 action_form_view_decorator(self)(self.move_view),
-                name="%s_%s_move" % info,
+                name="{}_{}_move".format(*info),
             ),
             re_path(
                 r"^(.+)/clone/$",
                 action_form_view_decorator(self)(self.clone_view),
-                name="%s_%s_clone" % info,
+                name="{}_{}_clone".format(*info),
             ),
         ] + super().get_urls()
 
@@ -151,7 +151,7 @@ class TreeAdmin(ModelAdmin):
         return self.render_action_form(request, form, title=title, obj=obj)
 
     def render_action_form(self, request, form, *, title, obj):
-        adminForm = helpers.AdminForm(
+        adminform = helpers.AdminForm(
             form,
             [
                 (None, {"fields": form.fields.keys()})
@@ -160,14 +160,14 @@ class TreeAdmin(ModelAdmin):
             (),  # self.get_readonly_fields(request, obj),
             model_admin=self,
         )
-        media = self.media + adminForm.media
+        media = self.media + adminform.media
 
         context = dict(
             self.admin_site.each_context(request),
             title=title,
             object_id=obj.pk,
             original=obj,
-            adminform=adminForm,
+            adminform=adminform,
             errors=helpers.AdminErrorList(form, ()),
             preserved_filters=self.get_preserved_filters(request),
             media=media,
@@ -436,7 +436,7 @@ class CloneForm(forms.Form):
 
             for inline in self.modeladmin.inlines:
                 fk = _get_foreign_key(
-                    self.modeladmin.model, inline.model, inline.fk_name, False
+                    self.modeladmin.model, inline.model, inline.fk_name, can_fail=False
                 )
 
                 # Remove all existing instances
@@ -497,7 +497,7 @@ class AncestorFilter(SimpleListFilter):
         if self.value():
             try:
                 node = queryset.model._default_manager.get(pk=self.value())
-            except (TypeError, ValueError, queryset.model.DoesNotExist):
-                raise IncorrectLookupParameters()
+            except (TypeError, ValueError, queryset.model.DoesNotExist) as exc:
+                raise IncorrectLookupParameters() from exc
             return queryset.descendants(node, include_self=True)
         return queryset

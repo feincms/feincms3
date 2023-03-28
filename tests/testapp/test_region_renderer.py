@@ -5,9 +5,9 @@ from django.core.exceptions import ImproperlyConfigured
 from django.template import Context
 from django.test import TestCase
 from django.utils.html import format_html, mark_safe
-from testapp.models import HTML, Page, RichText
 
 from feincms3.renderer import PluginNotRegistered, RegionRenderer, template_renderer
+from testapp.models import HTML, Page, RichText
 
 
 class RegionRendererTest(TestCase):

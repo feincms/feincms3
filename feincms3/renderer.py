@@ -26,8 +26,6 @@ class PluginNotRegistered(Exception):
     renderer.
     """
 
-    pass
-
 
 def default_context(plugin, context):
     """
@@ -145,10 +143,10 @@ class RegionRenderer:
         """
         try:
             renderer = self._renderers[plugin.__class__]
-        except KeyError:
+        except KeyError as exc:
             raise PluginNotRegistered(
                 f"Plugin {plugin._meta.label_lower} is not registered"
-            )
+            ) from exc
         if callable(renderer):
             return renderer(plugin, context)
         return renderer
@@ -159,10 +157,10 @@ class RegionRenderer:
         """
         try:
             subregion = self._subregions[plugin.__class__]
-        except KeyError:
+        except KeyError as exc:
             raise PluginNotRegistered(
                 f"Plugin {plugin._meta.label_lower} is not registered"
-            )
+            ) from exc
         if callable(subregion):
             return subregion(plugin)
         return subregion
@@ -181,10 +179,10 @@ class RegionRenderer:
         """
         try:
             marks = self._marks[plugin.__class__]
-        except KeyError:
+        except KeyError as exc:
             raise PluginNotRegistered(
                 f"Plugin {plugin._meta.label_lower} is not registered"
-            )
+            ) from exc
         if callable(marks):
             return marks(plugin)
         return marks

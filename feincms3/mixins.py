@@ -108,6 +108,7 @@ class TemplateMixin(models.Model):
                 " from feincms3.applications even if you're not planning to use"
                 " any apps.",
                 DeprecationWarning,
+                stacklevel=1,
             )
 
 
