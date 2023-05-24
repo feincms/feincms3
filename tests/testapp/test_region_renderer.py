@@ -6,7 +6,11 @@ from django.template import Context
 from django.test import TestCase
 from django.utils.html import format_html, mark_safe
 
-from feincms3.renderer import PluginNotRegistered, RegionRenderer, template_renderer
+from feincms3.renderer import (
+    PluginNotRegisteredError,
+    RegionRenderer,
+    template_renderer,
+)
 from testapp.models import HTML, Page, RichText
 
 
@@ -57,9 +61,9 @@ class RegionRendererTest(TestCase):
         renderer = RegionRenderer()
         contents = contents_for_item(self.prepare(), plugins=[RichText, HTML])
         regions = renderer.regions_from_contents(contents)
-        with self.assertRaises(PluginNotRegistered):
+        with self.assertRaises(PluginNotRegisteredError):
             regions.render("main", None)
-        with self.assertRaises(PluginNotRegistered):
+        with self.assertRaises(PluginNotRegisteredError):
             # All regions are rendered at once
             regions.render("does_not_exist", None)
 

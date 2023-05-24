@@ -43,7 +43,7 @@ class MenuMixin(models.Model):
     def _check_feincms3_menu_mixin(cls, **kwargs):
         if invalid := [
             value
-            for value, label in cls.MENUS
+            for value, _label in cls.MENUS
             if value and (value.startswith("_") or not value.isidentifier())
         ]:
             yield Warning(

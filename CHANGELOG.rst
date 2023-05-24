@@ -14,6 +14,8 @@ Change log
 - Improved the 'page type exists already' wording a bit.
 - Fixed an alignment issue when using the inline CKEditor inside a tabular
   inline.
+- Renamed the ``PluginNotRegistered`` exception to ``PluginNotRegisteredError``
+  to make ``pep8-naming`` happy. The old name still exists.
 
 
 `4.0`_ (2022-09-28)

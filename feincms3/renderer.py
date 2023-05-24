@@ -11,7 +11,7 @@ from django.utils.html import mark_safe
 
 
 __all__ = (
-    "PluginNotRegistered",
+    "PluginNotRegisteredError",
     "default_context",
     "render_in_context",
     "template_renderer",
@@ -20,11 +20,15 @@ __all__ = (
 )
 
 
-class PluginNotRegistered(Exception):
+class PluginNotRegisteredError(Exception):
     """
     Exception raised when encountering a plugin which isn't known to the
     renderer.
     """
+
+
+# Backwards compatibility
+PluginNotRegistered = PluginNotRegisteredError
 
 
 def default_context(plugin, context):
@@ -144,7 +148,7 @@ class RegionRenderer:
         try:
             renderer = self._renderers[plugin.__class__]
         except KeyError as exc:
-            raise PluginNotRegistered(
+            raise PluginNotRegisteredError(
                 f"Plugin {plugin._meta.label_lower} is not registered"
             ) from exc
         if callable(renderer):
@@ -158,7 +162,7 @@ class RegionRenderer:
         try:
             subregion = self._subregions[plugin.__class__]
         except KeyError as exc:
-            raise PluginNotRegistered(
+            raise PluginNotRegisteredError(
                 f"Plugin {plugin._meta.label_lower} is not registered"
             ) from exc
         if callable(subregion):
@@ -180,7 +184,7 @@ class RegionRenderer:
         try:
             marks = self._marks[plugin.__class__]
         except KeyError as exc:
-            raise PluginNotRegistered(
+            raise PluginNotRegisteredError(
                 f"Plugin {plugin._meta.label_lower} is not registered"
             ) from exc
         if callable(marks):

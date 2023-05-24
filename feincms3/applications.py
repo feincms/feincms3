@@ -260,8 +260,7 @@ def apps_urlconf(*, apps=None):
                 "",
                 include(
                     (instances, _APPS_MODEL.LANGUAGE_CODES_NAMESPACE),
-                    namespace="%s-%s"
-                    % (_APPS_MODEL.LANGUAGE_CODES_NAMESPACE, language_code),
+                    namespace=f"{_APPS_MODEL.LANGUAGE_CODES_NAMESPACE}-{language_code}",
                 ),
             )
             for language_code, instances in mapping.items()
