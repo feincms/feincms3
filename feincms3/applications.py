@@ -173,6 +173,7 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
         return fallback
 
 
+# Used in feincms3-sites
 def _del_apps_urlconf_cache(**kwargs):
     try:
         del _apps_urlconf_cache.cache
@@ -222,7 +223,7 @@ def apps_urlconf(*, apps=None):
             fields = ("path", "page_type", "app_namespace", "language_code")
             apps = list(
                 _APPS_MODEL._default_manager.active()
-                .with_tree_fields(False)
+                .with_tree_fields(False)  # noqa: FBT003
                 .exclude(app_namespace="")
                 .values_list(*fields)
                 .order_by(*fields)
