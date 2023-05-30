@@ -57,9 +57,8 @@ afterwards:
 Add ``feincms3_sites.middleware.site_middleware`` near the top of your
 ``MIDDLEWARE`` setting, in any case before
 ``feincms3.applications.apps_middleware`` if you're using it. The middleware
-either sets ``request.site`` to the current
-``feincms3_sites.models.Site`` instance or raises a ``Http404``
-exception.
+either determines the current ``feincms3_sites.models.Site`` instance or raises
+a ``Http404`` exception.
 
 The default behavior allows matching a single host. The advanced options
 fieldset in the administration panel of feincms3-sites allows specifying
@@ -87,6 +86,10 @@ site when inside ``site_middleware``. The default implementation of
 running queries on pages outside of a middleware you'll have to use the
 contextvar facility yourself by running your code inside a ``with
 feincms3_sites.middleware.set_current_site(site):`` block.
+
+The current site can be fetched using
+``feincms3_sites.middleware.current_site()``. This function returns ``None`` if
+there is no current site.
 
 
 Default languages for sites
