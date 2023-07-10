@@ -50,6 +50,9 @@ tests = [
 [project.urls]
 Homepage = "https://github.com/matthiask/feincms3/"
 
+[tool.hatch.build]
+include = ["feincms3/"]
+
 [tool.hatch.version]
 path = "feincms3/__init__.py"
 
