@@ -248,13 +248,14 @@ async def apps_urlconf_async(*, apps=None):
 
         if apps is None:
             fields = ("path", "page_type", "app_namespace", "language_code")
-            apps = list(
-                await _APPS_MODEL._default_manager.active()
+            apps = [
+                row
+                async for row in _APPS_MODEL._default_manager.active()
                 .with_tree_fields(False)  # noqa: FBT003
                 .exclude(app_namespace="")
                 .values_list(*fields)
                 .order_by(*fields)
-            )
+            ]
             # NOTE! We *could* cache the module_name instead but we'd still
             # have to check if the module actually exists in the local Python
             # process.
