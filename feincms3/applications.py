@@ -7,6 +7,7 @@ from importlib import import_module
 from types import ModuleType
 
 from asgiref.local import Local
+from asgiref.sync import iscoroutinefunction
 from content_editor.models import Type
 from django.conf import settings
 from django.core.checks import Error, Info, Warning
@@ -15,6 +16,7 @@ from django.core.signals import request_finished
 from django.db import models
 from django.db.models import Q, signals
 from django.urls import NoReverseMatch, include, path, re_path, reverse
+from django.utils.decorators import sync_and_async_middleware
 from django.utils.translation import get_language, gettext_lazy as _
 
 from feincms3.mixins import ChoicesCharField
@@ -237,6 +239,35 @@ def apps_urlconf(*, apps=None):
         # No point wrapping ROOT_URLCONF if there are no additional URLs
         return settings.ROOT_URLCONF
 
+    return _build_apps_urlconf(apps)
+
+
+async def apps_urlconf_async(*, apps=None):
+    if apps is None:
+        apps = getattr(_apps_urlconf_cache, "cache", None)
+
+        if apps is None:
+            fields = ("path", "page_type", "app_namespace", "language_code")
+            apps = list(
+                await _APPS_MODEL._default_manager.active()
+                .with_tree_fields(False)  # noqa: FBT003
+                .exclude(app_namespace="")
+                .values_list(*fields)
+                .order_by(*fields)
+            )
+            # NOTE! We *could* cache the module_name instead but we'd still
+            # have to check if the module actually exists in the local Python
+            # process.
+            _apps_urlconf_cache.cache = apps
+
+    if not apps:
+        # No point wrapping ROOT_URLCONF if there are no additional URLs
+        return settings.ROOT_URLCONF
+
+    return _build_apps_urlconf(apps)
+
+
+def _build_apps_urlconf(apps):
     key = ",".join(itertools.chain.from_iterable(apps))
     module_name = "urlconf_%s" % hashlib.md5(key.encode("utf-8")).hexdigest()
 
@@ -317,6 +348,7 @@ def page_for_app_request(request, *, queryset=None):
     )
 
 
+@sync_and_async_middleware
 def apps_middleware(get_response):
     """
     This middleware must be put in ``MIDDLEWARE``; it simply assigns
@@ -325,9 +357,17 @@ def apps_middleware(get_response):
     since it has to run before any resolving happens.
     """
 
-    def middleware(request):
-        request.urlconf = apps_urlconf()
-        return get_response(request)
+    if iscoroutinefunction(get_response):
+
+        async def middleware(request):
+            request.urlconf = await apps_urlconf_async()
+            return await get_response(request)
+
+    else:
+
+        def middleware(request):
+            request.urlconf = apps_urlconf()
+            return get_response(request)
 
     return middleware
 
