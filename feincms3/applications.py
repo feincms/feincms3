@@ -225,7 +225,7 @@ def apps_urlconf(*, apps=None):
             fields = ("path", "page_type", "app_namespace", "language_code")
             apps = list(
                 _APPS_MODEL._default_manager.active()
-                .with_tree_fields(False)  # noqa: FBT003
+                .without_tree_fields()
                 .exclude(app_namespace="")
                 .values_list(*fields)
                 .order_by(*fields)
@@ -251,7 +251,7 @@ async def apps_urlconf_async(*, apps=None):
             apps = [
                 row
                 async for row in _APPS_MODEL._default_manager.active()
-                .with_tree_fields(False)  # noqa: FBT003
+                .without_tree_fields()
                 .exclude(app_namespace="")
                 .values_list(*fields)
                 .order_by(*fields)

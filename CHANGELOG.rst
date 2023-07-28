@@ -18,6 +18,8 @@ Change log
   to make ``pep8-naming`` happy. The old name still exists.
 - Fixed an alignment issue when using the inline CKEditor in the Django 4.2
   admin.
+- Updated the required django-tree-queries version to avoid a boolean trap
+  linting error.
 
 
 `4.0`_ (2022-09-28)

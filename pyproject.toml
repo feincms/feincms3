@@ -31,7 +31,7 @@ classifiers = [
 dependencies = [
     "django-content-editor>=6.0",
     "django-js-asset>=2.0",
-    "django-tree-queries>=0.6.0",
+    "django-tree-queries>=0.15.0",
     "Django>=3.2",
 ]
 
