@@ -1,9 +1,12 @@
 .change-form .cke_textarea_inline {
-  margin-left: 170px;
   max-width: 80ch;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 5px 6px;
+}
+
+.change-form [data-inline-cke-dj41] + .cke_textarea_inline {
+  margin-left: 170px;
 }
 
 @media (max-width: 767px) {

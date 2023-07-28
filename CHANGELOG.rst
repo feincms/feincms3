@@ -16,6 +16,8 @@ Change log
   inline.
 - Renamed the ``PluginNotRegistered`` exception to ``PluginNotRegisteredError``
   to make ``pep8-naming`` happy. The old name still exists.
+- Fixed an alignment issue when using the inline CKEditor in the Django 4.2
+  admin.
 
 
 `4.0`_ (2022-09-28)
