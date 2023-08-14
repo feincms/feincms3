@@ -3,8 +3,7 @@ from django.urls import path
 
 from feincms3.applications import page_for_app_request
 from feincms3.shortcuts import render_detail
-
-from .models import TranslatedArticle
+from testapp.models import TranslatedArticle
 
 
 def detail(request, pk):

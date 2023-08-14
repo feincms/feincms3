@@ -1,3 +1,4 @@
+import contextlib
 import hashlib
 import itertools
 import re
@@ -177,10 +178,8 @@ def reverse_fallback(fallback, fn, *args, **kwargs):
 
 # Used in feincms3-sites
 def _del_apps_urlconf_cache(**kwargs):
-    try:
+    with contextlib.suppress(AttributeError):
         del _apps_urlconf_cache.cache
-    except AttributeError:
-        pass
 
 
 _apps_urlconf_cache = Local()
@@ -586,23 +585,26 @@ class PageTypeMixin(models.Model):
 
                 raise ValidationError(errors)
 
-        if type and type.app_namespace(self):
-            if self.__class__._default_manager.filter(
-                Q(app_namespace=type.app_namespace(self)),
+        if (
+            type
+            and (app_namespace := type.app_namespace(self))
+            and self.__class__._default_manager.filter(
+                Q(app_namespace=app_namespace),
                 Q(language_code=self.language_code),
                 ~Q(pk=self.pk),
-            ).exists():
-                fields = ["__all__", "page_type"]
-                fields.extend(type.get("required_fields", ()))
-                raise ValidationError(
-                    {
-                        field: _(
-                            'The page type "{page_type}" with the specified configuration exists already.'
-                        ).format(page_type=type.title)
-                        for field in fields
-                        if field not in exclude
-                    }
-                )
+            ).exists()
+        ):
+            fields = ["__all__", "page_type"]
+            fields.extend(type.get("required_fields", ()))
+            raise ValidationError(
+                {
+                    field: _(
+                        'The page type "{page_type}" with the specified configuration exists already.'
+                    ).format(page_type=type.title)
+                    for field in fields
+                    if field not in exclude
+                }
+            )
 
     @staticmethod
     def fill_page_type_choices(sender, **kwargs):
@@ -616,7 +618,7 @@ class PageTypeMixin(models.Model):
             field.choices = [(app.key, app.title) for app in sender.TYPES]
             field.default = sender.TYPES[0].key
             sender.TYPES_DICT = {app.key: app for app in sender.TYPES}
-            global _APPS_MODEL
+            global _APPS_MODEL  # noqa: PLW0603 allow updating the global variable
             _APPS_MODEL = sender
 
     @classmethod

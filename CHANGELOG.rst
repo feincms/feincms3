@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added Python 3.11.
+- Added more ruff rules.
+
+
 4.1 (2023-07-28)
 ~~~~~~~~~~~~~~~~
 

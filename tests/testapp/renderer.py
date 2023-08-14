@@ -1,8 +1,7 @@
 from feincms3.plugins import external, html, richtext
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
-
-from .models import HTML, External, Image, RichText, Snippet
+from testapp.models import HTML, External, Image, RichText, Snippet
 
 
 renderer = TemplatePluginRenderer()

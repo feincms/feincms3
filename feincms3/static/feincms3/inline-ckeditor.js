@@ -17,7 +17,7 @@
     const scripts = document.querySelectorAll("[data-inline-cke-config]")
     scripts.forEach(function parseConfig(script) {
       configs[script.dataset.inlineCkeId] = JSON.parse(
-        script.dataset.inlineCkeConfig
+        script.dataset.inlineCkeConfig,
       )
     })
 

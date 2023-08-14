@@ -5,8 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from feincms3.admin import AncestorFilter, TreeAdmin
 from feincms3.plugins import external, html, image, richtext, snippet
-
-from . import models
+from testapp import models
 
 
 @admin.register(models.Page)
@@ -56,11 +55,3 @@ class PageAdmin(ContentEditor, TreeAdmin):
         external.ExternalInline.create(model=models.External),
         html.HTMLInline.create(model=models.HTML),
     ]
-
-    class Media:
-        css = {
-            "all": (
-                "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",  # noqa
-            )
-        }
-        js = ("app/plugin_buttons.js",)

@@ -28,8 +28,7 @@ from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
 from feincms3.templatetags.feincms3 import translations
-
-from .models import HTML, Article, External, Page, TranslatedArticle
+from testapp.models import HTML, Article, External, Page, TranslatedArticle
 
 
 @contextmanager
@@ -138,7 +137,7 @@ class Test(TestCase):
                 zero_management_form_data("testapp_external_set"),
                 zero_management_form_data("testapp_html_set"),
                 {
-                    "testapp_richtext_set-0-text": '<span style="font-weight:bold">Hello!</span>',  # noqa
+                    "testapp_richtext_set-0-text": '<span style="font-weight:bold">Hello!</span>',
                     "testapp_richtext_set-TOTAL_FORMS": 1,
                     "testapp_richtext_set-0-region": "main",
                     "testapp_richtext_set-0-ordering": 10,
@@ -559,9 +558,8 @@ class Test(TestCase):
         home, sub = self.duplicated_path_setup()
 
         sub.parent = home
-        with transaction.atomic():
-            with self.assertRaises(IntegrityError):
-                sub.save()
+        with transaction.atomic(), self.assertRaises(IntegrityError):
+            sub.save()
 
     def test_duplicated_path_changeform(self):
         """The change form should not crash but handle the constraint error"""
@@ -980,7 +978,7 @@ class Test(TestCase):
                 {},
             ),
             (
-                "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",  # noqa
+                "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",
                 "/blog/42/",
                 {"namespaces": ["stuff", "blog"]},
             ),
@@ -1010,7 +1008,7 @@ class Test(TestCase):
             Template("{% load feincms3 %}{% reverse_app %}")
         self.assertEqual(
             str(cm.exception),
-            "'reverse_app' takes at least two arguments, a namespace and a URL pattern name.",  # noqa
+            "'reverse_app' takes at least two arguments, a namespace and a URL pattern name.",
         )
 
     def test_descendant_update(self):

@@ -242,7 +242,7 @@ class AbstractPage(TreeNode):
 
     @classmethod
     def _check_feincms3_pages_default_ordering(cls, **kwargs):
-        if not tuple(cls._meta.ordering) == ("position",):
+        if tuple(cls._meta.ordering) != ("position",):
             return [
                 Warning(
                     "The page subclass isn't ordered by `position`.",

@@ -5,8 +5,7 @@ from django.urls import NoReverseMatch, set_urlconf
 
 from feincms3.applications import apps_urlconf
 from feincms3.root.passthru import reverse_passthru
-
-from .models import Page
+from testapp.models import Page
 
 
 @contextmanager

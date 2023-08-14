@@ -3,8 +3,7 @@ from django.urls import path
 
 from feincms3.applications import page_for_app_request
 from feincms3.shortcuts import render_detail, render_list
-
-from .models import Article
+from testapp.models import Article
 
 
 def article_list_all(request):
