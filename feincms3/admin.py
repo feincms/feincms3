@@ -74,6 +74,8 @@ class TreeAdmin(ModelAdmin):
     @csrf_protect_m
     def changelist_view(self, request, **kwargs):
         response = super().changelist_view(request, **kwargs)
+        if not hasattr(response, "context_data"):
+            return response
         context = self.tree_admin_context(request)
         response.context_data["media"] += forms.Media(
             css={"all": ["feincms3/box-drawing.css"]},
