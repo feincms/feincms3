@@ -38,3 +38,34 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.field-collapse_column {
+  position: relative;
+}
+
+.collapse-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: inline-block;
+  transition: 0.1s transform;
+  transform: rotate(0deg) translateY(4px);
+  transform-origin: 50% 50%;
+
+  cursor: pointer;
+}
+
+.collapse-toggle.collapsed {
+  transform: rotate(-45deg) translateY(-2px);
+}
+
+.collapse-toggle::after {
+  content: "\25E2";
+}
+
+.collapse-hide {
+  display: none !important;
+}

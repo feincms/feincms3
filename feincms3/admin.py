@@ -3,7 +3,7 @@ from functools import update_wrapper
 
 from django import forms
 from django.contrib import messages
-from django.contrib.admin import ModelAdmin, SimpleListFilter, helpers
+from django.contrib.admin import ModelAdmin, SimpleListFilter, display, helpers
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
@@ -70,9 +70,18 @@ class TreeAdmin(ModelAdmin):
 
     class Media:
         css = {"all": ["feincms3/box-drawing.css"]}
+        js = ["feincms3/box-drawing.js"]
 
     def get_queryset(self, request):
         return self.model._default_manager.with_tree_fields()
+
+    @display(description="")
+    def collapse_column(self, instance):
+        return format_html(
+            '<div class="collapse-toggle collapse-hide" data-pk="{}" data-tree-depth="{}"></div>',
+            instance.pk,
+            instance.tree_depth,
+        )
 
     def indented_title(self, instance, *, ellipsize=True):
         """

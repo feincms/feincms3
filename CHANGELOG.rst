@@ -8,7 +8,8 @@ Next version
 
 - Added Python 3.11.
 - Added more ruff rules.
-
+- Added support for collapsing tree nodes in the ``TreeAdmin``. Initially show
+  only the two topmost levels.
 
 4.1 (2023-07-28)
 ~~~~~~~~~~~~~~~~
