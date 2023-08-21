@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+
+4.2 (2023-08-21)
+~~~~~~~~~~~~~~~~
+
 - Added Python 3.11.
 - Added more ruff rules.
 - Added support for collapsing tree nodes in the ``TreeAdmin``. Initially show
