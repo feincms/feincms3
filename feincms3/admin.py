@@ -1,10 +1,11 @@
+import json
 from collections import defaultdict
 from functools import update_wrapper
 
 from django import forms
 from django.contrib import messages
 from django.contrib.admin import ModelAdmin, SimpleListFilter, display, helpers
-from django.contrib.admin.options import IncorrectLookupParameters
+from django.contrib.admin.options import IncorrectLookupParameters, csrf_protect_m
 from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied
 from django.db import router, transaction
@@ -70,20 +71,25 @@ class TreeAdmin(ModelAdmin):
     list_display = ("indented_title", "move_column")
     initially_collapse_depth = 1
 
-    @property
-    def media(self):
-        return forms.Media(
+    @csrf_protect_m
+    def changelist_view(self, request, **kwargs):
+        response = super().changelist_view(request, **kwargs)
+        context = self.tree_admin_context(request)
+        response.context_data["media"] += forms.Media(
             css={"all": ["feincms3/box-drawing.css"]},
             js=[
                 JS(
                     "feincms3/box-drawing.js",
-                    {
-                        "id": "feincms3-context",
-                        "data-initially-collapse-depth": self.initially_collapse_depth,
-                    },
-                )
+                    {"id": "feincms3-context", "data-context": json.dumps(context)},
+                ),
             ],
         )
+        return response
+
+    def tree_admin_context(self, request):
+        return {
+            "initiallyCollapseDepth": 1,
+        }
 
     def get_queryset(self, request):
         return self.model._default_manager.with_tree_fields()

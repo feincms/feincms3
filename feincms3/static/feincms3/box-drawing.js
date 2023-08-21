@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  const context = document.querySelector("#feincms3-context")
-  initiallyCollapse(+context.getAttribute("data-initially-collapse-depth"))
+  const context = JSON.parse(
+    document.querySelector("#feincms3-context").dataset.context,
+  )
+  initiallyCollapse(context.initiallyCollapseDepth)
 })
