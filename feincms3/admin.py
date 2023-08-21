@@ -14,6 +14,7 @@ from django.utils.html import format_html, mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
+from js_asset.js import JS
 from tree_queries.forms import TreeNodeChoiceField
 
 
@@ -67,10 +68,22 @@ class TreeAdmin(ModelAdmin):
     """
 
     list_display = ("indented_title", "move_column")
+    initially_collapse_depth = 1
 
-    class Media:
-        css = {"all": ["feincms3/box-drawing.css"]}
-        js = ["feincms3/box-drawing.js"]
+    @property
+    def media(self):
+        return forms.Media(
+            css={"all": ["feincms3/box-drawing.css"]},
+            js=[
+                JS(
+                    "feincms3/box-drawing.js",
+                    {
+                        "id": "feincms3-context",
+                        "data-initially-collapse-depth": self.initially_collapse_depth,
+                    },
+                )
+            ],
+        )
 
     def get_queryset(self, request):
         return self.model._default_manager.with_tree_fields()

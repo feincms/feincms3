@@ -19,8 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
       nodes[pk] =
         [pk, treeDepth, [], node, toggle])
     if (treeDepth > 0) {
-      parents[treeDepth - 1][CHILDREN].push(rec)
-      parents[treeDepth - 1][TOGGLE].classList.remove("collapse-hide")
+      // parent may be on the previous page if the changelist is paginated.
+      let parent = parents[treeDepth - 1]
+      if (parent) {
+        parent[CHILDREN].push(rec)
+        parent[TOGGLE].classList.remove("collapse-hide")
+      }
     }
   }
 
@@ -51,5 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  initiallyCollapse(1)
+  const context = document.querySelector("#feincms3-context")
+  initiallyCollapse(+context.getAttribute("data-initially-collapse-depth"))
 })

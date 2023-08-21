@@ -41,6 +41,8 @@
 
 .field-collapse_column {
   position: relative;
+  width: 1rem;
+  padding: 0 !important;
 }
 
 .collapse-toggle {
@@ -52,18 +54,19 @@
 
   display: inline-block;
   transition: 0.1s transform;
-  transform: rotate(0deg) translateY(4px);
+  transform: rotate(0deg) translateY(6px);
   transform-origin: 50% 50%;
 
   cursor: pointer;
 }
 
 .collapse-toggle.collapsed {
-  transform: rotate(-45deg) translateY(-2px);
+  transform: rotate(-45deg) translateY(2px);
 }
 
 .collapse-toggle::after {
   content: "\25E2";
+  font-size: 1rem;
 }
 
 .collapse-hide {
