@@ -9,11 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 17:10+0100\n"
+"POT-Creation-Date: 2023-09-04 16:18+0200\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/feincms3/feincms3/"
-"fr/>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/feincms3/feincms3/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,95 +20,89 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:98 pages.py:69
+#: admin.py:128 pages.py:69
 msgid "title"
 msgstr "titre"
 
-#: admin.py:112
+#: admin.py:142
 msgid "move"
 msgstr "déplacer"
 
-#: admin.py:138
+#: admin.py:168
 #, python-format
 msgid "Move %s"
 msgstr "Déplacer %s"
 
-#: admin.py:143
+#: admin.py:173
 #, python-format
 msgid "Clone %s"
 msgstr "Cloner %s"
 
-#: admin.py:212
+#: admin.py:242
 msgid "New location"
 msgstr "Nouvel emplacement"
 
-#: admin.py:220
-msgid ""
-"Moving isn't possible because there are no valid targets. Maybe you selected "
-"the only root node?"
-msgstr ""
-"Le déplacement n’est pas possible car il n’y a pas de cibles valides. Peut-"
-"être avez-vous sélectionné le seul nœud racine ?"
+#: admin.py:250
+msgid "Moving isn't possible because there are no valid targets. Maybe you selected the only root node?"
+msgstr "Le déplacement n’est pas possible car il n’y a pas de cibles valides. Peut-être avez-vous sélectionné le seul nœud racine ?"
 
-#: admin.py:266 admin.py:277 admin.py:287
+#: admin.py:296 admin.py:307 admin.py:317
 msgid "move here"
 msgstr "déplacer ici"
 
-#: admin.py:345
+#: admin.py:375
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Le nœud %(node)s a été déplacé vers la nouvelle position."
 
-#: admin.py:363
+#: admin.py:393
 msgid "target"
 msgstr "cible"
 
-#: admin.py:373
+#: admin.py:403
 msgid "Replace target's content"
 msgstr "Remplacer le contenu de la cible"
 
-#: admin.py:375
+#: admin.py:405
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Affecte les modèles suivants : %s."
 
-#: admin.py:397
+#: admin.py:427
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Actuel : « %s »"
 
-#: admin.py:407
+#: admin.py:437
 msgid "Cannot clone node to itself."
 msgstr "Impossible de cloner le nœud sur lui-même."
 
-#: admin.py:430
+#: admin.py:460
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Champs mis à jour de %(node)s : %(fields)s"
 
-#: admin.py:454
+#: admin.py:484
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Remplacement du contenu de %(target)s par le contenu de %(source)s."
 
-#: admin.py:481
+#: admin.py:511
 msgid "subtree"
 msgstr ""
 
-#: applications.py:492
+#: applications.py:532
 msgid "page type"
 msgstr "type de page"
 
-#: applications.py:536
+#: applications.py:576
 #, python-format
 msgid "This field is required for the page type \"%s\"."
 msgstr "Ce champ est obligatoire pour le type de page \"%s\"."
 
-#: applications.py:558
+#: applications.py:602
 #, python-brace-format
-msgid ""
-"The page type \"{page_type}\" with the specified configuration exists "
-"already."
+msgid "The page type \"{page_type}\" with the specified configuration exists already."
 msgstr ""
 
 #: mixins.py:20
@@ -120,54 +113,43 @@ msgstr "menu"
 msgid "template"
 msgstr "modèle"
 
-#: mixins.py:123
+#: mixins.py:124
 msgid "language"
 msgstr "langue"
 
-#: mixins.py:153
+#: mixins.py:154
 msgid "translation of"
 msgstr "traduction de"
 
-#: mixins.py:214
-msgid ""
-"Objects in the primary language cannot be the translation of another object."
-msgstr ""
-"Les objets dans la langue principale ne peuvent pas être la traduction d’un "
-"autre objet."
+#: mixins.py:215
+msgid "Objects in the primary language cannot be the translation of another object."
+msgstr "Les objets dans la langue principale ne peuvent pas être la traduction d’un autre objet."
 
-#: mixins.py:228
+#: mixins.py:229
 msgid "Redirect to URL"
 msgstr "Rediriger vers l’URL"
 
-#: mixins.py:236
+#: mixins.py:237
 msgid "Redirect to page"
 msgstr "Rediriger vers la page"
 
-#: mixins.py:259
+#: mixins.py:260
 msgid "Only set one redirect value."
 msgstr "Définissez une seule valeur de redirection."
 
-#: mixins.py:267
+#: mixins.py:268
 msgid "Cannot redirect to self."
 msgstr "Impossible de rediriger vers soi."
 
-#: mixins.py:278
+#: mixins.py:279
 #, python-format
-msgid ""
-"Do not chain redirects. The selected page \"%(title)s\" redirects to "
-"\"%(path)s\"."
-msgstr ""
-"Ne pas enchaîner les redirections. La page sélectionnée « %(title)s » "
-"redirige vers « %(path)s »."
+msgid "Do not chain redirects. The selected page \"%(title)s\" redirects to \"%(path)s\"."
+msgstr "Ne pas enchaîner les redirections. La page sélectionnée « %(title)s » redirige vers « %(path)s »."
 
-#: mixins.py:295
+#: mixins.py:296
 #, python-format
-msgid ""
-"Do not chain redirects. The following pages already redirect to this page: "
-"%(pages)s"
-msgstr ""
-"Ne pas enchaîner les redirections. Les pages suivantes redirigent déjà vers "
-"cette page : %(pages)s"
+msgid "Do not chain redirects. The following pages already redirect to this page: %(pages)s"
+msgstr "Ne pas enchaîner les redirections. Les pages suivantes redirigent déjà vers cette page : %(pages)s"
 
 #: pages.py:68
 msgid "is active"
@@ -186,9 +168,7 @@ msgid "path"
 msgstr "chemin"
 
 #: pages.py:89
-msgid ""
-"Automatically generated by concatenating the parent's path and the slug "
-"unless the path is defined manually."
+msgid "Automatically generated by concatenating the parent's path and the slug unless the path is defined manually."
 msgstr ""
 
 #: pages.py:95
@@ -209,8 +189,7 @@ msgstr "pages"
 
 #: pages.py:149
 msgid "Static paths cannot be empty. Did you mean '/'?"
-msgstr ""
-"Les chemins statiques ne peuvent pas être vides. Vouliez-vous dire « / » ?"
+msgstr "Les chemins statiques ne peuvent pas être vides. Vouliez-vous dire « / » ?"
 
 #: pages.py:171
 #, python-format
@@ -242,12 +221,12 @@ msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Impossible de récupérer le HTML pour cette URL, désolé !"
 
 #: plugins/html.py:26
-msgid ""
-"The content will be inserted directly into the page. It is VERY important "
-"that the HTML snippet is well-formed!"
+msgid "The content will be inserted directly into the page. It is VERY important that the HTML snippet is well-formed!"
+msgstr "Le contenu sera inséré directement dans la page. Il est TRÈS important que l’extrait de code HTML soit bien formé !"
+
+#: plugins/html.py:59
+msgid "Please note that the HTML must be well formed. It's your responsibility to ensure that nothing breaks now or in the future when using this plugin."
 msgstr ""
-"Le contenu sera inséré directement dans la page. Il est TRÈS important que "
-"l’extrait de code HTML soit bien formé !"
 
 #: plugins/image.py:26 plugins/image.py:51
 msgid "image"
@@ -292,11 +271,8 @@ msgstr ""
 #~ msgid "This exact app already exists."
 #~ msgstr "Cette application exacte existe déjà."
 
-#~ msgid ""
-#~ "Objects may only be the translation of objects in the primary language."
-#~ msgstr ""
-#~ "Les objets peuvent seulement être la traduction d’objets dans la langue "
-#~ "principale."
+#~ msgid "Objects may only be the translation of objects in the primary language."
+#~ msgstr "Les objets peuvent seulement être la traduction d’objets dans la langue principale."
 
 #~ msgid "Generated automatically if 'static path' is unset."
 #~ msgstr "Généré automatiquement si le « chemin statique » n’est pas défini."

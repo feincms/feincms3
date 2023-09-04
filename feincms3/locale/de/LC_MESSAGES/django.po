@@ -9,11 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 17:10+0100\n"
+"POT-Creation-Date: 2023-09-04 16:18+0200\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/feincms3/feincms3/"
-"de/>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/feincms3/feincms3/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,98 +20,90 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:98 pages.py:69
+#: admin.py:128 pages.py:69
 msgid "title"
 msgstr "Titel"
 
-#: admin.py:112
+#: admin.py:142
 msgid "move"
 msgstr "verschieben"
 
-#: admin.py:138
+#: admin.py:168
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:143
+#: admin.py:173
 #, python-format
 msgid "Clone %s"
 msgstr "%s klonen"
 
-#: admin.py:212
+#: admin.py:242
 msgid "New location"
 msgstr "Neuer Ort"
 
-#: admin.py:220
-msgid ""
-"Moving isn't possible because there are no valid targets. Maybe you selected "
-"the only root node?"
-msgstr ""
-"Verschieben ist nicht möglich weil es keine gültigen Zielorte gibt. "
-"Vielleicht den einzigen Wurzelknoten gewählt?"
+#: admin.py:250
+msgid "Moving isn't possible because there are no valid targets. Maybe you selected the only root node?"
+msgstr "Verschieben ist nicht möglich weil es keine gültigen Zielorte gibt. Vielleicht den einzigen Wurzelknoten gewählt?"
 
-#: admin.py:266 admin.py:277 admin.py:287
+#: admin.py:296 admin.py:307 admin.py:317
 msgid "move here"
 msgstr "hierhin verschieben"
 
-#: admin.py:345
+#: admin.py:375
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "%(node)s wurde zur neuen Position verschoben."
 
-#: admin.py:363
+#: admin.py:393
 msgid "target"
 msgstr "Ziel"
 
-#: admin.py:373
+#: admin.py:403
 msgid "Replace target's content"
 msgstr "Inhalt des Ziels ersetzen"
 
-#: admin.py:375
+#: admin.py:405
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Betrifft die folgenden Inhalte: %s."
 
-#: admin.py:397
+#: admin.py:427
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Aktuell: „%s“"
 
-#: admin.py:407
+#: admin.py:437
 msgid "Cannot clone node to itself."
 msgstr "Kann Knoten nicht zu sich selbst klonen."
 
-#: admin.py:430
+#: admin.py:460
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Aktualisierte Felder von %(node)s: %(fields)s"
 
-#: admin.py:454
+#: admin.py:484
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Ersetzte den Inhalt von %(target)s mit dem Inhalt von %(source)s."
 
-#: admin.py:481
+#: admin.py:511
 msgid "subtree"
 msgstr "Unterbaum"
 
-#: applications.py:492
+#: applications.py:532
 msgid "page type"
 msgstr "Seitentyp"
 
-#: applications.py:536
+#: applications.py:576
 #, python-format
 msgid "This field is required for the page type \"%s\"."
 msgstr "Dieses Feld wird für den Seitentyp \"%s\" benötigt."
 
-#: applications.py:558
+#: applications.py:602
 #, python-brace-format
-msgid ""
-"The page type \"{page_type}\" with the specified configuration exists "
-"already."
-msgstr ""
-"Der Seitentyp \"{page_type}\" mit der spezifizierten Konfiguration existiert "
-"schon."
+msgid "The page type \"{page_type}\" with the specified configuration exists already."
+msgstr "Der Seitentyp \"{page_type}\" mit der spezifizierten Konfiguration existiert schon."
 
 #: mixins.py:20
 msgid "menu"
@@ -122,54 +113,43 @@ msgstr "Menü"
 msgid "template"
 msgstr "Vorlage"
 
-#: mixins.py:123
+#: mixins.py:124
 msgid "language"
 msgstr "Sprache"
 
-#: mixins.py:153
+#: mixins.py:154
 msgid "translation of"
 msgstr "Übersetzung von"
 
-#: mixins.py:214
-msgid ""
-"Objects in the primary language cannot be the translation of another object."
-msgstr ""
-"Objekte in der primären Sprache können nicht eine Übersetzung eines anderen "
-"Objektes sein."
+#: mixins.py:215
+msgid "Objects in the primary language cannot be the translation of another object."
+msgstr "Objekte in der primären Sprache können nicht eine Übersetzung eines anderen Objektes sein."
 
-#: mixins.py:228
+#: mixins.py:229
 msgid "Redirect to URL"
 msgstr "Weiterleiten zu URL"
 
-#: mixins.py:236
+#: mixins.py:237
 msgid "Redirect to page"
 msgstr "Weiterleiten zu Seite"
 
-#: mixins.py:259
+#: mixins.py:260
 msgid "Only set one redirect value."
 msgstr "Bitte nur einen Weiterleitungs-Wert setzen."
 
-#: mixins.py:267
+#: mixins.py:268
 msgid "Cannot redirect to self."
 msgstr "Kann nicht zu sich selbst weiterleiten."
 
-#: mixins.py:278
+#: mixins.py:279
 #, python-format
-msgid ""
-"Do not chain redirects. The selected page \"%(title)s\" redirects to "
-"\"%(path)s\"."
-msgstr ""
-"Die gewählte Seite „%(title)s“ leitet schon weiter auf „%(path)s“ weiter, "
-"bitte Verkettungen von Weiterleitungen vermeiden."
+msgid "Do not chain redirects. The selected page \"%(title)s\" redirects to \"%(path)s\"."
+msgstr "Die gewählte Seite „%(title)s“ leitet schon weiter auf „%(path)s“ weiter, bitte Verkettungen von Weiterleitungen vermeiden."
 
-#: mixins.py:295
+#: mixins.py:296
 #, python-format
-msgid ""
-"Do not chain redirects. The following pages already redirect to this page: "
-"%(pages)s"
-msgstr ""
-"Verkettung von Weiterleitungen nicht erlaubt. Die folgenden Seiten leiten "
-"schon auf diese Seite weiter: %(pages)s"
+msgid "Do not chain redirects. The following pages already redirect to this page: %(pages)s"
+msgstr "Verkettung von Weiterleitungen nicht erlaubt. Die folgenden Seiten leiten schon auf diese Seite weiter: %(pages)s"
 
 #: pages.py:68
 msgid "is active"
@@ -188,13 +168,8 @@ msgid "path"
 msgstr "Pfad"
 
 #: pages.py:89
-msgid ""
-"Automatically generated by concatenating the parent's path and the slug "
-"unless the path is defined manually."
-msgstr ""
-"Wird automatisch generiert durch das Aneinananderhängen des Pfades der "
-"übergeordneten Seite und des Slugs, ausser wenn der Pfad manuell definiert "
-"wird."
+msgid "Automatically generated by concatenating the parent's path and the slug unless the path is defined manually."
+msgstr "Wird automatisch generiert durch das Aneinananderhängen des Pfades der übergeordneten Seite und des Slugs, ausser wenn der Pfad manuell definiert wird."
 
 #: pages.py:95
 msgid "Path must start and end with a slash (/)."
@@ -246,12 +221,12 @@ msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Kann das HTML für diese URL nicht laden, tut mir leid!"
 
 #: plugins/html.py:26
-msgid ""
-"The content will be inserted directly into the page. It is VERY important "
-"that the HTML snippet is well-formed!"
-msgstr ""
-"Der Inhalt wird direkt in die Seite eingefügt. Es ist SEHR wichtig, dass das "
-"HTML gültig ist!"
+msgid "The content will be inserted directly into the page. It is VERY important that the HTML snippet is well-formed!"
+msgstr "Der Inhalt wird direkt in die Seite eingefügt. Es ist SEHR wichtig, dass das HTML gültig ist!"
+
+#: plugins/html.py:59
+msgid "Please note that the HTML must be well formed. It's your responsibility to ensure that nothing breaks now or in the future when using this plugin."
+msgstr "Das HTML muss unbedingt wohlgeformt sein. Es liegt in Ihrer Verantwortung sicherzustellen, dass jetzt und in Zukunft nichts schiefgeht, wenn Sie dieses Plugin verwenden."
 
 #: plugins/image.py:26 plugins/image.py:51
 msgid "image"
@@ -296,11 +271,8 @@ msgstr "vordefinierte Bausteine"
 #~ msgid "This exact app already exists."
 #~ msgstr "Diese exakte Anwendung existiert bereits."
 
-#~ msgid ""
-#~ "Objects may only be the translation of objects in the primary language."
-#~ msgstr ""
-#~ "Objekte können nur Übersetzungen sein von Objekten in der primären "
-#~ "Sprache."
+#~ msgid "Objects may only be the translation of objects in the primary language."
+#~ msgstr "Objekte können nur Übersetzungen sein von Objekten in der primären Sprache."
 
 #~ msgid "Generated automatically if 'static path' is unset."
 #~ msgstr "Automatisch generiert falls „statischer Pfad“ nicht gesetzt ist."

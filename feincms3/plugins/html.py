@@ -8,7 +8,7 @@ Most useful for people wanting to shoot themselves in the foot.
 from content_editor.admin import ContentEditorInline
 from django import forms
 from django.db import models
-from django.utils.html import mark_safe
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 
 
@@ -51,6 +51,16 @@ class HTMLInline(ContentEditorInline):
         }
     }
     button = '<span class="material-icons">code</span>'
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj=obj)
+        fieldsets[0][1]["description"] = format_html(
+            "<strong><big>{}</big></strong>",
+            _(
+                "Please note that the HTML must be well formed. It's your responsibility to ensure that nothing breaks now or in the future when using this plugin."
+            ),
+        )
+        return fieldsets
 
 
 def render_html(plugin, **kwargs):

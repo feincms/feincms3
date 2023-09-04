@@ -9,11 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 17:10+0100\n"
+"POT-Creation-Date: 2023-09-04 16:18+0200\n"
 "PO-Revision-Date: 2020-12-04 09:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
-"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
-"feincms3/feincms3/nb_NO/>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/feincms3/feincms3/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,98 +20,92 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:98 pages.py:69
+#: admin.py:128 pages.py:69
 msgid "title"
 msgstr "tittel"
 
-#: admin.py:112
+#: admin.py:142
 msgid "move"
 msgstr "flytt"
 
-#: admin.py:138
+#: admin.py:168
 #, python-format
 msgid "Move %s"
 msgstr "Flytt %s"
 
-#: admin.py:143
+#: admin.py:173
 #, python-format
 msgid "Clone %s"
 msgstr "Klon %s"
 
-#: admin.py:212
+#: admin.py:242
 msgid "New location"
 msgstr "Ny plassering"
 
-#: admin.py:220
-msgid ""
-"Moving isn't possible because there are no valid targets. Maybe you selected "
-"the only root node?"
-msgstr ""
-"Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte "
-"den eneste rotnoden?"
+#: admin.py:250
+msgid "Moving isn't possible because there are no valid targets. Maybe you selected the only root node?"
+msgstr "Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte den eneste rotnoden?"
 
-#: admin.py:266 admin.py:277 admin.py:287
+#: admin.py:296 admin.py:307 admin.py:317
 msgid "move here"
 msgstr "flytt hit"
 
-#: admin.py:345
+#: admin.py:375
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Noden %(node)s har blitt flyttet til ny plassering"
 
-#: admin.py:363
+#: admin.py:393
 msgid "target"
 msgstr "mål"
 
-#: admin.py:373
+#: admin.py:403
 msgid "Replace target's content"
 msgstr "Erstatt målets innhold"
 
-#: admin.py:375
+#: admin.py:405
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Har innvirkning på følgende moduler: %s."
 
-#: admin.py:397
+#: admin.py:427
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Nåværende: «%s»"
 
-#: admin.py:407
+#: admin.py:437
 msgid "Cannot clone node to itself."
 msgstr "Kan ikke klone node til seg selv."
 
-#: admin.py:430
+#: admin.py:460
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Oppdaterte felter tilhørende %(node)s: %(fields)s"
 
-#: admin.py:454
+#: admin.py:484
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Erstattet innholdet i %(target)s med innholdet i %(source)s."
 
-#: admin.py:481
+#: admin.py:511
 msgid "subtree"
 msgstr ""
 
-#: applications.py:492
+#: applications.py:532
 #, fuzzy
 #| msgid "page"
 msgid "page type"
 msgstr "side"
 
-#: applications.py:536
+#: applications.py:576
 #, fuzzy, python-format
 #| msgid "This field is required for the application %s."
 msgid "This field is required for the page type \"%s\"."
 msgstr "Dette feltet kreves for programmet %s."
 
-#: applications.py:558
+#: applications.py:602
 #, python-brace-format
-msgid ""
-"The page type \"{page_type}\" with the specified configuration exists "
-"already."
+msgid "The page type \"{page_type}\" with the specified configuration exists already."
 msgstr ""
 
 #: mixins.py:20
@@ -123,53 +116,43 @@ msgstr "meny"
 msgid "template"
 msgstr "mal"
 
-#: mixins.py:123
+#: mixins.py:124
 msgid "language"
 msgstr "språk"
 
-#: mixins.py:153
+#: mixins.py:154
 msgid "translation of"
 msgstr "oversettelse av"
 
-#: mixins.py:214
-msgid ""
-"Objects in the primary language cannot be the translation of another object."
-msgstr ""
-"Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
+#: mixins.py:215
+msgid "Objects in the primary language cannot be the translation of another object."
+msgstr "Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
 
-#: mixins.py:228
+#: mixins.py:229
 msgid "Redirect to URL"
 msgstr "Videresendt til nettadresse"
 
-#: mixins.py:236
+#: mixins.py:237
 msgid "Redirect to page"
 msgstr "Videresendt til side"
 
-#: mixins.py:259
+#: mixins.py:260
 msgid "Only set one redirect value."
 msgstr "Kun sett én videresendingsverdi."
 
-#: mixins.py:267
+#: mixins.py:268
 msgid "Cannot redirect to self."
 msgstr "Kan ikke videresende til seg selv."
 
-#: mixins.py:278
+#: mixins.py:279
 #, python-format
-msgid ""
-"Do not chain redirects. The selected page \"%(title)s\" redirects to "
-"\"%(path)s\"."
-msgstr ""
-"Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» "
-"videresender til «%(path)s»."
+msgid "Do not chain redirects. The selected page \"%(title)s\" redirects to \"%(path)s\"."
+msgstr "Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» videresender til «%(path)s»."
 
-#: mixins.py:295
+#: mixins.py:296
 #, python-format
-msgid ""
-"Do not chain redirects. The following pages already redirect to this page: "
-"%(pages)s"
-msgstr ""
-"Ikke opprett videresendelser i stafett. Følgende sider videresender til "
-"denne siden: %(pages)s"
+msgid "Do not chain redirects. The following pages already redirect to this page: %(pages)s"
+msgstr "Ikke opprett videresendelser i stafett. Følgende sider videresender til denne siden: %(pages)s"
 
 #: pages.py:68
 msgid "is active"
@@ -188,9 +171,7 @@ msgid "path"
 msgstr "sti"
 
 #: pages.py:89
-msgid ""
-"Automatically generated by concatenating the parent's path and the slug "
-"unless the path is defined manually."
+msgid "Automatically generated by concatenating the parent's path and the slug unless the path is defined manually."
 msgstr ""
 
 #: pages.py:95
@@ -245,9 +226,11 @@ msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Klarte ikke å hente HTML for denne nettadressen."
 
 #: plugins/html.py:26
-msgid ""
-"The content will be inserted directly into the page. It is VERY important "
-"that the HTML snippet is well-formed!"
+msgid "The content will be inserted directly into the page. It is VERY important that the HTML snippet is well-formed!"
+msgstr ""
+
+#: plugins/html.py:59
+msgid "Please note that the HTML must be well formed. It's your responsibility to ensure that nothing breaks now or in the future when using this plugin."
 msgstr ""
 
 #: plugins/image.py:26 plugins/image.py:51
@@ -295,8 +278,7 @@ msgstr ""
 #~ msgid "This exact app already exists."
 #~ msgstr "Akkurat dette programmet finnes allerede."
 
-#~ msgid ""
-#~ "Objects may only be the translation of objects in the primary language."
+#~ msgid "Objects may only be the translation of objects in the primary language."
 #~ msgstr "Objekter kan kun være oversettelser av objekter i primærspråk."
 
 #~ msgid "Generated automatically if 'static path' is unset."
