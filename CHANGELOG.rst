@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+4.3 (2023-09-04)
+~~~~~~~~~~~~~~~~
+
 - Fixed a JS crash when using the collapsible nodes functionality with
   paginated changelists.
 - Enabled configuring collapsible nodes.
