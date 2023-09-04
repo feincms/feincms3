@@ -69,7 +69,6 @@ class TreeAdmin(ModelAdmin):
     """
 
     list_display = ("indented_title", "move_column")
-    initially_collapse_depth = 1
 
     @csrf_protect_m
     def changelist_view(self, request, **kwargs):
