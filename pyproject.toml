@@ -33,6 +33,7 @@ dynamic = [
   "version",
 ]
 dependencies = [
+  "asgiref>=3.6",
   "Django>=3.2",
   "django-content-editor>=6",
   "django-js-asset>=2",

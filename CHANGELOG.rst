@@ -11,6 +11,7 @@ Next version
 - Enabled configuring collapsible nodes.
 - Added a very visible warning to the ``HTMLInline`` since the CMS cannot
   really help editors when using the plugin.
+- Declared our dependency on ``asgiref>=3.6``.
 
 4.2 (2023-08-21)
 ~~~~~~~~~~~~~~~~
