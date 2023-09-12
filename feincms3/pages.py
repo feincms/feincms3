@@ -35,6 +35,19 @@ class AbstractPageQuerySet(TreeQuerySet):
         """
         return self.filter(is_active=True)
 
+    def applications(self):
+        """
+        Helper for :func:`~feincms3.applications.apps_urlconf`
+        """
+        fields = ("path", "page_type", "app_namespace", "language_code")
+        return list(
+            self.active()
+            .without_tree_fields()
+            .exclude(app_namespace="")
+            .values_list(*fields)
+            .order_by(*fields)
+        )
+
 
 class AbstractPage(TreeNode):
     """

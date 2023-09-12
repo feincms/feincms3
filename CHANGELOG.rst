@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added the ``AbstractPageQuerySet.applications`` which makes it easier to
+  prepare a list of applications in the format ``apps_urlconf`` expects.
+
 4.3 (2023-09-04)
 ~~~~~~~~~~~~~~~~
 
