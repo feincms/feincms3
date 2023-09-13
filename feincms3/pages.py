@@ -37,12 +37,14 @@ class AbstractPageQuerySet(TreeQuerySet):
 
     def applications(self):
         """
-        Helper for :func:`~feincms3.applications.apps_urlconf`
+        Helper for transforming a queryset into the apps format
+        :func:`~feincms3.applications.apps_urlconf` expects. The queryset isn't
+        filtered (on purpose) so you have to apply the ``.active()`` filtering
+        yourself.
         """
         fields = ("path", "page_type", "app_namespace", "language_code")
         return list(
-            self.active()
-            .without_tree_fields()
+            self.without_tree_fields()
             .exclude(app_namespace="")
             .values_list(*fields)
             .order_by(*fields)

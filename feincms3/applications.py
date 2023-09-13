@@ -221,7 +221,7 @@ def apps_urlconf(*, apps=None):
         apps = getattr(_apps_urlconf_cache, "cache", None)
 
         if apps is None:
-            apps = _APPS_MODEL._default_manager.applications()
+            apps = _APPS_MODEL._default_manager.active().applications()
             # NOTE! We *could* cache the module_name instead but we'd still
             # have to check if the module actually exists in the local Python
             # process.
