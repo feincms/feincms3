@@ -1,3 +1,4 @@
+import sys
 from contextlib import contextmanager
 from types import SimpleNamespace
 
@@ -17,6 +18,7 @@ from feincms3 import applications, mixins
 from feincms3.applications import (
     ApplicationType,
     PageTypeMixin,
+    _del_apps_urlconf_cache,
     apps_urlconf,
     reverse_any,
     reverse_app,
@@ -414,7 +416,35 @@ class Test(TestCase):
 
         # The exact value of course does not matter, just the fact that the
         # value does not change all the time.
+        _del_apps_urlconf_cache()
         self.assertEqual(apps_urlconf(), "urlconf_fe9552a8363ece1f7fcf4970bf575a47")
+
+        updated = Page.objects.filter(page_type="blog").update(
+            page_type="invalid", app_namespace="invalid"
+        )
+        self.assertEqual(updated, 2)
+
+        _del_apps_urlconf_cache()
+        self.assertEqual(apps_urlconf(), "urlconf_4bacbaf40cbe7e198373fd8d629e819c")
+
+        # Blog and publications
+        self.assertEqual(
+            len(
+                sys.modules["urlconf_fe9552a8363ece1f7fcf4970bf575a47"]
+                .urlpatterns[0]
+                .url_patterns
+            ),
+            2,
+        )
+        # Only publications, invalid apps are filtered out
+        self.assertEqual(
+            len(
+                sys.modules["urlconf_4bacbaf40cbe7e198373fd8d629e819c"]
+                .urlpatterns[0]
+                .url_patterns
+            ),
+            1,
+        )
 
     def _apps_validation_models(self, home_path=None):
         home = Page.objects.create(
