@@ -14,7 +14,7 @@ __all__ = ["InlineCKEditorField"]
 
 
 CKEDITOR_JS_URL = JS(
-    "https://cdn.ckeditor.com/4.20.1/full/ckeditor.js",
+    "https://cdn.ckeditor.com/4.22.1/full/ckeditor.js",
     {
         # "integrity": "sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",
         "crossorigin": "anonymous",
