@@ -27,7 +27,7 @@
           el.dataset.inlineCke !== "active" &&
           !el.id.includes("__prefix__")
         ) {
-          CKEDITOR.inline(el, configs[el.dataset.inlineCke])
+          CKEDITOR.replace(el, configs[el.dataset.inlineCke])
           el.dataset.inlineCke = "active"
         }
       })

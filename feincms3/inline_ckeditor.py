@@ -14,7 +14,7 @@ __all__ = ["InlineCKEditorField"]
 
 
 CKEDITOR_JS_URL = JS(
-    "https://cdn.ckeditor.com/4.22.1/full/ckeditor.js",
+    "https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js",
     {
         # "integrity": "sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",
         "crossorigin": "anonymous",
@@ -45,9 +45,23 @@ CKEDITOR_CONFIG = {
                 "HorizontalRule",
             ],
         ],
+        "extraPlugins": ["autogrow"],
+        "autoGrow_onStartup": True,
+        "autoGrow_minHeight": 30,
+        "autoGrow_maxHeight": 0,
+        "autoGrow_bottomSpace": 0,
+        "removePlugins": ["elementspath"],
+        "resize_enabled": False,
     }
 }
-CKEDITOR_CONFIG.update(getattr(settings, "FEINCMS3_CKEDITOR_CONFIG", {}))
+
+
+def _url():
+    return getattr(settings, "FEINCMS3_CKEDITOR_URL", CKEDITOR_JS_URL)
+
+
+def _config():
+    return CKEDITOR_CONFIG | getattr(settings, "FEINCMS3_CKEDITOR_CONFIG", {})
 
 
 class InlineCKEditorField(models.TextField):
@@ -81,7 +95,7 @@ class InlineCKEditorField(models.TextField):
         if "config_name" in kwargs:
             self.widget_config = {
                 "ckeditor": kwargs.pop("ckeditor", None),
-                "config": CKEDITOR_CONFIG[kwargs.pop("config_name")],
+                "config": _config()[kwargs.pop("config_name")],
             }
         else:
             self.widget_config = {
@@ -120,8 +134,8 @@ class InlineCKEditorField(models.TextField):
 
 class InlineCKEditorWidget(forms.Textarea):
     def __init__(self, *args, **kwargs):
-        self.ckeditor = kwargs.pop("ckeditor") or CKEDITOR_JS_URL
-        self.config = kwargs.pop("config") or CKEDITOR_CONFIG["default"]
+        self.ckeditor = kwargs.pop("ckeditor") or _url()
+        self.config = kwargs.pop("config") or _config()["default"]
 
         attrs = kwargs.setdefault("attrs", {})
         attrs["data-inline-cke"] = id(self.config)

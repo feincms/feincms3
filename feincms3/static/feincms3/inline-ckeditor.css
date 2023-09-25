@@ -1,96 +1,17 @@
-.change-form .cke_textarea_inline {
-  max-width: 80ch;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 5px 6px;
+.cke_chrome {
+  min-width: min(100ch, 100%);
+  max-width: 100ch;
 }
 
-.change-form [data-inline-cke-dj41] + .cke_textarea_inline {
-  margin-left: 170px;
-}
-
-@media (max-width: 767px) {
-  .change-form .cke_textarea_inline {
-    margin: 0;
-    width: calc(100%);
-    max-width: none;
-    padding: 6px 8px;
+@media screen and (max-width: 999px) {
+  .change-form [data-inline-cke-dj41] + .cke_chrome {
+    clear: both;
   }
 }
-
-.inline-group[data-inline-type="tabular"] .cke_textarea_inline {
-  margin: 0;
-}
-
-.cke_textarea_inline *:not(hr, table, tr, th, td) {
-  background: none !important;
-  color: inherit !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.cke_textarea_inline h1,
-.cke_textarea_inline h2,
-.cke_textarea_inline h3,
-.cke_textarea_inline h4,
-.cke_textarea_inline h5,
-.cke_textarea_inline h6 {
-  font-size: 1em !important;
-  font-weight: bold;
-  line-height: 1.2;
-  margin: 0 0 0.25rem 0 !important;
-}
-
-.cke_textarea_inline * + h1,
-.cke_textarea_inline * + h2,
-.cke_textarea_inline * + h3,
-.cke_textarea_inline * + h4,
-.cke_textarea_inline * + h5,
-.cke_textarea_inline * + h6 {
-  margin-top: 0.75rem !important;
-}
-
-.cke_textarea_inline h1 {
-  font-size: 2em !important;
-}
-
-.cke_textarea_inline h2 {
-  font-size: 1.7em !important;
-}
-
-.cke_textarea_inline h3 {
-  font-size: 1.4em !important;
-}
-
-.cke_textarea_inline h4 {
-  font-size: 1.2em !important;
-}
-
-.cke_textarea_inline p,
-.cke_textarea_inline ul,
-.cke_textarea_inline ol,
-.cke_textarea_inline hr {
-  margin-bottom: 0.5rem !important;
-}
-
-.cke_textarea_inline > *:last-child {
-  margin-bottom: 0 !important;
-}
-
-.cke_textarea_inline a {
-  color: var(--link-fg) !important;
-  text-decoration: underline !important;
-}
-
-.cke_textarea_inline ul > li {
-  list-style: disc !important;
-  margin-left: 1em !important;
-}
-
-.cke_textarea_inline ol > li {
-  list-style: decimal !important;
-  margin-left: 1em !important;
+@media screen and (min-width: 1000px) {
+  .change-form [data-inline-cke-dj41] + .cke_chrome {
+    margin-left: 170px;
+  }
 }
 
 .cke_dialog_container tr:nth-child(2n),

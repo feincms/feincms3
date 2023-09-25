@@ -9,6 +9,17 @@ Next version
 - Added the ``AbstractPageQuerySet.applications`` which makes it easier to
   prepare a list of applications in the format ``apps_urlconf`` expects.
 - Updated the CKEditor 4 script to the last open source version.
+- Changed back to the classic CKEditor 4. It is with a heavy heart that I have
+  to declare bankruptcy for the inline approach. Overriding the Django admin
+  CSS is too cumbersome and has too many edge cases. You can revert to the old
+  behavior by changing setting ``FEINCMS3_CKEDITOR_URL`` and
+  ``FEINCMS3_CKEDITOR_CONFIG`` to the `appropriate values
+  <https://github.com/matthiask/feincms3/blob/c45a2ed30cc9a69f7634d15e49bdf84b7fe15be5/feincms3/inline_ckeditor.py>`__.
+  If you haven't customized the CKEditor you do not have to change anything.
+  Future versions of feincms3 may switch to a different editor altogether,
+  since CKEditor 5 is a complete rewrite with a different license and CKEditor
+  4 uses a paid LTS model (which I totally understand, no hard feelings at
+  all).
 
 4.3 (2023-09-04)
 ~~~~~~~~~~~~~~~~
