@@ -23,6 +23,7 @@ Next version
   since CKEditor 5 is a complete rewrite with a different license and CKEditor
   4 uses a paid LTS model (which I totally understand, no hard feelings at
   all).
+- Dropped support for Python 3.8.
 
 4.3 (2023-09-04)
 ~~~~~~~~~~~~~~~~
