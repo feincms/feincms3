@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+4.4 (2023-09-25)
+~~~~~~~~~~~~~~~~
+
 - Added the ``AbstractPageQuerySet.applications`` which makes it easier to
   prepare a list of applications in the format ``apps_urlconf`` expects.
 - Updated the CKEditor 4 script to the last open source version.
