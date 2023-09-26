@@ -49,6 +49,7 @@ CKEDITOR_CONFIG = {
             ],
         ],
         "extraPlugins": ["autogrow"],
+        "height": 100,
         "autoGrow_minHeight": 30,
         "autoGrow_maxHeight": 0,
         "autoGrow_bottomSpace": 0,
