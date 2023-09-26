@@ -3,7 +3,10 @@ import json
 import django
 from django import forms
 from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from django.templatetags.static import static
+from django.utils.functional import lazy
 from django.utils.html import strip_tags
 from django.utils.text import Truncator
 from html_sanitizer.django import get_sanitizer
@@ -52,6 +55,9 @@ CKEDITOR_CONFIG = {
         "autoGrow_bottomSpace": 0,
         "removePlugins": ["elementspath"],
         "resize_enabled": False,
+        "contentsCss": lazy(
+            lambda: static("feincms3/inline-ckeditor-contents.css"), str
+        )(),
     }
 }
 
@@ -153,7 +159,9 @@ class InlineCKEditorWidget(forms.Textarea):
                     "feincms3/inline-ckeditor.js",
                     {
                         "data-inline-cke-id": id(self.config),
-                        "data-inline-cke-config": json.dumps(self.config),
+                        "data-inline-cke-config": json.dumps(
+                            self.config, cls=DjangoJSONEncoder
+                        ),
                         "defer": "defer",
                     },
                 ),
