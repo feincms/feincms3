@@ -46,6 +46,8 @@ CKEDITOR_CONFIG = {
                 "Anchor",
                 "-",
                 "HorizontalRule",
+                "-",
+                "Source",
             ],
         ],
         "extraPlugins": ["autogrow"],
