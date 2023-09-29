@@ -6,6 +6,12 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Extended ``|translations`` to with the option to pass an alternative value
+  for ``settings.LANGUAGES`` as a second argument.
+- Stopped automatically sizing the CKEditor on startup; it was always wrong
+  when using custom CSS.
+- Enabled the source button now that we're using the classic CKEditor again.
+
 4.4 (2023-09-25)
 ~~~~~~~~~~~~~~~~
 

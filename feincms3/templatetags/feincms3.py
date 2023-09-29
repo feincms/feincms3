@@ -128,7 +128,7 @@ def reverse_app(parser, token):
 
 
 @register.filter
-def translations(iterable):
+def translations(iterable, languages=None):
     """
     Return a list of dictionaries, one for each language in
     ``settings.LANGUAGES``. An example follows:
@@ -154,7 +154,7 @@ def translations(iterable):
 
     return [
         {"code": code, "name": name, "object": translations.get(code)}
-        for code, name in settings.LANGUAGES
+        for code, name in (languages or settings.LANGUAGES)
     ]
 
 
