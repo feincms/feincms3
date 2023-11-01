@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+4.5 (2023-11-01)
+~~~~~~~~~~~~~~~~
+
 - Extended ``|translations`` to with the option to pass an alternative value
   for ``settings.LANGUAGES`` as a second argument.
 - Stopped automatically sizing the CKEditor on startup; it was always wrong
