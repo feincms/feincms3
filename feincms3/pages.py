@@ -146,9 +146,12 @@ class AbstractPage(TreeNode):
             nodes[node.id] = node
         return nodes
 
+    def _clash_candidates(self):
+        # Hook used in feincms3-sites and feincms3-language-sites
+        return self.__class__._default_manager
+
     def _path_clash_candidates(self):
-        # Hook used in feincms3-sites
-        return self.__class__._default_manager.exclude(
+        return self._clash_candidates().exclude(
             Q(pk__in=self.descendants(), static_path=False) | Q(pk=self.pk)
         )
 

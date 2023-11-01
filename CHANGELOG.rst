@@ -11,6 +11,9 @@ Next version
 - Stopped automatically sizing the CKEditor on startup; it was always wrong
   when using custom CSS.
 - Enabled the source button now that we're using the classic CKEditor again.
+- Restructured the private methods for clash checking so that feincms3-sites
+  and feincms3-language-sites can also narrow the applications check to their
+  needs.
 
 4.4 (2023-09-25)
 ~~~~~~~~~~~~~~~~

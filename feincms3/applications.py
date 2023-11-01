@@ -581,11 +581,13 @@ class PageTypeMixin(models.Model):
         if (
             type
             and (app_namespace := type.app_namespace(self))
-            and self.__class__._default_manager.filter(
+            and self._clash_candidates()
+            .filter(
                 Q(app_namespace=app_namespace),
                 Q(language_code=self.language_code),
                 ~Q(pk=self.pk),
-            ).exists()
+            )
+            .exists()
         ):
             fields = ["__all__", "page_type"]
             fields.extend(type.get("required_fields", ()))
