@@ -32,7 +32,7 @@ class RichTextInline(ContentEditorInline):
     button = '<span class="material-icons">notes</span>'
 
 
-def render_richtext(plugin, **kwargs):
+def render_richtext(plugin, context=None, **kwargs):
     """
     Return the text of the rich text plugin as a safe string (``mark_safe``)
     """

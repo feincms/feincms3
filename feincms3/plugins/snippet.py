@@ -18,7 +18,7 @@ from feincms3.renderer import render_in_context
 __all__ = ("Snippet", "SnippetInline", "render_snippet")
 
 
-def render_snippet(plugin, **kwargs):
+def render_snippet(plugin, context=None, **kwargs):
     """
     Renders the selected template using ``render_to_string``
     """

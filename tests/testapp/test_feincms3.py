@@ -156,7 +156,9 @@ class Test(TestCase):
         response = client.get(page.get_absolute_url())
         self.assertContains(response, "<h1>Home EN</h1>", 1)
         self.assertContains(
-            response, "<strong>Hello!</strong>", 1  # HTML cleansing worked.
+            response,
+            "<strong>Hello!</strong>",
+            1,  # HTML cleansing worked.
         )
 
     def test_noembed_validation(self):

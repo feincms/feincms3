@@ -63,7 +63,7 @@ class ImageInline(ContentEditorInline):
     button = '<span class="material-icons">insert_photo</span>'
 
 
-def render_image(plugin, **kwargs):
+def render_image(plugin, context=None, **kwargs):
     """
     Return a simple, unscaled version of the image
     """

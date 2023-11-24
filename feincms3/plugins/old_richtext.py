@@ -62,7 +62,7 @@ class RichTextInline(ContentEditorInline):
         css = {"screen": ["feincms3/plugin-ckeditor.css"]}
 
 
-def render_richtext(plugin, **kwargs):
+def render_richtext(plugin, context=None, **kwargs):
     """
     Return the text of the rich text plugin as a safe string (``mark_safe``)
     """

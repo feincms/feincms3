@@ -7,6 +7,10 @@ Next version
 ~~~~~~~~~~~~
 
 - Added Python 3.12.
+- Updated the signature of bundled ``render_*`` functions in
+  ``feincms3.plugins`` to also accept a (for now optional) context parameter.
+  Previously those functions were not directly usable with
+  ``RegionRenderer.register``.
 
 4.5 (2023-11-01)
 ~~~~~~~~~~~~~~~~

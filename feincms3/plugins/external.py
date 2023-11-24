@@ -85,7 +85,7 @@ def oembed_html(url, **kwargs):
     return oembed_json(url, **kwargs).get("html", "")
 
 
-def render_external(plugin, **kwargs):
+def render_external(plugin, context=None, **kwargs):
     """
     Render the plugin, embedding it in the appropriate markup for `Foundation's
     responsive-embed element

@@ -63,7 +63,7 @@ class HTMLInline(ContentEditorInline):
         return fieldsets
 
 
-def render_html(plugin, **kwargs):
+def render_html(plugin, context=None, **kwargs):
     """
     Return the HTML code as safe string so that it is not escaped. Of course
     the contents are not guaranteed to be safe at all
