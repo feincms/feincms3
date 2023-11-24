@@ -23,18 +23,18 @@ repos:
     hooks:
       - id: absolufy-imports
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.1.3"
+    rev: "v0.1.6"
     hooks:
       - id: ruff
       - id: ruff-format
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.3
+    rev: v3.1.0
     hooks:
       - id: prettier
         args: [--list-different, --no-semi]
         exclude: "^conf/|.*\\.html$"
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.52.0
+    rev: v8.54.0
     hooks:
       - id: eslint
         additional_dependencies:
@@ -44,7 +44,7 @@ repos:
           - "@babel/eslint-parser"
           - "@babel/preset-env"
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: 1.3.0
+    rev: 1.5.1
     hooks:
       - id: pyproject-fmt
   - repo: https://github.com/abravalheri/validate-pyproject
