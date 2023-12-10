@@ -267,7 +267,11 @@ class RegionRenderer:
             kwargs["cache_key"] = f"regions-{item._meta.label_lower}-{item.pk}"
 
         contents = SimpleLazyObject(
-            lambda: contents_for_item(item, self.plugins(), inherit_from=inherit_from)
+            lambda: contents_for_item(
+                item,
+                {plugin._meta.proxy_for_model or plugin for plugin in self.plugins()},
+                inherit_from=inherit_from,
+            )
         )
         return self.regions_from_contents(contents, timeout=timeout, **kwargs)
 
