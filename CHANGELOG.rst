@@ -6,7 +6,7 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
-- Added Python 3.12.
+- Added Python 3.12, Django 5.0.
 - Updated the signature of bundled ``render_*`` functions in
   ``feincms3.plugins`` to also accept a (for now optional) context parameter.
   Previously those functions were not directly usable with
