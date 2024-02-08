@@ -3,6 +3,7 @@ import json
 import django
 from django import forms
 from django.conf import settings
+from django.core.checks import Warning
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.templatetags.static import static
@@ -60,6 +61,7 @@ CKEDITOR_CONFIG = {
         "contentsCss": lazy(
             lambda: static("feincms3/inline-ckeditor-contents.css"), str
         )(),
+        "versionCheck": False,
     }
 }
 
@@ -98,6 +100,16 @@ class InlineCKEditorField(models.TextField):
         self.cleanse = kwargs.pop("cleanse", None) or get_sanitizer().sanitize
         kwargs = self._extract_widget_config(kwargs)
         super().__init__(*args, **kwargs)
+
+    def check(self, **kwargs):
+        errors = super().check(**kwargs)
+        errors.append(
+            Warning(
+                "The InlineCKEditorField uses the insecure CKEditor 4 non-LTS version.",
+                id="feincms3.W007",
+            )
+        )
+        return errors
 
     def _extract_widget_config(self, kwargs):
         if "config_name" in kwargs:
