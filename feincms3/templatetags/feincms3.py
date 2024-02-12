@@ -159,6 +159,19 @@ def translations(iterable, languages=None):
 
 
 @register.simple_tag
+def translations_from(*iterables, languages=None):
+    t = {
+        code: {"code": code, "name": name, "object": None}
+        for code, name in (languages or settings.LANGUAGES)
+    }
+    for iterable in iterables:
+        if iterable and not isinstance(iterable, str):
+            for obj in iterable:
+                t[obj.language_code]["object"] = obj
+    return t.values()
+
+
+@register.simple_tag
 def maybe_target_blank(href, *, attributes='target="_blank" rel="noopener"'):
     """
     Return the value of ``attributes`` if the first argument isn't a first party link
