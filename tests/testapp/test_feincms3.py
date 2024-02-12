@@ -1231,6 +1231,9 @@ class Test(TestCase):
             title="Neues", language_code="de", translation_of=original
         )
 
+        self.assertEqual(str(original), "News")
+        self.assertEqual(str(translated), "Neues")
+
         self.assertEqual(
             [language["object"] for language in translations(original.translations())],
             [original, translated, None],
