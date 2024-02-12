@@ -168,7 +168,7 @@ def translations_from(*iterables, languages=None):
         if iterable and not isinstance(iterable, str):
             for obj in iterable:
                 t[obj.language_code]["object"] = obj
-    return t.values()
+    return list(t.values())
 
 
 @register.simple_tag

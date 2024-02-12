@@ -29,7 +29,7 @@ from feincms3.plugins.external import NoembedValidationForm, oembed_json
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
-from feincms3.templatetags.feincms3 import translations
+from feincms3.templatetags.feincms3 import translations, translations_from
 from testapp.models import HTML, Article, External, Page, TranslatedArticle
 
 
@@ -1210,7 +1210,7 @@ class Test(TestCase):
 
     def test_language_and_translation_of_mixin_in_app(self):
         """LanguageAndTranslationOfMixin when used within a feincms3 app"""
-        Page.objects.create(
+        p = Page.objects.create(
             title="home-en",
             slug="home-en",
             language_code="en",
@@ -1221,6 +1221,7 @@ class Test(TestCase):
             title="home-de",
             slug="home-de",
             language_code="de",
+            translation_of=p,
             is_active=True,
             page_type="translated-articles",
         )
@@ -1240,6 +1241,20 @@ class Test(TestCase):
             self.assertEqual(
                 translated.get_absolute_url(), f"/home-de/{translated.pk}/"
             )
+
+        t = translations_from(
+            p.translations(),
+            original.translations(),
+            "hello world",
+        )
+        self.assertEqual(
+            t,
+            [
+                {"code": "en", "name": "English", "object": original},
+                {"code": "de", "name": "German", "object": translated},
+                {"code": "fr", "name": "French", "object": None},
+            ],
+        )
 
     def test_language_and_translation_of_mixin_validation(self):
         """Validation logic of LanguageAndTranslationOfMixin works"""
