@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.urls import NoReverseMatch, set_urlconf
 
 from feincms3.applications import apps_urlconf
-from feincms3.root.passthru import reverse_passthru
+from feincms3.root.passthru import reverse_passthru, reverse_passthru_lazy
 from testapp.models import Page
 
 
@@ -53,6 +53,8 @@ class Test(TestCase):
 
     def test_reverse_passthru(self):
         """Try reversing passthru views"""
+        lazy = reverse_passthru_lazy("imprint")
+
         Page.objects.create(
             title="Impressum",
             slug="impressum",
@@ -65,9 +67,12 @@ class Test(TestCase):
 
         with self.assertRaises(NoReverseMatch):
             reverse_passthru("imprint")
+        with self.assertRaises(NoReverseMatch):
+            str(lazy)
         with override_urlconf(apps_urlconf()):
             url = reverse_passthru("imprint")
             self.assertEqual(url, "/de/impressum/")
+            self.assertEqual(str(lazy), "/de/impressum/")
 
         # The fallback keyword argument is supported
         self.assertEqual(reverse_passthru("imprint", fallback="/asdf/"), "/asdf/")
