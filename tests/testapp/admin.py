@@ -11,6 +11,7 @@ from testapp import models
 @admin.register(models.Page)
 class PageAdmin(ContentEditor, TreeAdmin):
     list_display = [
+        "collapse_column",
         "indented_title",
         "move_column",
         "is_active",
