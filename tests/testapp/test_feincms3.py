@@ -1508,6 +1508,9 @@ class Test(TestCase):
         response = self.client.get("/blog/0/")
         self.assertEqual(response.status_code, 404)
 
+        # Our custom 404 handler handles the 404 response in the apps URLconf
+        self.assertContains(response, "My not found handler", status_code=404)
+
     def test_append_slash(self):
         """Requests without slash are redirected if APPEND_SLASH and target exists"""
 

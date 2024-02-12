@@ -8,6 +8,10 @@ def not_found(request):
     raise Http404
 
 
+def handler404(request, exception):
+    return HttpResponse("My not found handler", status=404)
+
+
 urlpatterns = i18n_patterns(
     path("i18n/", lambda request: HttpResponse(request.LANGUAGE_CODE))
 ) + [
