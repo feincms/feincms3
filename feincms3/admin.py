@@ -236,7 +236,9 @@ class MoveForm(forms.Form):
 
         super().__init__(*args, **kwargs)
 
-        choices = self._generate_choices(self.model._default_manager.with_tree_fields())
+        choices = self._generate_choices(
+            self.modeladmin.get_queryset(self.request).with_tree_fields()
+        )
         self.fields["new_location"] = forms.ChoiceField(
             label=_("New location"),
             widget=forms.RadioSelect,
@@ -338,6 +340,10 @@ class MoveForm(forms.Form):
                 self.instance.parent = data["relative"]
             else:
                 self.instance.parent = data["relative"].parent
+
+        # FIXME feincms3-sites would also require site_id,
+        # feincms3-language-sites would also require language_code to be set
+        # for the cleaning step to work correctly in all cases.
 
         # All fields of model are not in this form
         self.instance.full_clean(

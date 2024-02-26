@@ -11,6 +11,9 @@ Next version
   ``feincms3.plugins`` to also accept a (for now optional) context parameter.
   Previously those functions were not directly usable with
   ``RegionRenderer.register``.
+- Move form: Use a potentially restricted ``ModelAdmin.get_queryset`` method
+  instead of the default model manager to generate potential targets.
+- Improved the test coverage a bit.
 
 4.5 (2023-11-01)
 ~~~~~~~~~~~~~~~~
