@@ -48,8 +48,31 @@ from django.http import (
 )
 
 
-class _UseRootMiddlewareResponse(HttpResponseNotFound):
-    """Used by feincms3.root.passthru to tell the middleware to do its thing"""
+class UseRootMiddlewareResponse(HttpResponseNotFound):
+    """
+    Used by feincms3.root.passthru to tell the middleware to do its thing
+
+    You can return this response from your own views as well if some view
+    cannot handle a request and you want to allow the root middleware to try
+    handling the current request. If you just raise ``Http404`` or return a
+    stock ``HttpResponseNotFound`` response the root middleware will do
+    nothing.
+
+    As an example, of ``get_object_or_404(Thing, pk=pk)`` you could do the
+    following if you want to fall back to the root middleware:
+
+    .. code-block:: python
+
+        from feincms3.root.middleware import UseRootMiddlewareResponse
+
+        def view(request, pk):
+            if thing := Thing.objects.filter(pk=pk).first():
+                return render(...)
+            return UseRootMiddlewareResponse()
+
+    This makes the root middleware check the pages for a match, and still
+    return the 404 if no page could be found.
+    """
 
 
 def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=False):
@@ -81,10 +104,10 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
             response = get_response(request)
             if response.status_code != 404 or (
                 request.resolver_match
-                and not isinstance(response, _UseRootMiddlewareResponse)
+                and not isinstance(response, UseRootMiddlewareResponse)
             ):
                 # Response is not a 404 OR the 404 comes from a resolved view
-                # which also didn't return a _UseRootMiddlewareResponse.
+                # which also didn't return a UseRootMiddlewareResponse.
                 return response
             qs = queryset(request) if callable(queryset) else queryset._clone()
             if page := qs.filter(path=request.path_info).first():

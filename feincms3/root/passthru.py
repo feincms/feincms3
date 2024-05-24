@@ -41,11 +41,11 @@ from django.urls import path
 from django.utils.functional import lazy
 
 from feincms3.applications import reverse_app
-from feincms3.root.middleware import _UseRootMiddlewareResponse
+from feincms3.root.middleware import UseRootMiddlewareResponse
 
 
 app_name = "passthru"
-urlpatterns = [path("", lambda request: _UseRootMiddlewareResponse(), name="passthru")]
+urlpatterns = [path("", lambda request: UseRootMiddlewareResponse(), name="passthru")]
 ignore_app_name_mismatch = True
 
 

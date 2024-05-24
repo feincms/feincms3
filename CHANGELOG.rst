@@ -6,6 +6,11 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Renamed the internal root middleware response to
+  ``UseRootMiddlewareResponse`` so that it can be used in advanced or exotic
+  scenarios to allow the root middleware to run even after views return a 404
+  response.
+
 
 4.6 (2024-02-26)
 ~~~~~~~~~~~~~~~~
