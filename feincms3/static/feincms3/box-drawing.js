@@ -60,3 +60,96 @@ document.addEventListener("DOMContentLoaded", () => {
   )
   initiallyCollapse(context.initiallyCollapseDepth)
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+  let statusElement
+  const showMoving = (moving) => {
+    if (!statusElement) {
+      statusElement = document.createElement("div")
+      statusElement.className = "move-status"
+      document.body.append(statusElement)
+    }
+
+    for (const el of document.querySelectorAll(".move-selected"))
+      el.classList.remove("move-selected")
+
+    if (moving) {
+      statusElement.textContent = `${moving.title} (click to cancel)`
+      statusElement.style.display = "block"
+      document.body.classList.add("moving")
+
+      document
+        .querySelector(`[data-pk="${moving.pk}"]`)
+        .closest("tr")
+        .classList.add("move-selected")
+    } else {
+      statusElement.style.display = "none"
+      document.body.classList.remove("moving")
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".move-cut")
+    if (btn) {
+      setMoving(
+        _moving?.pk === btn.dataset.pk
+          ? null
+          : { pk: btn.dataset.pk, title: btn.title },
+      )
+    }
+
+    const el = e.target.closest(".move-status")
+    if (el) {
+      setMoving(null)
+    }
+  })
+
+  document.addEventListener("change", (e) => {
+    const select = e.target.closest(".move-paste")
+    if (select?.value && _moving) {
+      const csrf = document.querySelector(
+        "input[name=csrfmiddlewaretoken]",
+      ).value
+      const body = new FormData()
+      body.append("csrfmiddlewaretoken", csrf)
+      body.append("move", _moving.pk)
+      body.append("relative_to", select.dataset.pk)
+      body.append("position", select.value)
+
+      fetch("move-node/", {
+        credentials: "include",
+        method: "POST",
+        body,
+      }).then(() => {
+        setMoving(null)
+        window.location.reload()
+      })
+
+      // console.debug(JSON.stringify({ _moving, where: `${select.dataset.pk}:${select.value}` }))
+    }
+  })
+
+  document.body.addEventListener("keyup", (e) => {
+    if (e.key === "Escape") setMoving(null)
+  })
+
+  const _key = `f3moving:${location.pathname}`
+  let _moving
+  try {
+    _moving = JSON.parse(sessionStorage.getItem(_key))
+  } catch (e) {
+    console.error(e)
+  }
+
+  const setMoving = (moving) => {
+    _moving = moving
+    if (_moving) {
+      sessionStorage.setItem(_key, JSON.stringify(_moving))
+    } else {
+      sessionStorage.removeItem(_key)
+    }
+    showMoving(_moving)
+  }
+
+  showMoving(_moving)
+})

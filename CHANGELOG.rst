@@ -11,6 +11,8 @@ Next version
   scenarios to allow the root middleware to run even after views return a 404
   response.
 - Switched from ESLint to biome.
+- Changed the move node interface to a cut-paste based interface which works
+  directly in the admin changelist.
 
 
 4.6 (2024-02-26)

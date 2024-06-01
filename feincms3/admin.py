@@ -7,10 +7,12 @@ from django.contrib import messages
 from django.contrib.admin import ModelAdmin, SimpleListFilter, display, helpers
 from django.contrib.admin.options import IncorrectLookupParameters, csrf_protect_m
 from django.contrib.admin.utils import unquote
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import router, transaction
+from django.db.models import F
+from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.urls import re_path, reverse
+from django.urls import path, re_path, reverse
 from django.utils.html import format_html, mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
@@ -131,6 +133,31 @@ class TreeAdmin(ModelAdmin):
         Show a ``move`` link which leads to a separate page where the move
         destination may be selected.
         """
+        return format_html(
+            """\
+<div class="move-controls">
+<button class="move-cut" type="button" data-pk="{}" title="{}">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M760-120 480-400l-94 94q8 15 11 32t3 34q0 66-47 113T240-80q-66 0-113-47T80-240q0-66 47-113t113-47q17 0 34 3t32 11l94-94-94-94q-15 8-32 11t-34 3q-66 0-113-47T80-720q0-66 47-113t113-47q66 0 113 47t47 113q0 17-3 34t-11 32l494 494v40H760ZM600-520l-80-80 240-240h120v40L600-520ZM240-640q33 0 56.5-23.5T320-720q0-33-23.5-56.5T240-800q-33 0-56.5 23.5T160-720q0 33 23.5 56.5T240-640Zm240 180q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6ZM240-160q33 0 56.5-23.5T320-240q0-33-23.5-56.5T240-320q-33 0-56.5 23.5T160-240q0 33 23.5 56.5T240-160Z"/></svg>
+</button>
+<select class="move-paste" data-pk="{}">
+  <option value="">{}</option>
+  <option value="before">{}</option> -->
+  <option value="first-child">{}</option>
+  <option value="last-child">{}</option>
+  <option value="after">{}</option>
+</select>
+</div>
+""",
+            instance.pk,
+            _("Move '{}' to a new location").format(instance),
+            instance.pk,
+            _("move here"),
+            _("before"),
+            _("as first child"),
+            _("as last child"),
+            _("after"),
+        )
+
         opts = self.model._meta
         return format_html(
             '<a href="{}">{}</a>',
@@ -141,7 +168,7 @@ class TreeAdmin(ModelAdmin):
             _("move"),
         )
 
-    move_column.short_description = ""
+    move_column.short_description = _("move")
 
     def get_urls(self):
         """
@@ -150,6 +177,10 @@ class TreeAdmin(ModelAdmin):
 
         info = self.model._meta.app_label, self.model._meta.model_name
         return [
+            path(
+                "move-node/",
+                self.admin_site.admin_view(self.move_node_view),
+            ),
             re_path(
                 r"^(.+)/move/$",
                 action_form_view_decorator(self)(self.move_view),
@@ -161,6 +192,11 @@ class TreeAdmin(ModelAdmin):
                 name="{}_{}_clone".format(*info),
             ),
         ] + super().get_urls()
+
+    def move_node_view(self, request):
+        kw = {"request": request, "modeladmin": self}
+        form = MoveNodeForm(request.POST, **kw)
+        return HttpResponse(form.process())
 
     def move_view(self, request, obj):
         return self.action_form_view(
@@ -217,6 +253,82 @@ class TreeAdmin(ModelAdmin):
         return response
 
 
+class MoveNodeForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.modeladmin = kwargs.pop("modeladmin")
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
+
+        self.fields["move"] = forms.ModelChoiceField(
+            queryset=self.modeladmin.get_queryset(self.request)
+        )
+        self.fields["relative_to"] = forms.ModelChoiceField(
+            queryset=self.modeladmin.get_queryset(self.request)
+        )
+        positions = ("before", "first-child", "last-child", "after")
+        self.fields["position"] = forms.ChoiceField(choices=zip(positions, positions))
+
+    def process(self):
+        if not self.is_valid():
+            messages.error(self.request, _("Invalid node move request."))
+            messages.error(self.request, str(self.errors))
+            return "error"
+
+        move = self.cleaned_data["move"]
+        relative_to = self.cleaned_data["relative_to"]
+        position = self.cleaned_data["position"]
+
+        print(self.cleaned_data)
+
+        if position in {"first-child", "last-child"}:
+            move.parent = relative_to
+            siblings_qs = relative_to.children
+        else:
+            move.parent = relative_to.parent
+            siblings_qs = relative_to.__class__._default_manager.filter(
+                parent=relative_to.parent
+            )
+
+        try:
+            # All fields of model are not in this form
+            move.full_clean(exclude=[f.name for f in move._meta.get_fields()])
+        except ValidationError as exc:
+            messages.error(self.request, _("Error while validating the new position."))
+            messages.error(self.request, str(exc))
+            return "error"
+
+        if position == "before":
+            siblings_qs.filter(position__gte=relative_to.position).update(
+                position=F("position") + 10
+            )
+            move.position = relative_to.position
+            move.save()
+
+        elif position == "after":
+            siblings_qs.filter(position__gt=relative_to.position).update(
+                position=F("position") + 10
+            )
+            move.position = relative_to.position + 10
+            move.save()
+
+        elif position == "first-child":
+            siblings_qs.update(position=F("position") + 10)
+            move.position = 10
+            move.save()
+
+        elif position == "last-child":
+            move.position = 0  # Let AbstractPage.save handle the position
+            move.save()
+
+        else:  # pragma: no cover
+            pass
+
+        messages.success(
+            self.request, _("Node {} has been moved to its new position.").format(move)
+        )
+        return "ok"
+
+
 class MoveForm(forms.Form):
     """
     Allows making the node the left or right sibling or the first or last
@@ -224,9 +336,6 @@ class MoveForm(forms.Form):
 
     Requires the node to be moved as ``obj`` keyword argument.
     """
-
-    class Media:
-        css = {"screen": ["feincms3/move-form.css"]}
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("obj")

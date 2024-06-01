@@ -72,3 +72,52 @@
 .collapse-hide {
   display: none !important;
 }
+
+.move-status {
+  background: var(--selected-row);
+  padding: 8px 16px;
+  cursor: pointer;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  border: 1px solid var(--hairline-color);
+}
+
+.field-move_column {
+  padding: 0;
+  vertical-align: middle;
+}
+
+.move-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.move-cut {
+  appearance: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--link-fg);
+  display: inline-grid;
+  place-items: center;
+}
+
+.moving .move-selected .move-paste {
+  display: none;
+}
+
+#changelist tbody tr.move-selected {
+  background: var(--selected-row);
+}
+
+.move-paste {
+  height: auto;
+  display: none;
+}
+
+.moving .move-paste {
+  display: revert;
+}
