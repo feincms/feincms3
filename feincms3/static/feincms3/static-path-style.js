@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const staticPathField = document.querySelector("#id_static_path")
   const pathField = document.querySelector("#id_path")
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     background: var(--selected-bg, #e4e4e4);
   }
   `
-  document.head.appendChild(style)
+  document.head.append(style)
 
   update()
   staticPathField.addEventListener("change", update)

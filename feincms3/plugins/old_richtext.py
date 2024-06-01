@@ -6,6 +6,7 @@ Depends on
 `django-ckeditor <https://github.com/django-ckeditor/django-ckeditor/>`__ and
 `html-sanitizer <https://pypi.org/project/html-sanitizer>`__.
 """
+
 import warnings
 
 from content_editor.admin import ContentEditorInline

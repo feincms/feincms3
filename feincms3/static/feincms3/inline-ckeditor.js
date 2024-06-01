@@ -1,5 +1,5 @@
 /* global CKEDITOR, django */
-;(function () {
+;(() => {
   function onReady(fn) {
     if (
       document.readyState === "complete" ||
@@ -12,7 +12,7 @@
     }
   }
 
-  onReady(function () {
+  onReady(() => {
     const configs = {}
     const scripts = document.querySelectorAll("[data-inline-cke-config]")
     scripts.forEach(function parseConfig(script) {

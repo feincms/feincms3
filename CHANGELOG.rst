@@ -10,6 +10,7 @@ Next version
   ``UseRootMiddlewareResponse`` so that it can be used in advanced or exotic
   scenarios to allow the root middleware to run even after views return a 404
   response.
+- Switched from ESLint to biome.
 
 
 4.6 (2024-02-26)
