@@ -79,10 +79,10 @@ class TreeAdmin(ModelAdmin):
             return response
         context = self.tree_admin_context(request)
         response.context_data["media"] += forms.Media(
-            css={"all": ["feincms3/box-drawing.css"]},
+            css={"all": ["feincms3/admin.css"]},
             js=[
                 JS(
-                    "feincms3/box-drawing.js",
+                    "feincms3/admin.js",
                     {"id": "feincms3-context", "data-context": json.dumps(context)},
                 ),
             ],
@@ -151,7 +151,7 @@ class TreeAdmin(ModelAdmin):
             instance.pk,
             _("Move '{}' to a new location").format(instance),
             instance.pk,
-            _("move here"),
+            _("move"),
             _("before"),
             _("as first child"),
             _("as last child"),
@@ -293,7 +293,10 @@ class MoveNodeForm(forms.Form):
             # All fields of model are not in this form
             move.full_clean(exclude=[f.name for f in move._meta.get_fields()])
         except ValidationError as exc:
-            messages.error(self.request, _("Error while validating the new position."))
+            messages.error(
+                self.request,
+                _("Error while validating the new position of '{}'.").format(move),
+            )
             messages.error(self.request, str(exc))
             return "error"
 
@@ -324,7 +327,8 @@ class MoveNodeForm(forms.Form):
             pass
 
         messages.success(
-            self.request, _("Node {} has been moved to its new position.").format(move)
+            self.request,
+            _("Node '{}' has been moved to its new position.").format(move),
         )
         return "ok"
 

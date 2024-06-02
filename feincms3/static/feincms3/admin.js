@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       el.classList.remove("move-selected")
 
     if (moving) {
-      statusElement.textContent = `${moving.title} (click to cancel)`
+      statusElement.textContent = `${moving.title} (click here to cancel)`
       statusElement.style.display = "block"
       document.body.classList.add("moving")
 

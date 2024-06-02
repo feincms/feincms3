@@ -79,6 +79,7 @@
   cursor: pointer;
   position: fixed;
   left: 0;
+  right: 0;
   bottom: 0;
   border: 1px solid var(--hairline-color);
 }
@@ -116,6 +117,7 @@
 .move-paste {
   height: auto;
   display: none;
+  max-width: 10ch;
 }
 
 .moving .move-paste {

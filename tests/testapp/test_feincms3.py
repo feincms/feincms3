@@ -75,7 +75,7 @@ class Test(TestCase):
         self.assertContains(response, '<a href="/admin/testapp/page/">Pages</a>', 1)
 
         response = client.get("/admin/testapp/page/")
-        self.assertContains(response, "/static/feincms3/box-drawing.css", 1)
+        self.assertContains(response, "/static/feincms3/admin.css", 1)
         self.assertNotContains(response, "/static/content_editor/content_editor.js")
 
         response = client.get("/admin/testapp/page/add/")

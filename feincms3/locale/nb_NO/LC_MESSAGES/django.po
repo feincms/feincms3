@@ -9,10 +9,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-04 16:18+0200\n"
+"POT-Creation-Date: 2024-06-02 19:46+0200\n"
 "PO-Revision-Date: 2020-12-04 09:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
-"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/feincms3/feincms3/nb_NO/>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
+"feincms3/feincms3/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,92 +21,136 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:128 pages.py:69
+#: admin.py:129 pages.py:84
 msgid "title"
 msgstr "tittel"
 
-#: admin.py:142
+#: admin.py:152
+msgid "Move '{}' to a new location"
+msgstr ""
+
+#: admin.py:154 admin.py:168 admin.py:171
 msgid "move"
 msgstr "flytt"
 
-#: admin.py:168
+#: admin.py:155
+msgid "before"
+msgstr ""
+
+#: admin.py:156
+#, fuzzy
+#| msgid "first child"
+msgid "as first child"
+msgstr "erstes Kind"
+
+#: admin.py:157
+#, fuzzy
+#| msgid "last child"
+msgid "as last child"
+msgstr "letztes Kind"
+
+#: admin.py:158
+msgid "after"
+msgstr ""
+
+#: admin.py:203
 #, python-format
 msgid "Move %s"
 msgstr "Flytt %s"
 
-#: admin.py:173
+#: admin.py:208
 #, python-format
 msgid "Clone %s"
 msgstr "Klon %s"
 
-#: admin.py:242
+#: admin.py:273
+msgid "Invalid node move request."
+msgstr ""
+
+#: admin.py:296
+msgid "Error while validating the new position of '{}'."
+msgstr ""
+
+#: admin.py:327
+#, fuzzy
+#| msgid "The node %(node)s has been moved to the new position."
+msgid "Node '{}' has been moved to its new position."
+msgstr "Noden %(node)s har blitt flyttet til ny plassering"
+
+#: admin.py:352
 msgid "New location"
 msgstr "Ny plassering"
 
-#: admin.py:250
-msgid "Moving isn't possible because there are no valid targets. Maybe you selected the only root node?"
-msgstr "Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte den eneste rotnoden?"
+#: admin.py:360
+msgid ""
+"Moving isn't possible because there are no valid targets. Maybe you selected "
+"the only root node?"
+msgstr ""
+"Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte "
+"den eneste rotnoden?"
 
-#: admin.py:296 admin.py:307 admin.py:317
+#: admin.py:406 admin.py:417 admin.py:427
 msgid "move here"
 msgstr "flytt hit"
 
-#: admin.py:375
+#: admin.py:489
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Noden %(node)s har blitt flyttet til ny plassering"
 
-#: admin.py:393
+#: admin.py:507
 msgid "target"
 msgstr "mål"
 
-#: admin.py:403
+#: admin.py:517
 msgid "Replace target's content"
 msgstr "Erstatt målets innhold"
 
-#: admin.py:405
+#: admin.py:519
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Har innvirkning på følgende moduler: %s."
 
-#: admin.py:427
+#: admin.py:541
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Nåværende: «%s»"
 
-#: admin.py:437
+#: admin.py:551
 msgid "Cannot clone node to itself."
 msgstr "Kan ikke klone node til seg selv."
 
-#: admin.py:460
+#: admin.py:574
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Oppdaterte felter tilhørende %(node)s: %(fields)s"
 
-#: admin.py:484
+#: admin.py:598
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Erstattet innholdet i %(target)s med innholdet i %(source)s."
 
-#: admin.py:511
+#: admin.py:625
 msgid "subtree"
 msgstr ""
 
-#: applications.py:532
+#: applications.py:525
 #, fuzzy
 #| msgid "page"
 msgid "page type"
 msgstr "side"
 
-#: applications.py:576
+#: applications.py:569
 #, fuzzy, python-format
 #| msgid "This field is required for the application %s."
 msgid "This field is required for the page type \"%s\"."
 msgstr "Dette feltet kreves for programmet %s."
 
-#: applications.py:602
+#: applications.py:597
 #, python-brace-format
-msgid "The page type \"{page_type}\" with the specified configuration exists already."
+msgid ""
+"The page type \"{page_type}\" with the specified configuration exists "
+"already."
 msgstr ""
 
 #: mixins.py:20
@@ -125,8 +170,10 @@ msgid "translation of"
 msgstr "oversettelse av"
 
 #: mixins.py:215
-msgid "Objects in the primary language cannot be the translation of another object."
-msgstr "Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
+msgid ""
+"Objects in the primary language cannot be the translation of another object."
+msgstr ""
+"Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
 
 #: mixins.py:229
 msgid "Redirect to URL"
@@ -146,55 +193,65 @@ msgstr "Kan ikke videresende til seg selv."
 
 #: mixins.py:279
 #, python-format
-msgid "Do not chain redirects. The selected page \"%(title)s\" redirects to \"%(path)s\"."
-msgstr "Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» videresender til «%(path)s»."
+msgid ""
+"Do not chain redirects. The selected page \"%(title)s\" redirects to "
+"\"%(path)s\"."
+msgstr ""
+"Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» "
+"videresender til «%(path)s»."
 
 #: mixins.py:296
 #, python-format
-msgid "Do not chain redirects. The following pages already redirect to this page: %(pages)s"
-msgstr "Ikke opprett videresendelser i stafett. Følgende sider videresender til denne siden: %(pages)s"
+msgid ""
+"Do not chain redirects. The following pages already redirect to this page: "
+"%(pages)s"
+msgstr ""
+"Ikke opprett videresendelser i stafett. Følgende sider videresender til "
+"denne siden: %(pages)s"
 
-#: pages.py:68
+#: pages.py:83
 msgid "is active"
 msgstr "er aktiv"
 
-#: pages.py:70
+#: pages.py:85
 msgid "slug"
 msgstr ""
 
-#: pages.py:77
+#: pages.py:92
 msgid "Position is expected to be greater than zero."
 msgstr "Posisjonen forventes å være større enn null."
 
-#: pages.py:84
+#: pages.py:99
 msgid "path"
 msgstr "sti"
 
-#: pages.py:89
-msgid "Automatically generated by concatenating the parent's path and the slug unless the path is defined manually."
+#: pages.py:104
+msgid ""
+"Automatically generated by concatenating the parent's path and the slug "
+"unless the path is defined manually."
 msgstr ""
 
-#: pages.py:95
+#: pages.py:110
 msgid "Path must start and end with a slash (/)."
 msgstr "Sti må starte og slutt med skråstrek (/)."
 
-#: pages.py:99
+#: pages.py:114
 msgid "manually define the path"
 msgstr ""
 
-#: pages.py:106
+#: pages.py:121
 msgid "page"
 msgstr "side"
 
-#: pages.py:107
+#: pages.py:122
 msgid "pages"
 msgstr "sider"
 
-#: pages.py:149
+#: pages.py:167
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statiske stier må fylles ut. Mente du «/»?"
 
-#: pages.py:171
+#: pages.py:189
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Siden «%(page)s» sin nye sti %(path)s finnes allerede."
@@ -226,11 +283,15 @@ msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Klarte ikke å hente HTML for denne nettadressen."
 
 #: plugins/html.py:26
-msgid "The content will be inserted directly into the page. It is VERY important that the HTML snippet is well-formed!"
+msgid ""
+"The content will be inserted directly into the page. It is VERY important "
+"that the HTML snippet is well-formed!"
 msgstr ""
 
-#: plugins/html.py:59
-msgid "Please note that the HTML must be well formed. It's your responsibility to ensure that nothing breaks now or in the future when using this plugin."
+#: plugins/html.py:60
+msgid ""
+"Please note that the HTML must be well formed. It's your responsibility to "
+"ensure that nothing breaks now or in the future when using this plugin."
 msgstr ""
 
 #: plugins/image.py:26 plugins/image.py:51
@@ -253,16 +314,16 @@ msgstr "hoved-interessepunkt"
 msgid "images"
 msgstr "bilder"
 
-#: plugins/old_richtext.py:40 plugins/richtext.py:20
+#: plugins/old_richtext.py:41 plugins/richtext.py:20
 msgid "text"
 msgstr "tekst"
 
-#: plugins/old_richtext.py:44 plugins/richtext.py:24
+#: plugins/old_richtext.py:45 plugins/richtext.py:24
 #, fuzzy
 msgid "rich text"
 msgstr "rikholdig tekst"
 
-#: plugins/old_richtext.py:45 plugins/richtext.py:25
+#: plugins/old_richtext.py:46 plugins/richtext.py:25
 #, fuzzy
 msgid "rich texts"
 msgstr "rikholdige tekster"
@@ -278,7 +339,8 @@ msgstr ""
 #~ msgid "This exact app already exists."
 #~ msgstr "Akkurat dette programmet finnes allerede."
 
-#~ msgid "Objects may only be the translation of objects in the primary language."
+#~ msgid ""
+#~ "Objects may only be the translation of objects in the primary language."
 #~ msgstr "Objekter kan kun være oversettelser av objekter i primærspråk."
 
 #~ msgid "Generated automatically if 'static path' is unset."
@@ -310,12 +372,6 @@ msgstr ""
 
 #~ msgid "right sibling"
 #~ msgstr "rechtes Geschwister"
-
-#~ msgid "first child"
-#~ msgstr "erstes Kind"
-
-#~ msgid "last child"
-#~ msgstr "letztes Kind"
 
 #~ msgid "Make node"
 #~ msgstr "Mach Knoten"
