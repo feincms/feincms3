@@ -281,10 +281,10 @@ class MoveNodeForm(forms.Form):
         print(self.cleaned_data)
 
         if position in {"first-child", "last-child"}:
-            move.parent = relative_to
+            move._set_parent(relative_to)
             siblings_qs = relative_to.children
         else:
-            move.parent = relative_to.parent
+            move._set_parent(relative_to.parent)
             siblings_qs = relative_to.__class__._default_manager.filter(
                 parent=relative_to.parent
             )

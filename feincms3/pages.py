@@ -146,6 +146,10 @@ class AbstractPage(TreeNode):
             nodes[node.id] = node
         return nodes
 
+    def _set_parent(self, parent):
+        # Hook used in feincms3-sites and feincms3-language-sites
+        self.parent = parent
+
     def _clash_candidates(self):
         # Hook used in feincms3-sites and feincms3-language-sites
         return self.__class__._default_manager
