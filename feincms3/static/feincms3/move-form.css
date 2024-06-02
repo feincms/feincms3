@@ -1,0 +1,67 @@
+#id_new_location {
+  clear: both;
+  min-width: 100%;
+  position: relative;
+}
+
+#id_new_location li {
+  line-height: 1;
+  position: relative;
+  top: -8px;
+}
+
+#id_new_location label {
+  display: block;
+  float: none;
+  width: auto;
+}
+
+#id_new_location label::after {
+  display: none !important;
+}
+
+#id_new_location .mv.is-self {
+  background: var(--selected-bg, #e4e4e4);
+}
+
+#id_new_location .mv.to-first {
+  align-self: flex-end;
+  margin: 2px 0 -4px 0;
+}
+
+#id_new_location .mv.is-self,
+#id_new_location .mv-mark {
+  padding: 8px 0 8px 2px;
+  margin: 4px 0 0 0;
+}
+
+#id_new_location .mv-mark {
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+#id_new_location .mv-mark:hover {
+  background: var(--selected-row, #ffc);
+}
+
+#id_new_location input {
+  display: none;
+  align-self: flex-end;
+}
+
+#id_new_location input:checked + .mv.mv-mark,
+#id_new_location input:checked + .mv .mv-mark {
+  font-weight: bold;
+  background: var(--selected-row, #ffc);
+}
+
+@media (max-width: 767px) {
+  label[for^="id_new_location_"] {
+    display: none;
+  }
+}
+
+/* Suppress the rendering of the save as new button in the move form */
+input[name="_saveasnew"] {
+  display: none !important;
+}

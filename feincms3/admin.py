@@ -341,6 +341,9 @@ class MoveForm(forms.Form):
     Requires the node to be moved as ``obj`` keyword argument.
     """
 
+    class Media:
+        css = {"screen": ["feincms3/move-form.css"]}
+
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("obj")
         self.modeladmin = kwargs.pop("modeladmin")
