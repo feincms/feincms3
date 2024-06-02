@@ -69,7 +69,7 @@ msgstr "Fehler beim Validieren der neuen Position von '{}'."
 
 #: admin.py:327
 msgid "Node '{}' has been moved to its new position."
-msgstr "'%(node)s' wurde zur neuen Position verschoben."
+msgstr "'{}' wurde zur neuen Position verschoben."
 
 #: admin.py:352
 msgid "New location"
