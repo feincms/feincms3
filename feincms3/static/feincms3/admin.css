@@ -85,7 +85,8 @@
 }
 
 .field-move_column {
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   vertical-align: middle;
 }
 
@@ -102,7 +103,6 @@
   border: none;
   padding: 0;
   color: var(--link-fg);
-  font-size: 20px;
   display: inline-grid;
   place-items: center;
 }
@@ -123,6 +123,7 @@
   height: auto;
   display: none;
   max-width: 6ch;
+  height: 28px;
 }
 
 .moving .move-paste {

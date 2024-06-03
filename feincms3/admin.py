@@ -82,7 +82,7 @@ class TreeAdmin(ModelAdmin):
             return response
         context = self.tree_admin_context(request)
         response.context_data["media"] += forms.Media(
-            css={"all": ["feincms3/admin.css"]},
+            css={"all": ["content_editor/material-icons.css", "feincms3/admin.css"]},
             js=[
                 JS(
                     "feincms3/admin.js",
@@ -140,10 +140,10 @@ class TreeAdmin(ModelAdmin):
             """\
 <div class="move-controls">
 <button class="move-cut" type="button" data-pk="{}" title="{}">
-  ✀
+  <span class="material-icons">content_cut</span>
 </button>
 <select class="move-paste" data-pk="{}" title="{}">
-  <option value="">⧉</option>
+  <option value="">---</option>
   <option value="before">{}</option> -->
   <option value="first-child">{}</option>
   <option value="last-child">{}</option>
