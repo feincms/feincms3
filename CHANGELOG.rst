@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+5.0 (2024-06-03)
+~~~~~~~~~~~~~~~~
+
 - Renamed the internal root middleware response to
   ``UseRootMiddlewareResponse`` so that it can be used in advanced or exotic
   scenarios to allow the root middleware to run even after views return a 404
@@ -13,6 +16,8 @@ Next version
 - Switched from ESLint to biome.
 - Changed the move node interface to a cut-paste based interface which works
   directly in the admin changelist.
+- Changed the ``TreeAdmin`` ``list_display`` and ``list_display_links`` to be
+  more useful by default.
 
 
 4.6 (2024-02-26)
