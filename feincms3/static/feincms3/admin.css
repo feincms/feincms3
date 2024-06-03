@@ -102,6 +102,7 @@
   border: none;
   padding: 0;
   color: var(--link-fg);
+  font-size: 20px;
   display: inline-grid;
   place-items: center;
 }
@@ -114,10 +115,14 @@
   background: var(--selected-row);
 }
 
+#changelist tbody tr.move-highlight {
+  background: var(--message-success-bg);
+}
+
 .move-paste {
   height: auto;
   display: none;
-  max-width: 10ch;
+  max-width: 6ch;
 }
 
 .moving .move-paste {

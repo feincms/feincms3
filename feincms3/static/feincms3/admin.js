@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   let statusElement
+
   const showMoving = (moving) => {
     if (!statusElement) {
       statusElement = document.createElement("div")
@@ -73,7 +74,18 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const el of document.querySelectorAll(".move-selected"))
       el.classList.remove("move-selected")
 
-    if (moving) {
+    if (moving?.highlight) {
+      const row = document
+        .querySelector(`[data-pk="${moving.pk}"]`)
+        .closest("tr")
+
+      row.classList.add("move-highlight")
+
+      setTimeout(() => {
+        row.classList.remove("move-highlight")
+        setMoving(null)
+      }, 1000)
+    } else if (moving) {
       statusElement.textContent = `${moving.title} (click here to cancel)`
       statusElement.style.display = "block"
       document.body.classList.add("moving")
@@ -121,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         body,
       }).then(() => {
-        setMoving(null)
+        setMoving({ ..._moving, highlight: true })
         window.location.reload()
       })
 

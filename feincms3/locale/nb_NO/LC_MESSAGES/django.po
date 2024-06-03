@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-02 19:46+0200\n"
+"POT-Creation-Date: 2024-06-03 08:51+0200\n"
 "PO-Revision-Date: 2020-12-04 09:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -21,67 +21,73 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:129 pages.py:84
+#: admin.py:132 pages.py:84
 msgid "title"
 msgstr "tittel"
 
-#: admin.py:152
+#: admin.py:155
 msgid "Move '{}' to a new location"
 msgstr ""
 
-#: admin.py:154 admin.py:168 admin.py:171
-msgid "move"
-msgstr "flytt"
+#: admin.py:157
+#, fuzzy
+#| msgid "New location"
+msgid "Choose new location"
+msgstr "Ny plassering"
 
-#: admin.py:155
+#: admin.py:158
 msgid "before"
 msgstr ""
 
-#: admin.py:156
+#: admin.py:159
 #, fuzzy
 #| msgid "first child"
 msgid "as first child"
 msgstr "erstes Kind"
 
-#: admin.py:157
+#: admin.py:160
 #, fuzzy
 #| msgid "last child"
 msgid "as last child"
 msgstr "letztes Kind"
 
-#: admin.py:158
+#: admin.py:161
 msgid "after"
 msgstr ""
 
-#: admin.py:203
+#: admin.py:171 admin.py:174
+msgid "move"
+msgstr "flytt"
+
+#: admin.py:206
 #, python-format
 msgid "Move %s"
 msgstr "Flytt %s"
 
-#: admin.py:208
+#: admin.py:211
 #, python-format
 msgid "Clone %s"
 msgstr "Klon %s"
 
-#: admin.py:273
+#: admin.py:276
 msgid "Invalid node move request."
 msgstr ""
 
-#: admin.py:296
+#: admin.py:301
 msgid "Error while validating the new position of '{}'."
 msgstr ""
 
-#: admin.py:327
+#: admin.py:334
 #, fuzzy
 #| msgid "The node %(node)s has been moved to the new position."
 msgid "Node '{}' has been moved to its new position."
 msgstr "Noden %(node)s har blitt flyttet til ny plassering"
 
-#: admin.py:352
+#: admin.py:362
 msgid "New location"
 msgstr "Ny plassering"
 
-#: admin.py:360
+#: admin.py:370
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -89,48 +95,48 @@ msgstr ""
 "Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte "
 "den eneste rotnoden?"
 
-#: admin.py:406 admin.py:417 admin.py:427
+#: admin.py:416 admin.py:427 admin.py:437
 msgid "move here"
 msgstr "flytt hit"
 
-#: admin.py:489
+#: admin.py:499
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Noden %(node)s har blitt flyttet til ny plassering"
 
-#: admin.py:507
+#: admin.py:517
 msgid "target"
 msgstr "mål"
 
-#: admin.py:517
+#: admin.py:527
 msgid "Replace target's content"
 msgstr "Erstatt målets innhold"
 
-#: admin.py:519
+#: admin.py:529
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Har innvirkning på følgende moduler: %s."
 
-#: admin.py:541
+#: admin.py:551
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Nåværende: «%s»"
 
-#: admin.py:551
+#: admin.py:561
 msgid "Cannot clone node to itself."
 msgstr "Kan ikke klone node til seg selv."
 
-#: admin.py:574
+#: admin.py:584
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Oppdaterte felter tilhørende %(node)s: %(fields)s"
 
-#: admin.py:598
+#: admin.py:608
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Erstattet innholdet i %(target)s med innholdet i %(source)s."
 
-#: admin.py:625
+#: admin.py:635
 msgid "subtree"
 msgstr ""
 
@@ -247,11 +253,11 @@ msgstr "side"
 msgid "pages"
 msgstr "sider"
 
-#: pages.py:167
+#: pages.py:171
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statiske stier må fylles ut. Mente du «/»?"
 
-#: pages.py:189
+#: pages.py:193
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Siden «%(page)s» sin nye sti %(path)s finnes allerede."
