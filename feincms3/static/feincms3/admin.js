@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     parents[treeDepth] = rec
     nodes[pk] = rec
 
+    node.dataset.pk = pk
+    node.dataset.treeDepth = treeDepth
+
     if (treeDepth > 0) {
       // parent may be on the previous page if the changelist is paginated.
       const parent = parents[treeDepth - 1]
@@ -75,9 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       el.classList.remove("move-selected")
 
     if (moving?.highlight) {
-      const row = document
-        .querySelector(`[data-pk="${moving.pk}"]`)
-        .closest("tr")
+      const row = document.querySelector(`tr[data-pk="${moving.pk}"]`)
 
       row.classList.add("move-highlight")
 
@@ -91,8 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("moving")
 
       document
-        .querySelector(`[data-pk="${moving.pk}"]`)
-        .closest("tr")
+        .querySelector(`tr[data-pk="${moving.pk}"]`)
         .classList.add("move-selected")
     } else {
       statusElement.style.display = "none"

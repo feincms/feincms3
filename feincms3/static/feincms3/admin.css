@@ -111,6 +111,26 @@
   display: none;
 }
 
+#changelist tr[data-tree-depth] {
+  --_f: 3%;
+  background: color-mix(in oklab, var(--body-fg) var(--_f), var(--body-bg));
+}
+#changelist tr[data-tree-depth]:nth-child(2n) {
+  --_f: 0%;
+}
+#changelist tr[data-tree-depth="0"] {
+  --_f: 18%;
+}
+#changelist tr[data-tree-depth="0"]:nth-child(2n) {
+  --_f: 15%;
+}
+#changelist tr[data-tree-depth="1"] {
+  --_f: 9%;
+}
+#changelist tr[data-tree-depth="1"]:nth-child(2n) {
+  --_f: 6%;
+}
+
 #changelist tbody tr.move-selected {
   background: var(--selected-row);
 }

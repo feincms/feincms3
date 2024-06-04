@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Tweaked the tree changelist background stripes to also show some of the
+  hierarchy.
+
+
 5.0 (2024-06-03)
 ~~~~~~~~~~~~~~~~
 
