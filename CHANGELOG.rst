@@ -10,6 +10,10 @@ Next version
   hierarchy.
 - Replaced the unicode icons with material icons, they work everywhere.
 - Fixed the width of icons in plugin inlines.
+- Added the ability to add plugins to the renderer which aren't fetched from
+  the database. This is especially useful when used with the JSON plugin from
+  `django-json-schema-editor
+  <https://github.com/matthiask/django-json-schema-editor>`__.
 
 
 5.0 (2024-06-03)

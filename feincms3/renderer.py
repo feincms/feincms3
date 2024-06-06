@@ -89,6 +89,7 @@ class RegionRenderer:
     """
 
     def __init__(self):
+        self._fetch = []
         self._renderers = {}
         self._subregions = {}
         self._marks = {}
@@ -99,7 +100,16 @@ class RegionRenderer:
             if key.startswith("handle_")
         }
 
-    def register(self, plugin, renderer, /, subregion="default", marks=_default_marks):
+    def register(
+        self,
+        plugin,
+        renderer,
+        /,
+        *,
+        subregion="default",
+        marks=_default_marks,
+        fetch=True,
+    ):
         """
         Register a plugin class
 
@@ -126,6 +136,8 @@ class RegionRenderer:
                 f"The plugin {plugin} has already been registered with {self.__class__} before.",
                 stacklevel=2,
             )
+        if fetch:
+            self._fetch.append(plugin)
         self._renderers[plugin] = renderer
         self._subregions[plugin] = subregion
         self._marks[plugin] = marks
@@ -135,11 +147,11 @@ class RegionRenderer:
                 f"The renderer function {renderer} has less than the two required arguments."
             )
 
-    def plugins(self):
+    def plugins(self, *, fetch=True):
         """
         Return a list of all registered plugin classes
         """
-        return list(self._renderers)
+        return self._fetch if fetch else list(self._renderers)
 
     def render_plugin(self, plugin, context):
         """
