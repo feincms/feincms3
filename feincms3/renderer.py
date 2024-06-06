@@ -100,6 +100,14 @@ class RegionRenderer:
             if key.startswith("handle_")
         }
 
+    def copy(self):
+        obj = self.__class__()
+        obj._fetch = list(self._fetch)
+        obj._renderers = dict(self._renderers)
+        obj._subregions = dict(self._subregions)
+        obj._marks = dict(self._marks)
+        return obj
+
     def register(
         self,
         plugin,
