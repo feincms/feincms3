@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+
+5.1 (2024-06-06)
+~~~~~~~~~~~~~~~~
+
 - Tweaked the tree changelist background stripes to also show some of the
   hierarchy.
 - Replaced the unicode icons with material icons, they work everywhere.
