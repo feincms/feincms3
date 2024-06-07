@@ -101,6 +101,9 @@ class RegionRenderer:
         }
 
     def copy(self):
+        """
+        Return a shallow copy of the renderer
+        """
         obj = self.__class__()
         obj._fetch = list(self._fetch)
         obj._renderers = dict(self._renderers)
@@ -109,6 +112,25 @@ class RegionRenderer:
         return obj
 
     def unregister(self, *plugins, keep=()):
+        """
+        Unregister plugins
+
+        You can either pass a list of plugins which should be unregistered:
+
+        .. code-block:: python
+
+            renderer.unregister(HTML, RichText)
+
+        Or you can specify which plugins should be kept:
+
+        .. code-block:: python
+
+            renderer.unregister(keep=(HTML, RichText))
+
+        You cannot do both at the same time.
+
+        Plugins can either be the plugin classes themselves or base classes.
+        """
         if bool(plugins) == bool(keep):
             raise ImproperlyConfigured(
                 "Only ever provide either a list of plugins or a list of plugins to keep."
