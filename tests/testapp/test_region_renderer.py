@@ -223,3 +223,5 @@ class RegionRendererTest(TestCase):
 
         with self.assertRaises(ImproperlyConfigured):
             renderer.unregister(HTML, keep=[RichText])
+        with self.assertRaises(ImproperlyConfigured):
+            renderer.unregister()
