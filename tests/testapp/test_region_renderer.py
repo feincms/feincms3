@@ -148,9 +148,27 @@ class RegionRendererTest(TestCase):
         ):
             r.register(1, lambda plugin: "")
 
+    def test_fetch(self):
+        renderer = RegionRenderer()
+        renderer.register(
+            RichText,
+            template_renderer("renderer/richtext.html"),
+        )
+        renderer.register(
+            HTML,
+            template_renderer("renderer/html.html"),
+            fetch=False,
+        )
+
+        self.assertEqual(renderer.plugins(), [RichText])
+        self.assertEqual(renderer.plugins(fetch=False), [RichText, HTML])
+
     def test_register_unregister(self):
         richtext_renderer = template_renderer("renderer/richtext.html")
         html_renderer = template_renderer("renderer/html.html")
+
+        richtext_cfg = (RichText, richtext_renderer, "default", {"default"}, True)
+        html_cfg = (HTML, html_renderer, "default", {"default"}, True)
 
         renderer = RegionRenderer()
         renderer.register(RichText, richtext_renderer)
@@ -162,63 +180,19 @@ class RegionRendererTest(TestCase):
         r3 = renderer.copy()
         r3.unregister(keep=[HTML])
 
-        self.assertEqual(renderer._fetch, [RichText, HTML])
         self.assertEqual(
-            renderer._renderers,
-            {
-                RichText: richtext_renderer,
-                HTML: html_renderer,
-            },
-        )
-        self.assertEqual(
-            renderer._subregions,
-            {RichText: "default", HTML: "default"},
-        )
-        self.assertEqual(
-            renderer._subregions,
-            {RichText: "default", HTML: "default"},
-        )
-        self.assertEqual(
-            renderer._marks,
-            {RichText: {"default"}, HTML: {"default"}},
+            renderer._plugins,
+            {RichText: richtext_cfg, HTML: html_cfg},
         )
 
         self.assertEqual(
-            r2._renderers,
-            {
-                HTML: html_renderer,
-            },
-        )
-        self.assertEqual(
-            r2._subregions,
-            {HTML: "default"},
-        )
-        self.assertEqual(
-            r2._subregions,
-            {HTML: "default"},
-        )
-        self.assertEqual(
-            r2._marks,
-            {HTML: {"default"}},
+            r2._plugins,
+            {HTML: html_cfg},
         )
 
         self.assertEqual(
-            r3._renderers,
-            {
-                HTML: html_renderer,
-            },
-        )
-        self.assertEqual(
-            r3._subregions,
-            {HTML: "default"},
-        )
-        self.assertEqual(
-            r3._subregions,
-            {HTML: "default"},
-        )
-        self.assertEqual(
-            r3._marks,
-            {HTML: {"default"}},
+            r3._plugins,
+            {HTML: html_cfg},
         )
 
         with self.assertRaises(ImproperlyConfigured):

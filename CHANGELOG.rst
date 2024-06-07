@@ -8,7 +8,8 @@ Next version
 
 - Added ``RegionRenderer.copy()`` and ``RegionRenderer.unregister`` methods to
   allow modifying existing renderers without having to reach into internal
-  attributes.
+  attributes. Refactored the internals to make client code fail early and
+  loudly if it tries to use old ways.
 
 
 5.1 (2024-06-06)

@@ -76,7 +76,13 @@ def template_renderer(template_name, local_context=default_context, /):
     )
 
 
+# See RegionRenderer.register()
 _default_marks = {"default"}
+_plugin = 0
+_renderer = 1
+_subregion = 2
+_marks = 3
+_fetch = 4
 
 
 class RegionRenderer:
@@ -89,12 +95,8 @@ class RegionRenderer:
     """
 
     def __init__(self):
-        self._fetch = []
-        self._renderers = {}
-        self._subregions = {}
-        self._marks = {}
-
-        self.handlers = {
+        self._plugins = {}
+        self._handlers = {
             key[7:]: getattr(self, key)
             for key in dir(self)
             if key.startswith("handle_")
@@ -105,10 +107,7 @@ class RegionRenderer:
         Return a shallow copy of the renderer
         """
         obj = self.__class__()
-        obj._fetch = list(self._fetch)
-        obj._renderers = dict(self._renderers)
-        obj._subregions = dict(self._subregions)
-        obj._marks = dict(self._marks)
+        obj._plugins = dict(self._plugins)
         return obj
 
     def unregister(self, *plugins, keep=()):
@@ -141,11 +140,9 @@ class RegionRenderer:
             if plugins
             else (lambda cls: issubclass(cls, tuple(keep)))
         )
-
-        self._fetch = [p for p in self._fetch if test(p)]
-        self._renderers = {p: r for p, r in self._renderers.items() if test(p)}
-        self._subregions = {p: s for p, s in self._subregions.items() if test(p)}
-        self._marks = {p: m for p, m in self._marks.items() if test(p)}
+        self._plugins = {
+            plugin: cfg for plugin, cfg in self._plugins.items() if test(plugin)
+        }
 
     def register(
         self,
@@ -166,7 +163,7 @@ class RegionRenderer:
         will be a Django template ``Context`` (or even ``RequestContext``)
         instance.
 
-        The two optional keyword arguments' are:
+        The three optional keyword arguments' are:
 
         - ``subregion: str = "default"``: The subregion for this plugin as a
           string or as a callable accepting a single plugin instance. A
@@ -177,35 +174,51 @@ class RegionRenderer:
           running ``isinstance`` on plugin instances especially when using the
           same region renderer class for different content types (e.g. pages
           and blog articles).
+        - ``fetch = True``: By default a plugin is fetched from the database;
+          setting this to ``False`` allows registering plugin classes which
+          shouldn't be fetched from the database.
         """
-        if plugin in self._renderers:
-            warnings.warn(
-                f"The plugin {plugin} has already been registered with {self.__class__} before.",
-                stacklevel=2,
-            )
-        if fetch:
-            self._fetch.append(plugin)
-        self._renderers[plugin] = renderer
-        self._subregions[plugin] = subregion
-        self._marks[plugin] = marks
-
         if callable(renderer) and len(inspect.signature(renderer).parameters) < 2:
             raise ImproperlyConfigured(
                 f"The renderer function {renderer} has less than the two required arguments."
             )
 
+        if plugin in self._plugins:
+            warnings.warn(
+                f"The plugin {plugin} has already been registered with {self.__class__} before.",
+                stacklevel=2,
+            )
+
+        self._plugins[plugin] = (plugin, renderer, subregion, marks, fetch)
+
     def plugins(self, *, fetch=True):
         """
         Return a list of all registered plugin classes
+
+        By default and because of backwards compatibility concerns the method
+        only returns plugins which have been registered for fetching.
         """
-        return self._fetch if fetch else list(self._renderers)
+        return [
+            cfg[_plugin]
+            for cfg in self._plugins.values()
+            if (cfg[_fetch] if fetch else True)
+        ]
+
+    @property
+    def handlers(self):
+        warnings.warn(
+            "The handlers aren't really supposed to be public. Access _handlers if you know what you're doing or propose a better API instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._handlers
 
     def render_plugin(self, plugin, context):
         """
         Render a single plugin using the registered renderer
         """
         try:
-            renderer = self._renderers[plugin.__class__]
+            renderer = self._plugins[plugin.__class__][_renderer]
         except KeyError as exc:
             raise PluginNotRegisteredError(
                 f"Plugin {plugin._meta.label_lower} is not registered"
@@ -219,7 +232,7 @@ class RegionRenderer:
         Return the subregion of a plugin instance
         """
         try:
-            subregion = self._subregions[plugin.__class__]
+            subregion = self._plugins[plugin.__class__][_subregion]
         except KeyError as exc:
             raise PluginNotRegisteredError(
                 f"Plugin {plugin._meta.label_lower} is not registered"
@@ -241,7 +254,7 @@ class RegionRenderer:
         Return the marks of a plugin instance
         """
         try:
-            marks = self._marks[plugin.__class__]
+            marks = self._plugins[plugin.__class__][_marks]
         except KeyError as exc:
             raise PluginNotRegisteredError(
                 f"Plugin {plugin._meta.label_lower} is not registered"
@@ -271,7 +284,7 @@ class RegionRenderer:
         """
         plugins = deque(plugins)
         while plugins:
-            yield from self.handlers[self.subregion(plugins[0])](plugins, context)
+            yield from self._handlers[self.subregion(plugins[0])](plugins, context)
 
     def handle_default(self, plugins, context):
         """
