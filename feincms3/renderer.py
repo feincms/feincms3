@@ -108,6 +108,23 @@ class RegionRenderer:
         obj._marks = dict(self._marks)
         return obj
 
+    def unregister(self, *plugins, keep=()):
+        if bool(plugins) == bool(keep):
+            raise ImproperlyConfigured(
+                "Only ever provide either a list of plugins or a list of plugins to keep."
+            )
+
+        test = (
+            (lambda cls: not issubclass(cls, plugins))
+            if plugins
+            else (lambda cls: issubclass(cls, tuple(keep)))
+        )
+
+        self._fetch = [p for p in self._fetch if test(p)]
+        self._renderers = {p: r for p, r in self._renderers.items() if test(p)}
+        self._subregions = {p: s for p, s in self._subregions.items() if test(p)}
+        self._marks = {p: m for p, m in self._marks.items() if test(p)}
+
     def register(
         self,
         plugin,

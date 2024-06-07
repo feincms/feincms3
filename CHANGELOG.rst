@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added ``RegionRenderer.copy()`` and ``RegionRenderer.unregister`` methods to
+  allow modifying existing renderers without having to reach into internal
+  attributes.
+
 
 5.1 (2024-06-06)
 ~~~~~~~~~~~~~~~~
