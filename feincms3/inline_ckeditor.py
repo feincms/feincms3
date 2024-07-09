@@ -156,6 +156,7 @@ class InlineCKEditorWidget(forms.Textarea):
     def __init__(self, *args, **kwargs):
         self.ckeditor = kwargs.pop("ckeditor") or _url()
         self.config = kwargs.pop("config") or _config()["default"]
+        self.config["versionCheck"] = False
 
         attrs = kwargs.setdefault("attrs", {})
         attrs["data-inline-cke"] = id(self.config)
