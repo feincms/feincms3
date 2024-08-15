@@ -36,6 +36,46 @@ Example code for using this module (e.g. ``app.pages.middleware``):
 
         handler=handler,
     )
+
+Building a preview functionality
+--------------------------------
+
+If you wish that staff users can view a page which isn't active yet, here's how
+to do that. It's basically the same as above except for the fact that the
+queryset function depends on the value of ``request.user.is_staff``.
+
+If you're using feincms3 applications, it may happen that you want to preview
+an application site. This doesn't work without overriding the list of apps
+passed to :func:`~feincms3.applications.apps_urlconf`. The easier way to check
+if the preview should be rendered is to use the fact that most feincms3
+application page types won't have ``template_name`` set. Returning a 404 error
+in this case is a good alternative to crashing with an ``IsADirectoryError``
+because the Django templates backend tries to load the ``templates`` directory
+itself instead of a template file.
+
+.. code-block:: python
+
+    def pages(request):
+        if request.user.is_staff:
+            return Page.objects.all()
+        return Page.objects.active()
+
+    @add_redirect_handler
+    def handler(request, page):
+        if not page.type.template_name:
+            raise Http404(
+                f"The page type {page.type.key!r} doesn't have a template name."
+            )
+        return render(
+            request,
+            page.type.template_name,
+            page_context(request, page=page),
+        )
+
+    page_if_404_middleware = create_page_if_404_middleware(
+        queryset=pages,
+        handler=handler,
+    )
 """
 
 from functools import wraps
