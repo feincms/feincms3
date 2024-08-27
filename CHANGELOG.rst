@@ -9,6 +9,8 @@ Next version
 - Changed the inline CKEditor implementation to also disable the CKEditor 4
   version check (or version nag) when the editor configuration has been
   customized.
+- Added support for embedding content from the SRF (the Swiss television
+  broadcast company).
 
 
 5.2 (2024-06-07)

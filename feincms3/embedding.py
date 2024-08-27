@@ -81,6 +81,9 @@ def embed_vimeo(url):
 
 
 def embed_srf(url):
+    """
+    Return HTML for embedding videos from SRF
+    """
     try:
         match = next(filter(None, (r.search(url) for r in SRF_RE)))
     except StopIteration:
@@ -109,7 +112,7 @@ _default_handlers = [embed_youtube, embed_vimeo, embed_srf]
 
 
 def embed(url, *, handlers=_default_handlers):
-    """embed(url, *, handlers=[embed_youtube, embed_vimeo])
+    """embed(url, *, handlers=[embed_youtube, embed_vimeo, embed_srf])
     Run a selection of embedding handlers and return the first value, or
     ``None`` if URL couldn't be processed by any handler.
 
