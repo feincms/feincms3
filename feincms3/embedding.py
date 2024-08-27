@@ -3,6 +3,7 @@ Embedding videos and other 3rd party content without oEmbed.
 """
 
 import re
+from urllib import parse
 
 from django.utils.html import mark_safe
 
@@ -27,6 +28,14 @@ VIMEO_RE = re.compile(
     r"""vimeo\.com/(video/)?(channels/(.*/)?)?((.+)/review/)?(?P<code>[0-9]+)""",
     re.I,
 )
+SRF_RE = [
+    re.compile(r)
+    for r in (
+        r"(https?:)?\/\/(www\.)?(srf\.ch\/play|tp\.srgssr\.ch\/p)\/(?P<type>radio|tv).*?id=.*",
+        r"(https?:)?\/\/(www\.)?(srf\.ch\/play|tp\.srgssr\.ch\/p)\/(?P<type>radio|tv)/redirect/detail/(?P<id>[\w\-]+)",
+        r"(https?:)?\/\/(www\.)?(srf\.ch\/play|tp\.srgssr\.ch\/p)\/.*?urn=urn:(?P<business_unit>srf|rtr|rts):(?P<type>.*?):(?P<id>[\w\-]+)",
+    )
+]
 
 
 def embed_youtube(url):
@@ -71,7 +80,32 @@ def embed_vimeo(url):
     )
 
 
-_default_handlers = [embed_youtube, embed_vimeo]
+def embed_srf(url):
+    try:
+        match = next(filter(None, (r.search(url) for r in SRF_RE)))
+    except StopIteration:
+        return None
+
+    d = match.groupdict()
+    params = parse.parse_qs(parse.urlparse(url).query)
+
+    id_ = d.get("id") or params["id"][0]
+    type_ = "video" if d["type"] in ("tv", "video") else "audio"
+    business_unit = d.get("business_unit", "srf")
+
+    start = p[0] if (p := params.get("start")) else ""
+    return mark_safe(
+        '<div class="responsive-embed widescreen srfplay">'
+        "<iframe "
+        f"src='//srf.ch/play/embed?urn=urn:{business_unit}:{type_}:{id_}&start={start}' "
+        f"allowfullscreen frameborder='0' name='' "
+        'allow="geolocation *; autoplay; '
+        "'encrypted-media\"></iframe>"
+        "</div>"
+    )
+
+
+_default_handlers = [embed_youtube, embed_vimeo, embed_srf]
 
 
 def embed(url, *, handlers=_default_handlers):
