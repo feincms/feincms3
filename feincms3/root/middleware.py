@@ -5,8 +5,13 @@ Page middleware (``feincms3.root.middleware``)
 The guide recommends using a middleware for the feincms3 pages app. This module
 offers helpers and utilities to reduce the amount of code you have to write.
 The reason why this module is called ``root`` is that the page app's mountpoint
-has to be the Python app's mountpoint when using this. If that's not the case
-you may want to write your own :ref:`urls-and-views`.
+has to be the Python app's mountpoint when using this since the middleware uses
+the value of ``request.path_info`` to find a page for the current request.
+
+If you have other requirements you may want to write your own
+:ref:`urls-and-views` or investigate if modifying ``request.path_info`` works;
+the latter isn't recommended though since it's not officially supported by
+Django.
 
 Example code for using this module (e.g. ``app.pages.middleware``):
 
@@ -136,7 +141,8 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
 
     - ``language_code_redirect`` (``False``): Redirect visitor to the language
       code prefix (e.g. ``/en/``, ``/de-ch/``) if request path equals the
-      script prefix (generally ``/``) and no active page for ``/`` exists.
+      script prefix (generally ``/``), no active page for ``/`` exists and the
+      prefixed version exists.
     """
 
     def outer(get_response):
