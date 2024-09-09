@@ -11,6 +11,7 @@ Next version
   customized.
 - Added support for embedding content from the SRF (the Swiss television
   broadcast company).
+- Lifted the move status indicator above the nav sidebar.
 
 
 5.2 (2024-06-07)

@@ -82,6 +82,7 @@
   right: 0;
   bottom: 0;
   border: 1px solid var(--hairline-color);
+  z-index: 25; /* .nav-sidebar uses 15 and 20 */
 }
 
 .field-move_column {
