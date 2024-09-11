@@ -47,7 +47,7 @@ class ReverseAppNode(Node):
         namespaces = self.namespaces.resolve(context)
         view_name = self.view_name.resolve(context)
         fallback = kwargs.pop("fallback", None)
-        if not isinstance(namespaces, (list, tuple)):
+        if not isinstance(namespaces, list | tuple):
             namespaces = namespaces.split(",")
         # Try to look up the URL. If it fails, raise NoReverseMatch unless the
         # {% reverse ... as var %} construct is used, in which case return
