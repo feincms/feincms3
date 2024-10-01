@@ -269,8 +269,7 @@ class AbstractPage(TreeNode):
                 Warning(
                     "The page subclass isn't ordered by `position`.",
                     hint=(
-                        'Define `ordering = ("position",)` when defining your own'
-                        " `class Meta` on subclassed pages."
+                        'Move `AbstractPage` first in the list of classes which your page class inherits or define `ordering = ("position",)` when defining your own `class Meta` on subclassed pages.'
                     ),
                     obj=cls,
                     id="feincms3.W001",
