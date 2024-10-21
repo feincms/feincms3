@@ -13,6 +13,8 @@ Next version
   broadcast company).
 - Lifted the move status indicator above the nav sidebar.
 - Dropped compatibility with Python 3.9.
+- Updated all pre-commit hooks.
+- Added the ``RedirectMixin.admin_fieldset`` convenience method.
 
 
 5.2 (2024-06-07)

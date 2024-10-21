@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
+from feincms3 import mixins
 from feincms3.admin import AncestorFilter, TreeAdmin
 from feincms3.plugins import external, html, image, richtext, snippet
 from testapp import models
@@ -11,13 +12,13 @@ from testapp import models
 @admin.register(models.Page)
 class PageAdmin(ContentEditor, TreeAdmin):
     list_display = [
-        "collapse_column",
-        "indented_title",
-        "move_column",
+        *TreeAdmin.list_display,
         "is_active",
         "menu",
         "language_code",
         "page_type",
+        "menu",
+        "optional",
     ]
     list_filter = ["is_active", "menu", AncestorFilter]
     list_editable = ["is_active"]
@@ -30,23 +31,24 @@ class PageAdmin(ContentEditor, TreeAdmin):
     raw_id_fields = ["parent"]
 
     fieldsets = [
-        (None, {"fields": ("is_active", "title", "parent")}),
+        (
+            None,
+            {
+                "fields": (
+                    "is_active",
+                    "title",
+                    "parent",
+                    "menu",
+                    ("language_code", "translation_of"),
+                    "page_type",
+                )
+            },
+        ),
         (
             capfirst(_("path")),
             {"fields": ("slug", "static_path", "path"), "classes": ("tabbed",)},
         ),
-        (
-            capfirst(_("settings")),
-            {
-                "fields": (
-                    "menu",
-                    "language_code",
-                    "page_type",
-                    "optional",
-                ),
-                "classes": ("tabbed",),
-            },
-        ),
+        mixins.RedirectMixin.admin_fieldset(),
     ]
 
     inlines = [

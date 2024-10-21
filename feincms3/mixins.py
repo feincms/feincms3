@@ -304,3 +304,14 @@ class RedirectMixin(models.Model):
                     field="redirect_to_page",
                     exclude=exclude,
                 )
+
+    @classmethod
+    def admin_fieldset(cls, **kwargs):
+        cfg = {
+            "fields": (
+                "redirect_to_page",
+                "redirect_to_url",
+            ),
+            "classes": ["tabbed"],
+        } | kwargs
+        return (_("Redirects"), cfg)
