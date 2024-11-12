@@ -281,8 +281,6 @@ class MoveNodeForm(forms.Form):
         relative_to = self.cleaned_data["relative_to"]
         position = self.cleaned_data["position"]
 
-        print(self.cleaned_data)
-
         if position in {"first-child", "last-child"}:
             move._set_parent(relative_to)
             siblings_qs = relative_to.children
