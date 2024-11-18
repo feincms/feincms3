@@ -37,6 +37,12 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
         self.assertTrue(embed("https://www.youtube.com/watch/ZumRshfKdtM"))
         self.assertTrue(embed("https://www.youtube.com/shorts/ZumRshfKdtM"))
 
+        self.assertEqual(
+            embed("https://www.youtube.com/live/ljSZ0xrJjCs"),
+            """\
+<div class="responsive-embed widescreen youtube"><iframe src="https://www.youtube.com/embed/ljSZ0xrJjCs?rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
+        )
+
     def test_vimeo(self):
         """Vimeo video embedding works"""
         self.assertEqual(

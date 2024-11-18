@@ -14,7 +14,7 @@ __all__ = ("embed_youtube", "embed_vimeo", "embed")
 YOUTUBE_RE = re.compile(
     r"""youtu(\.?)be(\.com)?/  # match youtube's domains
         (\#/)? # for mobile urls
-        (embed/|shorts/|watch/)?  # match the embed/shorts/watch url syntax
+        (embed/|shorts/|watch/|live/)?  # match the embed/shorts/watch url syntax
         (v/)?
         (watch\?v=)?  # match the youtube page url
         (ytscreeningroom\?v=)?

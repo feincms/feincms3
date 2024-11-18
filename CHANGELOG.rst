@@ -16,6 +16,7 @@ Next version
 - Updated all pre-commit hooks.
 - Added the ``RedirectMixin.admin_fieldset`` convenience method.
 - Added Python 3.13 to the CI.
+- Added support for YouTube live URLs to the embedding code.
 
 
 5.2 (2024-06-07)
