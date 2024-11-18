@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+
+5.3 (2024-11-18)
+~~~~~~~~~~~~~~~~
+
 - Changed the inline CKEditor implementation to also disable the CKEditor 4
   version check (or version nag) when the editor configuration has been
   customized.
