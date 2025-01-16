@@ -6,6 +6,8 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added Django 5.2a1 to the CI.
+
 
 5.3 (2024-11-18)
 ~~~~~~~~~~~~~~~~
