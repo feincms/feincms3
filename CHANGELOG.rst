@@ -7,6 +7,9 @@ Next version
 ~~~~~~~~~~~~
 
 - Added Django 5.2a1 to the CI.
+- Undeprecated the :mod:`~feincms3.mixins.TemplateMixin`, it's useful even
+  though using :mod:`~feincms3.applications.PageTypeMixin` is obviously
+  preferred.
 
 
 5.3 (2024-11-18)
@@ -201,8 +204,8 @@ Next version
 - Added a system check for the ``app_name`` value of application URLconf
   modules.
 - Added a system check for the values of ``MenuMixin.MENUS``.
-- Slowly start deprecating the :mod:`~feincms3.mixins.TemplateMixin`. (It
-  probably won't go away for a long time.)
+- Slowly start deprecating the :mod:`~feincms3.mixins.TemplateMixin`. (NOTE!
+  The deprecation has been reverted.)
 
 
 `3.3`_ (2022-03-03)

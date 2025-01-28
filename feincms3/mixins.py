@@ -1,5 +1,3 @@
-import warnings
-
 from django.conf import settings
 from django.core.checks import Warning
 from django.db import models
@@ -101,15 +99,6 @@ class TemplateMixin(models.Model):
             field.choices = [(t.key, t.title) for t in sender.TEMPLATES]
             field.default = sender.TEMPLATES[0].key
             sender.TEMPLATES_DICT = {t.key: t for t in sender.TEMPLATES}
-
-            warnings.warn(
-                f"{sender._meta.label} uses the TemplateMixin."
-                " It is recommended to use the PageTypeMixin and TemplateType"
-                " from feincms3.applications even if you're not planning to use"
-                " any apps.",
-                DeprecationWarning,
-                stacklevel=1,
-            )
 
 
 signals.class_prepared.connect(TemplateMixin.fill_template_key_choices)
