@@ -2,6 +2,7 @@ import sys
 from contextlib import contextmanager
 from types import SimpleNamespace
 
+import django
 import requests_mock
 from django.contrib.auth.models import User
 from django.core.checks import Error, Warning
@@ -412,6 +413,20 @@ class Test(TestCase):
                     ),
                     "/de/publications/%s/" % article.pk,
                 )
+
+                if django.VERSION >= (5, 2):
+                    # Forwarding query and fragment params to reverse() works
+                    self.assertEqual(
+                        reverse_app(
+                            (article.category, "articles"),
+                            "article-detail",
+                            kwargs={"pk": article.pk},
+                            languages=["de", "en"],
+                            query={"a": 3},
+                            fragment="world",
+                        ),
+                        "/de/publications/%s/?a=3#world" % article.pk,
+                    )
 
         response = self.client.get("/de/publications/%s/" % article.pk)
         self.assertContains(response, "<h1>publications 0</h1>", 1)
