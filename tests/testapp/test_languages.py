@@ -2,9 +2,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.template import Context, Template
 
-from feincms3.applications import (
-    apps_urlconf,
-)
+from feincms3.applications import _del_apps_urlconf_cache, apps_urlconf
 from feincms3.templatetags.feincms3 import translations, translations_from
 from testapp.models import Page, TranslatedArticle
 from testapp.utils import override_urlconf
@@ -61,6 +59,8 @@ def test_language_and_translation_of_mixin():
 @pytest.mark.django_db
 def test_language_and_translation_of_mixin_in_app():
     """LanguageAndTranslationOfMixin when used within a feincms3 app"""
+    _del_apps_urlconf_cache()
+
     p = Page.objects.create(
         title="home-en",
         slug="home-en",
@@ -89,6 +89,7 @@ def test_language_and_translation_of_mixin_in_app():
         language["object"] for language in translations(original.translations())
     ] == [original, translated, None]
 
+    assert apps_urlconf() != "testapp.urls"
     with override_urlconf(apps_urlconf()):
         assert original.get_absolute_url() == f"/home-en/{original.pk}/"
         assert translated.get_absolute_url() == f"/home-de/{translated.pk}/"
