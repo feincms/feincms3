@@ -47,6 +47,9 @@ optional-dependencies.all = [
 optional-dependencies.tests = [
   "coverage",
   "django-ckeditor",
+  "pytest",
+  "pytest-cov",
+  "pytest-django",
   "requests-mock",
 ]
 urls.Homepage = "https://github.com/matthiask/feincms3/"
@@ -122,3 +125,8 @@ lint.per-file-ignores."*/migrat*/*" = [
 lint.isort.combine-as-imports = true
 lint.isort.lines-after-imports = 2
 lint.mccabe.max-complexity = 15
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "testapp.settings"
+python_files = [ "tests.py", "test_*.py" ]
+addopts = "--reuse-db"

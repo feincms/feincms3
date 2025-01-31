@@ -1,64 +1,59 @@
-from django.test import TestCase
-
 from feincms3.embedding import embed
 
 
-class EmbeddingTest(TestCase):
-    def test_no_handlers(self):
-        """Embed video without handlers"""
-        self.assertEqual(embed("stuff"), None)
+def test_no_handlers():
+    """Embed video without handlers"""
+    assert embed("stuff") is None
 
-    def test_youtube(self):
-        """YouTube video embedding works"""
-        self.assertEqual(
-            embed("https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
-            """\
+
+def test_youtube():
+    """YouTube video embedding works"""
+    assert (
+        embed("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+        == """\
 <div class="responsive-embed widescreen youtube"><iframe \
 src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" frameborder="0" \
-allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
-        )
+allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+    )
 
-        self.assertEqual(
-            embed("https://youtu.be/y7-s5ZvC_2A"),
-            """\
+    assert (
+        embed("https://youtu.be/y7-s5ZvC_2A")
+        == """\
 <div class="responsive-embed widescreen youtube"><iframe \
 src="https://www.youtube.com/embed/y7-s5ZvC_2A?rel=0" frameborder="0" \
-allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
-        )
+allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+    )
 
-        self.assertTrue(
-            embed("https://www.youtube.com/watch?v=4zGnNmncJWg&feature=emb_title")
-        )
-        self.assertTrue(
-            embed(
-                "https://www.youtube.com/watch?v=DYu_bGbZiiQ&list=RDJMOOG7rWTPg&index=7"
-            )
-        )
-        self.assertTrue(embed("https://www.youtube.com/watch/ZumRshfKdtM"))
-        self.assertTrue(embed("https://www.youtube.com/shorts/ZumRshfKdtM"))
+    assert embed("https://www.youtube.com/watch?v=4zGnNmncJWg&feature=emb_title")
+    assert embed(
+        "https://www.youtube.com/watch?v=DYu_bGbZiiQ&list=RDJMOOG7rWTPg&index=7"
+    )
+    assert embed("https://www.youtube.com/watch/ZumRshfKdtM")
+    assert embed("https://www.youtube.com/shorts/ZumRshfKdtM")
 
-        self.assertEqual(
-            embed("https://www.youtube.com/live/ljSZ0xrJjCs"),
-            """\
-<div class="responsive-embed widescreen youtube"><iframe src="https://www.youtube.com/embed/ljSZ0xrJjCs?rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
-        )
+    assert (
+        embed("https://www.youtube.com/live/ljSZ0xrJjCs")
+        == """\
+<div class="responsive-embed widescreen youtube"><iframe src="https://www.youtube.com/embed/ljSZ0xrJjCs?rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+    )
 
-    def test_vimeo(self):
-        """Vimeo video embedding works"""
-        self.assertEqual(
-            embed("https://vimeo.com/455728498"),
-            """\
+
+def test_vimeo():
+    """Vimeo video embedding works"""
+    assert (
+        embed("https://vimeo.com/455728498")
+        == """\
 <div class="responsive-embed widescreen vimeo"><iframe \
 src="https://player.vimeo.com/video/455728498" frameborder="0" \
-allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
-        )
+allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+    )
 
-        self.assertTrue(embed("https://player.vimeo.com/video/417955670"))
+    assert embed("https://player.vimeo.com/video/417955670")
 
-        self.assertEqual(
-            embed("https://vimeo.com/12345678/3213124324"),
-            """\
+    assert (
+        embed("https://vimeo.com/12345678/3213124324")
+        == """\
 <div class="responsive-embed widescreen vimeo"><iframe \
 src="https://player.vimeo.com/video/12345678" frameborder="0" \
-allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>""",
-        )
+allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+    )
