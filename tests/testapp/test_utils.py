@@ -3,10 +3,13 @@ from types import SimpleNamespace
 
 import pytest
 from django.template import Context, Template
+from django.test import RequestFactory
 from django.test.utils import override_settings
 from pytest_django.asserts import assertHTMLEqual
 
+from feincms3.shortcuts import render_list
 from feincms3.utils import is_first_party_link, upload_to
+from testapp.models import Article
 
 
 @pytest.mark.parametrize(
@@ -81,3 +84,20 @@ def test_upload_to():
     assert upload_to(instance, filename) == "/".join(
         ["image", ordinal[1:3], ordinal[3:6], filename]
     )
+
+
+@pytest.mark.django_db
+def test_render_list():
+    """render_list, automatic template selection and pagination"""
+    for i in range(7):
+        Article.objects.create(title=f"Article {i}", category="publications")
+
+    request = RequestFactory().get("/", data={"page": 2})
+    response = render_list(
+        request, list(Article.objects.all()), model=Article, paginate_by=2
+    )
+
+    assert response.template_name == "testapp/article_list.html"
+    assert len(response.context_data["object_list"]) == 2
+    assert response.context_data["object_list"].number == 2
+    assert response.context_data["object_list"].paginator.num_pages == 4

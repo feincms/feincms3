@@ -5,15 +5,13 @@ from django.contrib.auth.models import User
 from django.core.checks import Warning
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, connection, transaction
-from django.test import RequestFactory
 from django.test.utils import CaptureQueriesContext, isolate_apps, override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertRedirects
 
 from feincms3 import mixins
 from feincms3.pages import AbstractPage
-from feincms3.shortcuts import render_list
-from testapp.models import Article, Page
+from testapp.models import Page
 
 
 def zero_management_form_data(prefix):
@@ -696,23 +694,6 @@ def test_get_absolute_url():
     """Page.get_absolute_url with and without paths"""
     assert Page(path="/test/").get_absolute_url() == "/test/"
     assert Page(path="/").get_absolute_url() == "/"
-
-
-@pytest.mark.django_db
-def test_render_list():
-    """render_list, automatic template selection and pagination"""
-    for i in range(7):
-        Article.objects.create(title=f"Article {i}", category="publications")
-
-    request = RequestFactory().get("/", data={"page": 2})
-    response = render_list(
-        request, list(Article.objects.all()), model=Article, paginate_by=2
-    )
-
-    assert response.template_name == "testapp/article_list.html"
-    assert len(response.context_data["object_list"]) == 2
-    assert response.context_data["object_list"].number == 2
-    assert response.context_data["object_list"].paginator.num_pages == 4
 
 
 @isolate_apps("testapp")
