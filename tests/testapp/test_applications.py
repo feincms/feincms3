@@ -17,7 +17,9 @@ from feincms3.applications import (
     PageTypeMixin,
     _del_apps_urlconf_cache,
     apps_urlconf,
+    reverse_any,
     reverse_app,
+    reverse_fallback,
 )
 from feincms3.pages import AbstractPage
 from testapp.models import Article, Page
@@ -149,6 +151,24 @@ def test_apps(client):
         )
         == 1
     )
+
+
+def test_reverse():
+    """Test all code paths through reverse_fallback and reverse_any"""
+    assert reverse_fallback("test", reverse, "not-exists") == "test"
+    assert reverse_fallback("test", reverse, "admin:index") == "/admin/"
+    assert reverse_any(("not-exists", "admin:index")) == "/admin/"
+    assert reverse_any(("not-exists",), fallback="blub") == "blub"
+    assert reverse_app("not", "exists", fallback="blub") == "blub"
+
+    with pytest.raises(
+        NoReverseMatch,
+        match=(
+            r"Reverse for any of 'not-exists-1', 'not-exists-2' with"
+            r" arguments '\[\]' and keyword arguments '{}' not found."
+        ),
+    ):
+        reverse_any(("not-exists-1", "not-exists-2"))
 
 
 @pytest.fixture

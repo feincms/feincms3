@@ -1,9 +1,11 @@
 from types import SimpleNamespace
 
 import pytest
+from django.template import Context, Template
 
 from feincms3.regions import Regions, matches
 from feincms3.renderer import TemplatePluginRenderer
+from testapp.models import HTML, Page
 
 
 class Text(SimpleNamespace):
@@ -269,3 +271,43 @@ def test_unknown_subregion(renderer):
 
     with pytest.raises(KeyError):
         regions.render("main")
+
+
+@pytest.mark.django_db
+def test_standalone_renderer():
+    """The renderer also works when used without a wrapping template"""
+    renderer = TemplatePluginRenderer()
+    renderer.register_template_renderer(
+        HTML, ["renderer/html.html", "renderer/html.html"]
+    )
+
+    page = Page.objects.create(page_type="standard")
+    HTML.objects.create(parent=page, ordering=10, region="main", html="<b>Hello</b>")
+
+    regions = Regions.from_item(page, renderer=renderer)
+    assert regions.render("main", Context()) == "<b>Hello</b>\n"
+
+    regions = Regions.from_item(page, renderer=renderer)
+    assert regions.render("main", Context({"outer": "Test"})) == "<b>Hello</b>Test\n"
+
+    regions = Regions.from_item(page, renderer=renderer, timeout=3)
+    assert regions.render("main", Context({"outer": "Test2"})) == "<b>Hello</b>Test2\n"
+
+    regions = Regions.from_item(page, renderer=renderer, timeout=3)
+    # Output stays the same.
+    assert regions.render("main", Context({"outer": "Test3"})) == "<b>Hello</b>Test2\n"
+
+    assert regions.cache_key("main") == f"testapp.page-{page.pk}-main"
+
+
+@pytest.mark.django_db
+def test_plugin_template_instance():
+    """The renderer handles template instances, not just template paths etc."""
+    renderer = TemplatePluginRenderer()
+    renderer.register_template_renderer(HTML, Template("{{ plugin.html|safe }}"))
+    page = Page.objects.create(page_type="standard")
+    HTML.objects.create(parent=page, ordering=10, region="main", html="<b>Hello</b>")
+
+    regions = Regions.from_item(page, renderer=renderer)
+    assert regions.render("main", Context()) == "<b>Hello</b>"
+    assert regions.render("main", None) == "<b>Hello</b>"
