@@ -100,6 +100,8 @@ lint.extend-select = [
   "PLC",
   "PLE",
   "PLW",
+  # pytest
+  "PT",
   # unused noqa
   "RUF100",
   # pyupgrade

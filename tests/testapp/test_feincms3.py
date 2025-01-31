@@ -447,7 +447,7 @@ def test_apps(client):
 
 
 @pytest.fixture
-def _apps_validation_models():
+def apps_validation_models():
     home = Page.objects.create(
         title="home",
         slug="home",
@@ -470,11 +470,11 @@ def _apps_validation_models():
 
 
 @pytest.mark.django_db
-def test_apps_duplicate(_apps_validation_models):
+def test_apps_duplicate(apps_validation_models):
     """Test that apps cannot be added twice with the exact same configuration"""
     deactivate_all()
 
-    home, blog = _apps_validation_models
+    home, blog = apps_validation_models
 
     home2 = Page.objects.create(
         title="home",
@@ -531,11 +531,11 @@ def test_apps_required_fields():
 
 
 @pytest.mark.django_db
-def test_apps_cloning_validation(client, _apps_validation_models):
+def test_apps_cloning_validation(client, apps_validation_models):
     """Checks that the target is properly validated when cloning"""
     deactivate_all()
 
-    home, blog = _apps_validation_models
+    home, blog = apps_validation_models
 
     clone_url = reverse("admin:testapp_page_clone", args=(blog.pk,))
 

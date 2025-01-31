@@ -10,7 +10,7 @@ from feincms3.utils import is_first_party_link, upload_to
 
 
 @pytest.mark.parametrize(
-    "url, hosts, result",
+    ("url", "hosts", "result"),
     [
         (
             "http://example.com/",
