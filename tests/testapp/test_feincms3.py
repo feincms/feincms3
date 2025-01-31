@@ -1,49 +1,27 @@
 import re
-import sys
-from contextlib import contextmanager
-from types import SimpleNamespace
 
-import django
 import pytest
-import requests_mock
 from django.contrib.auth.models import User
-from django.core.checks import Error, Warning
+from django.core.checks import Warning
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, connection, transaction
-from django.forms.models import modelform_factory
-from django.template import Context, Template, TemplateSyntaxError
+from django.template import Context, Template
 from django.test import RequestFactory
 from django.test.utils import CaptureQueriesContext, isolate_apps, override_settings
-from django.urls import NoReverseMatch, reverse, set_urlconf
-from django.utils.translation import deactivate_all, override
+from django.urls import NoReverseMatch, reverse
 from pytest_django.asserts import assertContains, assertRedirects
 
-from feincms3 import applications, mixins
+from feincms3 import mixins
 from feincms3.applications import (
-    ApplicationType,
-    PageTypeMixin,
-    _del_apps_urlconf_cache,
-    apps_urlconf,
     reverse_any,
     reverse_app,
     reverse_fallback,
 )
 from feincms3.pages import AbstractPage
-from feincms3.plugins.external import NoembedValidationForm, oembed_json
 from feincms3.regions import Regions
 from feincms3.renderer import TemplatePluginRenderer
 from feincms3.shortcuts import render_list
-from feincms3.templatetags.feincms3 import translations, translations_from
-from testapp.models import HTML, Article, External, Page, TranslatedArticle
-
-
-@contextmanager
-def override_urlconf(urlconf):
-    set_urlconf(urlconf)
-    try:
-        yield
-    finally:
-        set_urlconf(None)
+from testapp.models import HTML, Article, Page
 
 
 def zero_management_form_data(prefix):
@@ -164,52 +142,6 @@ def test_add_page(client):
     )
 
 
-def test_noembed_validation():
-    """Test external plugin validation a bit"""
-    deactivate_all()
-
-    form_class = modelform_factory(
-        External, form=NoembedValidationForm, fields="__all__"
-    )
-
-    # Should not crash if URL not provided (765a6b6b53e)
-    form = form_class({})
-    assert not form.is_valid()
-
-    # Provide an invalid URL
-    form = form_class({"url": "http://192.168.250.1:65530"})
-    assert not form.is_valid()
-    assert "<li>Unable to fetch HTML for this URL, sorry!</li>" in str(form.errors)
-
-
-def test_oembed_request():
-    """The oEmbed request generation works as expected"""
-    with requests_mock.Mocker() as m:
-        m.get("https://noembed.com/embed", text="{}")
-
-        assert oembed_json("https://www.youtube.com/watch?v=4zGnNmncJWg") == {}
-        assert oembed_json("https://www.youtube.com/watch?v=4zGnNmncJWg") == {}
-        assert (
-            oembed_json(
-                "https://www.youtube.com/watch?v=4zGnNmncJWg",
-                params={"maxwidth": 4000, "maxheight": 3000},
-            )
-            == {}
-        )
-
-    assert len(m.request_history) == 2
-    assert m.request_history[0].qs["maxwidth"] == ["1200"]
-    assert m.request_history[1].qs["maxwidth"] == ["4000"]
-
-    with requests_mock.Mocker() as m:
-        m.get("https://noembed.com/embed", text='{"different": ""}')
-
-        assert oembed_json("https://www.youtube.com/watch?v=4zGnNmncJWg") == {}
-        assert oembed_json(
-            "https://www.youtube.com/watch?v=4zGnNmncJWg", force_refresh=True
-        ) == {"different": ""}
-
-
 @pytest.mark.django_db
 def test_navigation_and_changelist(client):
     """Test menu template tags and the admin changelist"""
@@ -317,246 +249,6 @@ def test_navigation_and_changelist(client):
         client.get("/admin/testapp/page/?ancestor=abc", follow=False),
         "/admin/testapp/page/?e=1",
     )
-
-
-@pytest.mark.django_db
-def test_apps(client):
-    """Article app test (two instance namespaces, two languages)"""
-    home_de = Page.objects.create(
-        title="home",
-        slug="home",
-        path="/de/",
-        static_path=True,
-        language_code="de",
-        is_active=True,
-        menu="main",
-    )
-    home_en = Page.objects.create(
-        title="home",
-        slug="home",
-        path="/en/",
-        static_path=True,
-        language_code="en",
-        is_active=True,
-        menu="main",
-    )
-
-    for root in (home_de, home_en):
-        for app in ("blog", "publications"):
-            Page.objects.create(
-                title=app,
-                slug=app,
-                static_path=False,
-                language_code=root.language_code,
-                is_active=True,
-                page_type=app,
-                parent_id=root.pk,
-            )
-
-    for i in range(7):
-        for category in ("publications", "blog"):
-            Article.objects.create(title=f"{category} {i}", category=category)
-
-    assertContains(client.get("/de/blog/all/"), 'class="article"', 7)
-    assertContains(client.get("/de/blog/?page=2"), 'class="article"', 2)
-    assertContains(
-        client.get("/de/blog/?page=42"),
-        'class="article"',
-        2,  # Last page with instances (2nd)
-    )
-    assertContains(
-        client.get("/de/blog/?page=invalid"),
-        'class="article"',
-        5,  # First page
-    )
-
-    response = client.get("/de/blog/")
-    assertContains(response, 'class="article"', 5)
-
-    response = client.get("/en/publications/")
-    assertContains(response, 'class="article"', 5)
-
-    with override_urlconf(apps_urlconf()):
-        article = Article.objects.order_by("pk").first()
-        with override("de"):
-            assert article.get_absolute_url() == f"/de/publications/{article.pk}/"
-
-        with override("en"):
-            assert article.get_absolute_url() == f"/en/publications/{article.pk}/"
-
-            # The german URL is returned when specifying the ``languages``
-            # list explicitly.
-            assert (
-                reverse_app(
-                    (article.category, "articles"),
-                    "article-detail",
-                    kwargs={"pk": article.pk},
-                    languages=["de", "en"],
-                )
-                == f"/de/publications/{article.pk}/"
-            )
-
-            if django.VERSION >= (5, 2):
-                # Forwarding query and fragment params to reverse() works
-                assert (
-                    reverse_app(
-                        (article.category, "articles"),
-                        "article-detail",
-                        kwargs={"pk": article.pk},
-                        languages=["de", "en"],
-                        query={"a": 3},
-                        fragment="world",
-                    )
-                    == "/de/publications/%s/?a=3#world" % article.pk
-                )
-
-    response = client.get(f"/de/publications/{article.pk}/")
-    assertContains(response, "<h1>publications 0</h1>", 1)
-
-    # The exact value of course does not matter, just the fact that the
-    # value does not change all the time.
-    _del_apps_urlconf_cache()
-    assert apps_urlconf() == "urlconf_fe9552a8363ece1f7fcf4970bf575a47"
-
-    updated = Page.objects.filter(page_type="blog").update(
-        page_type="invalid", app_namespace="invalid"
-    )
-    assert updated == 2
-
-    _del_apps_urlconf_cache()
-    assert apps_urlconf() == "urlconf_4bacbaf40cbe7e198373fd8d629e819c"
-
-    # Blog and publications
-    assert (
-        len(
-            sys.modules["urlconf_fe9552a8363ece1f7fcf4970bf575a47"]
-            .urlpatterns[0]
-            .url_patterns
-        )
-        == 2
-    )
-    # Only publications, invalid apps are filtered out
-    assert (
-        len(
-            sys.modules["urlconf_4bacbaf40cbe7e198373fd8d629e819c"]
-            .urlpatterns[0]
-            .url_patterns
-        )
-        == 1
-    )
-
-
-@pytest.fixture
-def apps_validation_models():
-    home = Page.objects.create(
-        title="home",
-        slug="home",
-        path="/en/",
-        static_path=True,
-        language_code="en",
-        is_active=True,
-        menu="main",
-    )
-    blog = Page.objects.create(
-        title="blog",
-        slug="blog",
-        language_code="en",
-        is_active=True,
-        menu="main",
-        page_type="blog",
-        parent=home,
-    )
-    return home, blog
-
-
-@pytest.mark.django_db
-def test_apps_duplicate(apps_validation_models):
-    """Test that apps cannot be added twice with the exact same configuration"""
-    deactivate_all()
-
-    home, blog = apps_validation_models
-
-    home2 = Page.objects.create(
-        title="home",
-        slug="home",
-        path="/en2/",
-        static_path=True,
-        language_code="en",
-        is_active=True,
-        menu="main",
-    )
-    blog2 = Page.objects.create(
-        title="blog",
-        slug="blog",
-        language_code="en",
-        is_active=True,
-        menu="main",
-        page_type="blog",
-        parent=home2,
-    )
-
-    with pytest.raises(ValidationError) as cm:
-        blog2.full_clean()
-
-    assert cm.value.error_dict["page_type"][0].message == (
-        'The page type "blog" with the specified configuration exists already.'
-    )
-
-
-@pytest.mark.django_db
-def test_apps_required_fields():
-    """Apps can have required fields"""
-    deactivate_all()
-
-    home = Page(
-        title="home",
-        slug="home",
-        path="/en/",
-        static_path=True,
-        language_code="en",
-        is_active=True,
-        menu="main",
-        page_type="importable_module",
-    )
-    with pytest.raises(ValidationError) as cm:
-        home.full_clean(exclude=["not_editable"])
-
-    assert cm.value.error_dict["optional"][0].message == (
-        'This field is required for the page type "importable_module".'
-    )
-
-    home.optional = 1
-    home.not_editable = 2
-    home.full_clean(exclude=["not_editable"])
-
-
-@pytest.mark.django_db
-def test_apps_cloning_validation(client, apps_validation_models):
-    """Checks that the target is properly validated when cloning"""
-    deactivate_all()
-
-    home, blog = apps_validation_models
-
-    clone_url = reverse("admin:testapp_page_clone", args=(blog.pk,))
-
-    response = client.get(clone_url)
-    assertContains(response, "_set_content")
-    assertContains(response, "set_page_type")
-
-    response = client.post(clone_url, {"target": home.pk, "set_page_type": True})
-    assertContains(
-        response,
-        "The page type &quot;blog&quot; with the specified configuration exists already.",
-    )
-
-    # The other way round works
-    clone_url = reverse("admin:testapp_page_clone", args=(home.pk,))
-
-    response = client.post(clone_url, {"target": blog.pk, "set_page_type": True})
-    assertRedirects(response, reverse("admin:testapp_page_change", args=(blog.pk,)))
-
-    # No apps in tree anymore
-    assert Page.objects.filter(page_type="blog").count() == 0
 
 
 @pytest.mark.django_db
@@ -1020,59 +712,6 @@ def test_plugin_template_instance():
 
 
 @pytest.mark.django_db
-def test_reverse_app_tag():
-    """Exercise the {% reverse_app %} template tag"""
-    Page.objects.create(
-        title="blog",
-        slug="blog",
-        static_path=False,
-        language_code="en",
-        is_active=True,
-        page_type="blog",
-    )
-
-    tests = [
-        ("{% reverse_app 'blog' 'article-detail' pk=42 %}", "/blog/42/", {}),
-        (
-            "{% reverse_app 'blog' 'article-detail' pk=42 fallback='/a/' %}",
-            "/blog/42/",
-            {},
-        ),
-        (
-            "{% reverse_app namespaces 'article-detail' pk=42 fallback='/a/' as a %}{{ a }}",
-            "/blog/42/",
-            {"namespaces": ["stuff", "blog"]},
-        ),
-        ("{% reverse_app 'bla' 'bla' fallback='/test/' %}", "/test/", {}),
-        (
-            "{% reverse_app 'bla' 'bla' fallback='/test/' as t %}{{ t }}",
-            "/test/",
-            {},
-        ),
-        ("{% reverse_app 'bla' 'bla' as t %}{{ t|default:'blub' }}", "blub", {}),
-    ]
-
-    with override_urlconf(apps_urlconf()):
-        for tpl, out, ctx in tests:
-            t = Template("{% load feincms3 %}" + tpl)
-            assert t.render(Context(ctx)).strip() == out
-
-        with pytest.raises(NoReverseMatch):
-            Template("{% load feincms3 %}{% reverse_app 'a' 'a' 42 %}").render(
-                Context()
-            )
-
-
-def test_reverse_app_failures():
-    """Invalid parameters to {% reverse_app %}"""
-    with pytest.raises(TemplateSyntaxError) as cm:
-        Template("{% load feincms3 %}{% reverse_app %}")
-    assert str(cm.value) == (
-        "'reverse_app' takes at least two arguments, a namespace and a URL pattern name."
-    )
-
-
-@pytest.mark.django_db
 def test_descendant_update(prepare_for_move):
     """Saving pages with descendants updates descendants too"""
     root, p1, p2 = prepare_for_move  # Fetch again, we need tree_* fields
@@ -1164,11 +803,6 @@ def test_default_type_fallback():
     assert Page(page_type="__notexists").type.key == "standard"
 
 
-def test_apps_urlconf_no_apps():
-    """apps_urlconf returns the ROOT_URLCONF when there are no apps at all"""
-    assert apps_urlconf(apps=[]) == "testapp.urls"
-
-
 def test_get_absolute_url():
     """Page.get_absolute_url with and without paths"""
     assert Page(path="/test/").get_absolute_url() == "/test/"
@@ -1190,150 +824,6 @@ def test_render_list():
     assert len(response.context_data["object_list"]) == 2
     assert response.context_data["object_list"].number == 2
     assert response.context_data["object_list"].paginator.num_pages == 4
-
-
-@pytest.mark.django_db
-def test_language_and_translation_of_mixin():
-    """LanguageAndTranslationOfMixin.translations testing"""
-    original = Page.objects.create(
-        title="home-en",
-        slug="home-en",
-        path="/en/",
-        static_path=True,
-        language_code="en",
-        is_active=True,
-        menu="main",
-    )
-    translation = Page.objects.create(
-        title="home-de",
-        slug="home-de",
-        path="/de/",
-        static_path=True,
-        language_code="de",
-        is_active=True,
-        menu="main",
-        translation_of=original,
-    )
-    translation_fr = Page.objects.create(
-        title="home-fr",
-        slug="home-fr",
-        path="/fr/",
-        static_path=True,
-        language_code="fr",
-        is_active=False,  # Important!
-        menu="main",
-        translation_of=original,
-    )
-
-    assert set(original.translations()) == {original, translation, translation_fr}
-    assert set(original.translations().active()) == {original, translation}
-    assert set(translation.translations().active()) == {original, translation}
-
-    assert [
-        language["object"]
-        for language in translations(translation.translations().active())
-    ] == [original, translation, None]
-
-    original.delete()
-    translation.refresh_from_db()
-
-    assert set(translation.translations()) == set()
-
-
-@pytest.mark.django_db
-def test_language_and_translation_of_mixin_in_app():
-    """LanguageAndTranslationOfMixin when used within a feincms3 app"""
-    p = Page.objects.create(
-        title="home-en",
-        slug="home-en",
-        language_code="en",
-        is_active=True,
-        page_type="translated-articles",
-    )
-    Page.objects.create(
-        title="home-de",
-        slug="home-de",
-        language_code="de",
-        translation_of=p,
-        is_active=True,
-        page_type="translated-articles",
-    )
-
-    original = TranslatedArticle.objects.create(title="News", language_code="en")
-    translated = TranslatedArticle.objects.create(
-        title="Neues", language_code="de", translation_of=original
-    )
-
-    assert str(original) == "News"
-    assert str(translated) == "Neues"
-
-    assert [
-        language["object"] for language in translations(original.translations())
-    ] == [original, translated, None]
-
-    with override_urlconf(apps_urlconf()):
-        assert original.get_absolute_url() == f"/home-en/{original.pk}/"
-        assert translated.get_absolute_url() == f"/home-de/{translated.pk}/"
-
-    t = translations_from(
-        p.translations(),
-        original.translations(),
-        "hello world",
-    )
-    assert t == [
-        {"code": "en", "name": "English", "object": original},
-        {"code": "de", "name": "German", "object": translated},
-        {"code": "fr", "name": "French", "object": None},
-    ]
-
-
-@pytest.mark.django_db
-def test_language_and_translation_of_mixin_validation():
-    """Validation logic of LanguageAndTranslationOfMixin works"""
-    original = Page.objects.create(
-        title="home-en",
-        slug="home-en",
-        language_code="en",
-    )
-
-    with pytest.raises(ValidationError) as cm:
-        Page(
-            title="translation",
-            slug="translation",
-            language_code="en",
-            translation_of=original,
-        ).full_clean()
-
-    assert cm.value.error_dict["translation_of"][0].message == (
-        "Objects in the primary language cannot be the translation of another object."
-    )
-
-    original = Page.objects.create(
-        title="home-de",
-        slug="home-de",
-        language_code="de",
-    )
-
-    with pytest.raises(ValidationError):
-        Page(
-            title="translation",
-            slug="translation",
-            language_code="en",
-            translation_of=original,
-        ).full_clean()
-
-
-def test_translations_filter_edge_cases():
-    """Exercise edge cases of the |translations filter"""
-    assert len(translations(None)) == 3
-    assert len(translations({})) == 3
-
-    t = Template(
-        "{% load feincms3 %}{% for l in c|translations %}{{ l.code }}{% endfor %}"
-    )
-    assert t.render(Context({"c": None})) == "endefr"
-    assert t.render(Context({"c": []})) == "endefr"
-    assert t.render(Context({"c": 1})) == "endefr"
 
 
 @isolate_apps("testapp")
@@ -1377,83 +867,6 @@ def test_page_with_invalid_menu():
 
     errors = Page.check()
     assert [error.id for error in errors] == ["feincms3.W005"]
-
-
-def test_application_type():
-    """Overriding ``app_namespace`` should be possible"""
-
-    with pytest.raises(TypeError):
-        ApplicationType()
-
-    at = ApplicationType(
-        key="test",
-        title="test",
-        urlconf="test",
-        app_namespace=lambda page: f"{page.page_type}-{page.category_id}",
-    )
-
-    assert (
-        at.app_namespace(SimpleNamespace(page_type="blog", category_id=3)) == "blog-3"
-    )
-
-    at = ApplicationType(
-        key="test",
-        title="test",
-        urlconf="test",
-    )
-    assert at.app_namespace(SimpleNamespace(page_type="blog", category_id=3)) == "blog"
-
-
-@isolate_apps("testapp")
-def test_importable_page_types():
-    """Applications require an importable URLconf module"""
-
-    apps_model = applications._APPS_MODEL
-    try:
-
-        class Page(AbstractPage, PageTypeMixin):
-            TYPES = [ApplicationType(key="app", title="app", urlconf="does-not-exist")]
-
-        errors = Page.check()
-        expected = [
-            Error(
-                "The application type 'app' has an unimportable"
-                " URLconf value 'does-not-exist': No module named 'does-not-exist'",
-                obj=Page,
-                id="feincms3.E003",
-            ),
-        ]
-        assert errors == expected
-
-    finally:
-        applications._APPS_MODEL = apps_model
-
-
-@isolate_apps("testapp")
-def test_unique_page_types():
-    """Page types must have unique keys"""
-
-    apps_model = applications._APPS_MODEL
-    try:
-
-        class Page(AbstractPage, PageTypeMixin):
-            TYPES = [
-                ApplicationType(key="app", title="a", urlconf="importable_module"),
-                ApplicationType(key="app", title="a", urlconf="importable_module"),
-            ]
-
-        errors = Page.check()
-        expected = [
-            Error(
-                "Page type keys are used more than once: app.",
-                obj=Page,
-                id="feincms3.E006",
-            ),
-        ]
-        assert errors == expected
-
-    finally:
-        applications._APPS_MODEL = apps_model
 
 
 @pytest.mark.django_db
