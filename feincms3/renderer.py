@@ -56,7 +56,7 @@ def render_in_context(context, template, local_context=None):
         except AttributeError:
             engine = Engine.get_default()
 
-        if isinstance(template, list | tuple):
+        if isinstance(template, (list, tuple)):
             template = engine.select_template(template)
         else:
             template = engine.get_template(template)

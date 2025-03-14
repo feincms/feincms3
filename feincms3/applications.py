@@ -123,7 +123,7 @@ def reverse_app(namespaces, viewname, *args, languages=None, **kwargs):
                 f"{_APPS_MODEL.LANGUAGE_CODES_NAMESPACE}-{language}"
                 for language in languages
             ),
-            (namespaces if isinstance(namespaces, list | tuple) else (namespaces,)),
+            (namespaces if isinstance(namespaces, (list, tuple)) else (namespaces,)),
             (viewname,),
         )
     ]
