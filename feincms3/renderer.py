@@ -320,6 +320,46 @@ class RegionRenderer:
     # Sections support
 
     def render_section_plugins(self, section, plugins, context):
+        """
+        Helper for implementing section rendering with section supporting
+        optional nesting etc.
+
+        You need:
+
+        - A close section plugin
+        - One or more open section plugins
+
+        Here's some example code to hopefully get you started:
+
+        .. code-block:: python
+
+            from django.utils.html import mark_safe
+            from feincms3.renderer import CLOSE_SECTION, render_in_context
+
+            class SectionRenderer(RegionRenderer):
+                def handle_section(self, plugins, context):
+                    section = plugins.popleft()
+                    content = self.render_section_plugins(section, plugins, context)
+                    yield render_in_context(
+                        context,
+                        # That's just an example:
+                        f"sections/{section.__class__.__name__.lower()}.html",
+                        {"section": section, "content": "".join(content)},
+                    )
+
+            renderer = SectionRenderer()
+            renderer.register(models.CloseSection, "", subregion=CLOSE_SECTION)
+            renderer.register(models.Accordion, "", subregion="section")
+
+        This code automatically determines the template name from the class
+        name, making it easier to reuse for different section types.
+
+        Subregions are automatically closed when subregions change. Sections
+        only end when encountering an explicit ``CLOSE_SECTION`` subregion or
+        when there are no more plugins in the current region at all. Sections
+        can contain other sections and subregions making them quite powerful
+        when for organizing and grouping content.
+        """
         out = []
         while plugins:
             subregion = self.subregion(plugins[0])
