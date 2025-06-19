@@ -296,11 +296,7 @@ class RegionRenderer:
             yield self.render_plugin(plugin, context)
 
     def handle___close_section__(self, plugins, context):
-        # Internal helper which discards superfluous CLOSE_SECTION plugins
-        # This method assumes that we're working in a string/HTML context and
-        # therefore yields an empty string.
-        plugins.popleft()
-        yield ""
+        yield self.render_plugin(plugins.popleft(), context)
 
     def render_region(self, *, region, contents, context):
         """
