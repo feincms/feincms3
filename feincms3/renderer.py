@@ -83,7 +83,7 @@ _renderer = 1
 _subregion = 2
 _marks = 3
 _fetch = 4
-CLOSE_SECTION = "__close_section__"
+_CLOSE_SECTION = "_close_section"
 
 
 class RegionRenderer:
@@ -184,13 +184,17 @@ class RegionRenderer:
                 f"The renderer function {renderer} has less than the two required arguments."
             )
 
-        if plugin in self._plugins:
-            warnings.warn(
-                f"The plugin {plugin} has already been registered with {self.__class__} before.",
-                stacklevel=2,
-            )
+        if not isinstance(plugin, (list, tuple)):
+            plugin = [plugin]
 
-        self._plugins[plugin] = (plugin, renderer, subregion, marks, fetch)
+        for p in plugin:
+            if p in self._plugins:
+                warnings.warn(
+                    f"The plugin {p} has already been registered with {self.__class__} before.",
+                    stacklevel=2,
+                )
+
+            self._plugins[p] = (p, renderer, subregion, marks, fetch)
 
     def plugins(self, *, fetch=True):
         """
@@ -295,9 +299,6 @@ class RegionRenderer:
         for plugin in self.takewhile_subregion(plugins, "default"):
             yield self.render_plugin(plugin, context)
 
-    def handle___close_section__(self, plugins, context):
-        yield self.render_plugin(plugins.popleft(), context)
-
     def render_region(self, *, region, contents, context):
         """
         Render one region.
@@ -334,7 +335,7 @@ class RegionRenderer:
         .. code-block:: python
 
             from django.utils.html import mark_safe
-            from feincms3.renderer import CLOSE_SECTION, render_in_context
+            from feincms3.renderer import render_in_context
 
             class SectionRenderer(RegionRenderer):
                 def handle_section(self, plugins, context):
@@ -348,22 +349,22 @@ class RegionRenderer:
                     )
 
             renderer = SectionRenderer()
-            renderer.register(models.CloseSection, "", subregion=CLOSE_SECTION)
+            renderer.register_section_close(models.CloseSection)
             renderer.register(models.Accordion, "", subregion="section")
 
         This code automatically determines the template name from the class
         name, making it easier to reuse for different section types.
 
         Subregions are automatically closed when subregions change. Sections
-        only end when encountering an explicit ``CLOSE_SECTION`` subregion or
-        when there are no more plugins in the current region at all. Sections
-        can contain other sections and subregions making them quite powerful
-        when for organizing and grouping content.
+        only end when encountering an explicit section closing plugin or when
+        there are no more plugins in the current region at all. Sections can
+        contain other sections and subregions making them quite powerful when
+        for organizing and grouping content.
         """
         out = []
         while plugins:
             subregion = self.subregion(plugins[0])
-            if subregion == CLOSE_SECTION:
+            if subregion is _CLOSE_SECTION:
                 plugins.popleft()
                 break
             elif subregion is not None:
@@ -371,6 +372,14 @@ class RegionRenderer:
             else:
                 out.append(self.render_plugin(plugins.popleft(), context))
         return out
+
+    def register_section_close(self, plugin, renderer="", **kwargs):
+        kwargs["subregion"] = _CLOSE_SECTION
+        self.register(plugin, renderer, **kwargs)
+
+    def handle__close_section(self, plugins, context):
+        plugins.popleft()
+        yield from ()
 
     # Main external rendering API
 

@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+
+5.4 (2025-06-19)
+~~~~~~~~~~~~~~~~
+
 - Added Django 5.2 to the CI.
 - Undeprecated the :mod:`~feincms3.mixins.TemplateMixin`, it's useful even
   though using :mod:`~feincms3.applications.PageTypeMixin` is obviously
@@ -17,6 +21,8 @@ Next version
   Sections are a more powerful alternative or addition to subregions already
   supported by django-content-editor. The main upside of sections is that they
   can be nested.
+- Allowed passing a list of plugins to ``RegionRenderer.register``. This is
+  useful if registering several plugins with identical renderers etc.
 
 
 5.3 (2024-11-18)

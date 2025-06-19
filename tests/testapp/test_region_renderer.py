@@ -9,7 +9,6 @@ from django.utils.html import format_html, mark_safe
 from pytest_django.asserts import assertHTMLEqual
 
 from feincms3.renderer import (
-    CLOSE_SECTION,
     PluginNotRegisteredError,
     RegionRenderer,
     template_renderer,
@@ -225,10 +224,10 @@ def test_sections():
         pass
 
     renderer = SectionRenderer()
-    renderer.register(Text, "Text")
+    renderer.register([Text], "Text")  # Register as list
     renderer.register(Image, "Image", subregion="images")
     renderer.register(Section, "", subregion="section")
-    renderer.register(CloseSection, "", subregion=CLOSE_SECTION)
+    renderer.register_section_close(CloseSection)
 
     def render(plugins):
         return renderer.render_region(
