@@ -500,16 +500,15 @@ def _compat_template_renderer(_tpl, _ctx=default_context, /):
 
 class TemplatePluginRenderer(RegionRenderer):
     """
-    TemplatePluginRenderer is deprecated, use
+    TemplatePluginRenderer is a deprecated alias for
     :class:`~feincms3.renderer.RegionRenderer`.
     """
 
     def __init__(self, *args, **kwargs):
         warnings.warn(
-            "TemplatePluginRenderer is deprecated. Switch to the RegionRenderer now."
+            "TemplatePluginRenderer is a deprecated alias for the new RegionRenderer."
             " (Hint: An incremental upgrade is supported. You can start by"
-            " replacing TemplatePluginRenderer with RegionRenderer, it's just an"
-            " alias with an additional warning.)",
+            " replacing TemplatePluginRenderer with RegionRenderer.",
             DeprecationWarning,
             stacklevel=2,
         )
