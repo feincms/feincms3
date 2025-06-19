@@ -83,6 +83,7 @@ _renderer = 1
 _subregion = 2
 _marks = 3
 _fetch = 4
+CLOSE_SECTION = "__close_section__"
 
 
 class RegionRenderer:
@@ -294,6 +295,13 @@ class RegionRenderer:
         for plugin in self.takewhile_subregion(plugins, "default"):
             yield self.render_plugin(plugin, context)
 
+    def handle___close_section__(self, plugins, context):
+        # Internal helper which discards superfluous CLOSE_SECTION plugins
+        # This method assumes that we're working in a string/HTML context and
+        # therefore yields an empty string.
+        plugins.popleft()
+        yield ""
+
     def render_region(self, *, region, contents, context):
         """
         Render one region.
@@ -312,6 +320,23 @@ class RegionRenderer:
             )
             for region in regions
         }
+
+    # Sections support
+
+    def render_section_plugins(self, section, plugins, context):
+        out = []
+        while plugins:
+            subregion = self.subregion(plugins[0])
+            if subregion == CLOSE_SECTION:
+                plugins.popleft()
+                break
+            elif subregion is not None:
+                out.extend(self._handlers[subregion](plugins, context))
+            else:
+                out.append(self.render_plugin(plugins.popleft(), context))
+        return out
+
+    # Main external rendering API
 
     def regions_from_contents(self, contents, **kwargs):
         """

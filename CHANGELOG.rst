@@ -6,10 +6,17 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
-- Added Django 5.2a1 to the CI.
+- Added Django 5.2 to the CI.
 - Undeprecated the :mod:`~feincms3.mixins.TemplateMixin`, it's useful even
   though using :mod:`~feincms3.applications.PageTypeMixin` is obviously
   preferred.
+- Added tests for using ``reverse_app`` with the new ``query`` and ``fragment``
+  parameters from Django 5.2 to ensure everything works as it should.
+- Converted the testsuite to pytest and organized tests a bit.
+- Added experimental support for section rendering to the ``RegionRenderer``.
+  Sections are a more powerful alternative or addition to subregions already
+  supported by django-content-editor. The main upside of sections is that they
+  can be nested.
 
 
 5.3 (2024-11-18)

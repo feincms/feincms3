@@ -2,12 +2,14 @@ from collections import deque
 
 import pytest
 from content_editor.contents import contents_for_item
+from content_editor.models import Region
 from django.core.exceptions import ImproperlyConfigured
 from django.template import Context
 from django.utils.html import format_html, mark_safe
 from pytest_django.asserts import assertHTMLEqual
 
 from feincms3.renderer import (
+    CLOSE_SECTION,
     PluginNotRegisteredError,
     RegionRenderer,
     template_renderer,
@@ -194,3 +196,70 @@ def test_register_unregister():
         renderer.unregister(HTML, keep=[RichText])
     with pytest.raises(ImproperlyConfigured):
         renderer.unregister()
+
+
+def test_sections():
+    class SectionRenderer(RegionRenderer):
+        def handle_images(self, plugins, context):
+            content = "".join(
+                self.render_plugin(p, context)
+                for p in self.takewhile_subregion(plugins, "images")
+            )
+            yield f"<gallery>{content}</gallery>"
+
+        def handle_section(self, plugins, context):
+            section = plugins.popleft()
+            content = self.render_section_plugins(section, plugins, context)
+            return f"<section>{''.join(content)}</section>"
+
+    class Text:
+        pass
+
+    class Image:
+        pass
+
+    class Section:
+        pass
+
+    class CloseSection:
+        pass
+
+    renderer = SectionRenderer()
+    renderer.register(Text, "Text")
+    renderer.register(Image, "Image", subregion="images")
+    renderer.register(Section, "", subregion="section")
+    renderer.register(CloseSection, "", subregion=CLOSE_SECTION)
+
+    def render(plugins):
+        return renderer.render_region(
+            region=Region(key="content", title="Content"),
+            contents={"content": plugins},
+            context=None,
+        )
+
+    t = Text()
+    i = Image()
+    s = Section()
+    c = CloseSection()
+
+    # Basic tests
+    assert render([t, t]) == "TextText"
+    assert render([t, t, i, i, t]) == "TextText<gallery>ImageImage</gallery>Text"
+
+    # Automatic closing of sections
+    assert render([s, t]) == "<section>Text</section>"
+
+    # Superfluous CloseSection objects are ignored
+    assert render([s, t, c, c]) == "<section>Text</section>"
+
+    # Nested sections, the images subregion is also rendered within the outer section
+    assert (
+        render([t, s, t, s, t, c, i])
+        == "Text<section>Text<section>Text</section><gallery>Image</gallery></section>"
+    )
+
+    # The images subregion doesn't support nested sections and is automatically closed
+    assert (
+        render([t, i, i, s, t])
+        == "Text<gallery>ImageImage</gallery><section>Text</section>"
+    )
