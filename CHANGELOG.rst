@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added a warning when registering a proxy plugin with the ``RegionRenderer``
+  with ``fetch=True``. Users should only register the concrete plugin directly
+  for fetching, otherwise duplicated plugins are very likely while rendering.
+
 
 5.4 (2025-06-19)
 ~~~~~~~~~~~~~~~~

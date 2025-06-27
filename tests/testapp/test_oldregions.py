@@ -8,23 +8,31 @@ from feincms3.renderer import TemplatePluginRenderer
 from testapp.models import HTML, Page
 
 
-class Text(SimpleNamespace):
+class Meta:
+    proxy = False
+
+
+class Plugin(SimpleNamespace):
+    _meta = Meta
+
+
+class Text(Plugin):
     pass
 
 
-class Teaser(SimpleNamespace):
+class Teaser(Plugin):
     subregion = "teasers"
 
 
-class FAQ(SimpleNamespace):
+class FAQ(Plugin):
     subregion = "faq"
 
 
-class Command(SimpleNamespace):
+class Command(Plugin):
     subregion = ""
 
 
-class File(SimpleNamespace):
+class File(Plugin):
     pass
 
 

@@ -194,6 +194,12 @@ class RegionRenderer:
                     stacklevel=2,
                 )
 
+            if p._meta.proxy and fetch:
+                warnings.warn(
+                    f'The plugin {p} is a proxy but is also registered with the default "fetch=True". This can cause plugins to be fetched (and rendered) twice.',
+                    stacklevel=2,
+                )
+
             self._plugins[p] = (p, renderer, subregion, marks, fetch)
 
     def plugins(self, *, fetch=True):

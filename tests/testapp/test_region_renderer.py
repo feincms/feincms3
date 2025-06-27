@@ -211,17 +211,20 @@ def test_sections():
             content = self.render_section_plugins(section, plugins, context)
             return f"<section>{''.join(content)}</section>"
 
+    class Meta:
+        proxy = False
+
     class Text:
-        pass
+        _meta = Meta
 
     class Image:
-        pass
+        _meta = Meta
 
     class Section:
-        pass
+        _meta = Meta
 
     class CloseSection:
-        pass
+        _meta = Meta
 
     renderer = SectionRenderer()
     renderer.register([Text], "Text")  # Register as list
