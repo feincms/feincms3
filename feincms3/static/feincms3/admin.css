@@ -6,7 +6,6 @@
 }
 
 .box-drawing {
-  display: block;
   position: absolute;
   display: inline-block;
   font-family: monospace;
@@ -141,7 +140,6 @@
 }
 
 .move-paste {
-  height: auto;
   display: none;
   max-width: 6ch;
   height: 28px;
