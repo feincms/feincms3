@@ -41,7 +41,7 @@
 .field-collapse_column {
   position: relative;
   width: 1rem;
-  padding: 0 !important;
+  padding: 0;
 }
 
 .collapse-toggle {
@@ -69,7 +69,7 @@
 }
 
 .collapse-hide {
-  display: none !important;
+  display: none;
 }
 
 .move-status {

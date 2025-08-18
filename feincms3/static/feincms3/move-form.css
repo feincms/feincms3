@@ -17,7 +17,7 @@
 }
 
 #id_new_location label::after {
-  display: none !important;
+  display: none;
 }
 
 #id_new_location .mv.is-self {
@@ -63,5 +63,5 @@
 
 /* Suppress the rendering of the save as new button in the move form */
 input[name="_saveasnew"] {
-  display: none !important;
+  display: none;
 }
