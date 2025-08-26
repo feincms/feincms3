@@ -1,5 +1,3 @@
-# flake8: noqa
-
 from feincms3.plugins import html, snippet
 
 

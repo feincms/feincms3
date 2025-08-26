@@ -10,6 +10,7 @@ from django.contrib.admin.utils import unquote
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import router, transaction
 from django.db.models import F
+from django.forms.models import _get_foreign_key  # Since 2009.
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import path, re_path, reverse
@@ -584,8 +585,6 @@ class CloneForm(forms.Form):
             )
 
         if self.cleaned_data.get("_set_content"):
-            from django.forms.models import _get_foreign_key  # Since 2009.
-
             for inline in self.modeladmin.inlines:
                 fk = _get_foreign_key(
                     self.modeladmin.model, inline.model, inline.fk_name, can_fail=False

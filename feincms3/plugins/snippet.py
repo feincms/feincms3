@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 
 from feincms3.mixins import ChoicesCharField
-from feincms3.renderer import render_in_context
+from feincms3.renderer import default_context, render_in_context
 
 
 __all__ = ("Snippet", "SnippetInline", "render_snippet")
@@ -61,8 +61,6 @@ class Snippet(models.Model):
         class variable may contain a callable which receives the plugin
         instance and the template context and returns a context dictionary.
         """
-        from feincms3.renderer import default_context
-
         templates = defaultdict(
             lambda: Template(""),
             ((row[0], row[0]) for row in cls.TEMPLATES),

@@ -626,7 +626,7 @@ class PageTypeMixin(models.Model):
 
     @classmethod
     def _check_feincms3_appsmixin_templatemixin_clash(cls, **kwargs):
-        from feincms3.mixins import TemplateMixin
+        from feincms3.mixins import TemplateMixin  # noqa: PLC0415
 
         if not cls._meta.abstract and issubclass(cls, TemplateMixin):
             return [
