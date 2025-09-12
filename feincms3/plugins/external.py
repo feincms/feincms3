@@ -49,7 +49,9 @@ def oembed_json(url, *, cache_failures=True, force_refresh=False, params=None):
         p.update(params)
     key = (
         "oembed-url-%s-data"
-        % md5(json.dumps(p, sort_keys=True).encode("utf-8")).hexdigest()
+        % md5(
+            json.dumps(p, sort_keys=True).encode("utf-8"), usedforsecurity=False
+        ).hexdigest()
     )
 
     data = None if force_refresh else cache.get(key)

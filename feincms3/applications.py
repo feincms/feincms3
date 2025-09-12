@@ -262,7 +262,10 @@ async def apps_urlconf_async(*, apps=None):
 
 def _build_apps_urlconf(apps):
     key = ",".join(itertools.chain.from_iterable(apps))
-    module_name = "urlconf_%s" % hashlib.md5(key.encode("utf-8")).hexdigest()
+    module_name = (
+        "urlconf_%s"
+        % hashlib.md5(key.encode("utf-8"), usedforsecurity=False).hexdigest()
+    )
 
     if module_name not in sys.modules:
         types = {app.key: app for app in _APPS_MODEL.TYPES if app.get("urlconf")}
