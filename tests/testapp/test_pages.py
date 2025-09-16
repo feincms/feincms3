@@ -46,7 +46,7 @@ def test_modules(client):
     assertContains(response, '<a href="/admin/testapp/page/">Pages</a>', 1)
 
     response = client.get("/admin/testapp/page/")
-    assertContains(response, "/static/feincms3/admin.css", 1)
+    assertContains(response, "/static/tree_queries/tree_admin.css", 1)
     assert "/static/content_editor/content_editor.js" not in response.content.decode()
 
     response = client.get("/admin/testapp/page/add/")
