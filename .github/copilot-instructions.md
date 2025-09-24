@@ -41,7 +41,7 @@ Always reference these instructions first and fallback to search or bash command
 - **BASIC CODE VALIDATION**: `python -c "import sys; sys.path.insert(0, '.'); import feincms3; print('✓ Import successful, version:', feincms3.__version__)"` (verified working)
 - **EXPLORE PROJECT STRUCTURE**: Key directories to examine:
   - `ls -la feincms3/` -- main package modules
-  - `ls -la tests/testapp/` -- test application structure  
+  - `ls -la tests/testapp/` -- test application structure
   - `ls -la docs/` -- documentation files
   - `find . -name "*.py" -path "*/tests/*" | wc -l` -- count test files (should show ~27 test files)
 - Run tests after changes: Use pytest with Django settings: `DJANGO_SETTINGS_MODULE=testapp.settings python -m pytest tests/testapp/` (requires Django installation)
@@ -58,7 +58,7 @@ After making changes to feincms3, **ALWAYS** validate these scenarios:
 
 - **CRITICAL TIMEOUT VALUES**:
   - Full test suite: 10 minutes, set timeout to 15+ minutes
-  - Style/linting: 2 minutes, set timeout to 5+ minutes  
+  - Style/linting: 2 minutes, set timeout to 5+ minutes
   - Documentation build: 5 minutes, set timeout to 10+ minutes
   - Slow tests: 15 minutes, set timeout to 30+ minutes
   - **NEVER CANCEL any build or test command** - wait for completion
@@ -108,7 +108,7 @@ ls -la tests/testapp/  # Test suite: models.py, settings.py, test_*.py files (~1
 # Version and import verification
 python -c "import sys; sys.path.insert(0, '.'); import feincms3; print('Version:', feincms3.__version__)"  # Shows: 5.4.2
 
-# Git status checking  
+# Git status checking
 git status --porcelain && git branch -a  # Check current branch and uncommitted changes
 
 # Available test environments
