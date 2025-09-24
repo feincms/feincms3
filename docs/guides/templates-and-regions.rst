@@ -8,6 +8,10 @@ this isn't sufficient for many sites. Some sites have a moodboard region
 and maybe a sidebar region; some sites at least have a different layout
 on the home page and so on.
 
+.. note::
+   For a detailed conceptual explanation of what regions are and the complete
+   API reference, see :doc:`../ref/regions`.
+
 
 .. _more-regions:
 

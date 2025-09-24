@@ -14,11 +14,14 @@ project = "feincms3"
 author = "Feinheit AG"
 copyright = f"2016-{date.today().year}, {author}"
 version = __import__("feincms3").__version__
-release = subprocess.check_output(
-    "git fetch --tags; git describe",
-    shell=True,
-    text=True,
-).strip()
+try:
+    release = subprocess.check_output(
+        "git fetch --tags; git describe",
+        shell=True,
+        text=True,
+    ).strip()
+except subprocess.CalledProcessError:
+    release = version
 language = "en"
 
 #######################################
