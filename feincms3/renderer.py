@@ -340,7 +340,7 @@ class RegionRenderer:
 
         .. code-block:: python
 
-            from django.utils.html import mark_safe
+            from django.utils.html import conditional_escape, mark_safe
             from feincms3.renderer import render_in_context
 
             class SectionRenderer(RegionRenderer):
@@ -351,7 +351,10 @@ class RegionRenderer:
                         context,
                         # That's just an example:
                         f"sections/{section.__class__.__name__.lower()}.html",
-                        {"section": section, "content": "".join(content)},
+                        {
+                            "section": section,
+                            "content": mark_safe("".join(map(conditional_escape, content))),
+                        },
                     )
 
             renderer = SectionRenderer()
