@@ -9,7 +9,7 @@ A **Region** is a named area within a page or content item where plugins (conten
 Think of regions as placeholder zones in your templates. For example, a typical page might have:
 
 - A ``"main"`` region for the primary content
-- A ``"sidebar"`` region for secondary information  
+- A ``"sidebar"`` region for secondary information
 - A ``"footer"`` region for additional content
 
 Each region is defined with a unique key and a human-readable title:
@@ -17,7 +17,7 @@ Each region is defined with a unique key and a human-readable title:
 .. code-block:: python
 
     from content_editor.models import Region
-    
+
     regions = [
         Region(key="main", title=_("Main content")),
         Region(key="sidebar", title=_("Sidebar"), inherited=True),
@@ -30,7 +30,7 @@ In templates, you render the content of a region using the ``render_region`` tem
 .. code-block:: html+django
 
     {% load feincms3 %}
-    
+
     <main>
         {% render_region page_regions "main" %}
     </main>
