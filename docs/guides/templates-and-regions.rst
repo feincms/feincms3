@@ -9,6 +9,21 @@ and maybe a sidebar region; some sites at least have a different layout
 on the home page and so on.
 
 
+What is a region?
+~~~~~~~~~~~~~~~~~
+
+A **Region** is a named area within a page or content item where plugins
+(content blocks) can be placed and organized. Regions define the structure and
+layout of your content, allowing editors to add different types of content
+(text, images, videos, etc.) to specific areas of a page.
+
+Think of regions as placeholder zones in your templates. For example, a typical
+page might have:
+
+- A ``"main"`` region for the primary content
+- A ``"sidebar"`` region for secondary information
+
+
 .. _more-regions:
 
 More regions
