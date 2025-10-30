@@ -12,6 +12,8 @@ Next version
 - Added ``usedforsecurity=False`` to our usage of ``hashlib.md5``.
 - Bumped the minimum django-tree-queries version to 0.21 and used the
   ``TreeAdmin`` and ``AncestorFilter`` from there.
+- Added the ``referrerpolicy`` attribute to YouTube IFRAMEs, seems to solve
+  some of the embedding problems we have been seeing.
 
 
 5.4 (2025-06-19)
