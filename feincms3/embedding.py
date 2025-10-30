@@ -52,8 +52,9 @@ def embed_youtube(url):
     d = match.groupdict()
     return mark_safe(
         f'<div class="responsive-embed widescreen youtube">'
-        f'<iframe src="https://www.youtube.com/embed/{d["code"]}?rel=0"'
-        f' frameborder="0" allow="autoplay; fullscreen" allowfullscreen="">'
+        f'<iframe src="https://www.youtube.com/embed/{d["code"]}?rel=0" '
+        f'frameborder="0" allow="autoplay; fullscreen" '
+        f'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">'
         f"</iframe>"
         f"</div>"
     )

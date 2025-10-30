@@ -13,7 +13,8 @@ def test_youtube():
         == """\
 <div class="responsive-embed widescreen youtube"><iframe \
 src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" frameborder="0" \
-allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin" \
+allowfullscreen=""></iframe></div>"""
     )
 
     assert (
@@ -21,7 +22,8 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
         == """\
 <div class="responsive-embed widescreen youtube"><iframe \
 src="https://www.youtube.com/embed/y7-s5ZvC_2A?rel=0" frameborder="0" \
-allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin" \
+allowfullscreen=""></iframe></div>"""
     )
 
     assert embed("https://www.youtube.com/watch?v=4zGnNmncJWg&feature=emb_title")
@@ -34,7 +36,10 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
     assert (
         embed("https://www.youtube.com/live/ljSZ0xrJjCs")
         == """\
-<div class="responsive-embed widescreen youtube"><iframe src="https://www.youtube.com/embed/ljSZ0xrJjCs?rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
+<div class="responsive-embed widescreen youtube"><iframe \
+src="https://www.youtube.com/embed/ljSZ0xrJjCs?rel=0" frameborder="0" \
+allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin" \
+allowfullscreen=""></iframe></div>"""
     )
 
 
