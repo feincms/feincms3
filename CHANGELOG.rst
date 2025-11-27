@@ -14,6 +14,8 @@ Next version
   ``TreeAdmin`` and ``AncestorFilter`` from there.
 - Added the ``referrerpolicy`` attribute to YouTube IFRAMEs, seems to solve
   some of the embedding problems we have been seeing.
+- Started depending on the new ``OrderableTreeNode`` in django-tree-queries
+  0.23.
 
 
 5.4 (2025-06-19)

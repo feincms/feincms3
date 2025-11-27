@@ -1,13 +1,13 @@
 from collections import OrderedDict
 
 from django.core.checks import Warning
-from django.core.validators import MinValueValidator, RegexValidator
+from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models import Max, Q
+from django.db.models import Q
 from django.urls import NoReverseMatch, get_script_prefix, reverse
 from django.utils.encoding import iri_to_uri
 from django.utils.translation import gettext_lazy as _
-from tree_queries.models import TreeNode, TreeQuerySet
+from tree_queries.models import OrderableTreeNode, TreeQuerySet
 
 from feincms3.utils import validation_error
 
@@ -51,7 +51,7 @@ class AbstractPageQuerySet(TreeQuerySet):
         )
 
 
-class AbstractPage(TreeNode):
+class AbstractPage(OrderableTreeNode):
     """
     Short version: If you want to build a CMS with a hierarchical page
     structure, use this base class.
@@ -83,16 +83,6 @@ class AbstractPage(TreeNode):
     is_active = models.BooleanField(_("is active"), default=True)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"))
-    position = models.PositiveIntegerField(
-        db_index=True,
-        editable=False,
-        validators=[
-            MinValueValidator(
-                limit_value=1,
-                message=_("Position is expected to be greater than zero."),
-            )
-        ],
-    )
 
     # Who even cares about MySQL
     path = models.CharField(
@@ -115,9 +105,8 @@ class AbstractPage(TreeNode):
 
     objects = AbstractPageQuerySet.as_manager(with_tree_fields=True)
 
-    class Meta:
+    class Meta(OrderableTreeNode.Meta):
         abstract = True
-        ordering = ("position",)
         verbose_name = _("page")
         verbose_name_plural = _("pages")
 
@@ -212,14 +201,6 @@ class AbstractPage(TreeNode):
         if not self.static_path:
             self.path = "{}{}/".format(
                 self.parent.path if self.parent else "/", self.slug
-            )
-
-        if not self.position:
-            self.position = 10 + (
-                self.__class__._default_manager.filter(parent_id=self.parent_id)
-                .order_by()
-                .aggregate(p=Max("position"))["p"]
-                or 0
             )
 
         super().save(*args, **kwargs)
