@@ -118,8 +118,6 @@ lint.extend-ignore = [
   "E501",
   # Do not warn about percent formatting for now
   "UP031",
-  # The a | b type rule has been deprecated
-  "UP038",
 ]
 lint.per-file-ignores."*/migrat*/*" = [
   # Allow using PascalCase model names in migrations
