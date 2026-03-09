@@ -55,22 +55,17 @@ optional-dependencies.tests = [
 ]
 urls.Homepage = "https://github.com/matthiask/feincms3/"
 
-[tool.hatch.build]
-include = [
+[tool.hatch]
+build.include = [
   "feincms3/",
 ]
-
-[tool.hatch.version]
-path = "feincms3/__init__.py"
-
-[tool.hatch.build.targets.sdist]
-include = [
+build.targets.sdist.include = [
   "/feincms3",
 ]
+version.path = "feincms3/__init__.py"
 
 [tool.ruff]
 target-version = "py310"
-
 fix = true
 show-fixes = true
 lint.extend-select = [
@@ -133,7 +128,7 @@ lint.isort.combine-as-imports = true
 lint.isort.lines-after-imports = 2
 lint.mccabe.max-complexity = 15
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "testapp.settings"
-python_files = [ "tests.py", "test_*.py" ]
-addopts = "--reuse-db"
+[tool.pytest]
+ini_options.DJANGO_SETTINGS_MODULE = "testapp.settings"
+ini_options.python_files = [ "tests.py", "test_*.py" ]
+ini_options.addopts = "--reuse-db"
