@@ -121,3 +121,42 @@ ancestors values:
     context["meta_tags"].add(article)
 
     return render(...)
+
+
+Custom models with ``meta_dict()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``MetaMixin`` is not required. Any model that implements a ``meta_dict()``
+method returning a plain dictionary can be passed to ``meta_tags().add()``.
+This is useful when a model already has fields that carry the relevant
+information and adding the full set of ``MetaMixin`` fields would be redundant:
+
+.. code-block:: python
+
+    class Article(models.Model):
+        title = models.CharField(max_length=200)
+        lead = models.TextField(blank=True)
+        image = models.ImageField(blank=True)
+
+        def get_absolute_url(self):
+            return reverse("articles:detail", kwargs={"pk": self.pk})
+
+        def meta_dict(self):
+            return {
+                "title": self.title,
+                "description": self.lead,
+                # Setting both "canonical" and "url" ensures the og:url tag
+                # reflects the article URL rather than the current request path.
+                "canonical": self.get_absolute_url(),
+                "url": self.get_absolute_url(),
+                # An empty string is silently skipped when merging, so this is
+                # safe even when no image has been uploaded yet.
+                "image": self.image.url if self.image else "",
+            }
+
+The ``add()`` method checks for the presence of ``meta_dict()`` and calls it
+automatically, so the calling code does not change:
+
+.. code-block:: python
+
+    context["meta_tags"].add(article)
