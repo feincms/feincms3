@@ -74,7 +74,7 @@ def embed_vimeo(url):
     d = match.groupdict()
     return mark_safe(
         f'<div class="responsive-embed widescreen vimeo">'
-        f'<iframe src="https://player.vimeo.com/video/{d["code"]}"'
+        f'<iframe src="https://player.vimeo.com/video/{d["code"]}?dnt=1"'
         f' frameborder="0" allow="autoplay; fullscreen" allowfullscreen="">'
         f"</iframe>"
         f"</div>"

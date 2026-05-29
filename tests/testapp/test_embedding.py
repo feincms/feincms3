@@ -49,7 +49,7 @@ def test_vimeo():
         embed("https://vimeo.com/455728498")
         == """\
 <div class="responsive-embed widescreen vimeo"><iframe \
-src="https://player.vimeo.com/video/455728498" frameborder="0" \
+src="https://player.vimeo.com/video/455728498?dnt=1" frameborder="0" \
 allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
     )
 
@@ -59,6 +59,6 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
         embed("https://vimeo.com/12345678/3213124324")
         == """\
 <div class="responsive-embed widescreen vimeo"><iframe \
-src="https://player.vimeo.com/video/12345678" frameborder="0" \
+src="https://player.vimeo.com/video/12345678?dnt=1" frameborder="0" \
 allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
     )

@@ -7,6 +7,7 @@ Next version
 ~~~~~~~~~~~~
 
 - Added testing using Python 3.14, Django 6.0.
+- Always set the ``?dnt=1`` parameter when embedding Vimeo videos.
 
 
 5.5 (2026-03-11)
