@@ -47,10 +47,10 @@ def test_modules(client):
 
     response = client.get("/admin/testapp/page/")
     assertContains(response, "/static/tree_queries/tree_admin.css", 1)
-    assert "/static/content_editor/content_editor.js" not in response.content.decode()
+    assert "/static/content_editor/index.js" not in response.content.decode()
 
     response = client.get("/admin/testapp/page/add/")
-    assertContains(response, "/static/content_editor/content_editor.js", 1)
+    assertContains(response, "/static/content_editor/index.js", 1)
 
 
 @pytest.mark.django_db
