@@ -8,7 +8,7 @@ from urllib import parse
 from django.utils.html import mark_safe
 
 
-__all__ = ("embed_youtube", "embed_vimeo", "embed")
+__all__ = ("embed", "embed_vimeo", "embed_youtube")
 
 
 YOUTUBE_RE = re.compile(
@@ -22,11 +22,11 @@ YOUTUBE_RE = re.compile(
         (user\S*[^\w\-\s])?
         (?P<code>[\w\-]{11})[a-z0-9;:@?&%=+/\$_.-]*  # match and extract
     """,
-    re.I | re.X,
+    re.IGNORECASE | re.VERBOSE,
 )
 VIMEO_RE = re.compile(
     r"""vimeo\.com/(video/)?(channels/(.*/)?)?((.+)/review/)?(?P<code>[0-9]+)""",
-    re.I,
+    re.IGNORECASE,
 )
 SRF_RE = [
     re.compile(r)

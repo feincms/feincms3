@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.template.response import TemplateResponse
 
 
-__all__ = ("template_name", "render_list", "render_detail")
+__all__ = ("render_detail", "render_list", "template_name")
 
 
 def template_name(model, template_name_suffix):

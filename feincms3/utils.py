@@ -64,7 +64,7 @@ class ChoicesCharField(models.CharField):
         super().__init__(*args, **kwargs)
 
     def deconstruct(self):
-        name, path, args, kwargs = super().deconstruct()
+        name, _path, args, kwargs = super().deconstruct()
         kwargs["choices"] = [("", "")]
         return name, "django.db.models.CharField", args, kwargs
 

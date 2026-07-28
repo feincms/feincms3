@@ -24,9 +24,9 @@ from feincms3.mixins import ChoicesCharField
 
 
 __all__ = (
+    "ApplicationType",
     "PageTypeMixin",
     "TemplateType",
-    "ApplicationType",
     "apps_middleware",
     "apps_urlconf",
     "page_for_app_request",

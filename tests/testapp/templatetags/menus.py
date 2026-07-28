@@ -44,7 +44,7 @@ def group_by_parent(iterable):
 @register.tag
 def ifactive(parser, token):
     try:
-        tag_name, page = token.split_contents()
+        _tag_name, page = token.split_contents()
     except ValueError as exc:
         raise template.TemplateSyntaxError(
             "%r tag requires a single argument" % token.contents.split()[0]

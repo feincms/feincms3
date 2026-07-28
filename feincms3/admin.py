@@ -19,10 +19,10 @@ from tree_queries.forms import TreeNodeChoiceField
 
 
 __all__ = (
-    "TreeAdmin",
-    "MoveForm",
-    "CloneForm",
     "AncestorFilter",
+    "CloneForm",
+    "MoveForm",
+    "TreeAdmin",
     "action_form_view_decorator",
 )
 

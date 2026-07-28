@@ -19,8 +19,8 @@ __all__ = (
     "External",
     "ExternalInline",
     "NoembedValidationForm",
-    "oembed_json",
     "oembed_html",
+    "oembed_json",
     "render_external",
 )
 

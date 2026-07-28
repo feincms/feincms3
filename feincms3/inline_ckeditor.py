@@ -131,7 +131,7 @@ class InlineCKEditorField(models.TextField):
     def deconstruct(self):
         """Act as if we were a ``models.TextField``. Migrations do not have
         to know that's not 100% true."""
-        name, path, args, kwargs = super().deconstruct()
+        name, _path, args, kwargs = super().deconstruct()
         return (name, "django.db.models.TextField", args, kwargs)
 
     def formfield(self, **kwargs):

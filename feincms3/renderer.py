@@ -12,11 +12,11 @@ from django.utils.html import mark_safe
 
 __all__ = (
     "PluginNotRegisteredError",
+    "RegionRenderer",
+    "TemplatePluginRenderer",
     "default_context",
     "render_in_context",
     "template_renderer",
-    "RegionRenderer",
-    "TemplatePluginRenderer",
 )
 
 

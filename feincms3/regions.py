@@ -14,7 +14,7 @@ from django.utils.functional import SimpleLazyObject
 from django.utils.html import mark_safe
 
 
-__all__ = ("Regions", "matches", "cached_render")
+__all__ = ("Regions", "cached_render", "matches")
 
 
 warnings.warn(
@@ -154,6 +154,6 @@ def matches(item, *, plugins=None, subregions=None):
     """
     if plugins is not None and not isinstance(item, plugins):
         return False
-    if subregions is not None and getattr(item, "subregion", None) not in subregions:
-        return False
-    return True
+    return not (
+        subregions is not None and getattr(item, "subregion", None) not in subregions
+    )

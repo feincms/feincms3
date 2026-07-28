@@ -199,7 +199,7 @@ def test_apps_duplicate(apps_validation_models):
     """Test that apps cannot be added twice with the exact same configuration"""
     deactivate_all()
 
-    home, blog = apps_validation_models
+    _home, _blog = apps_validation_models
 
     home2 = Page.objects.create(
         title="home",

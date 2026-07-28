@@ -109,8 +109,12 @@ lint.extend-select = [
 lint.extend-ignore = [
   # Allow zip() without strict=
   "B905",
+  # date.today is fine
+  "DTZ011",
   # No line length errors
   "E501",
+  # Mutable class variables are fine
+  "RUF012",
   # Do not warn about percent formatting for now
   "UP031",
 ]

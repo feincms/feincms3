@@ -1,8 +1,8 @@
+import datetime as dt
 import os
 import re
 import subprocess
 import sys
-from datetime import date
 
 from django import setup
 from django.conf import settings
@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(".."))
 
 project = "feincms3"
 author = "Feinheit AG"
-copyright = f"2016-{date.today().year}, {author}"
+copyright = f"2016-{dt.date.today().year}, {author}"
 version = __import__("feincms3").__version__
 release = subprocess.check_output(
     "git fetch --tags; git describe",
