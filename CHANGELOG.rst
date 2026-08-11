@@ -6,6 +6,20 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Dropped support for Django 3.2. The ``dj32`` tox environments weren't
+  actually testing Django 3.2: django-content-editor 9 requires Django 4.2 or
+  better, which made pip upgrade Django past the pin while installing the
+  package dependencies. Really pinning Django 3.2 makes the dependency
+  resolution fail.
+- Raised the minimum django-content-editor version to 9 and the minimum
+  django-js-asset version to 4; those were the versions we have been requiring
+  in practice already.
+- Removed the workaround for the Django admin before 4.2 from the inline
+  CKEditor widget and stylesheet.
+- Pinned pytest-django to versions below 4.13 when testing Django 4.2;
+  pytest-django 4.13 and better require Django 5.2 or better but do not declare
+  this in their metadata.
+
 5.6 (2026-05-29)
 ~~~~~~~~~~~~~~~~
 

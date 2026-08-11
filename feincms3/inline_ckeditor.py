@@ -1,6 +1,5 @@
 import json
 
-import django
 from django import forms
 from django.conf import settings
 from django.core.checks import Warning
@@ -160,8 +159,6 @@ class InlineCKEditorWidget(forms.Textarea):
 
         attrs = kwargs.setdefault("attrs", {})
         attrs["data-inline-cke"] = id(self.config)
-        if django.VERSION < (4, 2):
-            attrs["data-inline-cke-dj41"] = True
         super().__init__(*args, **kwargs)
 
     @property

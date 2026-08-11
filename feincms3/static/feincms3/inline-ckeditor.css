@@ -3,17 +3,6 @@
   max-width: 100ch;
 }
 
-@media screen and (max-width: 999px) {
-  .change-form [data-inline-cke-dj41] + .cke_chrome {
-    clear: both;
-  }
-}
-@media screen and (min-width: 1000px) {
-  .change-form [data-inline-cke-dj41] + .cke_chrome {
-    margin-left: 170px;
-  }
-}
-
 .cke_dialog_container tr:nth-child(2n),
 .cke_dialog_container tr:nth-child(2n + 1) {
   background: transparent;
