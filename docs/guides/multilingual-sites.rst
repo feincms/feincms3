@@ -171,3 +171,14 @@ the current page):
 
             # Use {% for lang in available_translations|translations %} ... {% endfor %}
             context = {"available_translations": translations.values()}
+
+   The :func:`~feincms3.templatetags.feincms3.translations_from` template tag
+   does the same merging, which means the view doesn't have to prepare
+   anything. It accepts any number of iterables and later ones win, so passing
+   the page first and the article second produces the same fallback behavior as
+   the code above:
+
+   .. code-block:: html+django
+
+       {% translations_from page.translations.active article.translations.active as languages %}
+       {% for lang in languages %} ... {% endfor %}

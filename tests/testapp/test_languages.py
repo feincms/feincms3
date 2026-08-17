@@ -107,6 +107,23 @@ def test_language_and_translation_of_mixin_in_app():
 
 
 @pytest.mark.django_db
+def test_translations_from_ignores_unknown_languages():
+    """Objects in a language which isn't configured (anymore) are skipped"""
+    original = TranslatedArticle.objects.create(title="News", language_code="en")
+    TranslatedArticle.objects.filter(
+        pk=TranslatedArticle.objects.create(
+            title="Novas", language_code="de", translation_of=original
+        ).pk
+    ).update(language_code="rm")
+
+    assert translations_from(original.translations()) == [
+        {"code": "en", "name": "English", "object": original},
+        {"code": "de", "name": "German", "object": None},
+        {"code": "fr", "name": "French", "object": None},
+    ]
+
+
+@pytest.mark.django_db
 def test_language_and_translation_of_mixin_validation():
     """Validation logic of LanguageAndTranslationOfMixin works"""
     original = Page.objects.create(

@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Documented the ``translations_from`` template tag and stopped it from raising
+  a ``KeyError`` when objects have a ``language_code`` which isn't in the list
+  of languages; such objects are now skipped, matching what the
+  ``translations`` filter has always done.
 - Dropped support for Django 3.2. The ``dj32`` tox environments weren't
   actually testing Django 3.2: django-content-editor 9 requires Django 4.2 or
   better, which made pip upgrade Django past the pin while installing the

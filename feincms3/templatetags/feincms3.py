@@ -160,6 +160,46 @@ def translations(iterable, languages=None):
 
 @register.simple_tag
 def translations_from(*iterables, languages=None):
+    """
+    Return a list of dictionaries, one for each language in
+    ``settings.LANGUAGES``, built from several sources of translations.
+
+    This is the counterpart to the :func:`~feincms3.templatetags.feincms3.translations`
+    filter for the case where more than one object may provide the translation
+    for a given language. The iterables are applied in order and later ones win,
+    so the most specific source goes last:
+
+    .. code-block:: html+django
+
+        {% load feincms3 %}
+        {% translations_from page.translations.active article.translations.active as languages %}
+        <nav class="languages">
+          {% for lang in languages %}
+            <a href="{% if lang.object %}{{ lang.object.get_absolute_url }}{% else %}/{{ lang.code }}/{% endif %}">
+              {{ lang.name }}
+            </a>
+          {% endfor %}
+        </nav>
+
+    The menu above links the translated article where one exists and falls back
+    to the translated page everywhere else. The return value has the same shape
+    as the one from :func:`~feincms3.templatetags.feincms3.translations`:
+
+    .. code-block:: python
+
+        [
+            {"code": "en", "name": "English", "object": <instance>},
+            {"code": "de", "name": "German", "object": None},
+            # ...
+        ]
+
+    Arguments which are falsy or which are strings are skipped, and objects
+    whose ``language_code`` isn't in the list of languages are ignored, so
+    neither optional objects nor rows in a language which has since been
+    removed from the setting have to be guarded against at the call site. Pass a
+    ``languages`` keyword argument containing a list of ``(code, name)`` tuples
+    to override the set of languages.
+    """
     t = {
         code: {"code": code, "name": name, "object": None}
         for code, name in (languages or settings.LANGUAGES)
@@ -167,7 +207,8 @@ def translations_from(*iterables, languages=None):
     for iterable in iterables:
         if iterable and not isinstance(iterable, str):
             for obj in iterable:
-                t[obj.language_code]["object"] = obj
+                if entry := t.get(obj.language_code):
+                    entry["object"] = obj
     return list(t.values())
 
 
