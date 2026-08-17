@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+6.0 (2026-08-17)
+~~~~~~~~~~~~~~~~
+
 - Documented the ``translations_from`` template tag and stopped it from raising
   a ``KeyError`` when objects have a ``language_code`` which isn't in the list
   of languages; such objects are now skipped, matching what the
