@@ -105,26 +105,72 @@ def reverse_app(parser, token):
         )
     namespaces = parser.compile_filter(bits[1])
     viewname = parser.compile_filter(bits[2])
+    args, kwargs, asvar = _parse_reverse_bits(parser, bits[3:], "reverse_app")
+    return ReverseAppNode(namespaces, viewname, args, kwargs, asvar)
+
+
+@register.tag
+def reverse_passthru(parser, token):
+    """
+    Reverse a passthru app URL, preferring the active language.
+
+    Usage::
+
+        {% load feincms3 %}
+        {% reverse_passthru 'imprint' [fallback='/'] %}
+
+    This is the template tag version of
+    :func:`~feincms3.root.passthru.reverse_passthru`. It saves you from having
+    to know that the view inside the passthru URLconf is called ``passthru``;
+    the tag above is exactly equivalent to::
+
+        {% reverse_app 'imprint' 'passthru' %}
+
+    Passthru pages may simply not have been created yet, which makes the
+    ``{% ... as var %}`` form -- it assigns an empty string instead of raising
+    ``NoReverseMatch`` -- the most useful one here::
+
+        {% reverse_passthru 'imprint' as imprint_url %}
+        {% if imprint_url %}<a href="{{ imprint_url }}">{% translate "Imprint" %}</a>{% endif %}
+
+    A ``fallback`` keyword argument is supported as well.
+    """
+    bits = token.split_contents()
+    if len(bits) < 2:
+        raise TemplateSyntaxError(
+            "'reverse_passthru' takes at least one argument, a namespace."
+        )
+    namespaces = parser.compile_filter(bits[1])
+    args, kwargs, asvar = _parse_reverse_bits(parser, bits[2:], "reverse_passthru")
+    if args:
+        raise TemplateSyntaxError(
+            "'reverse_passthru' doesn't support positional arguments; the"
+            " passthru view doesn't take any."
+        )
+    return ReverseAppNode(
+        namespaces, parser.compile_filter("'passthru'"), args, kwargs, asvar
+    )
+
+
+def _parse_reverse_bits(parser, bits, tag_name):
     args = []
     kwargs = {}
     asvar = None
-    bits = bits[3:]
     if len(bits) >= 2 and bits[-2] == "as":
         asvar = bits[-1]
         bits = bits[:-2]
 
-    if len(bits):
-        for bit in bits:
-            match = kwarg_re.match(bit)
-            if not match:
-                raise TemplateSyntaxError("Malformed arguments to reverse_app tag")
-            name, value = match.groups()
-            if name:
-                kwargs[name] = parser.compile_filter(value)
-            else:
-                args.append(parser.compile_filter(value))
+    for bit in bits:
+        match = kwarg_re.match(bit)
+        if not match:
+            raise TemplateSyntaxError(f"Malformed arguments to {tag_name} tag")
+        name, value = match.groups()
+        if name:
+            kwargs[name] = parser.compile_filter(value)
+        else:
+            args.append(parser.compile_filter(value))
 
-    return ReverseAppNode(namespaces, viewname, args, kwargs, asvar)
+    return args, kwargs, asvar
 
 
 @register.filter

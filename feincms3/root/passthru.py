@@ -33,6 +33,16 @@ Reverse the URL of the page (if it exists):
 
     # Outside the request-response cycle
     reverse_passthru("imprint", urlconf=apps_urlconf())
+
+Templates have :func:`~feincms3.templatetags.feincms3.reverse_passthru`; since
+the page may not exist, the variable assignment form is generally what you
+want:
+
+.. code-block:: html+django
+
+    {% load feincms3 %}
+    {% reverse_passthru 'imprint' as imprint_url %}
+    {% if imprint_url %}<a href="{{ imprint_url }}">Imprint</a>{% endif %}
 """
 
 from functools import partial

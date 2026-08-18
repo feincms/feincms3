@@ -6,6 +6,11 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added a ``{% reverse_passthru %}`` template tag, the counterpart to
+  ``feincms3.root.passthru.reverse_passthru``. Linking passthru pages required
+  ``{% reverse_app 'imprint' 'passthru' %}`` until now, which meant knowing the
+  name of a view inside feincms3.
+
 6.0 (2026-08-17)
 ~~~~~~~~~~~~~~~~
 

@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 
 import pytest
+from django.template import Context, Template, TemplateSyntaxError
 from django.urls import NoReverseMatch, set_urlconf
 from pytest_django.asserts import assertContains
 
@@ -87,3 +88,55 @@ def test_reverse_passthru():
     # Only this language
     with pytest.raises(NoReverseMatch):
         reverse_passthru("imprint", urlconf=apps_urlconf(), languages=["en"])
+
+
+@pytest.mark.django_db
+def test_reverse_passthru_tag():
+    """Exercise the {% reverse_passthru %} template tag"""
+    Page.objects.create(
+        title="Impressum",
+        slug="impressum",
+        path="/de/impressum/",
+        static_path=True,
+        language_code="de",
+        is_active=True,
+        page_type="imprint",
+    )
+
+    tests = [
+        ("{% reverse_passthru 'imprint' %}", "/de/impressum/"),
+        ("{% reverse_passthru 'imprint' fallback='/a/' %}", "/de/impressum/"),
+        ("{% reverse_passthru 'imprint' as u %}{{ u }}", "/de/impressum/"),
+        # Same thing, spelled out
+        ("{% reverse_app 'imprint' 'passthru' %}", "/de/impressum/"),
+        # No such page: fallback, or an empty string with the "as" form
+        ("{% reverse_passthru 'bla' fallback='/test/' %}", "/test/"),
+        ("{% reverse_passthru 'bla' as u %}{{ u|default:'blub' }}", "blub"),
+    ]
+
+    with override_urlconf(apps_urlconf()):
+        for tpl, out in tests:
+            t = Template("{% load feincms3 %}" + tpl)
+            assert t.render(Context()).strip() == out
+
+        # ... but not when neither is given
+        with pytest.raises(NoReverseMatch):
+            Template("{% load feincms3 %}{% reverse_passthru 'bla' %}").render(
+                Context()
+            )
+
+
+def test_reverse_passthru_tag_failures():
+    """Invalid parameters to {% reverse_passthru %}"""
+    with pytest.raises(TemplateSyntaxError) as cm:
+        Template("{% load feincms3 %}{% reverse_passthru %}")
+    assert str(cm.value) == (
+        "'reverse_passthru' takes at least one argument, a namespace."
+    )
+
+    with pytest.raises(TemplateSyntaxError) as cm:
+        Template("{% load feincms3 %}{% reverse_passthru 'imprint' 42 %}")
+    assert str(cm.value) == (
+        "'reverse_passthru' doesn't support positional arguments; the passthru"
+        " view doesn't take any."
+    )
