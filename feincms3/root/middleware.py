@@ -155,6 +155,10 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
                 # Response is not a 404 OR the 404 comes from a resolved view
                 # which also didn't return a UseRootMiddlewareResponse.
                 return response
+            if "\x00" in request.path_info:
+                # NUL bytes cannot occur in a page's path and crash backends
+                # such as PostgreSQL if used in a query, so bail out early.
+                return response
             qs = queryset(request) if callable(queryset) else queryset._clone()
             if page := qs.filter(path=request.path_info).first():
                 return handler(request, page)

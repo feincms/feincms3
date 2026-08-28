@@ -799,6 +799,23 @@ def test_404_for_resolvable_path(client):
 
 
 @pytest.mark.django_db
+def test_404_for_path_with_nul_byte(client, django_assert_num_queries):
+    """
+    Paths containing NUL bytes do not crash the middleware
+
+    NUL bytes cannot be queried using PostgreSQL (the query would raise
+    django.db.utils.DataError: PostgreSQL text fields cannot contain NUL
+    (0x00) bytes) but sqlite3, which is used for testing, doesn't have this
+    restriction, so this test asserts that the page queryset is never
+    filtered by path (only the unrelated apps_urlconf query should run)
+    instead of relying on a database error.
+    """
+    with django_assert_num_queries(1):
+        response = client.get("/%00env.local")
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
 def test_404_for_resolvable_app_path(client):
     """404s from resolvable app paths are not handled by the middleware"""
     Page.objects.create(

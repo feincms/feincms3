@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Fixed the root middleware to avoid crashing with a database error when
+  request paths contain NUL bytes (e.g. ``/%00env.local``); such paths are now
+  treated as not matching any page instead of being passed to the database.
 - Added a ``{% reverse_passthru %}`` template tag, the counterpart to
   ``feincms3.root.passthru.reverse_passthru``. Linking passthru pages required
   ``{% reverse_app 'imprint' 'passthru' %}`` until now, which meant knowing the
