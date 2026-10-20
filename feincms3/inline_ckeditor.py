@@ -10,19 +10,17 @@ from django.utils.functional import lazy
 from django.utils.html import strip_tags
 from django.utils.text import Truncator
 from html_sanitizer.django import get_sanitizer
-from js_asset import JS
+from js_asset import Script
 
 
 __all__ = ["InlineCKEditorField"]
 
 
-CKEDITOR_JS_URL = JS(
+CKEDITOR_JS_URL = Script(
     "https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js",
-    {
-        # "integrity": "sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",
-        "crossorigin": "anonymous",
-        "defer": "defer",
-    },
+    # integrity="sha384-qdzSU+GzmtYP2hzdmYowu+mz86DPHVROVcDAPdT/ePp1E8ke2z0gy7ITERtHzPmJ",
+    crossorigin="anonymous",
+    defer="defer",
 )
 CKEDITOR_CONFIG = {
     "default": {
@@ -167,14 +165,14 @@ class InlineCKEditorWidget(forms.Textarea):
             css={"all": ["feincms3/inline-ckeditor.css"]},
             js=[
                 self.ckeditor,
-                JS(
+                Script(
                     "feincms3/inline-ckeditor.js",
-                    {
+                    defer="defer",
+                    **{
                         "data-inline-cke-id": id(self.config),
                         "data-inline-cke-config": json.dumps(
                             self.config, cls=DjangoJSONEncoder
                         ),
-                        "defer": "defer",
                     },
                 ),
             ],
