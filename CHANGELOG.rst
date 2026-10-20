@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+6.1 (2026-10-20)
+~~~~~~~~~~~~~~~~
+
 - Fixed the root middleware to avoid crashing with a database error when
   request paths contain NUL bytes (e.g. ``/%00env.local``); such paths are now
   treated as not matching any page instead of being passed to the database.
