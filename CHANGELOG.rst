@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+6.1.1 (2026-10-20)
+~~~~~~~~~~~~~~~~~~
+
 - Switched ``feincms3.inline_ckeditor`` from the deprecated ``JS(src, {...})``
   form of django-js-asset to ``Script(src, **attrs)``.
 
