@@ -214,6 +214,8 @@ class AbstractPage(OrderableTreeNode):
                     continue
                 node.save(save_descendants=False)
 
+        self._save_descendants_cache = (self.is_active, self.path)
+
     save.alters_data = True
 
     def get_absolute_url(self):

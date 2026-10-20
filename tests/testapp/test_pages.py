@@ -872,3 +872,23 @@ def test_append_slash(client):
     with override_settings(APPEND_SLASH=False):
         response = client.get("/home")
         assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_save_descendants_after_reverting_changes():
+    """Reverting a change on the same instance still updates descendants"""
+    Page.objects.create(title="root", slug="a", page_type="standard")
+    root = Page.objects.get()
+    child = Page.objects.create(
+        title="child", slug="c", parent=root, page_type="standard"
+    )
+
+    root.slug = "b"
+    root.save()
+    child.refresh_from_db()
+    assert child.path == "/b/c/"
+
+    root.slug = "a"
+    root.save()
+    child.refresh_from_db()
+    assert child.path == "/a/c/"

@@ -13,6 +13,10 @@ Next version
   ``feincms3.root.passthru.reverse_passthru``. Linking passthru pages required
   ``{% reverse_app 'imprint' 'passthru' %}`` until now, which meant knowing the
   name of a view inside feincms3.
+- Fixed ``AbstractPage.save()`` skipping descendant updates when a change was
+  reverted on the same instance (e.g. changing the slug and changing it back,
+  or deactivating, reactivating and deactivating a page again). The values used
+  to detect changes are now refreshed after each save.
 
 6.0 (2026-08-17)
 ~~~~~~~~~~~~~~~~
