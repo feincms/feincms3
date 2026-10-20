@@ -20,6 +20,7 @@ Next version
 - Fixed ``feincms3.embedding.embed_srf`` interpolating the ``id`` and
   ``start`` query parameters into the iframe without escaping, and fixed its
   malformed ``allow`` attribute.
+- Started testing with Python 3.15 and Django 6.1.
 
 6.0 (2026-08-17)
 ~~~~~~~~~~~~~~~~
