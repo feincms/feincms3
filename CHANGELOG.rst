@@ -17,6 +17,9 @@ Next version
   reverted on the same instance (e.g. changing the slug and changing it back,
   or deactivating, reactivating and deactivating a page again). The values used
   to detect changes are now refreshed after each save.
+- Fixed ``feincms3.embedding.embed_srf`` interpolating the ``id`` and
+  ``start`` query parameters into the iframe without escaping, and fixed its
+  malformed ``allow`` attribute.
 
 6.0 (2026-08-17)
 ~~~~~~~~~~~~~~~~

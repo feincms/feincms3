@@ -5,7 +5,7 @@ Embedding videos and other 3rd party content without oEmbed.
 import re
 from urllib import parse
 
-from django.utils.html import mark_safe
+from django.utils.html import format_html, mark_safe
 
 
 __all__ = ("embed", "embed_vimeo", "embed_youtube")
@@ -98,14 +98,16 @@ def embed_srf(url):
     business_unit = d.get("business_unit", "srf")
 
     start = p[0] if (p := params.get("start")) else ""
-    return mark_safe(
+    query = parse.urlencode(
+        {"urn": f"urn:{business_unit}:{type_}:{id_}", "start": start}, safe=":"
+    )
+    return format_html(
         '<div class="responsive-embed widescreen srfplay">'
-        "<iframe "
-        f"src='//srf.ch/play/embed?urn=urn:{business_unit}:{type_}:{id_}&start={start}' "
-        f"allowfullscreen frameborder='0' name='' "
-        'allow="geolocation *; autoplay; '
-        "'encrypted-media\"></iframe>"
-        "</div>"
+        '<iframe src="//srf.ch/play/embed?{}" '
+        'allowfullscreen frameborder="0" name="" '
+        'allow="geolocation *; autoplay; encrypted-media"></iframe>'
+        "</div>",
+        query,
     )
 
 

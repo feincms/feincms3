@@ -62,3 +62,22 @@ allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
 src="https://player.vimeo.com/video/12345678?dnt=1" frameborder="0" \
 allow="autoplay; fullscreen" allowfullscreen=""></iframe></div>"""
     )
+
+
+def test_srf():
+    """SRF embedding works and escapes values taken from the query string"""
+    assert (
+        embed("https://www.srf.ch/play/tv/redirect/detail/abc-123?start=10")
+        == """\
+<div class="responsive-embed widescreen srfplay"><iframe \
+src="//srf.ch/play/embed?urn=urn:srf:video:abc-123&amp;start=10" \
+allowfullscreen frameborder="0" name="" \
+allow="geolocation *; autoplay; encrypted-media"></iframe></div>"""
+    )
+
+    html = embed(
+        "https://www.srf.ch/play/tv/redirect/detail/abc-123"
+        "?start=10'><script>alert(1)</script>"
+    )
+    assert "<script>" not in html
+    assert "'" not in html.split('src="')[1].split('"')[0]
