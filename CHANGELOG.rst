@@ -13,6 +13,7 @@ Next version
   ``feincms3.admin.TreeAdmin``. Nothing links to them anymore since the
   changelist uses the move controls of django-tree-queries' ``TreeAdmin``,
   which also allow restricting moves by overriding ``is_valid_move``.
+- Raised the minimum version of django-tree-queries to 0.28.
 
 6.1.1 (2026-10-20)
 ~~~~~~~~~~~~~~~~~~
