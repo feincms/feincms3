@@ -1,3 +1,4 @@
+import warnings
 from collections import defaultdict
 from functools import update_wrapper
 
@@ -135,12 +136,23 @@ class MoveForm(forms.Form):
     child of another node.
 
     Requires the node to be moved as ``obj`` keyword argument.
+
+    .. deprecated:: 6.2
+       Use the move controls of the changelist (``move_column``) provided by
+       django-tree-queries' ``TreeAdmin`` instead. Moves can be restricted by
+       overriding ``TreeAdmin.is_valid_move``.
     """
 
     class Media:
         css = {"screen": ["feincms3/move-form.css"]}
 
     def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "feincms3.admin.MoveForm and the move view of feincms3.admin.TreeAdmin"
+            " are deprecated. Use the move controls of the changelist instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.instance = kwargs.pop("obj")
         self.modeladmin = kwargs.pop("modeladmin")
         self.request = kwargs.pop("request")

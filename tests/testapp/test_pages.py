@@ -458,10 +458,11 @@ def test_new_location_root(client, prepare_for_move):
     """First child of no parent should move to the root"""
     root, p1, p2 = prepare_for_move
 
-    response = client.post(
-        reverse("admin:testapp_page_move", args=(p1.pk,)),
-        {"new_location": "0:first"},
-    )
+    with pytest.warns(DeprecationWarning, match="MoveForm"):
+        response = client.post(
+            reverse("admin:testapp_page_move", args=(p1.pk,)),
+            {"new_location": "0:first"},
+        )
     assertRedirects(response, "/admin/testapp/page/")
 
     assert [(p.pk, p.parent_id, p.position) for p in Page.objects.all()] == [
@@ -476,10 +477,11 @@ def test_new_location_child(client, prepare_for_move):
     """First child of a different page, new siblings are pushed back"""
     root, p1, p2 = prepare_for_move
 
-    response = client.post(
-        reverse("admin:testapp_page_move", args=(p2.pk,)),
-        {"new_location": f"{p1.pk}:first"},
-    )
+    with pytest.warns(DeprecationWarning, match="MoveForm"):
+        response = client.post(
+            reverse("admin:testapp_page_move", args=(p2.pk,)),
+            {"new_location": f"{p1.pk}:first"},
+        )
     assertRedirects(response, "/admin/testapp/page/")
 
     assert [(p.pk, p.parent_id, p.position) for p in Page.objects.all()] == [
@@ -496,10 +498,11 @@ def test_reorder_siblings(client, prepare_for_move):
 
     p3 = Page.objects.create(title="p3", slug="p3", parent=root)
 
-    response = client.post(
-        reverse("admin:testapp_page_move", args=(p3.pk,)),
-        {"new_location": f"{p1.pk}:right"},
-    )
+    with pytest.warns(DeprecationWarning, match="MoveForm"):
+        response = client.post(
+            reverse("admin:testapp_page_move", args=(p3.pk,)),
+            {"new_location": f"{p1.pk}:right"},
+        )
     assertRedirects(response, "/admin/testapp/page/")
 
     assert [(p.pk, p.parent_id, p.position) for p in Page.objects.all()] == [

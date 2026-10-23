@@ -9,6 +9,10 @@ Next version
 - Added a guide for migrating from FeinCMS to feincms3.
 - Documented using django-prose-editor instead of CKEditor 4 for the rich text
   plugin.
+- Deprecated ``feincms3.admin.MoveForm`` and the ``<pk>/move/`` view of
+  ``feincms3.admin.TreeAdmin``. Nothing links to them anymore since the
+  changelist uses the move controls of django-tree-queries' ``TreeAdmin``,
+  which also allow restricting moves by overriding ``is_valid_move``.
 
 6.1.1 (2026-10-20)
 ~~~~~~~~~~~~~~~~~~
