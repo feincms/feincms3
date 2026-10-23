@@ -232,18 +232,19 @@ new plugin models (for example ``cms.add_richtext``), even though both use
 the same table. Django creates the permissions for the plugin models when
 running ``migrate``, also for models with ``managed = False``.
 
-Often this isn't worth more than a few clicks: if all editors are superusers,
-or if there are only a few groups, simply assign the new permissions in the
-admin. Copying the assignments programmatically is only worth it if
-permissions are used heavily, for example with many groups or with
-permissions assigned to individual users. In that case run something like
-this when switching the admin, for example in ``./manage.py shell``:
+Check who actually depends on those permissions; editors are often in a
+group or two, sometimes superusers. If only a few groups are affected, simply
+assign the new permissions in the admin. Otherwise copy the assignments in a
+data migration, so that they are copied automatically when deploying. Django
+creates the permissions of new models only after all migrations have run,
+so the migration has to create them first:
 
 .. code-block:: python
 
-    from django.contrib.auth.models import Permission
+    from django.contrib.auth.management import create_permissions
+    from django.db import migrations
 
-    # Old model -> new model
+    # Old model -> new model using the same table
     MODELS = {
         "page.richtextcontent": "cms.richtext",
         "page.downloadcontent": "cms.download",
@@ -251,22 +252,44 @@ this when switching the admin, for example in ``./manage.py shell``:
         # "page.page": "cms.page",
     }
 
-    for old, new in MODELS.items():
-        old_app_label, old_model = old.split(".")
-        new_app_label, new_model = new.split(".")
-        for action in ("add", "change", "delete", "view"):
-            old_perm = Permission.objects.get(
+    def copy_permissions(apps, schema_editor):
+        for app_config in apps.get_app_configs():
+            app_config.models_module = True
+            create_permissions(app_config, apps=apps, verbosity=0)
+            app_config.models_module = None
+
+        Permission = apps.get_model("auth", "Permission")
+        for old, new in MODELS.items():
+            old_app_label, old_model = old.split(".")
+            new_app_label, new_model = new.split(".")
+            for old_perm in Permission.objects.filter(
                 content_type__app_label=old_app_label,
-                codename=f"{action}_{old_model}",
-            )
-            new_perm = Permission.objects.get(
-                content_type__app_label=new_app_label,
-                codename=f"{action}_{new_model}",
-            )
-            for group in old_perm.group_set.all():
-                group.permissions.add(new_perm)
-            for user in old_perm.user_set.all():
-                user.user_permissions.add(new_perm)
+                content_type__model=old_model,
+            ):
+                action = old_perm.codename.split("_", 1)[0]
+                new_perm = Permission.objects.filter(
+                    content_type__app_label=new_app_label,
+                    content_type__model=new_model,
+                    codename=f"{action}_{new_model}",
+                ).first()
+                if new_perm:
+                    new_perm.group_set.add(*old_perm.group_set.all())
+                    new_perm.user_set.add(*old_perm.user_set.all())
+
+    class Migration(migrations.Migration):
+        dependencies = [
+            ("auth", "0012_alter_user_first_name_max_length"),
+            ("contenttypes", "0002_remove_content_type_name"),
+            ("cms", "0004_previous_migration"),
+        ]
+
+        operations = [
+            migrations.RunPython(copy_permissions, migrations.RunPython.noop),
+        ]
+
+The old permissions and content types stay in the database, so the migration
+also works after FeinCMS has been removed, as long as the stale content types
+haven't been deleted yet. On new databases it does nothing.
 
 Anything else referencing content types has the same problem, for example
 generic foreign keys or the admin's change history.
@@ -642,8 +665,11 @@ directions, but keeps the history intact, which is useful if those apps
 contain many hand-written migrations.
 
 ``cms.Page`` has its own row in ``django_content_type`` and its own
-permissions. Copy the permission assignments as described in :ref:`permissions
-<migrating-from-feincms-permissions>` before removing stale content types.
+permissions, as do the models replacing those of third party apps. Copy the
+permission assignments as described in :ref:`permissions
+<migrating-from-feincms-permissions>`, for example in a migration running
+after the recreated initial migrations, and before removing stale content
+types.
 
 
 Converting the page model
