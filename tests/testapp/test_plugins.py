@@ -47,3 +47,11 @@ def test_render_plugins(client):
     response = client.get(page.get_absolute_url())
     assertContains(response, '<div class="main"><b>main</b></div>')
     assertContains(response, '<div class="sidebar"><i>sidebar</b></div>')
+
+
+def test_unknown_plugin_module():
+    """Accessing unknown attributes of feincms3.plugins still fails"""
+    import feincms3.plugins  # noqa: PLC0415
+
+    with pytest.raises(AttributeError):
+        feincms3.plugins.does_not_exist  # noqa: B018

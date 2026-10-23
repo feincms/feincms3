@@ -32,13 +32,6 @@ Images
    :members:
 
 
-Rich text
-~~~~~~~~~
-
-.. automodule:: feincms3.plugins.richtext
-   :members:
-
-
 Snippets
 ~~~~~~~~
 
@@ -48,6 +41,12 @@ Snippets
 
 Deprecated plugins
 ~~~~~~~~~~~~~~~~~~
+
+Rich text
+---------
+
+.. automodule:: feincms3.plugins.richtext
+   :members:
 
 Rich text support using django-ckeditor
 ---------------------------------------

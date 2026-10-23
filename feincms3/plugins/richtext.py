@@ -1,3 +1,5 @@
+import warnings
+
 from content_editor.admin import ContentEditorInline
 from django.db import models
 from django.utils.html import mark_safe
@@ -8,6 +10,15 @@ from feincms3.inline_ckeditor import InlineCKEditorField
 
 __all__ = ("RichText", "RichTextInline", "render_richtext")
 
+warnings.warn(
+    "The feincms3.plugins.richtext module is deprecated since it uses"
+    " CKEditor 4. Define your own rich text plugin using django-prose-editor"
+    " instead, see"
+    " https://feincms3.readthedocs.io/en/latest/guides/plugins.html#richtext-prose-editor",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
 
 class RichText(models.Model):
     """
@@ -17,9 +28,9 @@ class RichText(models.Model):
     lifting.
 
     .. deprecated:: 6.2
-       The ``text`` field uses the deprecated CKEditor 4. Define your own rich
-       text plugin using django-prose-editor instead, see
-       :ref:`richtext-prose-editor`.
+       The whole ``feincms3.plugins.richtext`` module is deprecated since the
+       ``text`` field uses CKEditor 4. Define your own rich text plugin using
+       django-prose-editor instead, see :ref:`richtext-prose-editor`.
     """
 
     text = InlineCKEditorField(_("text"))

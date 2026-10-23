@@ -57,10 +57,10 @@ fields and methods in the example above:
 Rich text
 ~~~~~~~~~
 
-Don't use the bundled :class:`feincms3.plugins.richtext.RichText` model: Its
+The bundled :mod:`feincms3.plugins.richtext` module is deprecated: Its
 ``text`` field is the deprecated
 :class:`~feincms3.inline_ckeditor.InlineCKEditorField` which uses CKEditor 4,
-which has reached its end of life. The field hasn't been replaced yet because
+which has reached its end of life. The field hasn't been replaced because
 other editors only accept a stricter subset of HTML, which wouldn't be
 backwards compatible with existing content.
 
@@ -94,8 +94,23 @@ extensions do not produce:
             return self.get_text_excerpt()
 
 ``ProseEditorField`` adds the ``get_text_excerpt()`` method. The admin inline
-(``plugins.richtext.RichTextInline``) and the renderer
-(``plugins.richtext.render_richtext``) of the bundled plugin can still be
-used. Switching an existing project requires a migration. Existing content containing HTML
+and the renderer are one-liners too:
+
+.. code-block:: python
+
+    # admin.py
+    from content_editor.admin import ContentEditorInline
+
+    inlines = [
+        ContentEditorInline.create(models.RichText, icon="notes"),
+        ...
+    ]
+
+    # renderer.py
+    from django.utils.html import mark_safe
+
+    renderer.register(models.RichText, lambda plugin, context: mark_safe(plugin.text))
+
+Switching an existing project requires a migration. Existing content containing HTML
 which the configured extensions don't support loses that markup when it is
 edited and saved the next time.

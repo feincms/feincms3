@@ -88,8 +88,8 @@ The page model and a few plugins could be defined as follows:
 
 .. note::
 
-   The rich text plugin uses django-prose-editor instead of the bundled
-   rich text model, which uses the deprecated CKEditor 4. ``sanitize=True`` removes all
+   The rich text plugin uses django-prose-editor instead of the deprecated
+   bundled rich text plugin, which uses CKEditor 4. ``sanitize=True`` removes all
    HTML which the configured extensions do not produce, which also means
    images, script tags etc.
 
@@ -281,7 +281,7 @@ Here's an example how the ``app.pages.admin`` module might look like:
 
     from django.contrib import admin
 
-    from content_editor.admin import ContentEditor
+    from content_editor.admin import ContentEditor, ContentEditorInline
     from feincms3 import plugins
     from feincms3.admin import TreeAdmin
 
@@ -294,7 +294,7 @@ Here's an example how the ``app.pages.admin`` module might look like:
         raw_id_fields = ["parent"]
 
         inlines = [
-            plugins.richtext.RichTextInline.create(models.RichText),
+            ContentEditorInline.create(models.RichText, icon="notes"),
             plugins.image.ImageInline.create(models.Image),
         ]
 

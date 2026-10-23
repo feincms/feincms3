@@ -87,8 +87,8 @@ feincms3 equivalent. It's worth making a list of those first:
   together with the apps.
 - **Rich text:** FeinCMS doesn't sanitize rich text by default. Define a
   rich text plugin using django-prose-editor as described in
-  :ref:`richtext-prose-editor`; feincms3's bundled rich text model uses the
-  deprecated CKEditor 4. With ``sanitize=True``, HTML is sanitized whenever a plugin is
+  :ref:`richtext-prose-editor`; feincms3's bundled rich text plugin is
+  deprecated since it uses CKEditor 4. With ``sanitize=True``, HTML is sanitized whenever a plugin is
   saved through a form. Existing content stays as it is until an editor saves
   it, at which point markup which the configured extensions don't support is
   removed. Configure the extensions accordingly before switching the admin.
@@ -199,7 +199,6 @@ reused as well; it validates URLs and prevents moving pages below themselves:
     from django.contrib import admin
     from feincms.module.page.forms import PageAdminForm
     from feincms.module.page.models import Page
-    from feincms3 import plugins
     from mptt.admin import DraggableMPTTAdmin
 
     from app.cms import models
@@ -214,7 +213,7 @@ reused as well; it validates URLs and prevents moving pages below themselves:
         list_display_links = ["indented_title"]
         prepopulated_fields = {"slug": ["title"]}
         inlines = [
-            plugins.richtext.RichTextInline.create(models.RichText),
+            ContentEditorInline.create(models.RichText, icon="notes"),
             ContentEditorInline.create(models.Download),
             ...
         ]
