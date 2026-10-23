@@ -312,6 +312,9 @@ request processors, redirects and ``ApplicationContent``:
                     page,
                     # Required for regions marked as "inherited"
                     inherit_from=page.get_ancestors(ascending=True),
+                    # Leave this out if the regions contain the output of
+                    # applications, it depends on the URL
+                    timeout=60,
                 ),
                 **kwargs,
             )
