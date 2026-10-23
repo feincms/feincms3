@@ -7,6 +7,8 @@ Next version
 ~~~~~~~~~~~~
 
 - Added a guide for migrating from FeinCMS to feincms3.
+- Documented using django-prose-editor instead of CKEditor 4 for the rich text
+  plugin.
 
 6.1.1 (2026-10-20)
 ~~~~~~~~~~~~~~~~~~

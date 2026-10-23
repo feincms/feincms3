@@ -50,3 +50,50 @@ fields and methods in the example above:
    However, django-content-editor and by extension feincms3 assume a few
    properties which you'd have to replicate by hand such as
    the model fields, the ``related_name`` pattern etc.
+
+
+.. _richtext-prose-editor:
+
+Rich text without CKEditor
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The bundled :mod:`rich text plugin <feincms3.plugins.richtext>` uses
+CKEditor 4, which has reached its end of life (the
+``feincms3.W007`` system check warns about this). It isn't replaced yet
+because other editors only accept a stricter subset of HTML, which
+wouldn't be backwards compatible with existing content.
+
+New projects can use `django-prose-editor
+<https://github.com/matthiask/django-prose-editor>`__ instead. Install it
+with ``pip install django-prose-editor[sanitize]``, add
+``"django_prose_editor"`` to ``INSTALLED_APPS`` and replace the ``text``
+field when defining the plugin. The editor only offers the configured
+extensions, and ``sanitize=True`` removes all HTML which these extensions
+do not produce:
+
+.. code-block:: python
+
+    from django.utils.translation import gettext_lazy as _
+    from django_prose_editor.fields import ProseEditorField
+
+    from feincms3 import plugins
+
+    class RichText(plugins.richtext.RichText, PagePlugin):
+        text = ProseEditorField(
+            _("text"),
+            extensions={
+                "Bold": True,
+                "Italic": True,
+                "Heading": {"levels": [2, 3]},
+                "BulletList": True,
+                "OrderedList": True,
+                "Link": True,
+            },
+            sanitize=True,
+        )
+
+The admin inline (``plugins.richtext.RichTextInline``) and the renderer
+(``plugins.richtext.render_richtext``) work unchanged. Switching an
+existing project requires a migration. Existing content containing HTML
+which the configured extensions don't support loses that markup when it is
+edited and saved the next time.

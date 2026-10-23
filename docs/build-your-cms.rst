@@ -94,6 +94,8 @@ The page model and a few plugins could be defined as follows:
 
    That being said, adding your own rich text plugin which allows
    whatever you want is quite straightforward and completely supported.
+   :ref:`richtext-prose-editor` shows how to replace CKEditor with
+   django-prose-editor.
 
 
 Rendering and templates
