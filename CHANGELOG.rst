@@ -6,6 +6,8 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added a guide for migrating from FeinCMS to feincms3.
+
 6.1.1 (2026-10-20)
 ~~~~~~~~~~~~~~~~~~
 
