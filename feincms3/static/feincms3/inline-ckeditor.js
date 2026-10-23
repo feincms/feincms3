@@ -12,6 +12,10 @@
     }
   }
 
+  console.warn(
+    "feincms3: The InlineCKEditorField is deprecated, CKEditor 4 has reached its end of life. Switch to django-prose-editor.",
+  )
+
   onReady(() => {
     const configs = {}
     const scripts = document.querySelectorAll("[data-inline-cke-config]")

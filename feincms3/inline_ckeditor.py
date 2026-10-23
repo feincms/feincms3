@@ -1,4 +1,5 @@
 import json
+import warnings
 
 from django import forms
 from django.conf import settings
@@ -63,6 +64,12 @@ CKEDITOR_CONFIG = {
 }
 
 
+DEPRECATION_HINT = (
+    "Switch to django-prose-editor, see"
+    " https://feincms3.readthedocs.io/en/latest/guides/plugins.html#richtext-prose-editor"
+)
+
+
 def _url():
     return getattr(settings, "FEINCMS3_CKEDITOR_URL", CKEDITOR_JS_URL)
 
@@ -91,6 +98,11 @@ class InlineCKEditorField(models.TextField):
       current default.
     - ``config_name``: Alternative way of configuring the CKEditor. Uses the
       ``FEINCMS3_CKEDITOR_CONFIG`` setting.
+
+    .. deprecated:: 6.2
+       CKEditor 4 has reached its end of life. Use `django-prose-editor
+       <https://github.com/matthiask/django-prose-editor>`__ instead, see
+       :ref:`richtext-prose-editor`.
     """
 
     def __init__(self, *args, **kwargs):
@@ -102,7 +114,10 @@ class InlineCKEditorField(models.TextField):
         errors = super().check(**kwargs)
         errors.append(
             Warning(
-                "The InlineCKEditorField uses the insecure CKEditor 4 non-LTS version.",
+                "The InlineCKEditorField is deprecated, it uses the insecure"
+                " CKEditor 4 non-LTS version.",
+                hint=DEPRECATION_HINT,
+                obj=self,
                 id="feincms3.W007",
             )
         )
@@ -140,6 +155,13 @@ class InlineCKEditorField(models.TextField):
         """Add a ``get_*_excerpt`` method to models which returns a
         de-HTML-ified excerpt of the contents of this field"""
         super().contribute_to_class(cls, name, **kwargs)
+        if not cls._meta.abstract:
+            warnings.warn(
+                f"{cls._meta.label}.{name}: The InlineCKEditorField is deprecated."
+                f" {DEPRECATION_HINT}.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         setattr(
             cls,
             f"get_{name}_excerpt",

@@ -15,6 +15,10 @@ class RichText(models.Model):
 
     :class:`feincms3.inline_ckeditor.InlineCKEditorField` does all the heavy
     lifting.
+
+    .. deprecated:: 6.2
+       The ``text`` field uses the deprecated CKEditor 4. Keep using this
+       class as a base but replace the field, see :ref:`richtext-prose-editor`.
     """
 
     text = InlineCKEditorField(_("text"))

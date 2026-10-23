@@ -22,7 +22,7 @@ Install feincms3 and all recommended dependencies:
 
 .. code-block:: shell
 
-    pip install feincms3[all]
+    pip install feincms3[all] django-prose-editor[sanitize]
 
 Add the following settings:
 
@@ -33,7 +33,7 @@ Add the following settings:
         "feincms3",
         "content_editor",
          # Optional, but not for this guide:
-        "ckeditor",
+        "django_prose_editor",
         "imagefield",
     ]
 
@@ -49,6 +49,7 @@ The page model and a few plugins could be defined as follows:
     from django.utils.translation import gettext_lazy as _
 
     from content_editor.models import Region, create_plugin_base
+    from django_prose_editor.fields import ProseEditorField
 
     from feincms3 import plugins
     from feincms3.pages import AbstractPage
@@ -64,7 +65,18 @@ The page model and a few plugins could be defined as follows:
 
 
     class RichText(plugins.richtext.RichText, PagePlugin):
-        pass
+        text = ProseEditorField(
+            _("text"),
+            extensions={
+                "Bold": True,
+                "Italic": True,
+                "Heading": {"levels": [2, 3]},
+                "BulletList": True,
+                "OrderedList": True,
+                "Link": True,
+            },
+            sanitize=True,
+        )
 
 
     class Image(plugins.image.Image, PagePlugin):
@@ -73,12 +85,10 @@ The page model and a few plugins could be defined as follows:
 
 .. note::
 
-   The bundled rich text plugin (which we're going to integrate) uses
-   :class:`feincms3.cleanse.CleansedRichTextField` which always sends HTML
-   through `html-sanitizer <https://pypi.org/project/html-sanitizer>`_. The
-   default configuration of HTML sanitizer is really restrictive and removes
-   images (besides other things such as normalizing the HTML and removing
-   script tags etc.)
+   The rich text plugin uses django-prose-editor instead of the bundled
+   field, which uses the deprecated CKEditor 4. ``sanitize=True`` removes all
+   HTML which the configured extensions do not produce, which also means
+   images, script tags etc.
 
    HTML copy-pasted from other sources (e.g. Word) is often messy. It is
    generally a good idea to sanitize HTML on the server side to prevent
@@ -94,8 +104,7 @@ The page model and a few plugins could be defined as follows:
 
    That being said, adding your own rich text plugin which allows
    whatever you want is quite straightforward and completely supported.
-   :ref:`richtext-prose-editor` shows how to replace CKEditor with
-   django-prose-editor.
+   :ref:`richtext-prose-editor` has more details.
 
 
 Rendering and templates

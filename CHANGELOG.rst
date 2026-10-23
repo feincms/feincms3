@@ -14,6 +14,13 @@ Next version
   changelist uses the move controls of django-tree-queries' ``TreeAdmin``,
   which also allow restricting moves by overriding ``is_valid_move``.
 - Raised the minimum version of django-tree-queries to 0.28.
+- Deprecated ``feincms3.inline_ckeditor.InlineCKEditorField`` since CKEditor 4
+  has reached its end of life. Concrete models using it now emit a
+  ``DeprecationWarning``, the ``feincms3.W007`` check points to the
+  replacement and the editor logs a warning to the browser console. Keep
+  using ``feincms3.plugins.richtext.RichText`` as a base class but replace its
+  ``text`` field with a ``ProseEditorField`` as described in the plugins
+  guide. The build your CMS guide now uses django-prose-editor.
 
 6.1.1 (2026-10-20)
 ~~~~~~~~~~~~~~~~~~
