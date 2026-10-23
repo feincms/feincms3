@@ -17,8 +17,9 @@ class RichText(models.Model):
     lifting.
 
     .. deprecated:: 6.2
-       The ``text`` field uses the deprecated CKEditor 4. Keep using this
-       class as a base but replace the field, see :ref:`richtext-prose-editor`.
+       The ``text`` field uses the deprecated CKEditor 4. Define your own rich
+       text plugin using django-prose-editor instead, see
+       :ref:`richtext-prose-editor`.
     """
 
     text = InlineCKEditorField(_("text"))

@@ -64,7 +64,7 @@ The page model and a few plugins could be defined as follows:
     PagePlugin = create_plugin_base(Page)
 
 
-    class RichText(plugins.richtext.RichText, PagePlugin):
+    class RichText(PagePlugin):
         text = ProseEditorField(
             _("text"),
             extensions={
@@ -78,6 +78,9 @@ The page model and a few plugins could be defined as follows:
             sanitize=True,
         )
 
+        def __str__(self):
+            return self.get_text_excerpt()
+
 
     class Image(plugins.image.Image, PagePlugin):
         pass
@@ -86,7 +89,7 @@ The page model and a few plugins could be defined as follows:
 .. note::
 
    The rich text plugin uses django-prose-editor instead of the bundled
-   field, which uses the deprecated CKEditor 4. ``sanitize=True`` removes all
+   rich text model, which uses the deprecated CKEditor 4. ``sanitize=True`` removes all
    HTML which the configured extensions do not produce, which also means
    images, script tags etc.
 

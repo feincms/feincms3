@@ -63,10 +63,8 @@ feincms3 has the following main parts:
   django-tree-queries_ to build a hierarchical page tree.
 - Model **mixins** for common tasks such as building several navigation
   menus from a page tree, multilingual sites and selectable templates.
-- A few ready-made **plugins** for rich text, images, oEmbed_ and template
-  snippets.
-- A HTML sanitization and **cleansing** function and a rich text widget
-  building on html-sanitizer_ and django-ckeditor_.
+- A few ready-made **plugins** for rich text (combined with
+  django-prose-editor_), images, oEmbed_ and template snippets.
 - Facilities for embedding **apps** through the admin interface, such as
   any interactive content (forms) or apps with subpages (e.g. an
   articles app).
@@ -75,10 +73,9 @@ feincms3 has the following main parts:
 - Various utilities (**shortcuts** and **template tags**).
 
 
-.. _django-ckeditor: https://github.com/django-ckeditor/django-ckeditor
+.. _django-prose-editor: https://github.com/matthiask/django-prose-editor
 .. _django-content-editor: https://django-content-editor.readthedocs.io
 .. _django-mptt: https://django-mptt.readthedocs.io
 .. _django-tree-queries: https://github.com/matthiask/django-tree-queries
 .. _FeinCMS: https://github.com/feincms/feincms
-.. _html-sanitizer: https://github.com/matthiask/html-sanitizer
 .. _oEmbed: http://oembed.com

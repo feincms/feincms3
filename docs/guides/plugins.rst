@@ -54,31 +54,29 @@ fields and methods in the example above:
 
 .. _richtext-prose-editor:
 
-Rich text without CKEditor
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rich text
+~~~~~~~~~
 
-The bundled :mod:`rich text plugin <feincms3.plugins.richtext>` uses
-CKEditor 4, which has reached its end of life (the
-``feincms3.W007`` system check warns about this). It isn't replaced yet
-because other editors only accept a stricter subset of HTML, which
-wouldn't be backwards compatible with existing content.
+Don't use the bundled :class:`feincms3.plugins.richtext.RichText` model: Its
+``text`` field is the deprecated
+:class:`~feincms3.inline_ckeditor.InlineCKEditorField` which uses CKEditor 4,
+which has reached its end of life. The field hasn't been replaced yet because
+other editors only accept a stricter subset of HTML, which wouldn't be
+backwards compatible with existing content.
 
-New projects can use `django-prose-editor
+Define your own rich text plugin using `django-prose-editor
 <https://github.com/matthiask/django-prose-editor>`__ instead. Install it
-with ``pip install django-prose-editor[sanitize]``, add
-``"django_prose_editor"`` to ``INSTALLED_APPS`` and replace the ``text``
-field when defining the plugin. The editor only offers the configured
-extensions, and ``sanitize=True`` removes all HTML which these extensions
-do not produce:
+with ``pip install django-prose-editor[sanitize]`` and add
+``"django_prose_editor"`` to ``INSTALLED_APPS``. The editor only offers the
+configured extensions, and ``sanitize=True`` removes all HTML which these
+extensions do not produce:
 
 .. code-block:: python
 
     from django.utils.translation import gettext_lazy as _
     from django_prose_editor.fields import ProseEditorField
 
-    from feincms3 import plugins
-
-    class RichText(plugins.richtext.RichText, PagePlugin):
+    class RichText(PagePlugin):
         text = ProseEditorField(
             _("text"),
             extensions={
@@ -92,8 +90,12 @@ do not produce:
             sanitize=True,
         )
 
-The admin inline (``plugins.richtext.RichTextInline``) and the renderer
-(``plugins.richtext.render_richtext``) work unchanged. Switching an
-existing project requires a migration. Existing content containing HTML
+        def __str__(self):
+            return self.get_text_excerpt()
+
+``ProseEditorField`` adds the ``get_text_excerpt()`` method. The admin inline
+(``plugins.richtext.RichTextInline``) and the renderer
+(``plugins.richtext.render_richtext``) of the bundled plugin can still be
+used. Switching an existing project requires a migration. Existing content containing HTML
 which the configured extensions don't support loses that markup when it is
 edited and saved the next time.

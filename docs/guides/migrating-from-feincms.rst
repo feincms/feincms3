@@ -85,13 +85,13 @@ feincms3 equivalent. It's worth making a list of those first:
 - **Translations:** Templates may use strings which are only translated in
   the locale files of FeinCMS or elephantblog. Those translations disappear
   together with the apps.
-- **Rich text:** FeinCMS doesn't sanitize rich text by default. feincms3's
-  :mod:`rich text plugin <feincms3.plugins.richtext>` sanitizes HTML using
-  `html-sanitizer <https://pypi.org/project/html-sanitizer>`__ whenever a
-  plugin is saved through a form. Existing content stays as it is until an
-  editor saves it, at which point markup which isn't allowed by the sanitizer
-  configuration is removed. Configure ``HTML_SANITIZERS`` or pass your own
-  ``cleanse`` callable to the field before switching the admin.
+- **Rich text:** FeinCMS doesn't sanitize rich text by default. Define a
+  rich text plugin using django-prose-editor as described in
+  :ref:`richtext-prose-editor`; feincms3's bundled rich text model uses the
+  deprecated CKEditor 4. With ``sanitize=True``, HTML is sanitized whenever a plugin is
+  saved through a form. Existing content stays as it is until an editor saves
+  it, at which point markup which the configured extensions don't support is
+  removed. Configure the extensions accordingly before switching the admin.
 
 
 Plugins sharing tables with content types
@@ -109,13 +109,15 @@ and look like this:
 .. code-block:: python
 
     from content_editor.models import create_plugin_base
+    from django_prose_editor.fields import ProseEditorField
     from feincms.contrib.fields import JSONField
     from feincms.module.page.models import Page
-    from feincms3 import plugins
 
     PagePlugin = create_plugin_base(Page)
 
-    class RichText(plugins.richtext.RichText, PagePlugin):
+    class RichText(PagePlugin):
+        text = ProseEditorField(extensions={...}, sanitize=True)
+
         class Meta:
             db_table = "page_page_richtextcontent"
             managed = False  # Still owned by FeinCMS
@@ -142,9 +144,8 @@ Things to watch out for:
   key instead of the first one. Repeat ``ordering`` or inherit from the base's
   ``Meta`` explicitly.
 - FeinCMS' ``RichTextField`` is a ``TextField`` and can be replaced by
-  ``models.TextField`` or feincms3's
-  :class:`~feincms3.cleanse.CleansedRichTextField` without changing the
-  database.
+  ``models.TextField`` or django-prose-editor's ``ProseEditorField`` without
+  changing the database.
 - FeinCMS' ``JSONField`` uses a text column too, but converts values to and
   from dictionaries in Python. Keep using it in the plugins as long as FeinCMS
   is installed; a ``models.TextField`` would hand your code strings such as

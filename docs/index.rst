@@ -126,6 +126,9 @@ Related projects
 * `django-content-editor
   <https://django-content-editor.readthedocs.io>`_: The admin
   interface for editing structured heterogenous content.
+* `django-prose-editor <https://github.com/matthiask/django-prose-editor>`_:
+  A rich text editor based on ProseMirror and Tiptap with server-side HTML
+  sanitization, recommended for feincms3's rich text plugin.
 * `django-imagefield <https://github.com/matthiask/django-imagefield>`_:
   An image field with in-depth image file validation and thumbnailing
   support which does not depend on a cache to be and stay fast.
@@ -136,5 +139,6 @@ Related projects
   <https://github.com/matthiask/django-tree-queries>`_: The library
   feincms3's pages use for querying tree-shaped data.
 * `html-sanitizer <https://github.com/matthiask/html-sanitizer>`_:
-  Allowlist-based HTML sanitizer used for feincms3' rich text plugin.
+  Allowlist-based HTML sanitizer used by feincms3's deprecated CKEditor
+  field.
 * `FeinCMS <https://github.com/feincms/feincms>`__: First version.

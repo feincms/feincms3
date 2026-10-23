@@ -17,10 +17,10 @@ Next version
 - Deprecated ``feincms3.inline_ckeditor.InlineCKEditorField`` since CKEditor 4
   has reached its end of life. Concrete models using it now emit a
   ``DeprecationWarning``, the ``feincms3.W007`` check points to the
-  replacement and the editor logs a warning to the browser console. Keep
-  using ``feincms3.plugins.richtext.RichText`` as a base class but replace its
-  ``text`` field with a ``ProseEditorField`` as described in the plugins
-  guide. The build your CMS guide now uses django-prose-editor.
+  replacement and the editor logs a warning to the browser console. Define
+  your own rich text plugin using django-prose-editor instead of using
+  ``feincms3.plugins.richtext.RichText``, as described in the plugins guide.
+  The documentation now uses django-prose-editor throughout.
 
 6.1.1 (2026-10-20)
 ~~~~~~~~~~~~~~~~~~
