@@ -10,10 +10,11 @@ exporting and importing any content. It is based on migrations of large,
 long-lived projects.
 
 The guide covers projects using FeinCMS' bundled page module
-(``feincms.module.page``) with content types. Other setups, for example custom
-models built with ``create_base_model()`` or several independent content
-trees, can be migrated using the same ideas but aren't covered here. If you
-run into problems, please ask in the `feincms3 issue tracker
+(``feincms.module.page``) with content types. Other FeinCMS base models, for
+example feincms-elephantblog's entries or models of your own built with
+``create_base_model()``, can be migrated the same way; see :ref:`other base
+models <migrating-from-feincms-other-base-models>`. If you run into problems,
+please ask in the `feincms3 issue tracker
 <https://github.com/feincms/feincms3/issues>`__.
 
 The most important insight is that FeinCMS content types and feincms3 plugins
@@ -42,8 +43,10 @@ Overview
 5. The page model is converted to :class:`~feincms3.pages.AbstractPage` and
    django-tree-queries.
 
-The last two steps should be deployed together, see :ref:`the page model
-<migrating-from-feincms-page-model>`.
+Steps 1 to 3 can be deployed one by one. The last two steps should be deployed
+together, see :ref:`the page model <migrating-from-feincms-page-model>`.
+Whatever you do, :ref:`compare the site before and after
+<migrating-from-feincms-verifying>` each step.
 
 
 Before you start
@@ -52,32 +55,43 @@ Before you start
 Most surprises in a migration come from parts of FeinCMS which have no direct
 feincms3 equivalent. It's worth making a list of those first:
 
+- **Base models:** FeinCMS' page model may not be the only model using content
+  types. feincms-elephantblog's ``Entry`` and models built with
+  ``create_base_model()`` have to be migrated too before FeinCMS can be
+  removed.
 - **Content types:** Their tables and columns. Content types which take
   arguments in ``create_content_type()`` (for example ``TYPE_CHOICES``) may add
   fields in ``initialize_type()``, so check the actual tables. Content types
   with ``process()`` or ``finalize()`` methods (forms, FeinCMS'
   ``ApplicationContent``) have to be replaced by :ref:`apps
-  <apps-introduction>` or normal Django views.
+  <apps-introduction>` or normal Django views. Content types without any rows
+  can often simply be dropped.
 - **Extensions:** Every extension adds fields to the page table. See the
   table in :ref:`the page model <migrating-from-feincms-page-model>` section
   for what happens to them.
-- **Third party apps built on FeinCMS**, for example feincms-elephantblog,
-  feincms-oembed, form_designer's FeinCMS content type or FeinCMS' media
-  library. They have to be replaced or migrated separately.
+- **Third party apps:** feincms-elephantblog and form_designer's FeinCMS
+  content type depend on FeinCMS and have to be replaced. feincms-oembed and
+  feincms-cleanse don't depend on FeinCMS and can stay.
 - **Template tags and other FeinCMS APIs:** ``feincms_tags``,
-  ``feincms_page_tags`` (``feincms_nav``, ``feincms_breadcrumbs``,
-  ``feincms_translatedpage`` etc.), ``feincms.context_processors``,
-  ``feincms.apps.app_reverse``, FeinCMS' sitemap. Navigation especially
-  usually has to be rewritten, see :doc:`navigation`.
-- **Code accessing content** through ``page.content``, see :ref:`rendering
-  <migrating-from-feincms-rendering>`.
+  ``feincms_page_tags`` (``feincms_nav``, ``feincms_languagelinks``,
+  ``page_is_active`` etc.), ``feincms_thumbnail``,
+  ``feincms.context_processors``, ``feincms.apps.app_reverse`` and
+  ``permalink``, ``feincms.translations``, FeinCMS' sitemap. Navigation
+  especially usually has to be rewritten, see :doc:`navigation`.
+- **Code accessing content** through ``page.content`` or through the content
+  types' reverse accessors, for example ``{{
+  entry.filerimagecontent_set.first.mediafile.url }}`` in templates. The
+  plugins' reverse accessors have different names.
+- **Translations:** Templates may use strings which are only translated in
+  the locale files of FeinCMS or elephantblog. Those translations disappear
+  together with the apps.
 - **Rich text:** FeinCMS doesn't sanitize rich text by default. feincms3's
   :mod:`rich text plugin <feincms3.plugins.richtext>` sanitizes HTML using
   `html-sanitizer <https://pypi.org/project/html-sanitizer>`__ whenever a
   plugin is saved through a form. Existing content stays as it is until an
   editor saves it, at which point markup which isn't allowed by the sanitizer
-  configuration is removed. Configure ``HTML_SANITIZERS`` or use a plugin of
-  your own before switching the admin.
+  configuration is removed. Configure ``HTML_SANITIZERS`` or pass your own
+  ``cleanse`` callable to the field before switching the admin.
 
 
 Plugins sharing tables with content types
@@ -105,6 +119,7 @@ and look like this:
         class Meta:
             db_table = "page_page_richtextcontent"
             managed = False  # Still owned by FeinCMS
+            ordering = ["ordering"]
 
     class Download(PagePlugin):
         title = models.CharField(max_length=100)
@@ -113,13 +128,19 @@ and look like this:
         class Meta:
             db_table = "page_page_downloadcontent"
             managed = False  # Still owned by FeinCMS
+            ordering = ["ordering"]
 
 Things to watch out for:
 
 - The plugin's fields have to match the existing columns exactly. If the
   bundled feincms3 plugin doesn't fit, write your own; plugins are just Django
-  models. Sharing an abstract model between the FeinCMS content type and the
-  feincms3 plugin is a good way to keep both in sync during the migration.
+  models. A set of abstract models shared between the plugins of all base
+  models (pages, blog entries, ...) keeps the code short.
+- A ``Meta`` class in the plugin replaces the ``Meta`` of
+  ``create_plugin_base``, including ``ordering = ["ordering"]``. Without it,
+  ``page.cms_richtext_set.first()`` returns the plugin with the lowest primary
+  key instead of the first one. Repeat ``ordering`` or inherit from the base's
+  ``Meta`` explicitly.
 - FeinCMS' ``RichTextField`` is a ``TextField`` and can be replaced by
   ``models.TextField`` or feincms3's
   :class:`~feincms3.cleanse.CleansedRichTextField` without changing the
@@ -129,11 +150,22 @@ Things to watch out for:
   is installed; a ``models.TextField`` would hand your code strings such as
   ``""`` or ``'{"a": 1}'``. See :ref:`migrating-from-feincms-jsonfield` for
   switching to Django's ``models.JSONField`` when removing FeinCMS.
+- Many-to-many fields need an explicit through model with ``managed = False``
+  and ``db_table`` set to the existing table. Django creates the automatic
+  through model as a managed model if either side is managed, so ``migrate``
+  would try to create the table and the system checks complain that two
+  models use it. Once FeinCMS is gone the automatic through model works
+  again, but its column names are derived from the class name of the plugin
+  (``articlesteaserlistcontent_id``), so keeping the content type's class name
+  for such plugins saves a migration.
 - The plugin class name doesn't have to match the content type's class name.
   The reverse accessors are different though (for example
   ``richtextcontent_set`` vs. ``cms_richtext_set``), and the plugin is a
   separate model with its own row in ``django_content_type`` and its own
   permissions. See :ref:`permissions <migrating-from-feincms-permissions>` below.
+- Plugins referencing other models with a ``related_name`` which FeinCMS'
+  content type uses as well need a different ``related_name`` (for example
+  ``"+"``) until the content type is gone.
 
 
 .. _migrating-from-feincms-admin:
@@ -144,7 +176,8 @@ Admin
 Replace FeinCMS' page admin with one based on
 :class:`content_editor.admin.ContentEditor` and add inlines for the plugins,
 see :ref:`build-your-cms`. Set ``FEINCMS_USE_PAGE_ADMIN = False`` so that
-FeinCMS doesn't register its own admin for the page model.
+FeinCMS doesn't register its own admin for the page model. Admins of third
+party apps have to be unregistered first.
 
 The content editor and the feincms3 renderer expect the regions in a
 ``regions`` attribute. Your own page model will get it from
@@ -279,7 +312,6 @@ request processors, redirects and ``ApplicationContent``:
                     page,
                     # Required for regions marked as "inherited"
                     inherit_from=page.get_ancestors(ascending=True),
-                    timeout=60,
                 ),
                 **kwargs,
             )
@@ -296,6 +328,15 @@ of ``{% feincms_render_region %}``:
     {# Before: {% feincms_render_region feincms_page "main" request %} #}
     {% render_region regions "main" %}
 
+Templates of views you don't control, for example those of third party apps,
+don't have a ``regions`` variable. A small template tag helps there:
+
+.. code-block:: python
+
+    @register.simple_tag(takes_context=True)
+    def render_item_region(context, item, region):
+        return renderer.regions_from_item(item).render(region, context)
+
 FeinCMS' content type templates usually access the model instance as
 ``content``, while :func:`~feincms3.renderer.template_renderer` passes it as
 ``plugin`` by default. Existing templates can be reused without changes by
@@ -310,6 +351,12 @@ providing the context yourself:
             lambda plugin, context: {"content": plugin},
         ),
     )
+
+Some content types rendered their templates with ``render_to_string`` and
+therefore without the surrounding template context, while
+``template_renderer`` renders them inside the current context. This rarely
+matters, but variables of the surrounding template become visible in the
+plugin templates.
 
 Existing ``render()`` methods don't have to be rewritten right away if the
 plugins inherit them, for example from a shared abstract model. A small
@@ -351,15 +398,105 @@ everything has been converted:
 
     Page.content_proxy_class = WarningContentProxy
 
-FeinCMS' ``ApplicationContent`` can be replaced by feincms3's
-:class:`~feincms3.applications.ApplicationType` and
-:class:`~feincms3.applications.PageTypeMixin`. Note that the app URLconfs are
-assembled differently, see :ref:`apps-introduction`.
-
 If you're using FeinCMS' ``ct_tracker`` extension, its inventory is reset
 when the page is saved, which the content editor does. Code which adds or
 removes plugins without saving the page has to reset ``_ct_inventory`` itself
 as long as FeinCMS renders some of the content.
+
+
+.. _migrating-from-feincms-applicationcontent:
+
+``ApplicationContent``
+----------------------
+
+FeinCMS inserts the output of an ``ApplicationContent`` at its position in the
+region, between the other content types; a page may for example show a rich
+text, the list of team members and a contact form below the list. While the
+rendering is being converted, a plugin using the ``ApplicationContent``
+table can output what FeinCMS' page view produced. Don't cache regions
+containing application output; the output depends on the URL.
+
+.. code-block:: python
+
+    from feincms.content.application.models import ApplicationContent
+
+    class Application(PagePlugin):
+        class Meta:
+            db_table = "page_page_applicationcontent"
+            managed = False  # Still owned by FeinCMS
+            ordering = ["ordering"]
+
+    def render_application(plugin, context):
+        # FeinCMS' page view processed the ApplicationContent instances of the
+        # page already, the output is stored on them.
+        page = context["feincms_page"]
+        for content in page.content.all_of_type(
+            page.content_type_for(ApplicationContent)
+        ):
+            if content.pk == plugin.pk:
+                return content.render()
+        return ""
+
+feincms3 apps work differently: a page either uses a template or is an app,
+and the app's views render complete responses. When replacing the page model,
+:class:`~feincms3.applications.ApplicationType` page types replace the
+``ApplicationContent`` instances. The plugin can stay as a marker for the
+position of the app's output; views which rendered fragments render them
+into the page's template:
+
+.. code-block:: python
+
+    def render_application(plugin, context):
+        return context.get("app_content", "")
+
+    class AppContentMixin:
+        def render_to_response(self, context, **response_kwargs):
+            page = page_for_app_request(self.request)
+            return render(
+                self.request,
+                page.type.template_name,
+                {
+                    "page": page,
+                    "regions": renderer.regions_from_item(page),
+                    "app_content": render_to_string(
+                        self.get_template_names(), context, request=self.request
+                    ),
+                },
+            )
+
+    class TeamView(AppContentMixin, ListView):
+        ...
+
+Views which used FeinCMS' "inheritance 2.0" and returned a ``(template,
+context)`` tuple just become normal views; a context processor can provide the
+page for their templates and for error pages, replacing
+``feincms.context_processors.add_page_if_missing``. Remember to add
+``app_name`` to the apps' URLconfs and to replace ``app_reverse(viewname,
+urlconf)`` with :func:`~feincms3.applications.reverse_app` (note the swapped
+arguments).
+
+FeinCMS prefers pages over applications: a page below an application page,
+for example ``/en/topics/energy/`` below the topics app at ``/en/topics/``, is
+shown as a page. feincms3 sends all URLs below the app's page to the app. If
+your site has such pages, check for them before calling the app's view:
+
+.. code-block:: python
+
+    def page_first(view):
+        @wraps(view)
+        def inner(request, *args, **kwargs):
+            if Page.objects.active().filter(
+                path=request.path_info, app_namespace=""
+            ).exists():
+                return page_detail(request, request.path_info.strip("/"))
+            return view(request, *args, **kwargs)
+
+        return inner
+
+    # In the app's URLconf
+    urlpatterns = [
+        path("<slug:slug>/", page_first(views.topic_detail), name="topic_detail"),
+    ]
 
 
 Handing the tables over to the feincms3 plugins
@@ -373,29 +510,52 @@ point and skip this section.
 
 Once nothing uses a FeinCMS content type anymore, remove the
 ``create_content_type`` call and ``managed = False`` in the same commit, so
-that there's never more than one managed model using the table. For the
-plugin, ``makemigrations`` only generates an ``AlterModelOptions`` operation,
-which doesn't touch the database. For the content type it generates a
-``DeleteModel`` operation which would drop the table, including all plugins.
+that there's never more than one managed model using the table. None of the
+operations ``makemigrations`` generates may touch the database:
 
-Move the ``DeleteModel`` operation into the ``state_operations`` of a
-:class:`~django.db.migrations.operations.SeparateDatabaseAndState` operation,
-leaving ``database_operations`` empty:
+- For the content type it generates ``RemoveField`` operations for its foreign
+  keys and a ``DeleteModel`` operation. Together they would drop the table,
+  including all plugins.
+- Django doesn't add the relational fields of unmanaged models to the
+  migration state. Once the plugins are managed, ``makemigrations`` adds them
+  with ``AddField`` operations, but only when running it a second time. Those
+  operations would try to add columns which exist already. ``makemigrations``
+  asks for defaults for the foreign keys; ``./manage.py makemigrations
+  --dry-run -v 3`` prints the operations without asking.
+
+Move all of those operations into the ``state_operations`` of a
+:class:`~django.db.migrations.operations.SeparateDatabaseAndState` operation
+and leave ``database_operations`` empty. ``./manage.py sqlmigrate`` should
+print nothing but ``BEGIN;`` and ``COMMIT;``:
 
 .. code-block:: python
 
     class Migration(migrations.Migration):
         dependencies = [
             ("page", "0011_previous_migration"),
+            ("cms", "0004_previous_migration"),
         ]
 
         operations = [
             migrations.SeparateDatabaseAndState(
                 state_operations=[
+                    migrations.RemoveField(
+                        model_name="richtextcontent", name="parent"
+                    ),
                     migrations.DeleteModel(name="RichTextContent"),
+                    migrations.AddField(
+                        model_name="richtext",
+                        name="parent",
+                        field=models.ForeignKey(
+                            on_delete=django.db.models.deletion.CASCADE,
+                            related_name="%(app_label)s_%(class)s_set",
+                            to="page.page",
+                        ),
+                    ),
                 ],
                 # No database_operations, the table now belongs to the plugin.
             ),
+            migrations.AlterModelOptions(...),
         ]
 
 ``db_table`` can stay in the plugin's ``Meta`` forever; it isn't harmful.
@@ -421,77 +581,24 @@ Add a ``Page`` model to your ``cms`` app which matches the existing
 and set ``db_table = "page_page"``. Copy the field definitions from FeinCMS'
 ``BasePage``, the extensions and your ``page`` migrations;
 ``./manage.py inspectdb page_page`` helps with checking the columns, but loses
-indexes, check constraints and ``on_delete`` behavior. Keep django-mptt's
-``MPTTModel`` as the base class for now so that the page tree keeps working
-until it is converted to django-tree-queries.
+indexes, check constraints and ``on_delete`` behavior. This intermediate model
+only exists to generate the initial migration; the page model is converted to
+feincms3 right afterwards (see below).
 
 Point the plugins' foreign keys and all other foreign keys to ``page.Page`` at
 the new model, switch the plugins' ``JSONField`` to ``models.TextField``
-(see :ref:`migrating-from-feincms-jsonfield`) and remove FeinCMS from
-``INSTALLED_APPS``, ``MIGRATION_MODULES`` and your requirements.
-
-Add :class:`~feincms3.mixins.TemplateMixin` (or
-:class:`~feincms3.applications.PageTypeMixin`) to the new model; its
-``template_key`` field uses the column FeinCMS created. FeinCMS' column allows
-255 characters while ``TemplateMixin`` only allows 100, so either override the
-field for now or shorten it in a later migration. The template keys have to
-stay the same. A small helper can convert the definitions passed to
-FeinCMS' ``register_templates()`` so that they don't have to be rewritten:
-
-.. code-block:: python
-
-    from content_editor.models import Region, Template
-    from feincms3.mixins import TemplateMixin
-    from mptt.models import MPTTModel
-
-    # The definitions previously passed to Page.register_templates()
-    FEINCMS_TEMPLATES = [
-        {
-            "key": "base",
-            "title": _("default"),
-            "path": "cms/standard.html",
-            "regions": (
-                ("main", _("Main content area")),
-                ("sidebar", _("Sidebar"), "inherited"),
-            ),
-        },
-    ]
-
-    def to_templates(templates):
-        return [
-            Template(
-                key=t["key"],
-                title=t["title"],
-                template_name=t["path"],
-                regions=[
-                    Region(key=key, title=title, inherited=rest[:1] == ["inherited"])
-                    for key, title, *rest in t["regions"]
-                ],
-            )
-            for t in templates
-        ]
-
-    class Page(MPTTModel, TemplateMixin):
-        TEMPLATES = to_templates(FEINCMS_TEMPLATES)
-
-        # The fields of FeinCMS' page model and its extensions
-        ...
-
-        class Meta:
-            db_table = "page_page"
-            ordering = ["tree_id", "lft"]
-
-When using :class:`~feincms3.applications.PageTypeMixin`, build
-:class:`~feincms3.applications.TemplateType` instances instead and add them to
-``TYPES``. Drop the temporary ``Page.regions`` property from the :ref:`admin
-<migrating-from-feincms-admin>` step and use the new model in the admin.
+(see :ref:`migrating-from-feincms-jsonfield`), remove ``managed = False`` from
+the plugins and remove FeinCMS from ``INSTALLED_APPS``, ``MIGRATION_MODULES``
+and your requirements.
 
 Then recreate the migrations from scratch. Delete the ``page`` migrations, the
 migrations of the ``cms`` app and the migrations of all other apps which
 reference FeinCMS or depend on ``page`` migrations, and run ``./manage.py
-makemigrations``. Existing databases already have all those tables, so the
-history has to be reset and the new migrations marked as applied without
-running them:
+makemigrations``. Apps with foreign keys pointing at each other get a
+``0001_initial`` and a ``0002_initial`` migration; both are initial
+migrations. Existing databases already have all those tables, so the history
+has to be reset and the new migrations marked as applied without running
+them:
 
 .. code-block:: sql
 
@@ -508,13 +615,16 @@ to have the same name as an old one, for example ``cms.0001_initial``, and
 skips them without any warning.
 
 ``--fake-initial`` only checks that the tables and columns exist, not that
-they match. Compare the output of ``pg_dump --schema-only`` of the existing
-database and of a database created from scratch before deploying this. The
-column order may differ, which is harmless; index and constraint names are
-derived from the table and column names and should be identical. Keep a copy
-of any hand-written migrations (for example ones adding database triggers or
-functions, or data migrations which new databases need too) and add them back
-to the new migrations.
+they match. Compare the schema of the existing database with the schema of a
+database created from scratch, see :ref:`verifying the migration
+<migrating-from-feincms-verifying>`. Long-lived databases rarely match their
+migrations exactly: indexes created by old Django versions have different
+names, and some constraints may never have been created at all (for example
+the ``unique_together`` of ``feincms.translations.Translation``). Make the new
+models match the existing database, and add missing constraints later with
+normal migrations. Keep a copy of any hand-written migrations (for example
+ones adding database triggers or functions, or data migrations which new
+databases need too) and add them back to the new migrations.
 
 Instead of recreating the migrations of apps other than ``page`` you can also
 edit FeinCMS out of them: Replace ``feincms.contrib.richtext`` and
@@ -524,17 +634,23 @@ edit FeinCMS out of them: Replace ``feincms.contrib.richtext`` and
 ``feincms.translations.TranslatedObjectMixin`` from ``bases`` (they only add
 behavior, no fields) and replace references to ``page.Page`` and to ``page``
 migrations with the new model and its initial migration. This is more work
-but keeps the history intact, which is useful if those apps contain many
-hand-written migrations.
+and gets complicated quickly when apps reference each other in both
+directions, but keeps the history intact, which is useful if those apps
+contain many hand-written migrations.
 
 ``cms.Page`` has its own row in ``django_content_type`` and its own
 permissions. Copy the permission assignments as described in :ref:`permissions
 <migrating-from-feincms-permissions>` before removing stale content types.
 
-The new model doesn't contain FeinCMS' ``save()`` logic which keeps
-``_cached_url`` up to date and propagates ``active`` to descendants. Convert
-it to :class:`~feincms3.pages.AbstractPage` using normal migrations in the
-same deployment, so that the site never runs with the intermediate model:
+
+Converting the page model
+-------------------------
+
+The intermediate model doesn't contain FeinCMS' ``save()`` logic which keeps
+``_cached_url`` up to date and propagates ``active`` to descendants, and the
+page tree isn't maintained anymore. Convert it to
+:class:`~feincms3.pages.AbstractPage` using normal migrations in the same
+deployment, so that the site never runs with the intermediate model:
 
 ================================================ =====================================================
 FeinCMS                                          feincms3
@@ -546,15 +662,20 @@ FeinCMS                                          feincms3
 ``_cached_url``, ``override_url``                ``path``, ``static_path``; ``path`` has to be
                                                  unique, FeinCMS only prevents duplicate URLs among
                                                  active pages.
-``lft``, ``rght``, ``tree_id``, ``level``        ``position``, see below
-``template_key``                                 ``template_key`` (:class:`~feincms3.mixins.TemplateMixin`)
+``lft``, ``rght``, ``tree_id``, ``level``        ``position``
+``template_key``                                 ``page_type`` (:class:`~feincms3.applications.PageTypeMixin`)
+                                                 or ``template_key`` (:class:`~feincms3.mixins.TemplateMixin`)
+``ApplicationContent``                           ``page_type`` and ``app_namespace``
 ``in_navigation``, ``navigation_group``          ``menu`` (:class:`~feincms3.mixins.MenuMixin`)
 ``redirect_to``                                  ``redirect_to_page`` if the value looks like
                                                  ``page.page:42``, ``redirect_to_url`` otherwise
                                                  (:class:`~feincms3.mixins.RedirectMixin`)
 ``language``, ``translation_of``                 ``language_code``, ``translation_of``
                                                  (:class:`~feincms3.mixins.LanguageAndTranslationOfMixin`)
-``meta_keywords``, ``meta_description``          `feincms3-meta <https://github.com/matthiask/feincms3-meta>`__
+``meta_keywords``, ``meta_description``          keep the fields or use `feincms3-meta
+                                                 <https://github.com/matthiask/feincms3-meta>`__
+``_content_title``, ``_page_title``              keep the fields and the ``content_title`` and
+                                                 ``page_title`` properties
 ``publication_date``, ``publication_end_date``   no equivalent; keep the fields and filter
                                                  in your queryset if you need them
 ``_ct_inventory``, ``navigation_extension``      no equivalent; drop
@@ -566,16 +687,138 @@ Check for duplicate URLs before adding the unique constraint:
 
     SELECT _cached_url, COUNT(*) FROM page_page GROUP BY 1 HAVING COUNT(*) > 1;
 
-FeinCMS uses django-mptt for the page tree, feincms3 uses django-tree-queries.
-The django-tree-queries documentation has a `guide for migrating from
-django-mptt <https://django-tree-queries.readthedocs.io/en/latest/#migrating-from-django-mptt>`__.
+``MENUS`` may start with an empty value, so that new pages aren't added to a
+menu by default:
+
+.. code-block:: python
+
+    MENUS = [
+        ("", _("Not in a menu")),
+        ("default", _("Default")),
+        ("meta", _("Meta")),
+        ("footer", _("Footer")),
+    ]
+
+Write the first migration by hand: rename the fields which only changed their
+name, add the new fields, and fill them in a data migration while the old
+fields still exist. Afterwards, switch to the final model and let
+``makemigrations`` generate the migration removing the old fields:
+
+.. code-block:: python
+
+    def forwards(apps, schema_editor):
+        Page = apps.get_model("cms", "Page")
+        Application = apps.get_model("cms", "Application")
+
+        applications = {app.parent_id: app.urlconf_path for app in Application.objects.all()}
+        positions = defaultdict(int)
+        # Pages ordered like FeinCMS ordered them
+        for page in Page.objects.order_by("tree_id", "lft"):
+            positions[page.parent_id] += 10
+            page.position = positions[page.parent_id]
+            page.static_path = bool(page.override_url)
+            if page_type := applications.get(page.id):
+                page.page_type = page.app_namespace = page_type
+            else:
+                page.page_type = page.template_key
+            page.menu = page.navigation_group if page.in_navigation else ""
+            if match := re.fullmatch(r"page\.page:(\d+)", page.redirect_to):
+                page.redirect_to_page_id = int(match[1])
+            else:
+                page.redirect_to_url = page.redirect_to
+            page.save()
+
+
+    class Migration(migrations.Migration):
+        dependencies = [("cms", "0002_initial")]
+
+        operations = [
+            migrations.RenameField("page", "active", "is_active"),
+            migrations.RenameField("page", "_cached_url", "path"),
+            migrations.RenameField("page", "language", "language_code"),
+            migrations.AddField(
+                "page",
+                "position",
+                models.PositiveIntegerField(db_index=True, default=0),
+                preserve_default=False,
+            ),
+            migrations.AddField(
+                "page", "static_path", models.BooleanField(default=False)
+            ),
+            # ... page_type, app_namespace, menu, redirect_to_url,
+            # redirect_to_page
+            migrations.RunPython(forwards, migrations.RunPython.noop),
+        ]
+
+The paths FeinCMS generated (the parent's path plus the slug, or the override
+URL) are the same paths feincms3 generates. Using ``tree_id`` and ``lft`` for
+the position keeps the order of root pages and siblings. The `guide for
+migrating from django-mptt
+<https://django-tree-queries.readthedocs.io/en/latest/#migrating-from-django-mptt>`__
+in the django-tree-queries documentation has more details.
+
+The system checks of :class:`~feincms3.mixins.LanguageAndTranslationOfMixin`
+recommend a ``unique_together`` constraint on ``language_code`` and
+``translation_of``; check for duplicates and add it in another migration.
 
 The page view, URLconf, navigation and anything else which still depends on
 FeinCMS' page model have to be replaced in the same deployment too, see
-:ref:`build-your-cms`.
+:ref:`build-your-cms`. ``feincms_nav feincms_page level=2 group="meta"`` for
+example becomes the active children of the root of the current page's tree
+which are in the ``meta`` menu:
+
+.. code-block:: python
+
+    @register.simple_tag(takes_context=True)
+    def menu(context, menu):
+        page = context["page"]
+        return Page.objects.active().filter(parent=page.tree_path[0], menu=menu)
+
+The admin switches from django-mptt's ``DraggableMPTTAdmin`` to
+:class:`feincms3.admin.TreeAdmin`. Its ``list_display`` contains the columns
+for collapsing subtrees and for moving pages and the indented title, keep
+those. Older versions of feincms3 don't include ``"collapse_column"``; add it
+yourself there and set ``list_display_links = ["indented_title"]``, otherwise
+the collapse column becomes the link to the change form:
+
+.. code-block:: python
+
+    from content_editor.admin import ContentEditor
+    from feincms3.admin import TreeAdmin
+
+    @admin.register(models.Page)
+    class PageAdmin(ContentEditor, TreeAdmin):
+        list_display = [*TreeAdmin.list_display, "is_active", "menu", "page_type"]
+        ...
 
 Once that's done, ``db_table`` can be removed too if you want; Django then
 renames the table to ``cms_page``.
+
+
+.. _migrating-from-feincms-other-base-models:
+
+Other base models
+~~~~~~~~~~~~~~~~~
+
+Blog entries of feincms-elephantblog, translations built with
+``create_base_model(Translation(...))`` and other base models are migrated
+the same way as the page model: plugins on the content type tables, the
+content editor, feincms3 rendering, and finally a model of your own on the
+existing table.
+
+- Models living in one of your own apps keep their app label. Removing
+  ``create_base_model()`` from the bases and handing the tables over to the
+  plugins (see above) is enough; regions are defined using a ``regions`` list
+  of :class:`content_editor.models.Region` instances.
+- Models of third party apps such as elephantblog's ``Entry``, ``Category``
+  and ``CategoryTranslation`` get a new home in an app of your own, with
+  ``db_table`` set to the existing tables, including the many-to-many tables
+  (``db_table`` on the ``ManyToManyField``). The fields added by elephantblog's
+  extensions become normal fields. The views are short and easy to port;
+  elephantblog's are based on Django's generic date views.
+- ``feincms.translations`` has to be replaced by a few lines of your own; the
+  ``translation`` property, the ``Translation()`` base class factory and the
+  ``admin_translationinline`` helper are the parts used most often.
 
 
 .. _migrating-from-feincms-jsonfield:
@@ -643,3 +886,55 @@ Code using the field may need small adjustments too. FeinCMS always returned a
 ``dict``, Django returns whatever was stored, including lists, strings or
 ``None`` for nullable fields. ``default=dict`` keeps the behavior for new
 rows.
+
+
+.. _migrating-from-feincms-verifying:
+
+Verifying the migration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The goal of each step is that the site doesn't change for visitors. That makes
+it easy to verify: fetch every URL of the site before and after each step
+using a copy of the production database and compare the responses. Collect
+the URLs while FeinCMS is still installed, for example the paths of all
+active pages, the URLs of all objects shown by apps, archive pages, feeds,
+the sitemap and a few URLs which should return 404:
+
+.. code-block:: python
+
+    # ./manage.py shell < snapshot.py
+    import hashlib, json, os, pathlib, re
+    from django.test import Client
+
+    out = pathlib.Path("snapshots") / os.environ["SNAPSHOT"]
+    out.mkdir(parents=True, exist_ok=True)
+    client = Client()
+    for url in json.loads(pathlib.Path("urls.json").read_text()):
+        response = client.get(url)
+        body = response.content.decode()
+        # Ignore whitespace changes and CSRF tokens
+        body = re.sub(r"\s+", " ", body).replace("> <", "><").replace("><", ">\n<")
+        body = re.sub(r'name="csrfmiddlewaretoken" value="[^"]+"', "", body)
+        name = hashlib.sha1(url.encode()).hexdigest()
+        (out / name).write_text(
+            f"{url}\n{response.status_code} {response.get('Location', '')}\n{body}"
+        )
+
+``diff -r snapshots/before snapshots/after`` shows every change, and the
+output is usually short enough to look at each difference. Use a dummy cache
+backend while taking snapshots.
+
+Saving a page, a blog entry etc. in the admin without changing anything
+should not change any rows either. Comparing ``pg_dump --data-only`` output
+of the affected tables before and after saving catches problems such as
+plugins losing their region or rich text being cleansed differently.
+
+Finally, compare the schema of the production database with the schema of a
+database created from scratch with the new migrations. Compare the
+structure, not the names: columns with their types and nullability, indexes
+as the list of columns they cover, foreign keys as the column and the
+referenced table, and check and unique constraints by their definition. On
+PostgreSQL, ``information_schema.columns``, ``pg_index`` and
+``pg_constraint`` contain everything needed. Tables which only exist in the
+production database are left over from removed apps and content types
+without any rows and can be dropped once the migration is done.
