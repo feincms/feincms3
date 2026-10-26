@@ -7,6 +7,7 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Bootstrap and Setup
+
 - Install dependencies:
   - `python -m pip install --upgrade pip tox` -- installs build tools. NEVER CANCEL: May take 2-3 minutes.
   - `pip install -e '.[all,tests]'` -- installs feincms3 in development mode with all optional dependencies and test dependencies. NEVER CANCEL: May take 5-10 minutes.
@@ -16,6 +17,7 @@ Always reference these instructions first and fallback to search or bash command
   - Continue with code analysis and basic Python validation
 
 ### Testing
+
 - **CHECK TEST ENVIRONMENTS**: `tox --listenvs` -- shows all available test combinations (verified working)
 - **PRIMARY TEST COMMAND**: `python -m tox -e py312-dj50` -- runs tests with Python 3.12 and Django 5.0. Takes 5-10 minutes. NEVER CANCEL. Set timeout to 15+ minutes.
   - **FREQUENT FAILURE**: This often fails during dependency installation due to network timeouts. If it fails, note "tox test fails due to network limitations during pip install phase"
@@ -25,6 +27,7 @@ Always reference these instructions first and fallback to search or bash command
 - Run slow tests: `python -m tox -e slowtests` -- takes 15+ minutes. NEVER CANCEL. Set timeout to 30+ minutes.
 
 ### Code Quality and Linting
+
 - **CRITICAL**: Always run these before committing or CI will fail:
   - `python -m tox -e style` -- reformats code using ruff and runs linting checks
   - Alternative: `ruff check .` and `ruff format .` if available
@@ -32,11 +35,13 @@ Always reference these instructions first and fallback to search or bash command
 - **RUFF CONFIG**: Project uses ruff for both linting and formatting (configured in pyproject.toml)
 
 ### Documentation
+
 - Build docs: `python -m tox -e docs` -- builds HTML docs into `docs/build/html/`. Takes 3-5 minutes. NEVER CANCEL. Set timeout to 10+ minutes.
 - Alternative: `cd docs && make html` -- if tox fails
 - Documentation uses Sphinx with furo theme
 
 ### Development Workflow Commands
+
 - **ALWAYS CHECK**: Git status and branch before making changes: `git status --porcelain && git branch -a` (verified working)
 - **BASIC CODE VALIDATION**: `python -c "import sys; sys.path.insert(0, '.'); import feincms3; print('✓ Import successful, version:', feincms3.__version__)"` (verified working)
 - **EXPLORE PROJECT STRUCTURE**: Key directories to examine:
@@ -66,6 +71,7 @@ After making changes to feincms3, **ALWAYS** validate these scenarios:
 ## Project Structure and Key Files
 
 ### Core Modules
+
 - `feincms3/` -- main package directory
   - `__init__.py` -- version info (currently 5.4.2)
   - `pages.py` -- core page model and functionality
@@ -76,6 +82,7 @@ After making changes to feincms3, **ALWAYS** validate these scenarios:
   - `mixins.py` -- reusable model mixins
 
 ### Test Suite
+
 - `tests/testapp/` -- test Django application
   - `settings.py` -- test configuration
   - `models.py` -- test models
@@ -83,12 +90,14 @@ After making changes to feincms3, **ALWAYS** validate these scenarios:
   - `manage.py` -- Django management script for tests
 
 ### Documentation
+
 - `docs/` -- Sphinx documentation
   - `build-your-cms.rst` -- main tutorial
   - `installation.rst` -- installation guide
   - `project/contributing.rst` -- contribution guidelines
 
 ### Configuration Files
+
 - `pyproject.toml` -- main project configuration, dependencies, build settings
 - `tox.ini` -- test environment configuration
 - `.pre-commit-config.yaml` -- code quality hooks
@@ -97,6 +106,7 @@ After making changes to feincms3, **ALWAYS** validate these scenarios:
 ## Common Command Reference
 
 ### Frequently Referenced Files and Commands
+
 The following are verified working commands and file locations:
 
 ```bash
