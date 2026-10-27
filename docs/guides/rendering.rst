@@ -254,6 +254,10 @@ boundary. See the `django-content-editor documentation
 <https://django-content-editor.readthedocs.io/en/latest/rendering.html>`__ for
 details.
 
+Closer-based sections (``render_section_plugins`` and
+``register_section_close``) are deprecated in favor of containers.
+``content_editor.migrations_utils.compute_depths`` migrates existing content.
+
 
 Wrapping subregions
 ~~~~~~~~~~~~~~~~~~~

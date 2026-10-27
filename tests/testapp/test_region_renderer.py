@@ -199,6 +199,7 @@ def test_register_unregister():
         renderer.unregister()
 
 
+@pytest.mark.filterwarnings("ignore:Closer-based sections:DeprecationWarning")
 def test_sections():
     class SectionRenderer(RegionRenderer):
         def handle_images(self, plugins, context):
@@ -232,7 +233,8 @@ def test_sections():
     renderer.register([Text], "Text")  # Register as list
     renderer.register(Image, "Image", subregion="images")
     renderer.register(Section, "", subregion="section")
-    renderer.register_section_close(CloseSection)
+    with pytest.warns(DeprecationWarning, match="Closer-based sections"):
+        renderer.register_section_close(CloseSection)
 
     def render(plugins):
         return renderer.render_region(

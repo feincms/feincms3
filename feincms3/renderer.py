@@ -34,7 +34,7 @@ _CLOSE_SECTION = "_close_section"
 class RegionRenderer(_content_editor_renderer.RegionRenderer):
     """
     :class:`content_editor.renderer.RegionRenderer` with deprecated
-    compatibility APIs and the closer-based section rendering.
+    compatibility APIs and the deprecated closer-based section rendering.
     """
 
     @property
@@ -46,13 +46,24 @@ class RegionRenderer(_content_editor_renderer.RegionRenderer):
         )
         return self._handlers
 
-    # Closer-based sections support
+    # Closer-based sections support (deprecated, use containers instead)
 
     def render_section_plugins(self, section, plugins, context):
         """
         Render the plugins of a closer-based section until the next section
         closing plugin or the end of the region.
+
+        Deprecated: closer-based sections are replaced by containers, see the
+        django-content-editor documentation. Data is migrated using
+        ``content_editor.migrations_utils.compute_depths``.
         """
+        warnings.warn(
+            "Closer-based sections are deprecated. Set `container = True` on"
+            " the models of plugins opening sections and use"
+            " content_editor.migrations_utils.compute_depths to migrate the data.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         out = []
         while plugins:
             subregion = self.subregion(plugins[0])
@@ -67,8 +78,16 @@ class RegionRenderer(_content_editor_renderer.RegionRenderer):
 
     def register_section_close(self, plugin, renderer="", **kwargs):
         """
-        Register a plugin closing closer-based sections.
+        Register a plugin closing closer-based sections. Deprecated, see
+        :meth:`render_section_plugins`.
         """
+        warnings.warn(
+            "Closer-based sections are deprecated. Set `container = True` on"
+            " the models of plugins opening sections and use"
+            " content_editor.migrations_utils.compute_depths to migrate the data.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         kwargs["subregion"] = _CLOSE_SECTION
         self.register(plugin, renderer, **kwargs)
 

@@ -12,6 +12,10 @@ Next version
   ``RegionRenderer`` subclass keeps the deprecated compatibility APIs.
   ``RegionRenderer`` now renders containers, see the django-content-editor
   documentation.
+- Deprecated closer-based section rendering (``render_section_plugins`` and
+  ``register_section_close``) in favor of containers. Migrate existing content
+  using ``content_editor.migrations_utils.compute_depths``, together with
+  this release.
 
 - Added a guide for migrating from FeinCMS to feincms3.
 - Documented using django-prose-editor instead of CKEditor 4 for the rich text
