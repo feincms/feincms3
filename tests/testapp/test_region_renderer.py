@@ -1,6 +1,7 @@
 from collections import deque
 
 import pytest
+from content_editor import renderer as content_editor_renderer
 from content_editor.contents import contents_for_item
 from content_editor.models import Region
 from django.core.exceptions import ImproperlyConfigured
@@ -8,6 +9,7 @@ from django.template import Context
 from django.utils.html import format_html, mark_safe
 from pytest_django.asserts import assertHTMLEqual
 
+from feincms3 import renderer as feincms3_renderer
 from feincms3.renderer import (
     PluginNotRegisteredError,
     RegionRenderer,
@@ -265,3 +267,48 @@ def test_sections():
         render([t, i, i, s, t])
         == "Text<gallery>ImageImage</gallery><section>Text</section>"
     )
+
+
+def test_containers():
+    """The renderer from django-content-editor renders containers"""
+
+    class Meta:
+        proxy = False
+
+    class Text:
+        _meta = Meta
+
+        def __init__(self, depth=0):
+            self.depth = depth
+
+    class Container(Text):
+        container = True
+
+    renderer = RegionRenderer()
+    renderer.register(Text, "Text")
+    renderer.register(
+        Container,
+        lambda plugin, context, children: f"<section>{children}</section>",
+    )
+
+    assert (
+        renderer.render_region(
+            region=Region(key="content", title="Content"),
+            contents={"content": [Container(), Text(1), Container(1), Text(2), Text()]},
+            context=None,
+        )
+        == "<section>Text<section>Text</section></section>Text"
+    )
+
+
+def test_reexports():
+    for name in [
+        "PluginNotRegisteredError",
+        "default_context",
+        "render_in_context",
+        "template_renderer",
+    ]:
+        assert getattr(feincms3_renderer, name) is getattr(
+            content_editor_renderer, name
+        )
+    assert issubclass(RegionRenderer, content_editor_renderer.RegionRenderer)

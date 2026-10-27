@@ -6,6 +6,13 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Raised the minimum django-content-editor version to 10. The region renderer
+  moved into django-content-editor (``content_editor.renderer``);
+  ``feincms3.renderer`` re-exports it, so existing imports keep working. Its
+  ``RegionRenderer`` subclass keeps the deprecated compatibility APIs.
+  ``RegionRenderer`` now renders containers, see the django-content-editor
+  documentation.
+
 - Added a guide for migrating from FeinCMS to feincms3.
 - Documented using django-prose-editor instead of CKEditor 4 for the rich text
   plugin.

@@ -4,6 +4,12 @@ Rendering
 The default behavior of feincms3's renderer is to concatenate the
 rendered result of individual plugins into one long HTML string.
 
+.. note::
+
+   The region renderer lives in django-content-editor since version 10
+   (``content_editor.renderer``). ``feincms3.renderer`` re-exports it and adds
+   deprecated compatibility APIs, so the examples below work with both.
+
 That may not always be what you want. This guide also describes a few
 alternative methods of rendering plugins that may or may not be useful.
 
@@ -215,8 +221,42 @@ exactly:
     renderer.register(ProjectTeaser, ..., subregion="teasers")
 
 
-Grouping plugins into containers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Containers
+~~~~~~~~~~
+
+Plugins whose models set ``container = True`` contain the following plugins
+with a greater ``depth``. Editors nest plugins in containers in the content
+editor; use them when the editor decides what belongs together, e.g. for
+accordions, tabs or columns. Their renderer receives the rendered children as
+a third argument:
+
+.. code-block:: python
+
+    class Accordion(PagePlugin):
+        container = True
+
+        title = models.CharField(max_length=200)
+
+    renderer.register(
+        Accordion,
+        template_renderer("plugins/accordion.html"),
+    )
+
+.. code-block:: html+django
+
+    <details>
+      <summary>{{ plugin.title }}</summary>
+      {{ children }}
+    </details>
+
+Subregions only ever group siblings, so they never cross a container
+boundary. See the `django-content-editor documentation
+<https://django-content-editor.readthedocs.io/en/latest/rendering.html>`__ for
+details.
+
+
+Wrapping subregions
+~~~~~~~~~~~~~~~~~~~
 
 The previous example added an ``<div class="teasers">...</div>`` wrapper
 element to a group of teasers. However, sometimes you want to allow some

@@ -37,7 +37,7 @@ dynamic = [
 dependencies = [
   "asgiref>=3.6",
   "django>=4.2",
-  "django-content-editor>=9",
+  "django-content-editor>=10",
   "django-js-asset>=4",
   "django-tree-queries[admin]>=0.28",
 ]
