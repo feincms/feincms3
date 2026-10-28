@@ -363,18 +363,18 @@ is possible with a custom ``RegionRenderer`` class too:
     from feincms3.renderer import RegionRenderer
 
     class JSONRegionRenderer(RegionRenderer):
-        def render_region(self, *, region, contents, context):
+        def render_siblings(self, plugins, context):
             return [
                 dict(
                     self.render_plugin(plugin, context),
                     type=plugin.__class__.__name__,
                 )
-                for plugin in contents[region.key]
+                for plugin in plugins
             ]
 
-            # Alternatively (In this case the ``type`` key above would have to be
-            # provided by the renderers themselves):
-            # return list(self.generate(self.contents[region], context))
+            # Alternatively, to support subregions (In this case the ``type``
+            # key above would have to be provided by the renderers themselves):
+            # return list(self.handle(plugins, context))
 
     def page_content(request, pk):
         page = get_object_or_404(Page, pk=pk)
@@ -395,6 +395,12 @@ is possible with a custom ``RegionRenderer`` class too:
             "title": page.title,
             "content": regions.render("main", None),
         })
+
+``render_siblings`` renders the top level of a region and the children of
+each container. The renderers of containers receive the children as a third
+argument; use ``children.rendered`` to include them in the output, e.g.
+``lambda plugin, context, children: {"children": children.rendered}``. See the
+django-content-editor documentation on rendering for details.
 
 .. note::
 
