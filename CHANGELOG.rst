@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+7.0a1 (2026-10-28)
+~~~~~~~~~~~~~~~~~~
+
 - Raised the minimum django-content-editor version to 10.0a1. The region
   renderer moved into django-content-editor (``content_editor.renderer``);
   ``feincms3.renderer`` re-exports it, so existing imports keep working. Its
