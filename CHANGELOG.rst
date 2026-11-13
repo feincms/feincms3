@@ -16,6 +16,8 @@ Next version
 - ``feincms3.plugins.image.render_image`` now uses the plugin's
   ``alternative_text`` for the ``alt`` attribute instead of always leaving it
   empty.
+- Made ``LanguageAndTranslationOfMixin.translations()`` work with models
+  whose primary key isn't called ``id``.
 
 7.0a1 (2026-10-28)
 ~~~~~~~~~~~~~~~~~~

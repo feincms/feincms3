@@ -181,7 +181,7 @@ class LanguageAndTranslationOfMixin(LanguageMixin):
         )
         queryset = self.__class__._default_manager
         return (
-            queryset.filter(Q(id=primary) | Q(translation_of=primary))
+            queryset.filter(Q(pk=primary) | Q(translation_of=primary))
             if primary
             else queryset.none()
         )
