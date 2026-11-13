@@ -93,7 +93,9 @@ def embed_srf(url):
     d = match.groupdict()
     params = parse.parse_qs(parse.urlparse(url).query)
 
-    id_ = d.get("id") or params["id"][0]
+    id_ = d.get("id") or params.get("id", [""])[0]
+    if not id_:
+        return None
     type_ = "video" if d["type"] in ("tv", "video") else "audio"
     business_unit = d.get("business_unit", "srf")
 

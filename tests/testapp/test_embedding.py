@@ -81,3 +81,8 @@ allow="geolocation *; autoplay; encrypted-media"></iframe></div>"""
     )
     assert "<script>" not in html
     assert "'" not in html.split('src="')[1].split('"')[0]
+
+
+def test_srf_without_id():
+    """SRF URLs without an ID aren't embedded instead of crashing"""
+    assert embed("https://www.srf.ch/play/tv/sendung?video_id=123") is None

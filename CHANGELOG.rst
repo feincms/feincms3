@@ -11,6 +11,8 @@ Next version
   ``APPEND_SLASH`` redirect now keeps the query string, and both the
   ``APPEND_SLASH`` and the ``language_code_redirect`` redirects keep the
   script prefix.
+- Fixed ``feincms3.embedding.embed_srf`` crashing with a ``KeyError`` for SRF
+  URLs without a video ID; such URLs aren't embedded anymore.
 
 7.0a1 (2026-10-28)
 ~~~~~~~~~~~~~~~~~~
