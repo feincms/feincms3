@@ -527,7 +527,7 @@ class PageTypeMixin(models.Model):
 
     page_type = ChoicesCharField(_("page type"), max_length=100)
     app_namespace = models.CharField(
-        ("app instance namespace"), max_length=100, blank=True, editable=False
+        _("app instance namespace"), max_length=100, blank=True, editable=False
     )
 
     class Meta:
