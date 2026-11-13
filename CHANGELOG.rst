@@ -6,6 +6,7 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Raised the minimum django-content-editor version to 10.0.
 - Fixed the redirects of the page middleware created by
   ``feincms3.root.middleware.create_page_if_404_middleware``: The
   ``APPEND_SLASH`` redirect now keeps the query string, and both the
