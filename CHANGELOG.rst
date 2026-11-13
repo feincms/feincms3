@@ -13,6 +13,9 @@ Next version
   script prefix.
 - Fixed ``feincms3.embedding.embed_srf`` crashing with a ``KeyError`` for SRF
   URLs without a video ID; such URLs aren't embedded anymore.
+- ``feincms3.plugins.image.render_image`` now uses the plugin's
+  ``alternative_text`` for the ``alt`` attribute instead of always leaving it
+  empty.
 
 7.0a1 (2026-10-28)
 ~~~~~~~~~~~~~~~~~~

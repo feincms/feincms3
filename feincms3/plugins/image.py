@@ -67,4 +67,6 @@ def render_image(plugin, context=None, **kwargs):
     """
     Return a simple, unscaled version of the image
     """
-    return format_html('<img src="{}" alt="">', plugin.image.url)
+    return format_html(
+        '<img src="{}" alt="{}">', plugin.image.url, plugin.alternative_text
+    )

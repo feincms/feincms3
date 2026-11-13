@@ -1,6 +1,9 @@
+from types import SimpleNamespace
+
 import pytest
 from pytest_django.asserts import assertContains
 
+from feincms3.plugins.image import render_image
 from testapp.models import Page
 
 
@@ -55,3 +58,15 @@ def test_unknown_plugin_module():
 
     with pytest.raises(AttributeError):
         feincms3.plugins.does_not_exist  # noqa: B018
+
+
+def test_render_image():
+    """The image renderer uses the alternative text"""
+    plugin = SimpleNamespace(
+        image=SimpleNamespace(url="/media/image.jpg"),
+        alternative_text='A "quoted" text',
+    )
+    assert (
+        render_image(plugin)
+        == '<img src="/media/image.jpg" alt="A &quot;quoted&quot; text">'
+    )
