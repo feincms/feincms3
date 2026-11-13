@@ -112,6 +112,6 @@ and the renderer are one-liners too:
 
     renderer.register(models.RichText, lambda plugin, context: mark_safe(plugin.text))
 
-Switching an existing project requires a migration. Existing content containing HTML
-which the configured extensions don't support loses that markup when it is
-edited and saved the next time.
+Existing content containing HTML which the configured extensions don't
+support loses that markup when it is edited and saved the next time. See
+:ref:`upgrading` for switching an existing project.

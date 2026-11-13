@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added a guide for upgrading to feincms3 7.0, including switching to
+  django-content-editor's renderer and replacing the deprecated rich text
+  plugin with django-prose-editor.
+
 7.0 (2026-11-13)
 ~~~~~~~~~~~~~~~~
 

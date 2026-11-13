@@ -77,11 +77,12 @@ The apps documentation is meant to be read in order.
    guides/apps-and-instances
 
 
-Migrating from FeinCMS
-======================
+Upgrading
+=========
 
 .. toctree::
 
+   guides/upgrading
    guides/migrating-from-feincms
 
 
