@@ -20,6 +20,9 @@ Next version
   whose primary key isn't called ``id``.
 - ``feincms3.plugins.external.oembed_json`` now treats HTTP error responses as
   failures instead of caching their body for 30 days.
+- Fixed cloning many to many fields using the clone view of
+  ``feincms3.admin.TreeAdmin``; it crashed with a ``TypeError`` before, and
+  the current value of many to many fields is shown properly.
 
 7.0a1 (2026-10-28)
 ~~~~~~~~~~~~~~~~~~

@@ -11,7 +11,7 @@ from pytest_django.asserts import assertContains, assertRedirects
 
 from feincms3 import mixins
 from feincms3.pages import AbstractPage
-from testapp.models import Page
+from testapp.models import Article, Page
 
 
 def zero_management_form_data(prefix):
@@ -686,6 +686,34 @@ def test_content_cloning(client):
     assert list(
         home_de.testapp_snippet_set.values_list("template_name", flat=True)
     ) == ["snippet.html"]
+
+
+@pytest.mark.django_db
+def test_clone_many_to_many(admin_client):
+    """Cloning many to many fields works"""
+    source = Page.objects.create(
+        title="source", slug="source", language_code="en", is_active=True
+    )
+    target = Page.objects.create(
+        title="target", slug="target", language_code="en", is_active=True
+    )
+    articles = [
+        Article.objects.create(title=f"article {i}", category="blog") for i in range(3)
+    ]
+    source.related_articles.set(articles[:2])
+    target.related_articles.set(articles[2:])
+
+    clone_url = reverse("admin:testapp_page_clone", args=(source.pk,))
+    response = admin_client.get(clone_url)
+    assertContains(response, 'Current: "article 1, article 0"')
+
+    response = admin_client.post(
+        clone_url, {"target": target.pk, "set_related_articles": True}
+    )
+    assertRedirects(response, reverse("admin:testapp_page_change", args=(target.pk,)))
+    assert set(target.related_articles.all()) == set(articles[:2])
+    # The source is unchanged
+    assert set(source.related_articles.all()) == set(articles[:2])
 
 
 def test_default_type_fallback():

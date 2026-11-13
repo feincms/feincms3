@@ -78,6 +78,7 @@ class Page(
 
     optional = models.IntegerField(blank=True, null=True)
     not_editable = models.IntegerField(blank=True, null=True, editable=False)
+    related_articles = models.ManyToManyField("Article", blank=True, related_name="+")
 
     class Meta(AbstractPage.Meta):
         unique_together = [("language_code", "translation_of")]

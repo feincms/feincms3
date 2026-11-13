@@ -353,8 +353,15 @@ class CloneForm(forms.Form):
                     else field.name
                 ),
                 required=False,
-                help_text=_('Current: "%s"') % (getattr(self.instance, field.name),),
+                help_text=_('Current: "%s"') % (self._current_value(field),),
             )
+
+    def _current_value(self, field):
+        if field.many_to_many:
+            return ", ".join(
+                str(obj) for obj in getattr(self.instance, field.name).all()
+            )
+        return getattr(self.instance, field.name)
 
     def clean(self):
         data = super().clean()
@@ -366,7 +373,7 @@ class CloneForm(forms.Form):
             raise forms.ValidationError({"target": _("Cannot clone node to itself.")})
 
         for field in self.instance._meta.get_fields():
-            if self.cleaned_data.get(f"set_{field.name}"):
+            if self.cleaned_data.get(f"set_{field.name}") and not field.many_to_many:
                 setattr(target, field.name, getattr(self.instance, field.name))
 
         # All fields of model are not in this form
@@ -377,10 +384,14 @@ class CloneForm(forms.Form):
     def process(self):
         target = self.cleaned_data["target"]
         fields = []
+        many_to_many = []
 
         for field in self.instance._meta.get_fields():
             if self.cleaned_data.get(f"set_{field.name}"):
-                setattr(target, field.name, getattr(self.instance, field.name))
+                if field.many_to_many:
+                    many_to_many.append(field)
+                else:
+                    setattr(target, field.name, getattr(self.instance, field.name))
                 fields.append("{}".format(getattr(field, "verbose_name", field.name)))
 
         if fields:
@@ -413,6 +424,8 @@ class CloneForm(forms.Form):
             )
 
         target.save()
+        for field in many_to_many:
+            getattr(target, field.name).set(getattr(self.instance, field.name).all())
 
         opts = self.modeladmin.model._meta
         return redirect(f"admin:{opts.app_label}_{opts.model_name}_change", target.pk)
