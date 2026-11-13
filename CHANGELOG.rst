@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+7.0 (2026-11-13)
+~~~~~~~~~~~~~~~~
+
 - Raised the minimum django-content-editor version to 10.0.
 - Fixed the redirects of the page middleware created by
   ``feincms3.root.middleware.create_page_if_404_middleware``: The
