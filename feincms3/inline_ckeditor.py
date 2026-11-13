@@ -99,7 +99,7 @@ class InlineCKEditorField(models.TextField):
     - ``config_name``: Alternative way of configuring the CKEditor. Uses the
       ``FEINCMS3_CKEDITOR_CONFIG`` setting.
 
-    .. deprecated:: 6.2
+    .. deprecated:: 7.0
        CKEditor 4 has reached its end of life. Use `django-prose-editor
        <https://github.com/matthiask/django-prose-editor>`__ instead, see
        :ref:`richtext-prose-editor`.

@@ -137,7 +137,7 @@ class MoveForm(forms.Form):
 
     Requires the node to be moved as ``obj`` keyword argument.
 
-    .. deprecated:: 6.2
+    .. deprecated:: 7.0
        Use the move controls of the changelist (``move_column``) provided by
        django-tree-queries' ``TreeAdmin`` instead. Moves can be restricted by
        overriding ``TreeAdmin.is_valid_move``.

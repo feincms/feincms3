@@ -27,7 +27,7 @@ class RichText(models.Model):
     :class:`feincms3.inline_ckeditor.InlineCKEditorField` does all the heavy
     lifting.
 
-    .. deprecated:: 6.2
+    .. deprecated:: 7.0
        The whole ``feincms3.plugins.richtext`` module is deprecated since the
        ``text`` field uses CKEditor 4. Define your own rich text plugin using
        django-prose-editor instead, see :ref:`richtext-prose-editor`.
