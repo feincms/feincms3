@@ -50,3 +50,16 @@ def test_oembed_request():
         assert oembed_json(
             "https://www.youtube.com/watch?v=4zGnNmncJWg", force_refresh=True
         ) == {"different": ""}
+
+
+def test_oembed_http_error():
+    """HTTP errors are cached as failures even if the response contains JSON"""
+    url = "https://www.youtube.com/watch?v=http-error"
+    with requests_mock.Mocker() as m:
+        m.get("https://noembed.com/embed", status_code=500, text='{"html": "x"}')
+        assert oembed_json(url) == {}
+
+        m.get("https://noembed.com/embed", text='{"html": "y"}')
+        # The failure is cached
+        assert oembed_json(url) == {}
+        assert oembed_json(url, force_refresh=True) == {"html": "y"}

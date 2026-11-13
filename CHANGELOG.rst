@@ -18,6 +18,8 @@ Next version
   empty.
 - Made ``LanguageAndTranslationOfMixin.translations()`` work with models
   whose primary key isn't called ``id``.
+- ``feincms3.plugins.external.oembed_json`` now treats HTTP error responses as
+  failures instead of caching their body for 30 days.
 
 7.0a1 (2026-10-28)
 ~~~~~~~~~~~~~~~~~~

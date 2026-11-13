@@ -59,7 +59,9 @@ def oembed_json(url, *, cache_failures=True, force_refresh=False, params=None):
         return data
 
     try:
-        data = requests.get("https://noembed.com/embed", params=p, timeout=2).json()
+        response = requests.get("https://noembed.com/embed", params=p, timeout=2)
+        response.raise_for_status()
+        data = response.json()
     except (requests.ConnectionError, requests.ReadTimeout):
         # Connection failed? Hopefully temporary, try again soon.
         timeout = 60
