@@ -6,6 +6,12 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Fixed the redirects of the page middleware created by
+  ``feincms3.root.middleware.create_page_if_404_middleware``: The
+  ``APPEND_SLASH`` redirect now keeps the query string, and both the
+  ``APPEND_SLASH`` and the ``language_code_redirect`` redirects keep the
+  script prefix.
+
 7.0a1 (2026-10-28)
 ~~~~~~~~~~~~~~~~~~
 

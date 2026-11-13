@@ -760,6 +760,9 @@ def test_404_language_code_redirect_at_root(client):
     response = client.get("/", HTTP_ACCEPT_LANGUAGE="de")
     assertRedirects(response, "/de/")
 
+    response = client.get("/", HTTP_ACCEPT_LANGUAGE="de", SCRIPT_NAME="/prefix")
+    assertRedirects(response, "/prefix/de/", fetch_redirect_response=False)
+
     response = client.get("/", HTTP_ACCEPT_LANGUAGE="en")
     assert response.status_code == 404
 
@@ -871,6 +874,17 @@ def test_append_slash(client):
 
         response = client.get("/blub")
         assert response.status_code == 404
+
+        # The query string and the script prefix are preserved
+        response = client.get("/home?a=1")
+        assertRedirects(
+            response, "/home/?a=1", fetch_redirect_response=False, status_code=301
+        )
+
+        response = client.get("/home", SCRIPT_NAME="/prefix")
+        assertRedirects(
+            response, "/prefix/home/", fetch_redirect_response=False, status_code=301
+        )
 
     with override_settings(APPEND_SLASH=False):
         response = client.get("/home")

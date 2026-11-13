@@ -165,11 +165,16 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
             if language_code_redirect and request.path_info == "/":
                 target = f"/{request.LANGUAGE_CODE}/"
                 if qs.filter(path=target).exists():
-                    return HttpResponseRedirect(target)
+                    # request.path includes the script prefix
+                    return HttpResponseRedirect(
+                        f"{request.path}{request.LANGUAGE_CODE}/"
+                    )
             if settings.APPEND_SLASH and not request.path_info.endswith("/"):
                 target = request.path_info + "/"
                 if qs.filter(path=target).exists():
-                    return HttpResponsePermanentRedirect(target)
+                    return HttpResponsePermanentRedirect(
+                        request.get_full_path(force_append_slash=True)
+                    )
             return response
 
         return inner
