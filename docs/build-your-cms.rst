@@ -73,6 +73,7 @@ The page model and a few plugins could be defined as follows:
                 "Heading": {"levels": [2, 3]},
                 "BulletList": True,
                 "OrderedList": True,
+                "ListItem": True,
                 "Link": True,
             },
             sanitize=True,

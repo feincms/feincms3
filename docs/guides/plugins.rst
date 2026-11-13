@@ -85,6 +85,7 @@ extensions do not produce:
                 "Heading": {"levels": [2, 3]},
                 "BulletList": True,
                 "OrderedList": True,
+                "ListItem": True,
                 "Link": True,
             },
             sanitize=True,
