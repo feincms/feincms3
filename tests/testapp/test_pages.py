@@ -409,7 +409,29 @@ def test_add_duplicated_path(client):
             zero_management_form_data("testapp_html_set"),
         ),
     )
-    assertContains(response, "Page with this Path already exists.", status_code=200)
+    assert response.status_code == 200
+    assert re.search(
+        r"The page main&#(39|x27);s new path /main/ would not be unique.",
+        response.content.decode("utf-8"),
+    )
+
+
+@pytest.mark.django_db
+def test_add_duplicated_path_without_path_field():
+    """New pages clash even if the path isn't validated by the form"""
+    Page.objects.create(title="main", slug="main")
+    page = Page(title="main", slug="main", language_code="en", page_type="standard")
+    with pytest.raises(ValidationError) as excinfo:
+        page.full_clean(exclude=["path"])
+    assert "would not be unique" in str(excinfo.value)
+
+    # Also with a primary key set before saving
+    page = Page(
+        pk=999, title="main", slug="main", language_code="en", page_type="standard"
+    )
+    with pytest.raises(ValidationError) as excinfo:
+        page.full_clean(exclude=["path"])
+    assert "would not be unique" in str(excinfo.value)
 
 
 @pytest.mark.django_db

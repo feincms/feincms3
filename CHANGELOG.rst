@@ -6,6 +6,10 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Fixed new pages whose path is already taken: ``clean_fields()`` only
+  checked existing pages, and Django's unique check skips the path when it
+  isn't validated (e.g. a read-only path), so saving failed with an
+  ``IntegrityError``.
 - Added a guide for upgrading to feincms3 7.0, including switching to
   django-content-editor's renderer and replacing the deprecated rich text
   plugin with django-prose-editor.

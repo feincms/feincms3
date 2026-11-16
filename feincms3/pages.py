@@ -168,8 +168,18 @@ class AbstractPage(OrderableTreeNode):
 
         super().clean()
 
-        # Skip if we don't exist yet.
-        if not self.pk:
+        # New pages have no descendants, only their own path can clash. This
+        # isn't left to Django's unique check, which skips the path if it
+        # isn't a form field, or the ``unique_together`` of feincms3-sites
+        # since its site isn't one.
+        if self._state.adding:
+            if self._clash_candidates().filter(path=self.path).exists():
+                raise validation_error(
+                    _("The page %(page)s's new path %(path)s would not be unique.")
+                    % {"page": self, "path": self.path},
+                    field="path",
+                    exclude=exclude,
+                )
             return
 
         clash_candidates = dict(self._path_clash_candidates().values_list("path", "id"))
