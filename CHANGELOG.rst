@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+7.1 (2026-11-16)
+~~~~~~~~~~~~~~~~
+
 - Fixed new pages whose path is already taken: ``clean_fields()`` only
   checked existing pages, and Django's unique check skips the path when it
   isn't validated (e.g. a read-only path), so saving failed with an
