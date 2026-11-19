@@ -6,6 +6,9 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+7.2 (2026-11-19)
+~~~~~~~~~~~~~~~~
+
 - ``LanguageMixin`` declares the tree rule ``language_matches_parent``, which
   reports a node whose language differs from its parent's -- e.g. a
   translation created below the original's parent. django-tree-queries'
