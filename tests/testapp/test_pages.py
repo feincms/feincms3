@@ -9,7 +9,6 @@ from django.db import IntegrityError, connection, transaction
 from django.test.utils import CaptureQueriesContext, isolate_apps, override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertRedirects
-from tree_queries import admin as tree_queries_admin
 
 from feincms3 import mixins
 from feincms3.mixins import language_matches_parent
@@ -964,13 +963,6 @@ def test_save_descendants_after_reverting_changes():
     assert child.path == "/a/c/"
 
 
-requires_tree_rules = pytest.mark.skipif(
-    not hasattr(tree_queries_admin, "collect_tree_rules"),
-    reason="Tree rules need a newer django-tree-queries",
-)
-
-
-@requires_tree_rules
 @pytest.mark.django_db
 def test_pages_in_another_language_s_tree_are_marked(client):
     def page(title, language, parent=None):

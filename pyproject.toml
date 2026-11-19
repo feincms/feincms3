@@ -39,7 +39,7 @@ dependencies = [
   "django>=4.2",
   "django-content-editor>=10",
   "django-js-asset>=4",
-  "django-tree-queries[admin]>=0.28",
+  "django-tree-queries[admin]>=0.29",
 ]
 optional-dependencies.all = [
   "django-imagefield",
