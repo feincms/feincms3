@@ -2,10 +2,35 @@ from django.conf import settings
 from django.core.checks import Warning
 from django.db import models
 from django.db.models import Q, signals
-from django.utils.translation import activate, get_language, gettext_lazy as _
+from django.utils.translation import (
+    activate,
+    get_language,
+    gettext,
+    gettext_lazy as _,
+)
 from tree_queries.fields import TreeNodeForeignKey
 
 from feincms3.utils import ChoicesCharField, validation_error
+
+
+def language_matches_parent(node, ancestors):
+    """
+    Tree rule of ``LanguageMixin``: a node has the language of its parent
+
+    See django-tree-queries' ``tree_queries.admin.collect_tree_rules``; its
+    ``TreeAdmin`` marks the nodes breaking a rule in the changelist.
+
+    A node in the wrong language's tree -- a translation created below the
+    original's parent instead of below its translation -- is invisible in the
+    frontend in the best case and takes navigations apart in the worst. Only
+    the parent is compared, so a misplaced subtree is reported once, at its
+    top, and not for every node below it.
+    """
+    if ancestors and node.language_code != ancestors[-1].language_code:
+        return gettext(
+            "Its language ({language}) differs from its parent's ({parent})."
+        ).format(language=node.language_code, parent=ancestors[-1].language_code)
+    return None
 
 
 class MenuMixin(models.Model):
@@ -115,6 +140,9 @@ class LanguageMixin(models.Model):
         choices=settings.LANGUAGES,
         default=settings.LANGUAGES[0][0],
     )
+
+    #: Only checked for models which are trees, see ``language_matches_parent``.
+    tree_rules = [language_matches_parent]
 
     class Meta:
         abstract = True

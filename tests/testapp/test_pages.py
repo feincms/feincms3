@@ -1,4 +1,5 @@
 import re
+from types import SimpleNamespace
 
 import pytest
 from django.contrib.auth.models import User
@@ -8,8 +9,10 @@ from django.db import IntegrityError, connection, transaction
 from django.test.utils import CaptureQueriesContext, isolate_apps, override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertRedirects
+from tree_queries import admin as tree_queries_admin
 
 from feincms3 import mixins
+from feincms3.mixins import language_matches_parent
 from feincms3.pages import AbstractPage
 from testapp.models import Article, Page
 
@@ -959,3 +962,37 @@ def test_save_descendants_after_reverting_changes():
     root.save()
     child.refresh_from_db()
     assert child.path == "/a/c/"
+
+
+requires_tree_rules = pytest.mark.skipif(
+    not hasattr(tree_queries_admin, "collect_tree_rules"),
+    reason="Tree rules need a newer django-tree-queries",
+)
+
+
+@requires_tree_rules
+@pytest.mark.django_db
+def test_pages_in_another_language_s_tree_are_marked(client):
+    def page(title, language, parent=None):
+        return Page.objects.create(
+            title=title, slug=title, parent=parent, language_code=language
+        )
+
+    de = page("de", "de")
+    en = page("en", "en")
+    page("ueber-uns", "de", de)
+    stray = page("verirrt", "de", en)  # A German page in the English tree
+    page("unterseite", "de", stray)  # Reported once, at the top of the subtree
+
+    response = client.get("/admin/testapp/page/")
+
+    assertContains(response, 'class="tree-rule-violation"', 1)
+    assertContains(response, "differs from its parent&#x27;s (en)")
+
+
+def test_language_matches_parent():
+    de, en = SimpleNamespace(language_code="de"), SimpleNamespace(language_code="en")
+    assert language_matches_parent(de, []) is None
+    assert language_matches_parent(de, [en, de]) is None
+    assert language_matches_parent(de, [de, en]) is not None
+    assert Page.tree_rules == [language_matches_parent]
