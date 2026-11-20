@@ -45,7 +45,8 @@ works for any model with a ``get_absolute_url()`` method, not just for pages.
 Add the app and its middleware to your settings. The app label is
 ``feincms3_redirects``. The middleware has to be added *before* the page
 middleware so that pages are found first; redirects are only used for
-requests which would result in a 404 response otherwise:
+requests which would result in a 404 response otherwise. A system check
+(``feincms3.E008``) reports a missing middleware:
 
 .. code-block:: python
 

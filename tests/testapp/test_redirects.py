@@ -297,3 +297,11 @@ def test_admin(admin_client):
     row.refresh_from_db()
     assert not row.is_automatic
     assert row.object_id == str(about.pk)
+
+
+def test_middleware_check():
+    from feincms3.redirects.apps import check_middleware  # noqa: PLC0415
+
+    assert check_middleware(None) == []
+    with override_settings(MIDDLEWARE=[]):
+        assert [e.id for e in check_middleware(None)] == ["feincms3.E008"]

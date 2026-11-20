@@ -13,6 +13,8 @@ Next version
 - Added an admin for ``feincms3.redirects`` which allows adding redirects to
   URLs or objects by hand, e.g. for URLs of old websites. The redirects guide
   shows how to migrate from django-simple-redirects.
+- Added a system check (``feincms3.E008``) which reports a missing
+  ``feincms3.redirects`` middleware.
 
 7.2 (2026-11-19)
 ~~~~~~~~~~~~~~~~
