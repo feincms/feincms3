@@ -115,6 +115,31 @@ current URLs of existing objects.
    supported on MySQL. ``AbstractPage`` doesn't support MySQL either.
 
 
+Why URLs are recorded on every save
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The current URL of an object is recorded each time it is saved, even though
+most objects never move, instead of recording the old URL only when it
+changes. Recording only changes would keep the table small, but would miss
+many changes:
+
+- An URL often changes without the object itself being saved. Articles change
+  their URL when the page their app is attached to moves; a manual's chapters
+  change their URL when the manual's page moves. Only the page is saved in
+  this case. Recording the old URLs of all objects whose URLs depend on the
+  page would require knowing those dependencies, which ``get_absolute_url()``
+  doesn't reveal. When the current URL has been recorded beforehand, the old
+  URL is already there and still points to the object.
+- Determining the old URL when saving requires the object's old state,
+  including the old state of related objects (e.g. the parent page's old
+  path). That's an additional query per save and brittle at best.
+
+The price is one upsert query per save of a registered object, and one row per
+object (plus one per old URL) in the table. ``record_redirects`` has to be run
+once when introducing the app so that existing objects' URLs are known before
+they change.
+
+
 Manual redirects
 ----------------
 
