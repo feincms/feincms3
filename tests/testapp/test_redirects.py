@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.test.utils import override_settings
 from django.utils.translation import override
+from pytest_django.asserts import assertContains, assertNotContains
 
 from feincms3.applications import _del_apps_urlconf_cache, apps_urlconf
 from feincms3.redirects.models import Redirect
@@ -220,3 +221,79 @@ def test_record_redirects_command():
     Redirect.objects.all().delete()
     call_command("record_redirects", stdout=open("/dev/null", "w"))  # noqa: SIM115
     assert Redirect.objects.count() == 3
+
+
+@pytest.mark.django_db
+def test_path_normalization():
+    row = Redirect(path="/caf%C3%A9/?q=%C3%A9", target_url="/new/")
+    row.full_clean()
+    assert row.path == "/café/?q=%C3%A9"
+
+
+@pytest.mark.django_db
+def test_target_validation():
+    _home, _about, team = create_pages()
+    page_type = ContentType.objects.get_for_model(Page)
+
+    Redirect(path="/old/", content_type=page_type, object_id=str(team.pk)).full_clean()
+
+    with pytest.raises(ValidationError) as exc:
+        Redirect(path="/old/", content_type=page_type, object_id="0").full_clean()
+    assert "object_id" in exc.value.message_dict
+
+    with pytest.raises(ValidationError) as exc:
+        Redirect(
+            path="/old/",
+            content_type=ContentType.objects.get_for_model(Redirect),
+            object_id="1",
+        ).full_clean()
+    assert "content_type" in exc.value.message_dict
+
+    with pytest.raises(ValidationError) as exc:
+        Redirect(
+            path="/old/",
+            target_url="/new/",
+            content_type=page_type,
+            object_id=str(team.pk),
+        ).full_clean()
+    assert "target_url" in exc.value.message_dict
+
+
+@pytest.mark.django_db
+def test_admin(admin_client):
+    _home, about, team = create_pages()
+    team.slug = "people"
+    team.save()
+    Redirect.objects.create(path="/manual/", target_url="https://example.com/")
+
+    response = admin_client.get("/admin/feincms3_redirects/redirect/")
+    assertContains(response, "/en/about/people/")
+    assertContains(response, "https://example.com/")
+
+    # Only registered models can be selected
+    response = admin_client.get("/admin/feincms3_redirects/redirect/add/")
+    page_type = ContentType.objects.get_for_model(Page)
+    assertContains(response, f'<option value="{page_type.pk}">')
+    assertNotContains(
+        response,
+        f'<option value="{ContentType.objects.get_for_model(Redirect).pk}">',
+    )
+
+    # Editing an automatic redirect makes it a manual redirect
+    row = Redirect.objects.get(path="/en/about/team/")
+    assert row.is_automatic
+    response = admin_client.post(
+        f"/admin/feincms3_redirects/redirect/{row.pk}/change/",
+        {
+            "host": "",
+            "path": "/en/about/team/",
+            "permanent": "on",
+            "target_url": "",
+            "content_type": page_type.pk,
+            "object_id": str(about.pk),
+        },
+    )
+    assert response.status_code == 302
+    row.refresh_from_db()
+    assert not row.is_automatic
+    assert row.object_id == str(about.pk)

@@ -101,3 +101,67 @@ current URLs of existing objects.
    Redirects without a host are used for all hosts. Recording URLs uses an
    upsert query (``bulk_create(update_conflicts=True)``), which isn't
    supported on MySQL. ``AbstractPage`` doesn't support MySQL either.
+
+
+Manual redirects
+----------------
+
+Redirects can also be added in the Django admin, e.g. for URLs of an old
+website. A redirect either points to an URL or to an object of a registered
+model. Redirects to objects follow the object when its URL changes, and are
+only used if the object is contained in the queryset of the registration.
+Redirects pointing to deleted objects aren't removed automatically, so their
+target can be changed to another object later.
+
+The path may contain a query string, e.g. ``/index.php?id=12``. Requests are
+matched with their query string first, then without. Editing an automatically
+recorded redirect turns it into a manual redirect. Note that when an object
+is saved, its current URL is recorded even if a manual redirect for the same
+URL exists, since the object is served at the URL anyway.
+
+Redirects can be temporary (status code 302) instead of permanent (status code
+301).
+
+
+Migrating from django-simple-redirects
+--------------------------------------
+
+`django-simple-redirects <https://github.com/feinheit/django-simple-redirects>`__
+matches the percent-encoded path including the query string and always
+responds with temporary redirects. The following data migration copies all
+redirects and keeps them temporary. Redirects without a target are skipped
+since they only redirected to the empty URL:
+
+.. code-block:: python
+
+    from urllib.parse import unquote
+
+    from django.db import migrations
+
+
+    def forwards(apps, schema_editor):
+        Old = apps.get_model("simple_redirects", "Redirect")
+        New = apps.get_model("feincms3_redirects", "Redirect")
+        redirects = []
+        for old in Old.objects.exclude(new_path=""):
+            path, sep, query = old.old_path.partition("?")
+            redirects.append(
+                New(
+                    path=f"{unquote(path)}{sep}{query}",
+                    target_url=old.new_path,
+                    permanent=False,
+                )
+            )
+        New.objects.bulk_create(redirects, ignore_conflicts=True)
+
+
+    class Migration(migrations.Migration):
+        dependencies = [
+            ("feincms3_redirects", "0001_initial"),
+            ("simple_redirects", "0001_initial"),
+        ]
+        operations = [migrations.RunPython(forwards)]
+
+Afterwards, remove ``simple_redirects`` and its middleware from your settings.
+Redirects pointing to pages may be changed to point to the page objects in the
+admin, so that they keep working when the pages are moved.

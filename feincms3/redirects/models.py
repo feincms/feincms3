@@ -118,10 +118,7 @@ class Redirect(models.Model):
     is_automatic = models.BooleanField(
         _("is automatic"),
         default=False,
-        help_text=_(
-            "Automatic redirects are created when saving objects and may be"
-            " overwritten."
-        ),
+        help_text=_("Recorded automatically when saving the target object."),
     )
     permanent = models.BooleanField(_("permanent"), default=True)
 
@@ -148,12 +145,41 @@ class Redirect(models.Model):
             raise validation_error(
                 _("The path must start with a slash."), field="path", exclude=exclude
             )
-        if bool(self.target_url) == bool(self.content_type_id and self.object_id):
+        # Paths are matched against the decoded request.path, query strings
+        # against the undecoded QUERY_STRING.
+        path, sep, query = self.path.partition("?")
+        self.path = f"{unquote(path)}{sep}{query}"
+
+        has_object = bool(self.content_type_id or self.object_id)
+        if bool(self.target_url) == has_object:
             raise validation_error(
                 _("Set either a target URL or a target object."),
                 field="target_url",
                 exclude=exclude,
             )
+        if has_object:
+            model = self.content_type and self.content_type.model_class()
+            if not model or not registration(model):
+                raise validation_error(
+                    _("Objects of this type cannot be redirected to."),
+                    field="content_type",
+                    exclude=exclude,
+                )
+            if not model._default_manager.filter(pk=self.object_id).exists():
+                raise validation_error(
+                    _("The target object does not exist."),
+                    field="object_id",
+                    exclude=exclude,
+                )
+
+    def get_target_url(self):
+        """
+        Return the URL of the redirect's target, without checking the
+        registration's queryset; used in the admin
+        """
+        if self.target_url:
+            return self.target_url
+        return (obj := self.target_object) and _url(obj)
 
     def resolve(self, request):
         """

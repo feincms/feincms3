@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
                     "is_automatic",
                     models.BooleanField(
                         default=False,
-                        help_text="Automatic redirects are created when saving objects and may be overwritten.",
+                        help_text="Recorded automatically when saving the target object.",
                         verbose_name="is automatic",
                     ),
                 ),

@@ -10,6 +10,9 @@ Next version
   they are saved and redirects requests to old URLs (e.g. of moved pages) to
   the current URL. It works for any model with a ``get_absolute_url()``
   method. See :ref:`redirects`.
+- Added an admin for ``feincms3.redirects`` which allows adding redirects to
+  URLs or objects by hand, e.g. for URLs of old websites. The redirects guide
+  shows how to migrate from django-simple-redirects.
 
 7.2 (2026-11-19)
 ~~~~~~~~~~~~~~~~
