@@ -6,6 +6,11 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- Added ``feincms3.redirects``, an app which records the URLs of objects when
+  they are saved and redirects requests to old URLs (e.g. of moved pages) to
+  the current URL. It works for any model with a ``get_absolute_url()``
+  method. See :ref:`redirects`.
+
 7.2 (2026-11-19)
 ~~~~~~~~~~~~~~~~
 

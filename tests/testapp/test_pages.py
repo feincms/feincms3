@@ -636,23 +636,25 @@ def test_descendant_update(prepare_for_move):
     p2.save()
 
     with CaptureQueriesContext(connection) as ctx:
-        # Only update self
+        # Only update self (and its row in feincms3.redirects)
         root.save()
-        assert len(ctx.captured_queries) == 1
+        assert len(ctx.captured_queries) == 2
 
     p1.refresh_from_db()
     assert p1.path == "/root/p1/"
 
     with CaptureQueriesContext(connection) as ctx:
-        # Update self, fetch two descendants and save them
+        # Update self, fetch two descendants and save them (and the three
+        # rows in feincms3.redirects)
         root.save(save_descendants=True)
-        assert len(ctx.captured_queries) == 4
+        assert len(ctx.captured_queries) == 7
 
     root.slug = "blaaa"
     with CaptureQueriesContext(connection) as ctx:
-        # Update self, fetch two descendants and save them
+        # Update self, fetch two descendants and save them (and the three
+        # rows in feincms3.redirects)
         root.save(save_descendants=True)
-        assert len(ctx.captured_queries) == 4
+        assert len(ctx.captured_queries) == 7
 
     p1.refresh_from_db()
     assert p1.path == "/blaaa/p1/"

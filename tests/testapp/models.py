@@ -2,6 +2,7 @@ from content_editor.models import Region, create_plugin_base
 from django.db import models
 from django.utils.translation import gettext_lazy as _, override
 
+from feincms3 import redirects
 from feincms3.applications import (
     ApplicationType,
     PageTypeMixin,
@@ -146,3 +147,7 @@ class TranslatedArticle(LanguageAndTranslationOfMixin):
     def get_absolute_url(self):
         with override(self.language_code):
             return reverse_app("translated-articles", "detail", kwargs={"pk": self.pk})
+
+
+redirects.register(Page, queryset=Page.objects.active())
+redirects.register(Article)

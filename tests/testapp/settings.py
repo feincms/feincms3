@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     "testapp",
     # Libraries
     "feincms3",
+    "feincms3.redirects",
     "content_editor",
     # Libraries for content-editor plugins
     "ckeditor",
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "feincms3.redirects.middleware.redirects_middleware",
     "testapp.middleware.page_if_404_middleware",
 ]
 
