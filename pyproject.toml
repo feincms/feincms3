@@ -46,6 +46,11 @@ optional-dependencies.all = [
   "html-sanitizer>=1.1.1",
   "requests",
 ]
+optional-dependencies.docs = [
+  "django-ckeditor",
+  "furo",
+  "sphinx",
+]
 optional-dependencies.tests = [
   "coverage",
   "django-ckeditor",
