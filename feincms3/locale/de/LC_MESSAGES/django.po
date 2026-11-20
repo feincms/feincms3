@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-03 08:51+0200\n"
+"POT-Creation-Date: 2026-11-20 11:24+0100\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/feincms3/feincms3/"
@@ -21,65 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:132 pages.py:84
-msgid "title"
-msgstr "Titel"
-
-#: admin.py:155
-msgid "Move '{}' to a new location"
-msgstr "'{}' zu einer neuen Position verschieben"
-
-#: admin.py:157
-msgid "Choose new location"
-msgstr "Neuen Ort auswählen"
-
-#: admin.py:158
-msgid "before"
-msgstr "vorher"
-
-#: admin.py:159
-msgid "as first child"
-msgstr "als erstes Unterelement"
-
-#: admin.py:160
-msgid "as last child"
-msgstr "als letztes Unterelement"
-
-#: admin.py:161
-msgid "after"
-msgstr "nachher"
-
-#: admin.py:171 admin.py:174
-msgid "move"
-msgstr "verschieben"
-
-#: admin.py:206
+#: admin.py:80
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
 
-#: admin.py:211
+#: admin.py:85
 #, python-format
 msgid "Clone %s"
 msgstr "%s klonen"
 
-#: admin.py:276
-msgid "Invalid node move request."
-msgstr "Ungültige Verschiebungsanfrage."
-
-#: admin.py:301
-msgid "Error while validating the new position of '{}'."
-msgstr "Fehler beim Validieren der neuen Position von '{}'."
-
-#: admin.py:334
-msgid "Node '{}' has been moved to its new position."
-msgstr "'{}' wurde zur neuen Position verschoben."
-
-#: admin.py:362
+#: admin.py:167
 msgid "New location"
 msgstr "Neuer Ort"
 
-#: admin.py:370
+#: admin.py:175
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -87,61 +43,61 @@ msgstr ""
 "Verschieben ist nicht möglich weil es keine gültigen Zielorte gibt. "
 "Vielleicht den einzigen Wurzelknoten gewählt?"
 
-#: admin.py:416 admin.py:427 admin.py:437
+#: admin.py:221 admin.py:232 admin.py:242
 msgid "move here"
 msgstr "hierhin verschieben"
 
-#: admin.py:499
+#: admin.py:304
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "%(node)s wurde zur neuen Position verschoben."
 
-#: admin.py:517
+#: admin.py:322 redirects/admin.py:82
 msgid "target"
 msgstr "Ziel"
 
-#: admin.py:527
+#: admin.py:332
 msgid "Replace target's content"
 msgstr "Inhalt des Ziels ersetzen"
 
-#: admin.py:529
+#: admin.py:334
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Betrifft die folgenden Inhalte: %s."
 
-#: admin.py:551
+#: admin.py:356
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Aktuell: „%s“"
 
-#: admin.py:561
+#: admin.py:373
 msgid "Cannot clone node to itself."
 msgstr "Kann Knoten nicht zu sich selbst klonen."
 
-#: admin.py:584
+#: admin.py:400
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Aktualisierte Felder von %(node)s: %(fields)s"
 
-#: admin.py:608
+#: admin.py:422
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Ersetzte den Inhalt von %(target)s mit dem Inhalt von %(source)s."
 
-#: admin.py:635
-msgid "subtree"
-msgstr "Unterbaum"
-
-#: applications.py:525
+#: applications.py:528
 msgid "page type"
 msgstr "Seitentyp"
 
-#: applications.py:569
+#: applications.py:530
+msgid "app instance namespace"
+msgstr "Namespace der App-Instanz"
+
+#: applications.py:572
 #, python-format
 msgid "This field is required for the page type \"%s\"."
 msgstr "Dieses Feld wird für den Seitentyp \"%s\" benötigt."
 
-#: applications.py:597
+#: applications.py:600
 #, python-brace-format
 msgid ""
 "The page type \"{page_type}\" with the specified configuration exists "
@@ -150,46 +106,53 @@ msgstr ""
 "Der Seitentyp \"{page_type}\" mit der spezifizierten Konfiguration existiert "
 "schon."
 
-#: mixins.py:20
+#: mixins.py:31
+#, python-brace-format
+msgid "Its language ({language}) differs from its parent's ({parent})."
+msgstr ""
+"Die Sprache ({language}) unterscheidet sich von der Sprache der "
+"übergeordneten Seite ({parent})."
+
+#: mixins.py:43
 msgid "menu"
 msgstr "Menü"
 
-#: mixins.py:72 plugins/snippet.py:33
+#: mixins.py:95 plugins/snippet.py:33
 msgid "template"
 msgstr "Vorlage"
 
-#: mixins.py:124
+#: mixins.py:138
 msgid "language"
 msgstr "Sprache"
 
-#: mixins.py:154
+#: mixins.py:171
 msgid "translation of"
 msgstr "Übersetzung von"
 
-#: mixins.py:215
+#: mixins.py:232
 msgid ""
 "Objects in the primary language cannot be the translation of another object."
 msgstr ""
 "Objekte in der primären Sprache können nicht eine Übersetzung eines anderen "
 "Objektes sein."
 
-#: mixins.py:229
+#: mixins.py:246
 msgid "Redirect to URL"
 msgstr "Weiterleiten zu URL"
 
-#: mixins.py:237
+#: mixins.py:254
 msgid "Redirect to page"
 msgstr "Weiterleiten zu Seite"
 
-#: mixins.py:260
+#: mixins.py:277
 msgid "Only set one redirect value."
 msgstr "Bitte nur einen Weiterleitungs-Wert setzen."
 
-#: mixins.py:268
+#: mixins.py:285
 msgid "Cannot redirect to self."
 msgstr "Kann nicht zu sich selbst weiterleiten."
 
-#: mixins.py:279
+#: mixins.py:296
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
@@ -198,7 +161,7 @@ msgstr ""
 "Die gewählte Seite „%(title)s“ leitet schon weiter auf „%(path)s“ weiter, "
 "bitte Verkettungen von Weiterleitungen vermeiden."
 
-#: mixins.py:296
+#: mixins.py:313
 #, python-format
 msgid ""
 "Do not chain redirects. The following pages already redirect to this page: "
@@ -207,23 +170,27 @@ msgstr ""
 "Verkettung von Weiterleitungen nicht erlaubt. Die folgenden Seiten leiten "
 "schon auf diese Seite weiter: %(pages)s"
 
+#: mixins.py:334
+msgid "Redirects"
+msgstr "Weiterleitungen"
+
 #: pages.py:83
 msgid "is active"
 msgstr "ist aktiv"
+
+#: pages.py:84
+msgid "title"
+msgstr "Titel"
 
 #: pages.py:85
 msgid "slug"
 msgstr "Slug"
 
-#: pages.py:92
-msgid "Position is expected to be greater than zero."
-msgstr "Position sollte grösser als Null sein."
-
-#: pages.py:99
+#: pages.py:89 redirects/models.py:117
 msgid "path"
 msgstr "Pfad"
 
-#: pages.py:104
+#: pages.py:94
 msgid ""
 "Automatically generated by concatenating the parent's path and the slug "
 "unless the path is defined manually."
@@ -232,52 +199,52 @@ msgstr ""
 "übergeordneten Seite und des Slugs, ausser wenn der Pfad manuell definiert "
 "wird."
 
-#: pages.py:110
+#: pages.py:100
 msgid "Path must start and end with a slash (/)."
 msgstr "Pfad muss mit einem Slash (/) starten und enden."
 
-#: pages.py:114
+#: pages.py:104
 msgid "manually define the path"
 msgstr "Pfad manuell definieren"
 
-#: pages.py:121
+#: pages.py:110
 msgid "page"
 msgstr "Seite"
 
-#: pages.py:122
+#: pages.py:111
 msgid "pages"
 msgstr "Seiten"
 
-#: pages.py:171
+#: pages.py:160
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statische Pfade können nicht leer sein. Meinten Sie „/“?"
 
-#: pages.py:193
+#: pages.py:178 pages.py:192
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Der Pfad %(path)s der Seite %(page)s würde nicht eindeutig sein."
 
-#: plugins/external.py:113
+#: plugins/external.py:117
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:115 plugins/image.py:42
+#: plugins/external.py:119 plugins/image.py:42
 msgid "alternative text"
 msgstr "alternativer Text"
 
-#: plugins/external.py:116 plugins/image.py:43
+#: plugins/external.py:120 plugins/image.py:43
 msgid "Describe the contents, e.g. for screenreaders."
 msgstr "Beschreibung der Bildinhalte, zB für Screenreader."
 
-#: plugins/external.py:120 plugins/image.py:47
+#: plugins/external.py:124 plugins/image.py:47
 msgid "caption"
 msgstr "Legende"
 
-#: plugins/external.py:124
+#: plugins/external.py:128
 msgid "external content"
 msgstr "externer Inhalt"
 
-#: plugins/external.py:158
+#: plugins/external.py:162
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Kann das HTML für diese URL nicht laden, tut mir leid!"
 
@@ -318,15 +285,15 @@ msgstr "Fokuspunkt"
 msgid "images"
 msgstr "Bilder"
 
-#: plugins/old_richtext.py:41 plugins/richtext.py:20
+#: plugins/old_richtext.py:41 plugins/richtext.py:36
 msgid "text"
 msgstr "Text"
 
-#: plugins/old_richtext.py:45 plugins/richtext.py:24
+#: plugins/old_richtext.py:45 plugins/richtext.py:40
 msgid "rich text"
 msgstr "Text"
 
-#: plugins/old_richtext.py:46 plugins/richtext.py:25
+#: plugins/old_richtext.py:46 plugins/richtext.py:41
 msgid "rich texts"
 msgstr "Texte"
 
@@ -338,6 +305,130 @@ msgstr "vordefinierter Baustein"
 msgid "predefined snippets"
 msgstr "vordefinierte Bausteine"
 
+#: redirects/admin.py:58
+msgid "Target"
+msgstr "Ziel"
+
+#: redirects/admin.py:62
+msgid ""
+"Either enter an URL or select an object. Redirects to objects follow them "
+"when their URL changes."
+msgstr ""
+"Entweder eine URL eingeben oder ein Objekt auswählen. Weiterleitungen auf "
+"Objekte folgen diesen, wenn sich ihre URL ändert."
+
+#: redirects/admin.py:87
+msgid "(does not exist)"
+msgstr "(existiert nicht)"
+
+#: redirects/apps.py:14 redirects/models.py:157
+msgid "redirects"
+msgstr "Weiterleitungen"
+
+#: redirects/models.py:109
+msgid "created at"
+msgstr "erstellt am"
+
+#: redirects/models.py:111
+msgid "host"
+msgstr "Host"
+
+#: redirects/models.py:114
+msgid "Leave empty to redirect requests to all hosts."
+msgstr "Leer lassen, um Anfragen an alle Hosts weiterzuleiten."
+
+#: redirects/models.py:120
+msgid ""
+"The path, starting with a slash and excluding the host. May contain a query "
+"string, e.g. '/index.php?id=12'."
+msgstr ""
+"Der Pfad, beginnend mit einem Slash und ohne Host. Darf einen Query-String "
+"enthalten, z.B. '/index.php?id=12'."
+
+#: redirects/models.py:129
+msgid "content type"
+msgstr "Inhaltstyp"
+
+#: redirects/models.py:131
+msgid "object ID"
+msgstr "Objekt-ID"
+
+#: redirects/models.py:134
+msgid "target URL"
+msgstr "Ziel-URL"
+
+#: redirects/models.py:137
+msgid "An absolute path or a full URL."
+msgstr "Ein absoluter Pfad oder eine vollständige URL."
+
+#: redirects/models.py:140
+msgid "is automatic"
+msgstr "ist automatisch"
+
+#: redirects/models.py:142
+msgid "Recorded automatically when saving the target object."
+msgstr "Wird beim Speichern des Zielobjekts automatisch erfasst."
+
+#: redirects/models.py:144
+msgid "permanent"
+msgstr "permanent"
+
+#: redirects/models.py:156
+msgid "redirect"
+msgstr "Weiterleitung"
+
+#: redirects/models.py:167
+msgid "The path must start with a slash."
+msgstr "Der Pfad muss mit einem Slash beginnen."
+
+#: redirects/models.py:177
+msgid "Set either a target URL or a target object."
+msgstr "Entweder eine Ziel-URL oder ein Zielobjekt setzen."
+
+#: redirects/models.py:185
+msgid "Objects of this type cannot be redirected to."
+msgstr "Auf Objekte dieses Typs kann nicht weitergeleitet werden."
+
+#: redirects/models.py:191
+msgid "The target object does not exist."
+msgstr "Das Zielobjekt existiert nicht."
+
+#~ msgid "Move '{}' to a new location"
+#~ msgstr "'{}' zu einer neuen Position verschieben"
+
+#~ msgid "Choose new location"
+#~ msgstr "Neuen Ort auswählen"
+
+#~ msgid "before"
+#~ msgstr "vorher"
+
+#~ msgid "as first child"
+#~ msgstr "als erstes Unterelement"
+
+#~ msgid "as last child"
+#~ msgstr "als letztes Unterelement"
+
+#~ msgid "after"
+#~ msgstr "nachher"
+
+#~ msgid "move"
+#~ msgstr "verschieben"
+
+#~ msgid "Invalid node move request."
+#~ msgstr "Ungültige Verschiebungsanfrage."
+
+#~ msgid "Error while validating the new position of '{}'."
+#~ msgstr "Fehler beim Validieren der neuen Position von '{}'."
+
+#~ msgid "Node '{}' has been moved to its new position."
+#~ msgstr "'{}' wurde zur neuen Position verschoben."
+
+#~ msgid "subtree"
+#~ msgstr "Unterbaum"
+
+#~ msgid "Position is expected to be greater than zero."
+#~ msgstr "Position sollte grösser als Null sein."
+
 #~ msgid "This exact app already exists."
 #~ msgstr "Diese exakte Anwendung existiert bereits."
 
@@ -346,9 +437,6 @@ msgstr "vordefinierte Bausteine"
 #~ msgstr ""
 #~ "Objekte können nur Übersetzungen sein von Objekten in der primären "
 #~ "Sprache."
-
-#~ msgid "Generated automatically if 'static path' is unset."
-#~ msgstr "Automatisch generiert falls „statischer Pfad“ nicht gesetzt ist."
 
 #~ msgid "static path"
 #~ msgstr "statischer Pfad"

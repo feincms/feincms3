@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-03 08:51+0200\n"
+"POT-Creation-Date: 2026-11-20 11:24+0100\n"
 "PO-Revision-Date: 2020-12-04 09:43+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/feincms3/feincms3/"
@@ -21,73 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:132 pages.py:84
-msgid "title"
-msgstr "titre"
-
-#: admin.py:155
-msgid "Move '{}' to a new location"
-msgstr ""
-
-#: admin.py:157
-#, fuzzy
-#| msgid "New location"
-msgid "Choose new location"
-msgstr "Nouvel emplacement"
-
-#: admin.py:158
-msgid "before"
-msgstr ""
-
-#: admin.py:159
-#, fuzzy
-#| msgid "first child"
-msgid "as first child"
-msgstr "erstes Kind"
-
-#: admin.py:160
-#, fuzzy
-#| msgid "last child"
-msgid "as last child"
-msgstr "letztes Kind"
-
-#: admin.py:161
-msgid "after"
-msgstr ""
-
-#: admin.py:171 admin.py:174
-msgid "move"
-msgstr "déplacer"
-
-#: admin.py:206
+#: admin.py:80
 #, python-format
 msgid "Move %s"
 msgstr "Déplacer %s"
 
-#: admin.py:211
+#: admin.py:85
 #, python-format
 msgid "Clone %s"
 msgstr "Cloner %s"
 
-#: admin.py:276
-msgid "Invalid node move request."
-msgstr ""
-
-#: admin.py:301
-msgid "Error while validating the new position of '{}'."
-msgstr ""
-
-#: admin.py:334
-#, fuzzy
-#| msgid "The node %(node)s has been moved to the new position."
-msgid "Node '{}' has been moved to its new position."
-msgstr "Le nœud %(node)s a été déplacé vers la nouvelle position."
-
-#: admin.py:362
+#: admin.py:167
 msgid "New location"
 msgstr "Nouvel emplacement"
 
-#: admin.py:370
+#: admin.py:175
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -95,107 +43,113 @@ msgstr ""
 "Le déplacement n’est pas possible car il n’y a pas de cibles valides. Peut-"
 "être avez-vous sélectionné le seul nœud racine ?"
 
-#: admin.py:416 admin.py:427 admin.py:437
+#: admin.py:221 admin.py:232 admin.py:242
 msgid "move here"
 msgstr "déplacer ici"
 
-#: admin.py:499
+#: admin.py:304
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Le nœud %(node)s a été déplacé vers la nouvelle position."
 
-#: admin.py:517
+#: admin.py:322 redirects/admin.py:82
 msgid "target"
 msgstr "cible"
 
-#: admin.py:527
+#: admin.py:332
 msgid "Replace target's content"
 msgstr "Remplacer le contenu de la cible"
 
-#: admin.py:529
+#: admin.py:334
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Affecte les modèles suivants : %s."
 
-#: admin.py:551
+#: admin.py:356
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Actuel : « %s »"
 
-#: admin.py:561
+#: admin.py:373
 msgid "Cannot clone node to itself."
 msgstr "Impossible de cloner le nœud sur lui-même."
 
-#: admin.py:584
+#: admin.py:400
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Champs mis à jour de %(node)s : %(fields)s"
 
-#: admin.py:608
+#: admin.py:422
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Remplacement du contenu de %(target)s par le contenu de %(source)s."
 
-#: admin.py:635
-msgid "subtree"
-msgstr ""
-
-#: applications.py:525
+#: applications.py:528
 msgid "page type"
 msgstr "type de page"
 
-#: applications.py:569
+#: applications.py:530
+msgid "app instance namespace"
+msgstr "espace de noms d’instance d’application"
+
+#: applications.py:572
 #, python-format
 msgid "This field is required for the page type \"%s\"."
 msgstr "Ce champ est obligatoire pour le type de page \"%s\"."
 
-#: applications.py:597
+#: applications.py:600
 #, python-brace-format
 msgid ""
 "The page type \"{page_type}\" with the specified configuration exists "
 "already."
 msgstr ""
+"Le type de page « {page_type} » avec la configuration spécifiée existe déjà."
 
-#: mixins.py:20
+#: mixins.py:31
+#, python-brace-format
+msgid "Its language ({language}) differs from its parent's ({parent})."
+msgstr "Sa langue ({language}) diffère de celle de son parent ({parent})."
+
+#: mixins.py:43
 msgid "menu"
 msgstr "menu"
 
-#: mixins.py:72 plugins/snippet.py:33
+#: mixins.py:95 plugins/snippet.py:33
 msgid "template"
 msgstr "modèle"
 
-#: mixins.py:124
+#: mixins.py:138
 msgid "language"
 msgstr "langue"
 
-#: mixins.py:154
+#: mixins.py:171
 msgid "translation of"
 msgstr "traduction de"
 
-#: mixins.py:215
+#: mixins.py:232
 msgid ""
 "Objects in the primary language cannot be the translation of another object."
 msgstr ""
 "Les objets dans la langue principale ne peuvent pas être la traduction d’un "
 "autre objet."
 
-#: mixins.py:229
+#: mixins.py:246
 msgid "Redirect to URL"
 msgstr "Rediriger vers l’URL"
 
-#: mixins.py:237
+#: mixins.py:254
 msgid "Redirect to page"
 msgstr "Rediriger vers la page"
 
-#: mixins.py:260
+#: mixins.py:277
 msgid "Only set one redirect value."
 msgstr "Définissez une seule valeur de redirection."
 
-#: mixins.py:268
+#: mixins.py:285
 msgid "Cannot redirect to self."
 msgstr "Impossible de rediriger vers soi."
 
-#: mixins.py:279
+#: mixins.py:296
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
@@ -204,7 +158,7 @@ msgstr ""
 "Ne pas enchaîner les redirections. La page sélectionnée « %(title)s » "
 "redirige vers « %(path)s »."
 
-#: mixins.py:296
+#: mixins.py:313
 #, python-format
 msgid ""
 "Do not chain redirects. The following pages already redirect to this page: "
@@ -213,75 +167,81 @@ msgstr ""
 "Ne pas enchaîner les redirections. Les pages suivantes redirigent déjà vers "
 "cette page : %(pages)s"
 
+#: mixins.py:334
+msgid "Redirects"
+msgstr "Redirections"
+
 #: pages.py:83
 msgid "is active"
 msgstr "est actif"
+
+#: pages.py:84
+msgid "title"
+msgstr "titre"
 
 #: pages.py:85
 msgid "slug"
 msgstr "slug"
 
-#: pages.py:92
-msgid "Position is expected to be greater than zero."
-msgstr "La position devrait être supérieure à zéro."
-
-#: pages.py:99
+#: pages.py:89 redirects/models.py:117
 msgid "path"
 msgstr "chemin"
 
-#: pages.py:104
+#: pages.py:94
 msgid ""
 "Automatically generated by concatenating the parent's path and the slug "
 "unless the path is defined manually."
 msgstr ""
+"Généré automatiquement en concaténant le chemin du parent et le slug, sauf "
+"si le chemin est défini manuellement."
 
-#: pages.py:110
+#: pages.py:100
 msgid "Path must start and end with a slash (/)."
 msgstr "Le chemin doit commencer et se terminer par une barre oblique (/)."
 
-#: pages.py:114
+#: pages.py:104
 msgid "manually define the path"
-msgstr ""
+msgstr "définir le chemin manuellement"
 
-#: pages.py:121
+#: pages.py:110
 msgid "page"
 msgstr "page"
 
-#: pages.py:122
+#: pages.py:111
 msgid "pages"
 msgstr "pages"
 
-#: pages.py:171
+#: pages.py:160
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr ""
 "Les chemins statiques ne peuvent pas être vides. Vouliez-vous dire « / » ?"
 
-#: pages.py:193
+#: pages.py:178 pages.py:192
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Le nouveau chemin %(path)s de la page %(page)s ne serait pas unique."
 
-#: plugins/external.py:113
+#: plugins/external.py:117
 msgid "URL"
 msgstr "URL"
 
-#: plugins/external.py:115 plugins/image.py:42
+#: plugins/external.py:119 plugins/image.py:42
 msgid "alternative text"
 msgstr "texte alternatif"
 
-#: plugins/external.py:116 plugins/image.py:43
+#: plugins/external.py:120 plugins/image.py:43
 msgid "Describe the contents, e.g. for screenreaders."
 msgstr "Décrit les contenus de l’image, par ex. pour un lecteur d’écran."
 
-#: plugins/external.py:120 plugins/image.py:47
+#: plugins/external.py:124 plugins/image.py:47
 msgid "caption"
 msgstr "légende"
 
-#: plugins/external.py:124
+#: plugins/external.py:128
 msgid "external content"
 msgstr "contenu externe"
 
-#: plugins/external.py:158
+#: plugins/external.py:162
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Impossible de récupérer le HTML pour cette URL, désolé !"
 
@@ -298,6 +258,9 @@ msgid ""
 "Please note that the HTML must be well formed. It's your responsibility to "
 "ensure that nothing breaks now or in the future when using this plugin."
 msgstr ""
+"Veuillez noter que le HTML doit être bien formé. Il est de votre "
+"responsabilité de vous assurer que rien ne se casse, maintenant ou à "
+"l’avenir, en utilisant ce plugin."
 
 #: plugins/image.py:26 plugins/image.py:51
 msgid "image"
@@ -319,25 +282,135 @@ msgstr "principal point d’intérêt"
 msgid "images"
 msgstr "images"
 
-#: plugins/old_richtext.py:41 plugins/richtext.py:20
+#: plugins/old_richtext.py:41 plugins/richtext.py:36
 msgid "text"
 msgstr "texte"
 
-#: plugins/old_richtext.py:45 plugins/richtext.py:24
+#: plugins/old_richtext.py:45 plugins/richtext.py:40
 msgid "rich text"
 msgstr "texte riche"
 
-#: plugins/old_richtext.py:46 plugins/richtext.py:25
+#: plugins/old_richtext.py:46 plugins/richtext.py:41
 msgid "rich texts"
 msgstr "textes riches"
 
 #: plugins/snippet.py:37
 msgid "predefined snippet"
-msgstr ""
+msgstr "fragment prédéfini"
 
 #: plugins/snippet.py:38
 msgid "predefined snippets"
+msgstr "fragments prédéfinis"
+
+#: redirects/admin.py:58
+msgid "Target"
+msgstr "Cible"
+
+#: redirects/admin.py:62
+msgid ""
+"Either enter an URL or select an object. Redirects to objects follow them "
+"when their URL changes."
 msgstr ""
+"Saisissez une URL ou sélectionnez un objet. Les redirections vers des objets "
+"les suivent lorsque leur URL change."
+
+#: redirects/admin.py:87
+msgid "(does not exist)"
+msgstr "(n’existe pas)"
+
+#: redirects/apps.py:14 redirects/models.py:157
+msgid "redirects"
+msgstr "redirections"
+
+#: redirects/models.py:109
+msgid "created at"
+msgstr "créé le"
+
+#: redirects/models.py:111
+msgid "host"
+msgstr "hôte"
+
+#: redirects/models.py:114
+msgid "Leave empty to redirect requests to all hosts."
+msgstr "Laisser vide pour rediriger les requêtes de tous les hôtes."
+
+#: redirects/models.py:120
+msgid ""
+"The path, starting with a slash and excluding the host. May contain a query "
+"string, e.g. '/index.php?id=12'."
+msgstr ""
+"Le chemin, commençant par une barre oblique et sans l’hôte. Peut contenir "
+"une chaîne de requête, p. ex. '/index.php?id=12'."
+
+#: redirects/models.py:129
+msgid "content type"
+msgstr "type de contenu"
+
+#: redirects/models.py:131
+msgid "object ID"
+msgstr "ID de l’objet"
+
+#: redirects/models.py:134
+msgid "target URL"
+msgstr "URL cible"
+
+#: redirects/models.py:137
+msgid "An absolute path or a full URL."
+msgstr "Un chemin absolu ou une URL complète."
+
+#: redirects/models.py:140
+msgid "is automatic"
+msgstr "est automatique"
+
+#: redirects/models.py:142
+msgid "Recorded automatically when saving the target object."
+msgstr "Enregistré automatiquement lors de l’enregistrement de l’objet cible."
+
+#: redirects/models.py:144
+msgid "permanent"
+msgstr "permanente"
+
+#: redirects/models.py:156
+msgid "redirect"
+msgstr "redirection"
+
+#: redirects/models.py:167
+msgid "The path must start with a slash."
+msgstr "Le chemin doit commencer par une barre oblique."
+
+#: redirects/models.py:177
+msgid "Set either a target URL or a target object."
+msgstr "Définissez soit une URL cible, soit un objet cible."
+
+#: redirects/models.py:185
+msgid "Objects of this type cannot be redirected to."
+msgstr "Il n’est pas possible de rediriger vers des objets de ce type."
+
+#: redirects/models.py:191
+msgid "The target object does not exist."
+msgstr "L’objet cible n’existe pas."
+
+#, fuzzy
+#~ msgid "Choose new location"
+#~ msgstr "Nouvel emplacement"
+
+#, fuzzy
+#~ msgid "as first child"
+#~ msgstr "erstes Kind"
+
+#, fuzzy
+#~ msgid "as last child"
+#~ msgstr "letztes Kind"
+
+#~ msgid "move"
+#~ msgstr "déplacer"
+
+#, fuzzy
+#~ msgid "Node '{}' has been moved to its new position."
+#~ msgstr "Le nœud %(node)s a été déplacé vers la nouvelle position."
+
+#~ msgid "Position is expected to be greater than zero."
+#~ msgstr "La position devrait être supérieure à zéro."
 
 #~ msgid "This exact app already exists."
 #~ msgstr "Cette application exacte existe déjà."
@@ -347,9 +420,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Les objets peuvent seulement être la traduction d’objets dans la langue "
 #~ "principale."
-
-#~ msgid "Generated automatically if 'static path' is unset."
-#~ msgstr "Généré automatiquement si le « chemin statique » n’est pas défini."
 
 #~ msgid "static path"
 #~ msgstr "chemin statique"
@@ -365,9 +435,6 @@ msgstr ""
 
 #~ msgid "ancestor"
 #~ msgstr "ancêtre"
-
-#~ msgid "app instance namespace"
-#~ msgstr "espace de noms d’instance d’application"
 
 #~ msgid "move to"
 #~ msgstr "verschieben nach"

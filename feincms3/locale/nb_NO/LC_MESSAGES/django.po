@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feincms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-03 08:51+0200\n"
+"POT-Creation-Date: 2026-11-20 11:24+0100\n"
 "PO-Revision-Date: 2020-12-04 09:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -21,73 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.4-dev\n"
 
-#: admin.py:132 pages.py:84
-msgid "title"
-msgstr "tittel"
-
-#: admin.py:155
-msgid "Move '{}' to a new location"
-msgstr ""
-
-#: admin.py:157
-#, fuzzy
-#| msgid "New location"
-msgid "Choose new location"
-msgstr "Ny plassering"
-
-#: admin.py:158
-msgid "before"
-msgstr ""
-
-#: admin.py:159
-#, fuzzy
-#| msgid "first child"
-msgid "as first child"
-msgstr "erstes Kind"
-
-#: admin.py:160
-#, fuzzy
-#| msgid "last child"
-msgid "as last child"
-msgstr "letztes Kind"
-
-#: admin.py:161
-msgid "after"
-msgstr ""
-
-#: admin.py:171 admin.py:174
-msgid "move"
-msgstr "flytt"
-
-#: admin.py:206
+#: admin.py:80
 #, python-format
 msgid "Move %s"
 msgstr "Flytt %s"
 
-#: admin.py:211
+#: admin.py:85
 #, python-format
 msgid "Clone %s"
 msgstr "Klon %s"
 
-#: admin.py:276
-msgid "Invalid node move request."
-msgstr ""
-
-#: admin.py:301
-msgid "Error while validating the new position of '{}'."
-msgstr ""
-
-#: admin.py:334
-#, fuzzy
-#| msgid "The node %(node)s has been moved to the new position."
-msgid "Node '{}' has been moved to its new position."
-msgstr "Noden %(node)s har blitt flyttet til ny plassering"
-
-#: admin.py:362
+#: admin.py:167
 msgid "New location"
 msgstr "Ny plassering"
 
-#: admin.py:370
+#: admin.py:175
 msgid ""
 "Moving isn't possible because there are no valid targets. Maybe you selected "
 "the only root node?"
@@ -95,109 +43,112 @@ msgstr ""
 "Flytting er ikke mulig fordi det ikke er noen gyldige mål. Kanskje du valgte "
 "den eneste rotnoden?"
 
-#: admin.py:416 admin.py:427 admin.py:437
+#: admin.py:221 admin.py:232 admin.py:242
 msgid "move here"
 msgstr "flytt hit"
 
-#: admin.py:499
+#: admin.py:304
 #, python-format
 msgid "The node %(node)s has been moved to the new position."
 msgstr "Noden %(node)s har blitt flyttet til ny plassering"
 
-#: admin.py:517
+#: admin.py:322 redirects/admin.py:82
 msgid "target"
 msgstr "mål"
 
-#: admin.py:527
+#: admin.py:332
 msgid "Replace target's content"
 msgstr "Erstatt målets innhold"
 
-#: admin.py:529
+#: admin.py:334
 #, python-format
 msgid "Affects the following models: %s."
 msgstr "Har innvirkning på følgende moduler: %s."
 
-#: admin.py:551
+#: admin.py:356
 #, python-format
 msgid "Current: \"%s\""
 msgstr "Nåværende: «%s»"
 
-#: admin.py:561
+#: admin.py:373
 msgid "Cannot clone node to itself."
 msgstr "Kan ikke klone node til seg selv."
 
-#: admin.py:584
+#: admin.py:400
 #, python-format
 msgid "Updated fields of %(node)s: %(fields)s"
 msgstr "Oppdaterte felter tilhørende %(node)s: %(fields)s"
 
-#: admin.py:608
+#: admin.py:422
 #, python-format
 msgid "Replaced the content of %(target)s with the contents of %(source)s."
 msgstr "Erstattet innholdet i %(target)s med innholdet i %(source)s."
 
-#: admin.py:635
-msgid "subtree"
-msgstr ""
-
-#: applications.py:525
-#, fuzzy
-#| msgid "page"
+#: applications.py:528
 msgid "page type"
-msgstr "side"
+msgstr "sidetype"
 
-#: applications.py:569
-#, fuzzy, python-format
-#| msgid "This field is required for the application %s."
+#: applications.py:530
+msgid "app instance namespace"
+msgstr "programinstans-navnerom"
+
+#: applications.py:572
+#, python-format
 msgid "This field is required for the page type \"%s\"."
-msgstr "Dette feltet kreves for programmet %s."
+msgstr "Dette feltet kreves for sidetypen «%s»."
 
-#: applications.py:597
+#: applications.py:600
 #, python-brace-format
 msgid ""
 "The page type \"{page_type}\" with the specified configuration exists "
 "already."
 msgstr ""
+"Sidetypen «{page_type}» med den angitte konfigurasjonen finnes allerede."
 
-#: mixins.py:20
+#: mixins.py:31
+#, python-brace-format
+msgid "Its language ({language}) differs from its parent's ({parent})."
+msgstr "Språket ({language}) avviker fra språket til forelderen ({parent})."
+
+#: mixins.py:43
 msgid "menu"
 msgstr "meny"
 
-#: mixins.py:72 plugins/snippet.py:33
+#: mixins.py:95 plugins/snippet.py:33
 msgid "template"
 msgstr "mal"
 
-#: mixins.py:124
+#: mixins.py:138
 msgid "language"
 msgstr "språk"
 
-#: mixins.py:154
+#: mixins.py:171
 msgid "translation of"
 msgstr "oversettelse av"
 
-#: mixins.py:215
+#: mixins.py:232
 msgid ""
 "Objects in the primary language cannot be the translation of another object."
 msgstr ""
 "Objekter i primærspråket kan ikke være oversettelsen av et annet objekt."
 
-#: mixins.py:229
+#: mixins.py:246
 msgid "Redirect to URL"
 msgstr "Videresendt til nettadresse"
 
-#: mixins.py:237
+#: mixins.py:254
 msgid "Redirect to page"
 msgstr "Videresendt til side"
 
-#: mixins.py:260
+#: mixins.py:277
 msgid "Only set one redirect value."
 msgstr "Kun sett én videresendingsverdi."
 
-#: mixins.py:268
+#: mixins.py:285
 msgid "Cannot redirect to self."
 msgstr "Kan ikke videresende til seg selv."
 
-#: mixins.py:279
+#: mixins.py:296
 #, python-format
 msgid ""
 "Do not chain redirects. The selected page \"%(title)s\" redirects to "
@@ -206,7 +157,7 @@ msgstr ""
 "Kan ikke opprette videresendelser i stafett. Valgt side «%(title)s» "
 "videresender til «%(path)s»."
 
-#: mixins.py:296
+#: mixins.py:313
 #, python-format
 msgid ""
 "Do not chain redirects. The following pages already redirect to this page: "
@@ -215,76 +166,80 @@ msgstr ""
 "Ikke opprett videresendelser i stafett. Følgende sider videresender til "
 "denne siden: %(pages)s"
 
+#: mixins.py:334
+msgid "Redirects"
+msgstr "Videresendinger"
+
 #: pages.py:83
 msgid "is active"
 msgstr "er aktiv"
 
+#: pages.py:84
+msgid "title"
+msgstr "tittel"
+
 #: pages.py:85
 msgid "slug"
-msgstr ""
+msgstr "slug"
 
-#: pages.py:92
-msgid "Position is expected to be greater than zero."
-msgstr "Posisjonen forventes å være større enn null."
-
-#: pages.py:99
+#: pages.py:89 redirects/models.py:117
 msgid "path"
 msgstr "sti"
 
-#: pages.py:104
+#: pages.py:94
 msgid ""
 "Automatically generated by concatenating the parent's path and the slug "
 "unless the path is defined manually."
 msgstr ""
+"Genereres automatisk ved å slå sammen forelderens sti og slug, med mindre "
+"stien defineres manuelt."
 
-#: pages.py:110
+#: pages.py:100
 msgid "Path must start and end with a slash (/)."
 msgstr "Sti må starte og slutt med skråstrek (/)."
 
-#: pages.py:114
+#: pages.py:104
 msgid "manually define the path"
-msgstr ""
+msgstr "definer stien manuelt"
 
-#: pages.py:121
+#: pages.py:110
 msgid "page"
 msgstr "side"
 
-#: pages.py:122
+#: pages.py:111
 msgid "pages"
 msgstr "sider"
 
-#: pages.py:171
+#: pages.py:160
 msgid "Static paths cannot be empty. Did you mean '/'?"
 msgstr "Statiske stier må fylles ut. Mente du «/»?"
 
-#: pages.py:193
+#: pages.py:178 pages.py:192
 #, python-format
 msgid "The page %(page)s's new path %(path)s would not be unique."
 msgstr "Siden «%(page)s» sin nye sti %(path)s finnes allerede."
 
-#: plugins/external.py:113
+#: plugins/external.py:117
 msgid "URL"
 msgstr "Nettadresse"
 
-#: plugins/external.py:115 plugins/image.py:42
+#: plugins/external.py:119 plugins/image.py:42
 msgid "alternative text"
-msgstr ""
+msgstr "alternativ tekst"
 
-#: plugins/external.py:116 plugins/image.py:43
+#: plugins/external.py:120 plugins/image.py:43
 msgid "Describe the contents, e.g. for screenreaders."
-msgstr ""
+msgstr "Beskriv innholdet, f.eks. for skjermlesere."
 
-#: plugins/external.py:120 plugins/image.py:47
-#, fuzzy
-#| msgid "application"
+#: plugins/external.py:124 plugins/image.py:47
 msgid "caption"
-msgstr "program"
+msgstr "bildetekst"
 
-#: plugins/external.py:124
+#: plugins/external.py:128
 msgid "external content"
 msgstr "eksternt innhold"
 
-#: plugins/external.py:158
+#: plugins/external.py:162
 msgid "Unable to fetch HTML for this URL, sorry!"
 msgstr "Klarte ikke å hente HTML for denne nettadressen."
 
@@ -293,12 +248,16 @@ msgid ""
 "The content will be inserted directly into the page. It is VERY important "
 "that the HTML snippet is well-formed!"
 msgstr ""
+"Innholdet settes inn direkte på siden. Det er SVÆRT viktig at HTML-utdraget "
+"er velformet!"
 
 #: plugins/html.py:60
 msgid ""
 "Please note that the HTML must be well formed. It's your responsibility to "
 "ensure that nothing breaks now or in the future when using this plugin."
 msgstr ""
+"Merk at HTML-en må være velformet. Det er ditt ansvar å sørge for at "
+"ingenting går i stykker, nå eller i fremtiden, når du bruker dette tillegget."
 
 #: plugins/image.py:26 plugins/image.py:51
 msgid "image"
@@ -320,27 +279,135 @@ msgstr "hoved-interessepunkt"
 msgid "images"
 msgstr "bilder"
 
-#: plugins/old_richtext.py:41 plugins/richtext.py:20
+#: plugins/old_richtext.py:41 plugins/richtext.py:36
 msgid "text"
 msgstr "tekst"
 
-#: plugins/old_richtext.py:45 plugins/richtext.py:24
-#, fuzzy
+#: plugins/old_richtext.py:45 plugins/richtext.py:40
 msgid "rich text"
-msgstr "rikholdig tekst"
+msgstr "rik tekst"
 
-#: plugins/old_richtext.py:46 plugins/richtext.py:25
-#, fuzzy
+#: plugins/old_richtext.py:46 plugins/richtext.py:41
 msgid "rich texts"
-msgstr "rikholdige tekster"
+msgstr "rike tekster"
 
 #: plugins/snippet.py:37
 msgid "predefined snippet"
-msgstr ""
+msgstr "forhåndsdefinert utdrag"
 
 #: plugins/snippet.py:38
 msgid "predefined snippets"
+msgstr "forhåndsdefinerte utdrag"
+
+#: redirects/admin.py:58
+msgid "Target"
+msgstr "Mål"
+
+#: redirects/admin.py:62
+msgid ""
+"Either enter an URL or select an object. Redirects to objects follow them "
+"when their URL changes."
 msgstr ""
+"Skriv inn en nettadresse eller velg et objekt. Videresendinger til objekter "
+"følger dem når nettadressen deres endres."
+
+#: redirects/admin.py:87
+msgid "(does not exist)"
+msgstr "(finnes ikke)"
+
+#: redirects/apps.py:14 redirects/models.py:157
+msgid "redirects"
+msgstr "videresendinger"
+
+#: redirects/models.py:109
+msgid "created at"
+msgstr "opprettet"
+
+#: redirects/models.py:111
+msgid "host"
+msgstr "vert"
+
+#: redirects/models.py:114
+msgid "Leave empty to redirect requests to all hosts."
+msgstr "La stå tomt for å videresende forespørsler til alle verter."
+
+#: redirects/models.py:120
+msgid ""
+"The path, starting with a slash and excluding the host. May contain a query "
+"string, e.g. '/index.php?id=12'."
+msgstr ""
+"Stien, som starter med skråstrek og uten vert. Kan inneholde en "
+"spørrestreng, f.eks. '/index.php?id=12'."
+
+#: redirects/models.py:129
+msgid "content type"
+msgstr "innholdstype"
+
+#: redirects/models.py:131
+msgid "object ID"
+msgstr "objekt-ID"
+
+#: redirects/models.py:134
+msgid "target URL"
+msgstr "mål-nettadresse"
+
+#: redirects/models.py:137
+msgid "An absolute path or a full URL."
+msgstr "En absolutt sti eller en fullstendig nettadresse."
+
+#: redirects/models.py:140
+msgid "is automatic"
+msgstr "er automatisk"
+
+#: redirects/models.py:142
+msgid "Recorded automatically when saving the target object."
+msgstr "Registreres automatisk når målobjektet lagres."
+
+#: redirects/models.py:144
+msgid "permanent"
+msgstr "permanent"
+
+#: redirects/models.py:156
+msgid "redirect"
+msgstr "videresending"
+
+#: redirects/models.py:167
+msgid "The path must start with a slash."
+msgstr "Stien må starte med skråstrek."
+
+#: redirects/models.py:177
+msgid "Set either a target URL or a target object."
+msgstr "Angi enten en mål-nettadresse eller et målobjekt."
+
+#: redirects/models.py:185
+msgid "Objects of this type cannot be redirected to."
+msgstr "Objekter av denne typen kan ikke videresendes til."
+
+#: redirects/models.py:191
+msgid "The target object does not exist."
+msgstr "Målobjektet finnes ikke."
+
+#, fuzzy
+#~ msgid "Choose new location"
+#~ msgstr "Ny plassering"
+
+#, fuzzy
+#~ msgid "as first child"
+#~ msgstr "erstes Kind"
+
+#, fuzzy
+#~ msgid "as last child"
+#~ msgstr "letztes Kind"
+
+#~ msgid "move"
+#~ msgstr "flytt"
+
+#, fuzzy
+#~ msgid "Node '{}' has been moved to its new position."
+#~ msgstr "Noden %(node)s har blitt flyttet til ny plassering"
+
+#~ msgid "Position is expected to be greater than zero."
+#~ msgstr "Posisjonen forventes å være større enn null."
 
 #~ msgid "This exact app already exists."
 #~ msgstr "Akkurat dette programmet finnes allerede."
@@ -348,9 +415,6 @@ msgstr ""
 #~ msgid ""
 #~ "Objects may only be the translation of objects in the primary language."
 #~ msgstr "Objekter kan kun være oversettelser av objekter i primærspråk."
-
-#~ msgid "Generated automatically if 'static path' is unset."
-#~ msgstr "Generert automatisk hvis «statisk sti» ikke er valgt."
 
 #~ msgid "static path"
 #~ msgstr "statisk sti"
@@ -366,9 +430,6 @@ msgstr ""
 
 #~ msgid "ancestor"
 #~ msgstr "opphav"
-
-#~ msgid "app instance namespace"
-#~ msgstr "programinstans-navnerom"
 
 #~ msgid "move to"
 #~ msgstr "verschieben nach"
