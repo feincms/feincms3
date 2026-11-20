@@ -1,3 +1,5 @@
+import io
+
 import pytest
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
@@ -217,10 +219,31 @@ def test_validation():
 
 @pytest.mark.django_db
 def test_record_redirects_command():
-    create_pages()
+    home, _about, _team = create_pages()
+    Page.objects.create(
+        title="blog",
+        slug="blog",
+        parent=home,
+        language_code="en",
+        page_type="blog",
+    )
+    article = Article.objects.create(title="Article", category="blog")
     Redirect.objects.all().delete()
-    call_command("record_redirects", stdout=open("/dev/null", "w"))  # noqa: SIM115
-    assert Redirect.objects.count() == 3
+
+    stdout = io.StringIO()
+    call_command("record_redirects", stdout=stdout)
+    _del_apps_urlconf_cache()
+
+    # Apps' URLs are available in the management command, too
+    assert set(Redirect.objects.values_list("path", flat=True)) == {
+        "/en/",
+        "/en/about/",
+        "/en/about/team/",
+        "/en/blog/",
+        f"/en/blog/{article.pk}/",
+    }
+    assert "testapp.Page: Recorded 4 of 4 URLs" in stdout.getvalue()
+    assert "testapp.Article: Recorded 1 of 1 URLs" in stdout.getvalue()
 
 
 @pytest.mark.django_db

@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
+from django.urls import set_urlconf
 
+from feincms3 import applications
 from feincms3.redirects import _registry
 from feincms3.redirects.models import Redirect
 
@@ -8,9 +10,18 @@ class Command(BaseCommand):
     help = "Record the current URLs of all instances of registered models."
 
     def handle(self, **options):
-        for model in _registry:
-            count = 0
-            for instance in model._default_manager.iterator():
-                Redirect.objects.record(instance)
-                count += 1
-            self.stdout.write(f"{model._meta.label}: {count} instances")
+        # The URLs of apps are only available in requests (through
+        # apps_middleware) unless we add them ourselves.
+        if applications._APPS_MODEL is not None:
+            set_urlconf(applications.apps_urlconf())
+        try:
+            for model in _registry:
+                total = recorded = 0
+                for instance in model._default_manager.iterator():
+                    total += 1
+                    recorded += Redirect.objects.record(instance)
+                self.stdout.write(
+                    f"{model._meta.label}: Recorded {recorded} of {total} URLs"
+                )
+        finally:
+            set_urlconf(None)
