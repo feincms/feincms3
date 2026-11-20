@@ -10,3 +10,4 @@ dist
 htmlcov
 node_modules
 yarn.lock
+.venv
