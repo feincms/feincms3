@@ -1,3 +1,4 @@
+import logging
 from urllib.parse import unquote, urlsplit
 
 from django.conf import settings
@@ -11,6 +12,9 @@ from django.utils.translation import gettext_lazy as _
 
 from feincms3.redirects import registration
 from feincms3.utils import validation_error
+
+
+logger = logging.getLogger(__name__)
 
 
 def _url(instance):
@@ -33,9 +37,25 @@ class RedirectQuerySet(models.QuerySet):
     def record(self, instance):
         """
         Record the current URL of a registered instance
+
+        Returns whether an URL has been recorded. Errors raised by
+        ``get_absolute_url()`` are logged and do not prevent saving the
+        instance.
         """
-        if not (reg := registration(instance)) or not (url := _url(instance)):
-            return
+        if not (reg := registration(instance)):
+            return False
+        try:
+            url = instance.get_absolute_url()
+        except NoReverseMatch:
+            # E.g. apps whose URLs aren't available.
+            return False
+        except Exception:
+            logger.exception(
+                "Could not record the URL of %s %r", instance._meta.label, instance.pk
+            )
+            return False
+        if not url:
+            return False
         parts = urlsplit(url)
         host = reg.get_host(instance) if reg.get_host else parts.netloc
         values = {
@@ -53,6 +73,7 @@ class RedirectQuerySet(models.QuerySet):
             unique_fields=["host", "path"],
             update_fields=list(values),
         )
+        return True
 
     def find(self, request):
         """

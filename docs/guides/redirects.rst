@@ -76,7 +76,9 @@ also saves its descendants, so their URLs are recorded too. An object's old
 URLs keep pointing to it, so requests to them are redirected to the object's
 current URL using a permanent redirect. This also works when an URL changes
 without the object being saved, e.g. articles of an app whose page has been
-moved. The query string of the request is kept.
+moved. The query string of the request is kept. Errors raised by
+``get_absolute_url()`` while recording are logged and do not prevent saving
+the object.
 
 The ``queryset`` determines which objects may be redirected to, e.g. only
 active pages. It may also be a callable accepting the request. Old URLs of

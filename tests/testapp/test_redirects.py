@@ -224,6 +224,18 @@ def test_record_redirects_command():
 
 
 @pytest.mark.django_db
+def test_errors_do_not_prevent_saving(monkeypatch, caplog):
+    def get_absolute_url(self):
+        raise AttributeError("broken")
+
+    monkeypatch.setattr(Article, "get_absolute_url", get_absolute_url)
+    article = Article.objects.create(title="Article", category="blog")
+    assert article.pk
+    assert not Redirect.objects.exists()
+    assert "Could not record the URL of testapp.Article" in caplog.text
+
+
+@pytest.mark.django_db
 def test_path_normalization():
     row = Redirect(path="/caf%C3%A9/?q=%C3%A9", target_url="/new/")
     row.full_clean()
