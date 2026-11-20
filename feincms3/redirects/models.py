@@ -193,15 +193,6 @@ class Redirect(models.Model):
                     exclude=exclude,
                 )
 
-    def get_target_url(self):
-        """
-        Return the URL of the redirect's target, without checking the
-        registration's queryset; used in the admin
-        """
-        if self.target_url:
-            return self.target_url
-        return (obj := self.target_object) and _url(obj)
-
     def resolve(self, request):
         """
         Return the URL of the redirect's target, or ``None`` if the target

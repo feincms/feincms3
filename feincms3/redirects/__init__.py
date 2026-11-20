@@ -38,22 +38,31 @@ class Registration:
     model: Any
     queryset: Any
     get_host: Any
+    select_related: tuple = ()
 
     def get_queryset(self, request):
         """
         Return the queryset of instances which may be redirected to
         """
         if self.queryset is None:
-            return self.model._default_manager.all()
-        if callable(self.queryset):
-            return self.queryset(request)
-        return self.queryset.all()
+            qs = self.model._default_manager.all()
+        elif callable(self.queryset):
+            qs = self.queryset(request)
+        else:
+            qs = self.queryset.all()
+        return qs.select_related(*self.select_related)
+
+    def get_all_queryset(self):
+        """
+        Return a queryset of all instances, e.g. for showing them in the admin
+        """
+        return self.model._base_manager.select_related(*self.select_related)
 
 
 _registry = {}
 
 
-def register(model, *, queryset=None, get_host=None):
+def register(model, *, queryset=None, get_host=None, select_related=()):
     """
     Register a model for automatically recording its URLs
 
@@ -69,11 +78,20 @@ def register(model, *, queryset=None, get_host=None):
       ``get_absolute_url()``, which is empty for URLs without a domain.
       Projects with several sites should pass e.g. ``lambda page:
       page.site.host``.
+    - ``select_related``: Relations which ``get_absolute_url()`` uses, e.g.
+      ``["page"]`` if the URL of the instance is built from the URL of a page.
+      Avoids one query per instance when looking up redirects and listing
+      them in the admin.
 
     Returns the model, so it can also be used as a class decorator.
     """
     model = model._meta.concrete_model
-    _registry[model] = Registration(model=model, queryset=queryset, get_host=get_host)
+    _registry[model] = Registration(
+        model=model,
+        queryset=queryset,
+        get_host=get_host,
+        select_related=tuple(select_related),
+    )
     post_save.connect(
         _post_save,
         sender=model,

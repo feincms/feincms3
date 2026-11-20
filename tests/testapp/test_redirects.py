@@ -4,10 +4,12 @@ import pytest
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
-from django.test.utils import override_settings
+from django.db import connection
+from django.test.utils import CaptureQueriesContext, override_settings
 from django.utils.translation import override
 from pytest_django.asserts import assertContains, assertNotContains
 
+from feincms3 import redirects
 from feincms3.applications import _del_apps_urlconf_cache, apps_urlconf
 from feincms3.redirects.models import Redirect
 from testapp.models import Article, Page
@@ -340,3 +342,37 @@ def test_middleware_check():
     assert check_middleware(None) == []
     with override_settings(MIDDLEWARE=[]):
         assert [e.id for e in check_middleware(None)] == ["feincms3.E008"]
+
+
+@pytest.mark.django_db
+def test_admin_loads_targets_in_bulk(admin_client, monkeypatch):
+    # Like a manual's chapter whose URL is built from its page's URL
+    def get_absolute_url(self):
+        prefix = self.parent.path if self.parent else "/"
+        return f"{prefix}{self.slug}/"
+
+    monkeypatch.setattr(Page, "get_absolute_url", get_absolute_url)
+    monkeypatch.setitem(redirects._registry, Page, redirects.registration(Page))
+    redirects.register(Page, queryset=Page.objects.active(), select_related=["parent"])
+
+    _home, about, _team = create_pages()
+    Redirect.objects.create(path="/manual/", target_url="https://example.com/")
+
+    def count_queries():
+        with CaptureQueriesContext(connection) as ctx:
+            response = admin_client.get("/admin/feincms3_redirects/redirect/")
+        return response, len(ctx.captured_queries)
+
+    _response, few = count_queries()
+    for i in range(10):
+        Page.objects.create(
+            title=f"page {i}",
+            slug=f"page-{i}",
+            parent=about,
+            language_code="en",
+            page_type="standard",
+        )
+    response, many = count_queries()
+    assertContains(response, "/en/about/page-9/")
+    # Ten additional targets do not need additional queries
+    assert few == many

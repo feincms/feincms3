@@ -84,6 +84,15 @@ The ``queryset`` determines which objects may be redirected to, e.g. only
 active pages. It may also be a callable accepting the request. Old URLs of
 inactive or deleted objects result in a 404 response.
 
+If ``get_absolute_url()`` uses related objects, pass them as
+``select_related``, so that looking up redirects and listing them in the
+admin doesn't need one query per object:
+
+.. code-block:: python
+
+    # A chapter's URL is built from the URL of its manual's page
+    redirects.register(Chapter, select_related=["page"])
+
 Run ``./manage.py record_redirects`` once after adding the app to record the
 current URLs of existing objects.
 

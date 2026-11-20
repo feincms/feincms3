@@ -15,9 +15,9 @@ class Command(BaseCommand):
         if applications._APPS_MODEL is not None:
             set_urlconf(applications.apps_urlconf())
         try:
-            for model in _registry:
+            for model, reg in _registry.items():
                 total = recorded = 0
-                for instance in model._default_manager.iterator():
+                for instance in reg.get_all_queryset().iterator():
                     total += 1
                     recorded += Redirect.objects.record(instance)
                 self.stdout.write(
