@@ -91,6 +91,11 @@ from django.http import (
     HttpResponsePermanentRedirect,
     HttpResponseRedirect,
 )
+from django.utils.translation import get_supported_language_variant
+from django.utils.translation.trans_real import (
+    language_code_re,
+    parse_accept_lang_header,
+)
 
 
 class UseRootMiddlewareResponse(HttpResponseNotFound):
@@ -142,7 +147,9 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
     - ``language_code_redirect`` (``False``): Redirect visitor to the language
       code prefix (e.g. ``/en/``, ``/de-ch/``) if request path equals the
       script prefix (generally ``/``), no active page for ``/`` exists and the
-      prefixed version exists.
+      prefixed version exists. If there is no page for the active language,
+      the other languages from the ``Accept-Language`` header are tried in
+      order of preference, and finally ``settings.LANGUAGE_CODE``.
     """
 
     def outer(get_response):
@@ -160,15 +167,20 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
                 # such as PostgreSQL if used in a query, so bail out early.
                 return response
             qs = queryset(request) if callable(queryset) else queryset._clone()
+            if language_code_redirect and request.path_info == "/":
+                # Fetch the root page and all redirect candidates at once
+                targets = [f"/{code}/" for code in _redirect_language_codes(request)]
+                pages = {
+                    page.path: page for page in qs.filter(path__in=["/", *targets])
+                }
+                if page := pages.get("/"):
+                    return handler(request, page)
+                if target := next((t for t in targets if t in pages), None):
+                    # request.path includes the script prefix
+                    return HttpResponseRedirect(f"{request.path}{target[1:]}")
+                return response
             if page := qs.filter(path=request.path_info).first():
                 return handler(request, page)
-            if language_code_redirect and request.path_info == "/":
-                target = f"/{request.LANGUAGE_CODE}/"
-                if qs.filter(path=target).exists():
-                    # request.path includes the script prefix
-                    return HttpResponseRedirect(
-                        f"{request.path}{request.LANGUAGE_CODE}/"
-                    )
             if settings.APPEND_SLASH and not request.path_info.endswith("/"):
                 target = request.path_info + "/"
                 if qs.filter(path=target).exists():
@@ -180,6 +192,28 @@ def create_page_if_404_middleware(*, queryset, handler, language_code_redirect=F
         return inner
 
     return outer
+
+
+def _redirect_language_codes(request):
+    """
+    Return the language codes to try for the root redirect, in order
+
+    The active language comes first, followed by the other supported languages
+    from the ``Accept-Language`` header and ``settings.LANGUAGE_CODE``.
+    """
+    codes = [request.LANGUAGE_CODE]
+    accept = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
+    for accept_lang, _q in parse_accept_lang_header(accept):
+        if accept_lang == "*":
+            break
+        if not language_code_re.search(accept_lang):
+            continue
+        try:
+            codes.append(get_supported_language_variant(accept_lang))
+        except LookupError:
+            continue
+    codes.append(settings.LANGUAGE_CODE)
+    return list(dict.fromkeys(codes))
 
 
 def add_redirect_handler(handler):

@@ -822,6 +822,41 @@ def test_404_language_code_redirect_at_root(client):
 
 
 @pytest.mark.django_db
+def test_404_language_code_redirect_accept_language_fallback(
+    client, django_assert_num_queries
+):
+    """Root redirect falls back to the next accepted language with a page"""
+    for code in ["de", "fr"]:
+        Page.objects.create(
+            title=code,
+            slug=code,
+            path=f"/{code}/",
+            static_path=True,
+            language_code=code,
+            is_active=True,
+        )
+
+    # "en" is active but has no page; the next accepted language is used
+    with django_assert_num_queries(2):  # urlconf, pages
+        response = client.get("/", HTTP_ACCEPT_LANGUAGE="en-US,en;q=0.9,de;q=0.8")
+    assertRedirects(response, "/de/")
+
+    Page.objects.create(
+        title="en",
+        slug="en",
+        path="/en/",
+        static_path=True,
+        language_code="en",
+        is_active=True,
+    )
+    Page.objects.filter(path__in=["/de/", "/fr/"]).delete()
+
+    # Finally settings.LANGUAGE_CODE is used
+    response = client.get("/", HTTP_ACCEPT_LANGUAGE="de,fr;q=0.9")
+    assertRedirects(response, "/en/")
+
+
+@pytest.mark.django_db
 def test_404_language_code_redirect_deeper(client):
     """No redirects despite using i18n_patterns"""
     Page.objects.create(

@@ -6,6 +6,11 @@ Change log
 Next version
 ~~~~~~~~~~~~
 
+- ``create_page_if_404_middleware(..., language_code_redirect=True)`` falls
+  back to the other languages of the ``Accept-Language`` header and to
+  ``settings.LANGUAGE_CODE`` if there is no page for the active language
+  instead of returning a 404.
+
 7.3.1 (2026-11-20)
 ~~~~~~~~~~~~~~~~~~
 
