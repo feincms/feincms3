@@ -202,7 +202,7 @@ def _redirect_language_codes(request):
     from the ``Accept-Language`` header and ``settings.LANGUAGE_CODE``.
     """
     codes = [request.LANGUAGE_CODE]
-    accept = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
+    accept = request.headers.get("accept-language", "")
     for accept_lang, _q in parse_accept_lang_header(accept):
         if accept_lang == "*":
             break
